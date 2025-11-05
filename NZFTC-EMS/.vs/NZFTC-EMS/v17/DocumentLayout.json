@@ -1,12 +1,54 @@
 {
   "Version": 1,
   "WorkspaceRootPath": "D:\\xampp\\htdocs\\NZFTC-EMS-SD106-GROUP-3-\\NZFTC-EMS\\",
-  "Documents": [],
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{427B2A8B-8A94-4595-9501-A49D687916B0}|NZFTC-EMS.csproj|d:\\xampp\\htdocs\\nzftc-ems-sd106-group-3-\\nzftc-ems\\views\\website\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{427B2A8B-8A94-4595-9501-A49D687916B0}|NZFTC-EMS.csproj|solutionrelative:views\\website\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{427B2A8B-8A94-4595-9501-A49D687916B0}|NZFTC-EMS.csproj|d:\\xampp\\htdocs\\nzftc-ems-sd106-group-3-\\nzftc-ems\\views\\shared\\nzft_site.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{427B2A8B-8A94-4595-9501-A49D687916B0}|NZFTC-EMS.csproj|solutionrelative:views\\shared\\nzft_site.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    }
+  ],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
       "VerticalTabListWidth": 256,
-      "DocumentGroups": []
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "D:\\xampp\\htdocs\\NZFTC-EMS-SD106-GROUP-3-\\NZFTC-EMS\\Views\\website\\Index.cshtml",
+              "RelativeDocumentMoniker": "Views\\website\\Index.cshtml",
+              "ToolTip": "D:\\xampp\\htdocs\\NZFTC-EMS-SD106-GROUP-3-\\NZFTC-EMS\\Views\\website\\Index.cshtml",
+              "RelativeToolTip": "Views\\website\\Index.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-05T09:46:36.503Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "nzft_site.cshtml",
+              "DocumentMoniker": "D:\\xampp\\htdocs\\NZFTC-EMS-SD106-GROUP-3-\\NZFTC-EMS\\Views\\Shared\\nzft_site.cshtml",
+              "RelativeDocumentMoniker": "Views\\Shared\\nzft_site.cshtml",
+              "ToolTip": "D:\\xampp\\htdocs\\NZFTC-EMS-SD106-GROUP-3-\\NZFTC-EMS\\Views\\Shared\\nzft_site.cshtml",
+              "RelativeToolTip": "Views\\Shared\\nzft_site.cshtml",
+              "ViewState": "AgIAABIAAAAAAAAAAAAAAC8AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-05T08:53:40.27Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
     }
   ]
 }

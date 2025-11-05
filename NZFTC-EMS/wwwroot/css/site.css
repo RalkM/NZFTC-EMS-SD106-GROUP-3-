@@ -1,31 +1,69 @@
+﻿:root {
+    --font-sans: 'Poppins', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+}
+
+html, body {
+    font-family: var(--font-sans);
+}
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
 html {
-  font-size: 14px;
+    scroll-behavior: smooth;
 }
 
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
-}
-
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
-}
-
-html {
-  position: relative;
-  min-height: 100%;
-}
 
 body {
-  margin-bottom: 60px;
+    height: 100%;
 }
 
-.form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
-  color: var(--bs-secondary-color);
-  text-align: end;
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: row;
+    height: 12vh;
+    background: rgb(255, 255, 255);
+    color: rgb(0);
+    text-shadow: 0.5px 1px 2px #0000007a;
+    width: 100%;
+    padding: 20px 30px;
+    position: fixed;
+    z-index:1000;
 }
 
-.form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
-  text-align: start;
+.container_fluid {
+    width: 30%;
 }
+
+    .container_fluid ul {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+    }
+
+img {
+    height: 10vh;
+}
+
+li {
+    list-style: none;
+    margin: 0 15px;
+}
+li .nav_link {
+    text-decoration: none;
+    color: rgb(0,0,0);
+    font-weight: 300;
+    font-size: 1.2rem;
+    transition: 0.3s;
+}
+
+    li .nav_link:hover {
+        color: #1771c0;
+        font-weight: 500;
+    }
+

@@ -7,4 +7,23 @@
     <RootNamespace>NZFTC_EMS</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="RESOURCE\**" />
+    <Content Remove="RESOURCE\**" />
+    <EmbeddedResource Remove="RESOURCE\**" />
+    <None Remove="RESOURCE\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Controllers\ems\admin\" />
+    <Folder Include="Controllers\ems\employee\" />
+    <Folder Include="Models\" />
+    <Folder Include="Views\ems\administrator\" />
+    <Folder Include="Views\ems\employee\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\lib\Image.png" />
+  </ItemGroup>
+
 </Project>

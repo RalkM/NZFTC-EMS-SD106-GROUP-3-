@@ -1,37 +1,12 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\aries\\OneDrive\\Desktop\\NZFTC-EMS-SD106-GROUP-3-\\NZFTC-EMS\\",
-  "Documents": [
-    {
-      "AbsoluteMoniker": "D:0:0:{427B2A8B-8A94-4595-9501-A49D687916B0}|NZFTC-EMS.csproj|c:\\users\\aries\\onedrive\\desktop\\nzftc-ems-sd106-group-3-\\nzftc-ems\\wwwroot\\new folder\\filename.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{427B2A8B-8A94-4595-9501-A49D687916B0}|NZFTC-EMS.csproj|solutionrelative:wwwroot\\new folder\\filename.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    }
-  ],
+  "WorkspaceRootPath": "D:\\xampp\\htdocs\\NZFTC-EMS-SD106-GROUP-3-\\NZFTC-EMS\\",
+  "Documents": [],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
       "VerticalTabListWidth": 256,
-      "DocumentGroups": [
-        {
-          "DockedWidth": 200,
-          "SelectedChildIndex": 0,
-          "Children": [
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "FileName.cs",
-              "DocumentMoniker": "C:\\Users\\aries\\OneDrive\\Desktop\\NZFTC-EMS-SD106-GROUP-3-\\NZFTC-EMS\\wwwroot\\New folder\\FileName.cs",
-              "RelativeDocumentMoniker": "wwwroot\\New folder\\FileName.cs",
-              "ToolTip": "C:\\Users\\aries\\OneDrive\\Desktop\\NZFTC-EMS-SD106-GROUP-3-\\NZFTC-EMS\\wwwroot\\New folder\\FileName.cs",
-              "RelativeToolTip": "wwwroot\\New folder\\FileName.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-08T09:56:15.056Z",
-              "EditorCaption": ""
-            }
-          ]
-        }
-      ]
+      "DocumentGroups": []
     }
   ]
 }

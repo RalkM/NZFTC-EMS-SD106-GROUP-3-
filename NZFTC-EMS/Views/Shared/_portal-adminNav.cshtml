@@ -1,30 +1,26 @@
-﻿<nav class="navbar">
-    <div class="container-fluid">
-        <div class="brand-container">
-            <a class="navbar-brand" asp-controller="Website" asp-action="Portal">
-                <img src="~/lib/Image-white.png" alt="NZFTC-EMS" asp-append-version="true" />
-            </a>
+﻿<nav class="container-fluid">
+    <a class="navbar-brand" asp-controller="Website" asp-action="Portal">
+        <img src="~/lib/Image-white.png" alt="NZFTC-EMS" asp-append-version="true" />
+    </a>
+
+    <div class="clickables">
+        <div class="navLinks">
+            <a class="nav-link active" asp-controller="Website" asp-action="Portal">Dashboard</a>
+            <a class="nav-link" asp-controller="Portal" asp-action="Profile">Profile</a>
+            <a class="nav-link" asp-controller="Portal" asp-action="Leave">File a Leave</a>
+            <a class="nav-link" asp-controller="Portal" asp-action="Payslip">Payslip</a>
+            <a class="nav-link" asp-controller="Portal" asp-action="Calendar">Calendar</a>
+            <a class="nav-link" asp-controller="Portal" asp-action="Support">Support</a>
         </div>
 
-        <div class="clickables">
-            <div class="navLinks">
-                <a class="nav-link active" asp-controller="Website" asp-action="Portal">Dashboard</a>
-                <a class="nav-link" asp-controller="Portal" asp-action="Profile">Profile</a>
-                <a class="nav-link" asp-controller="Portal" asp-action="Leave">File a Leave</a>
-                <a class="nav-link" asp-controller="Portal" asp-action="Payslip">Payslip</a>
-                <a class="nav-link" asp-controller="Portal" asp-action="Calendar">Calendar</a>
-                <a class="nav-link" asp-controller="Portal" asp-action="Support">Support</a>
-            </div>
+        <div class="utilities">
+            <a class="nav-link logout" asp-controller="Website" asp-action="Logout" title="Sign out">
+                <i class="fa fa-sign-out" aria-hidden="true"></i>
+            </a>
 
-            <div class="utilities">
-                <a class="nav-link logout" asp-controller="Website" asp-action="Logout" title="Sign out">
-                    <i class="fa fa-sign-out" aria-hidden="true"></i>
-                </a>
-
-                <a class="nav-link gear" asp-controller="Portal" asp-action="Settings" title="Settings">
-                    <i class="fa-solid fa-gear" aria-hidden="true"></i>
-                </a>
-            </div>
+            <a class="nav-link gear" asp-controller="Portal" asp-action="Settings" title="Settings">
+                <i class="fa-solid fa-gear" aria-hidden="true"></i>
+            </a>
         </div>
     </div>
 </nav>

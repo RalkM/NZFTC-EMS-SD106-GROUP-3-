@@ -19,40 +19,42 @@ html {
 
 body {
     height: 100%;
-    display: flex;
+      display: flex;
     flex-direction: row;
 }
 
 header{
-    width: 30vw;
-    padding: 3px;
-    height: fit-content;
+    display: flex;
+    justify-content: center;
+    width: 20vw;
+    height: 991px;
+    align-items: center;
     background-color: #0d52b9;
 }
 
-.border-bottom .container-fluid{
+.navbar .container-fluid{
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
-    width: 5vw;
-    height: 99vh;
+    flex-direction: row;
+    margin: 3px 2px 2px 1px;
+    justify-content: space-evenly;
+    height: 90vh;
+    width: fit-content;
 
 }
 
 img {
-    height: 13vh;
+    height: 10vh;
 }
 
 .navLinks{
      display: flex;
+      align-items: start;
     justify-content: space-between;
      flex-direction: column;
-     height: 90%;
-     font-size:18px;
+     height: 10vh;
+     font-size: 20px;
      font-weight: 700;
         color: rgb(219, 219, 219);
-        width: 10vw;
 
 }
 
@@ -63,5 +65,7 @@ img {
 
 .clickables{
     display: flex;
-     flex-direction: column;
+      align-items: start;
+    justify-content: space-between;
+     flex-direction: row;
 }

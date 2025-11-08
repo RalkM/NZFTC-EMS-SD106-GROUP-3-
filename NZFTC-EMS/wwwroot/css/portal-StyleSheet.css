@@ -1,0 +1,71 @@
+﻿:root {
+    --font-sans: 'Poppins', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+}
+
+html, body {
+    font-family: var(--font-sans);
+}
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+
+body {
+    height: 100%;
+      display: flex;
+    flex-direction: row;
+}
+
+header{
+    display: flex;
+    justify-content: center;
+    width: 20vw;
+    height: 991px;
+    align-items: center;
+    background-color: #0d52b9;
+}
+
+.navbar .container-fluid{
+    display: flex;
+    flex-direction: row;
+    margin: 3px 2px 2px 1px;
+    justify-content: space-evenly;
+    height: 90vh;
+    width: fit-content;
+
+}
+
+img {
+    height: 10vh;
+}
+
+.navLinks{
+     display: flex;
+      align-items: start;
+    justify-content: space-between;
+     flex-direction: column;
+     height: 10vh;
+     font-size: 20px;
+     font-weight: 700;
+        color: rgb(219, 219, 219);
+
+}
+
+.nav-link:hover{
+    color: #000000;
+    font-weight: 900;
+}
+
+.clickables{
+    display: flex;
+      align-items: start;
+    justify-content: space-between;
+     flex-direction: row;
+}

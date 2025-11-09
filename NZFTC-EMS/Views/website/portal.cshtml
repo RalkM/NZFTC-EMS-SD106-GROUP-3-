@@ -1,5 +1,24 @@
 ﻿@{
-    ViewData["Title"] = "Portal Home";
+    ViewData["Title"] = "Portal";
+    var role = Context.Session.GetString("Role");
+    var username = Context.Session.GetString("UserName");
 }
-<h2 class="mb-3">Welcome, @Context.Session.GetString("UserName")</h2>
-<p>This is the portal area (temporary auth, no DB yet).</p>
+
+<div class="container mt-4">
+    <h2>Welcome, @username!</h2>
+
+    @if (role == "Admin")
+    {
+        <partial name="~/Views/website/admin/support_management.cshtml" />
+    }
+    else if (role == "Employee")
+    {
+        <partial name="~/Views/website/employee/support_form.cshtml" />
+    }
+    else
+    {
+        <div class="alert alert-danger mt-3">
+            Role not recognized. Please log in again.
+        </div>
+    }
+</div>

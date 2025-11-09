@@ -18,7 +18,7 @@
 </head>
 <body>
     <header class="border-bottom">
-        @await Html.PartialAsync(role == "Admin" ? "_portal-adminNav" : "_portal-employeeNav")
+        @await Html.PartialAsync(role == "Employee" ? "_portal_adminNav" : "_portal_employeeNav")
     </header>
 
     <main class="container py-3">

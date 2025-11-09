@@ -10,13 +10,26 @@
 
   <ItemGroup>
     <Compile Remove="RESOURCE\**" />
+    <Compile Remove="Services\**" />
+    <Compile Remove="Views\website\admin - Copy\**" />
+    <Compile Remove="Views\website\employee - Copy\**" />
     <Content Remove="RESOURCE\**" />
+    <Content Remove="Services\**" />
+    <Content Remove="Views\website\admin - Copy\**" />
+    <Content Remove="Views\website\employee - Copy\**" />
     <EmbeddedResource Remove="RESOURCE\**" />
+    <EmbeddedResource Remove="Services\**" />
+    <EmbeddedResource Remove="Views\website\admin - Copy\**" />
+    <EmbeddedResource Remove="Views\website\employee - Copy\**" />
     <None Remove="RESOURCE\**" />
+    <None Remove="Services\**" />
+    <None Remove="Views\website\admin - Copy\**" />
+    <None Remove="Views\website\employee - Copy\**" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Models\" />
+    <Folder Include="Data\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -24,6 +37,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="EFCore.NamingConventions" Version="9.0.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="9.0.0" />
   </ItemGroup>
 

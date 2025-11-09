@@ -5,16 +5,31 @@
         </a>
 
         <div class="navLinks">
+            <!-- Dashboard -->
             <a class="nav-link active" asp-controller="Website" asp-action="Portal">Dashboard</a>
+
+            <!-- Profile -->
             <a class="nav-link" asp-controller="Portal" asp-action="Profile">Profile</a>
-            <a class="nav-link" asp-controller="Portal" asp-action="Leave">File a Leave</a>
-            <a class="nav-link" asp-controller="Portal" asp-action="Payslip">Payslip</a>
+
+            <!-- Updated Leave Page -->
+            <a class="nav-link" asp-controller="leave_management" asp-action="Dashboard">
+                Apply for Leave
+            </a>
+
+            <!-- Updated Payroll Page -->
+            <a class="nav-link" asp-controller="payroll_management" asp-action="Payslip">
+                Payslip
+            </a>
+
+            <!-- Calendar -->
             <a class="nav-link" asp-controller="Portal" asp-action="Calendar">Calendar</a>
+
+            <!-- Support (grievances) -->
             <a class="nav-link" asp-controller="Portal" asp-action="Grievances">Support</a>
         </div>
 
         <div class="utilities">
-            <a class="nav-link logout" asp-controller="website" asp-action="Logout" title="Sign out">
+            <a class="nav-link logout" asp-controller="Website" asp-action="Logout" title="Sign out">
                 <i class="fa fa-sign-out" aria-hidden="true"></i>
             </a>
 

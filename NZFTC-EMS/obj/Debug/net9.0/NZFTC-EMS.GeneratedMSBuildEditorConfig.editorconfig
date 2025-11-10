@@ -17,65 +17,65 @@ build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = NZFTC_EMS
 build_property.RootNamespace = NZFTC_EMS
-build_property.ProjectDir = C:\Users\aries\OneDrive\Desktop\NZFTC-EMS-SD106-GROUP-3-\NZFTC-EMS\
+build_property.ProjectDir = D:\xampp\htdocs\NZFTC-EMS-SD106-GROUP-3-\NZFTC-EMS\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.RazorLangVersion = 9.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = C:\Users\aries\OneDrive\Desktop\NZFTC-EMS-SD106-GROUP-3-\NZFTC-EMS
+build_property.MSBuildProjectDirectory = D:\xampp\htdocs\NZFTC-EMS-SD106-GROUP-3-\NZFTC-EMS
 build_property._RazorSourceGeneratorDebug = 
 build_property.EffectiveAnalysisLevelStyle = 9.0
 build_property.EnableCodeStyleSeverity = 
 
-[C:/Users/aries/OneDrive/Desktop/NZFTC-EMS-SD106-GROUP-3-/NZFTC-EMS/Views/Login/login.cshtml]
+[D:/xampp/htdocs/NZFTC-EMS-SD106-GROUP-3-/NZFTC-EMS/Views/Login/login.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTG9naW5cbG9naW4uY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/aries/OneDrive/Desktop/NZFTC-EMS-SD106-GROUP-3-/NZFTC-EMS/Views/Shared/_auth.cshtml]
+[D:/xampp/htdocs/NZFTC-EMS-SD106-GROUP-3-/NZFTC-EMS/Views/Shared/_auth.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9hdXRoLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/aries/OneDrive/Desktop/NZFTC-EMS-SD106-GROUP-3-/NZFTC-EMS/Views/Shared/_index.cshtml]
+[D:/xampp/htdocs/NZFTC-EMS-SD106-GROUP-3-/NZFTC-EMS/Views/Shared/_index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9pbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/aries/OneDrive/Desktop/NZFTC-EMS-SD106-GROUP-3-/NZFTC-EMS/Views/Shared/_portal.cshtml]
+[D:/xampp/htdocs/NZFTC-EMS-SD106-GROUP-3-/NZFTC-EMS/Views/Shared/_portal.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9wb3J0YWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/aries/OneDrive/Desktop/NZFTC-EMS-SD106-GROUP-3-/NZFTC-EMS/Views/Shared/_portal_adminNav.cshtml]
+[D:/xampp/htdocs/NZFTC-EMS-SD106-GROUP-3-/NZFTC-EMS/Views/Shared/_portal_adminNav.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9wb3J0YWxfYWRtaW5OYXYuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/aries/OneDrive/Desktop/NZFTC-EMS-SD106-GROUP-3-/NZFTC-EMS/Views/Shared/_portal_employeeNav.cshtml]
+[D:/xampp/htdocs/NZFTC-EMS-SD106-GROUP-3-/NZFTC-EMS/Views/Shared/_portal_employeeNav.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9wb3J0YWxfZW1wbG95ZWVOYXYuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/aries/OneDrive/Desktop/NZFTC-EMS-SD106-GROUP-3-/NZFTC-EMS/Views/Shared/_ValidationScriptsPartial.cshtml]
+[D:/xampp/htdocs/NZFTC-EMS-SD106-GROUP-3-/NZFTC-EMS/Views/Shared/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/aries/OneDrive/Desktop/NZFTC-EMS-SD106-GROUP-3-/NZFTC-EMS/Views/website/admin/support_management.cshtml]
+[D:/xampp/htdocs/NZFTC-EMS-SD106-GROUP-3-/NZFTC-EMS/Views/website/admin/support_management.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3Ncd2Vic2l0ZVxhZG1pblxzdXBwb3J0X21hbmFnZW1lbnQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/aries/OneDrive/Desktop/NZFTC-EMS-SD106-GROUP-3-/NZFTC-EMS/Views/website/employee/support_form.cshtml]
+[D:/xampp/htdocs/NZFTC-EMS-SD106-GROUP-3-/NZFTC-EMS/Views/website/employee/support_form.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3Ncd2Vic2l0ZVxlbXBsb3llZVxzdXBwb3J0X2Zvcm0uY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/aries/OneDrive/Desktop/NZFTC-EMS-SD106-GROUP-3-/NZFTC-EMS/Views/website/Index.cshtml]
+[D:/xampp/htdocs/NZFTC-EMS-SD106-GROUP-3-/NZFTC-EMS/Views/website/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3Ncd2Vic2l0ZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/aries/OneDrive/Desktop/NZFTC-EMS-SD106-GROUP-3-/NZFTC-EMS/Views/website/portal.cshtml]
+[D:/xampp/htdocs/NZFTC-EMS-SD106-GROUP-3-/NZFTC-EMS/Views/website/portal.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3Ncd2Vic2l0ZVxwb3J0YWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/aries/OneDrive/Desktop/NZFTC-EMS-SD106-GROUP-3-/NZFTC-EMS/Views/_ViewImports.cshtml]
+[D:/xampp/htdocs/NZFTC-EMS-SD106-GROUP-3-/NZFTC-EMS/Views/_ViewImports.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/aries/OneDrive/Desktop/NZFTC-EMS-SD106-GROUP-3-/NZFTC-EMS/Views/_ViewStart.cshtml]
+[D:/xampp/htdocs/NZFTC-EMS-SD106-GROUP-3-/NZFTC-EMS/Views/_ViewStart.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 

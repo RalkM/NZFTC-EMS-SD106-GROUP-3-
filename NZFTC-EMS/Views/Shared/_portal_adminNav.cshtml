@@ -6,10 +6,21 @@
 
         <div class="navLinks">
             <a class="nav-link active" asp-controller="Website" asp-action="Portal">Dashboard</a>
+
             <a class="nav-link" asp-controller="Portal" asp-action="Profile">Employee Management</a>
-            <a class="nav-link" asp-controller="Portal" asp-action="Leave">Leave Management</a>
-            <a class="nav-link" asp-controller="Portal" asp-action="Payslip">Payroll</a>
+
+            <!-- Updated Leave Management link -->
+            <a class="nav-link" asp-controller="leave_management" asp-action="Index">
+                Leave Management
+            </a>
+
+            <!-- Updated Payroll link -->
+            <a class="nav-link" asp-controller="payroll_management" asp-action="Index">
+                Payroll Management
+            </a>
+
             <a class="nav-link" asp-controller="Portal" asp-action="Calendar">Calendar</a>
+
             <a class="nav-link" asp-controller="Portal" asp-action="Support">Support Management</a>
         </div>
 

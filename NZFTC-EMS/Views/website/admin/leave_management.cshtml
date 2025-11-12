@@ -1,4 +1,5 @@
-@model IEnumerable<NZFTC_EMS.Controllers.LeaveRequestVm>
+@using NZFTC_EMS.Controllers
+@model IEnumerable<LeaveRequestVm>
 
 @{
     Layout = ViewData["Layout"]?.ToString();
@@ -47,19 +48,26 @@
     <th>Employee</th><th>Type</th><th>Start</th><th>End</th><th>Reason</th><th>Status</th><th>Requested</th>
   </tr>
 </thead>
-<tbody>
-    @foreach (var r in Model)
+<<tbody>
+@if (!(Model?.Any() ?? false))
+{
+    <tr><td colspan="7" class="text-center text-muted">No leave requests found.</td></tr>
+}
+else
+{
+    foreach (var r in Model)
     {
-    <tr>
-        <td>@r.EmployeeName</td>
-        <td>@r.LeaveType</td>
-        <td>@r.StartDate:dd/MM/yyyy</td>
-        <td>@r.EndDate:dd/MM/yyyy</td>
-        <td>@r.Reason</td>
-        <td>@r.Status</td>
-        <td>@r.RequestedAt:dd/MM/yyyy</td>
-    </tr>
+        <tr>
+            <td>@r.EmployeeName</td>
+            <td>@r.LeaveType</td>
+            <td>@r.StartDate.ToString("dd/MM/yyyy")</td>
+            <td>@r.EndDate.ToString("dd/MM/yyyy")</td>
+            <td>@r.Reason</td>
+            <td>@r.Status</td>
+            <td>@r.RequestedAt.ToString("dd/MM/yyyy HH:mm")</td>
+        </tr>
     }
+}
 </tbody>
         </table>
     </div>

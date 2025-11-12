@@ -11,7 +11,10 @@ namespace NZFTC_EMS.Controllers
         }
         public IActionResult Support()
         {
-            return RedirectToAction("Index", "Support_Management");
+           var role = HttpContext.Session.GetString("Role") ?? "Employee";
+        if (string.Equals(role, "Admin", StringComparison.OrdinalIgnoreCase))
+            return RedirectToAction("Index", "Support_Management"); // admin page
+        return Redirect("/support"); // client page
         }
     }
 }

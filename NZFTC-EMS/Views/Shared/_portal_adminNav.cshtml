@@ -21,7 +21,8 @@
 
             <a class="nav-link" asp-controller="Portal" asp-action="Calendar">Calendar</a>
 
-            <a class="nav-link" asp-controller="Portal" asp-action="Support">Support Management</a>
+            <a class="nav-link @(Context.Request.Path.Value?.StartsWith("/support_management", StringComparison.OrdinalIgnoreCase) == true ? "active" : "")"
+   href="/support_management">Support Management</a>
         </div>
 
         <div class="utilities">

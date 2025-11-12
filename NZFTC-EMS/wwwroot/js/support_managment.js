@@ -34,3 +34,17 @@
 
   const first = grid.querySelector('tbody tr[data-id]');
   if (first) loadDetails(first.dataset.id, first);
+
+  (async () => {
+  try {
+    const res = await fetch('/support/api/list', { credentials: 'same-origin' });
+    if (!res.ok) return;
+    const rows = await res.json();
+    const openCount = rows.filter(r => r.status === 'Open' || r.status === 'InProgress').length;
+    const badge = document.getElementById('support-badge');
+    if (openCount > 0) {
+      badge.textContent = openCount;
+      badge.style.display = 'inline-block';
+    }
+  } catch { /* ignore */ }
+})();

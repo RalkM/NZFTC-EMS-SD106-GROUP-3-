@@ -1,8 +1,9 @@
-﻿@model IEnumerable<NZFTC_EMS.Models.leave_request_model>
+﻿@using NZFTC_EMS.Controllers
+@model IEnumerable<LeaveRequestVm>
 
 @{
-    Layout = ViewData["Layout"]?.ToString();
-    ViewData["Title"] = "Apply for Leave";
+   Layout = ViewData["Layout"]?.ToString();
+    ViewData["Title"] = "My Leave Requests";
     var selectedStatus = ViewBag.Status as string ?? "All";
 }
 
@@ -56,38 +57,27 @@
                 </tr>
             </thead>
             <tbody>
-                @if (Model != null && Model.Any())
-                {
-                    foreach (var leave in Model)
-                    {
-                        <tr>
-                            <td>@leave.leave_type</td>
-                            <td>@leave.start_date.ToShortDateString() - @leave.end_date.ToShortDateString()</td>
-                            <td>@leave.reason</td>
-                            <td>
-                                @if (leave.status == "Approved")
-                                {
-                                    <span class="badge bg-success">Approved</span>
-                                }
-                                else if (leave.status == "Declined")
-                                {
-                                    <span class="badge bg-danger">Declined</span>
-                                }
-                                else
-                                {
-                                    <span class="badge bg-warning text-dark">Pending</span>
-                                }
-                            </td>
-                        </tr>
-                    }
-                }
-                else
-                {
-                    <tr>
-                        <td colspan="4" class="text-muted">No leave requests submitted yet.</td>
-                    </tr>
-                }
-            </tbody>
+@if (!(Model?.Any() ?? false))
+{
+    <tr><td colspan="7" class="text-center text-muted">No leave requests found.</td></tr>
+}
+else
+{
+    foreach (var r in Model)
+    {
+        <tr>
+            <td>@r.EmployeeName</td>
+            <td>@r.LeaveType</td>
+            <td>@r.StartDate.ToString("dd/MM/yyyy")</td>
+            <td>@r.EndDate.ToString("dd/MM/yyyy")</td>
+            <td>@r.Reason</td>
+            <td>@r.Status</td>
+            <td>@r.RequestedAt.ToString("dd/MM/yyyy HH:mm")</td>
+        </tr>
+    }
+}
+</tbody>
+
         </table>
     </div>
 </div>

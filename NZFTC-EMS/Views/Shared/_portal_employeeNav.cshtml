@@ -25,7 +25,10 @@
             <a class="nav-link" asp-controller="Portal" asp-action="Calendar">Calendar</a>
 
             <!-- Support (grievances) -->
-            <a class="nav-link" asp-controller="Portal" asp-action="Grievances">Support</a>
+  <a class="nav-link @(Context.Request.Path.Value?.StartsWith("/support", StringComparison.OrdinalIgnoreCase) == true ? "active" : "")"
+     href="/support"> Support
+    <span id="support-badge" class="badge rounded-pill text-bg-primary ms-2" style="display:none">0</span>
+  </a>
         </div>
 
         <div class="utilities">
@@ -39,3 +42,5 @@
         </div>
     </div>
 </nav>
+
+<script src="wwwroot/js/support_managment.js"></script>

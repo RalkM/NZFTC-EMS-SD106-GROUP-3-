@@ -18,6 +18,7 @@ public class AppDbContext : DbContext
     public DbSet<EmployeePayrollSummary> EmployeePayrollSummaries => Set<EmployeePayrollSummary>();
     public DbSet<Grievance> Grievances => Set<Grievance>();
     public DbSet<Holiday> Holidays => Set<Holiday>();
+    public DbSet<EmployeeLeaveBalance> EmployeeLeaveBalances => Set<EmployeeLeaveBalance>();
 
     // Support module
     public DbSet<SupportTicket> SupportTickets => Set<SupportTicket>();
@@ -148,5 +149,21 @@ public class AppDbContext : DbContext
 
         b.Entity<SupportTicket>().ToTable("supporttickets");
         b.Entity<SupportMessage>().ToTable("supportmessages");
+        b.Entity<EmployeeLeaveBalance>(e =>
+         {
+             e.ToTable("employeeleavebalances");
+             e.HasKey(x => x.EmployeeLeaveBalanceId);
+             e.HasOne(x => x.Employee)
+              .WithMany(e => e.LeaveBalances)      // add ICollection<EmployeeLeaveBalance> LeaveBalances to Employee if you want
+              .HasForeignKey(x => x.EmployeeId)
+              .OnDelete(DeleteBehavior.Cascade);
+
+             e.Property(x => x.AnnualAccrued).HasPrecision(10, 2);
+             e.Property(x => x.AnnualUsed).HasPrecision(10, 2);
+             e.Property(x => x.SickAccrued).HasPrecision(10, 2);
+             e.Property(x => x.SickUsed).HasPrecision(10, 2);
+             e.Property(x => x.CarryOverAnnual).HasPrecision(10, 2);
+         });
     }
+    
 }

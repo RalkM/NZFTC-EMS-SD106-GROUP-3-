@@ -49,14 +49,6 @@ namespace NZFTC_EMS.Controllers
             return View("~/Views/website/portal.cshtml"); // Views/website/Portal.cshtml (or return View("~/Views/SomeFolder/Portal.cshtml"))
         }
 
-        
-        public IActionResult Support_admin()
-        {
-
-            ViewData["Layout"] = "~/Views/Shared/_portal.cshtml"; // <- different layout
-            return View("~/Views/website/admin/support_management.cshtml"); // Views/website/Portal.cshtml (or return View("~/Views/SomeFolder/Portal.cshtml"))
-        }
-
         public IActionResult Logout()
         {
             HttpContext.Session.Clear();

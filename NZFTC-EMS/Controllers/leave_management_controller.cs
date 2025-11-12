@@ -1,24 +1,39 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NZFTC_EMS.Data;
-using NZFTC_EMS.Models;
+using NZFTC_EMS.Data.Entities; // <-- entities & enums
 using System.Linq;
 using System.Threading.Tasks;
 using System.Text;
-using System.IO;
 
 namespace NZFTC_EMS.Controllers
 {
+    // ViewModels so views can stay simple
+    public class LeaveRequestVm
+    {
+        public int Id { get; set; }
+        public string EmployeeName { get; set; } = "";
+        public string LeaveType { get; set; } = "";
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
+        public string? Reason { get; set; }
+        public string Status { get; set; } = "";
+        public DateTime RequestedAt { get; set; }
+    }
+
+    public class LeaveRequestFormVm
+    {
+        public string LeaveType { get; set; } = "";
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
+        public string? Reason { get; set; }
+    }
+
     [Route("leave_management")]
     public class leave_management_controller : Controller
     {
         private readonly AppDbContext _context;
-
-        public leave_management_controller(AppDbContext context)
-        {
-            _context = context;
-        }
-
+        public leave_management_controller(AppDbContext context) => _context = context;
 
         [HttpGet("")]
         [HttpGet("index")]
@@ -29,22 +44,41 @@ namespace NZFTC_EMS.Controllers
 
             ViewData["Layout"] = "~/Views/Shared/_portal.cshtml";
 
-            var query = _context.LeaveRequests.AsQueryable();
+            var query = _context.LeaveRequests
+                .Include(l => l.Employee)
+                .AsQueryable();
 
-            if (!string.IsNullOrEmpty(q))
-                query = query.Where(l => l.employee_name.Contains(q));
+            if (!string.IsNullOrWhiteSpace(q))
+            {
+                query = query.Where(l =>
+                    (l.Employee.FirstName + " " + l.Employee.LastName).Contains(q));
+            }
 
-            if (!string.IsNullOrEmpty(status) && status != "All")
-                query = query.Where(l => l.status == status);
+            if (!string.IsNullOrWhiteSpace(status) && status != "All")
+            {
+                if (Enum.TryParse<LeaveStatus>(status, ignoreCase: true, out var s))
+                    query = query.Where(l => l.Status == s);
+            }
 
-            var requests = await query.ToListAsync();
+            var data = await query
+                .OrderByDescending(l => l.RequestedAt)
+                .Select(l => new LeaveRequestVm
+                {
+                    Id = l.LeaveRequestId,
+                    EmployeeName = l.Employee.FirstName + " " + l.Employee.LastName,
+                    LeaveType = l.LeaveType,
+                    StartDate = l.StartDate,
+                    EndDate = l.EndDate,
+                    Reason = l.Reason,
+                    Status = l.Status.ToString(),
+                    RequestedAt = l.RequestedAt
+                })
+                .ToListAsync();
 
             ViewBag.Search = q;
             ViewBag.Status = status ?? "All";
-
-            return View("~/Views/website/admin/leave_management.cshtml", requests);
+            return View("~/Views/website/admin/leave_management.cshtml", data);
         }
-
 
         [HttpGet("dashboard")]
         public async Task<IActionResult> Dashboard(string status)
@@ -53,21 +87,44 @@ namespace NZFTC_EMS.Controllers
                 return RedirectToAction("AccessDenied", "website");
 
             ViewData["Layout"] = "~/Views/Shared/_portal.cshtml";
-            var employeeName = HttpContext.Session.GetString("Username");
-            var query = _context.LeaveRequests.AsQueryable();
 
-            if (!string.IsNullOrEmpty(employeeName))
-                query = query.Where(l => l.employee_name == employeeName);
+            var employeeName = HttpContext.Session.GetString("Username") ?? "";
+            var firstLast = employeeName.Split(' ', 2, StringSplitOptions.RemoveEmptyEntries);
+            string first = firstLast.Length > 0 ? firstLast[0] : "";
+            string last = firstLast.Length > 1 ? firstLast[1] : "";
 
-            if (!string.IsNullOrEmpty(status) && status != "All")
-                query = query.Where(l => l.status == status);
+            var me = await _context.Employees
+                .FirstOrDefaultAsync(e => e.FirstName == first && e.LastName == last);
 
-            var leaves = await query.ToListAsync();
+            var query = _context.LeaveRequests
+                .Include(l => l.Employee)
+                .Where(l => me != null && l.EmployeeId == me.EmployeeId)
+                .AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(status) && status != "All")
+            {
+                if (Enum.TryParse<LeaveStatus>(status, ignoreCase: true, out var s))
+                    query = query.Where(l => l.Status == s);
+            }
+
+            var leaves = await query
+                .OrderByDescending(l => l.RequestedAt)
+                .Select(l => new LeaveRequestVm
+                {
+                    Id = l.LeaveRequestId,
+                    EmployeeName = l.Employee.FirstName + " " + l.Employee.LastName,
+                    LeaveType = l.LeaveType,
+                    StartDate = l.StartDate,
+                    EndDate = l.EndDate,
+                    Reason = l.Reason,
+                    Status = l.Status.ToString(),
+                    RequestedAt = l.RequestedAt
+                })
+                .ToListAsync();
+
             ViewBag.Status = status ?? "All";
-
             return View("~/Views/website/employee/leave_form.cshtml", leaves);
         }
-
 
         [HttpGet("file")]
         public IActionResult File()
@@ -76,80 +133,92 @@ namespace NZFTC_EMS.Controllers
                 return RedirectToAction("AccessDenied", "website");
 
             ViewData["Layout"] = "~/Views/Shared/_portal.cshtml";
-            return View("~/Views/website/employee/leave_request_form.cshtml", new leave_request_model());
+            return View("~/Views/website/employee/leave_request_form.cshtml",
+                new LeaveRequestFormVm { StartDate = DateTime.Today, EndDate = DateTime.Today });
         }
 
         [HttpPost("file")]
-        public async Task<IActionResult> File(leave_request_model model)
+        public async Task<IActionResult> File(LeaveRequestFormVm model)
         {
-            if (!ModelState.IsValid)
+            if (HttpContext.Session.GetString("Role") != "Employee")
+                return RedirectToAction("AccessDenied", "website");
+
+            if (!ModelState.IsValid || model.EndDate < model.StartDate)
             {
+                if (model.EndDate < model.StartDate)
+                    ModelState.AddModelError(nameof(model.EndDate), "End Date must be after Start Date.");
                 ViewData["Layout"] = "~/Views/Shared/_portal.cshtml";
                 return View("~/Views/website/employee/leave_request_form.cshtml", model);
             }
 
-            model.status = "Pending";
-            _context.LeaveRequests.Add(model);
+            // Find current employee by session name
+            var employeeName = HttpContext.Session.GetString("Username") ?? "John Doe";
+            var names = employeeName.Split(' ', 2, StringSplitOptions.RemoveEmptyEntries);
+            var first = names.Length > 0 ? names[0] : employeeName;
+            var last = names.Length > 1 ? names[1] : "";
+
+            var emp = await _context.Employees
+                .FirstOrDefaultAsync(e => e.FirstName == first && e.LastName == last);
+
+            if (emp == null)
+            {
+                ModelState.AddModelError("", $"Employee record not found for '{employeeName}'. Please add an Employee first.");
+                ViewData["Layout"] = "~/Views/Shared/_portal.cshtml";
+                return View("~/Views/website/employee/leave_request_form.cshtml", model);
+            }
+
+            var entity = new LeaveRequest
+            {
+                EmployeeId = emp.EmployeeId,
+                LeaveType = model.LeaveType,
+                StartDate = model.StartDate,
+                EndDate = model.EndDate,
+                Reason = model.Reason,
+                Status = LeaveStatus.Pending,
+                RequestedAt = DateTime.UtcNow
+            };
+
+            _context.LeaveRequests.Add(entity);
             await _context.SaveChangesAsync();
 
             TempData["msg"] = "Leave request submitted successfully!";
             return RedirectToAction("Dashboard");
         }
 
-
         [HttpPost("update-status")]
         public async Task<IActionResult> UpdateStatus(int id, string status)
         {
+            if (!Enum.TryParse<LeaveStatus>(status, true, out var s))
+                return BadRequest("Invalid status.");
+
             var req = await _context.LeaveRequests.FindAsync(id);
             if (req != null)
             {
-                req.status = status;
+                req.Status = s;
                 await _context.SaveChangesAsync();
             }
             return RedirectToAction("Index");
         }
 
-
-        [HttpGet("seed-test")]
-        public async Task<IActionResult> SeedTestData()
-        {
-            ViewData["Layout"] = "~/Views/Shared/_portal.cshtml";
-
-            if (!_context.LeaveRequests.Any())
-            {
-                _context.LeaveRequests.AddRange(new[]
-                {
-                    new leave_request_model { employee_name = "John Doe", leave_type = "Annual", reason = "Vacation", start_date = DateTime.Now.AddDays(3), end_date = DateTime.Now.AddDays(7), status = "Pending" },
-                    new leave_request_model { employee_name = "Jane Smith", leave_type = "Sick", reason = "Flu", start_date = DateTime.Now.AddDays(-2), end_date = DateTime.Now.AddDays(1), status = "Approved" },
-                    new leave_request_model { employee_name = "Liam Brown", leave_type = "Annual", reason = "Family Event", start_date = DateTime.Now.AddDays(5), end_date = DateTime.Now.AddDays(9), status = "Declined" },
-                });
-                await _context.SaveChangesAsync();
-            }
-
-            TempData["msg"] = "✅ Seeded sample leave requests!";
-            return RedirectToAction("Index");
-        }
-
-
+        // Simple text export keeps your route intact
         [HttpGet("export-excel")]
         public async Task<IActionResult> ExportExcel()
         {
-            var leaves = await _context.LeaveRequests.ToListAsync();
+            var leaves = await _context.LeaveRequests
+                .Include(l => l.Employee).ToListAsync();
+
             var csv = new StringBuilder();
             csv.AppendLine("Employee Name,Leave Type,Start Date,End Date,Reason,Status");
-
             foreach (var l in leaves)
-                csv.AppendLine($"{l.employee_name},{l.leave_type},{l.start_date:dd/MM/yyyy},{l.end_date:dd/MM/yyyy},{l.reason},{l.status}");
+                csv.AppendLine($"{l.Employee.FirstName} {l.Employee.LastName},{l.LeaveType},{l.StartDate:dd/MM/yyyy},{l.EndDate:dd/MM/yyyy},{l.Reason},{l.Status}");
 
-            var bytes = Encoding.UTF8.GetBytes(csv.ToString());
-            return File(bytes, "text/csv", "Leave_Report.csv");
+            return File(Encoding.UTF8.GetBytes(csv.ToString()), "text/csv", "Leave_Report.csv");
         }
-
 
         [HttpGet("export-pdf")]
         public async Task<IActionResult> ExportPdf()
         {
-            var leaves = await _context.LeaveRequests.ToListAsync();
+            var leaves = await _context.LeaveRequests.Include(l => l.Employee).ToListAsync();
             var text = new StringBuilder();
             text.AppendLine("NZFTC Leave Management Report");
             text.AppendLine($"Generated on: {DateTime.Now}");
@@ -157,16 +226,15 @@ namespace NZFTC_EMS.Controllers
 
             foreach (var l in leaves)
             {
-                text.AppendLine($"Employee: {l.employee_name}");
-                text.AppendLine($"Type: {l.leave_type}");
-                text.AppendLine($"Period: {l.start_date:dd/MM/yyyy} - {l.end_date:dd/MM/yyyy}");
-                text.AppendLine($"Reason: {l.reason}");
-                text.AppendLine($"Status: {l.status}");
+                text.AppendLine($"Employee: {l.Employee.FirstName} {l.Employee.LastName}");
+                text.AppendLine($"Type: {l.LeaveType}");
+                text.AppendLine($"Period: {l.StartDate:dd/MM/yyyy} - {l.EndDate:dd/MM/yyyy}");
+                text.AppendLine($"Reason: {l.Reason}");
+                text.AppendLine($"Status: {l.Status}");
                 text.AppendLine("-------------------------------------");
             }
 
-            var bytes = Encoding.UTF8.GetBytes(text.ToString());
-            return File(bytes, "text/plain", "Leave_Report.txt");
+            return File(Encoding.UTF8.GetBytes(text.ToString()), "text/plain", "Leave_Report.txt");
         }
     }
 }

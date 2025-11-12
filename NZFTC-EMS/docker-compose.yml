@@ -1,0 +1,27 @@
+services:
+  db:
+    image: mysql:8.4
+    container_name: mysql84
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: change-root
+      MYSQL_DATABASE: ems
+      MYSQL_USER: ems_user
+      MYSQL_PASSWORD: change-me
+    ports:
+      - "3307:3306"  # host:container
+    command: >
+      --default-authentication-plugin=caching_sha2_password
+      --character-set-server=utf8mb4
+      --collation-server=utf8mb4_0900_ai_ci
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-pchange-root"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - dbdata:/var/lib/mysql
+      # optional: place .sql files in ./init to auto-run at first startup
+      # - ./init:/docker-entrypoint-initdb.d:ro
+volumes:
+  dbdata:

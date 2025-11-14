@@ -1,0 +1,112 @@
+﻿@using NZFTC_EMS.Data.Entities
+@model IEnumerable<Employee>
+
+@{
+    Layout = "~/Views/Shared/_portal.cshtml";
+    ViewData["Title"] = "Employee Management";
+}
+
+<h2 class="mb-3">Employee Management</h2>
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <form class="d-flex" asp-controller="employee_management" asp-action="Index" method="get">
+        <input class="form-control me-2"
+               type="search"
+               name="q"
+               value="@ViewBag.Search"
+               placeholder="Search by name or email" />
+
+        <select class="form-select me-2" name="department">
+            @{
+                var selectedDept = ViewBag.Department as string ?? "All";
+            }
+            <option value="All" selected="@(selectedDept == "All")">All Departments</option>
+            <option value="HR" selected="@(selectedDept == "HR")">HR</option>
+            <option value="Finance" selected="@(selectedDept == "Finance")">Finance</option>
+            <option value="IT" selected="@(selectedDept == "IT")">IT</option>
+            <option value="Operations" selected="@(selectedDept == "Operations")">Operations</option>
+        </select>
+
+        <button class="btn btn-primary" type="submit">Filter</button>
+    </form>
+
+    <a asp-controller="employee_management"
+       asp-action="Create"
+       class="btn btn-success">
+        + Add Employee
+    </a>
+</div>
+
+@if (TempData["msg"] != null)
+{
+    <div class="alert alert-info">@TempData["msg"]</div>
+}
+
+<table class="table table-striped table-bordered align-middle">
+    <thead class="table-light">
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Role</th>
+            <th>Department</th>
+            <th>Email</th>
+            <th>Basic Pay</th>
+            <th>Start Date</th>
+            <th style="width: 180px;">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+    @if (Model != null && Model.Any())
+    {
+        foreach (var emp in Model)
+        {
+            <tr>
+                <td>@emp.EmployeeId</td>
+                <td>@($"{emp.FirstName} {emp.LastName}")</td>
+                <td>@emp.Role</td>
+                <td>@emp.Department</td>
+                <td>@emp.Email</td>
+                <td>
+                    @if (emp.PayGrade != null)
+                    {
+                        @emp.PayGrade.BaseRate.ToString("C2")
+                    }
+                    else
+                    {
+                        <span class="text-muted">—</span>
+                    }
+                </td>
+                <td>@emp.StartDate.ToString("dd/MM/yyyy")</td>
+                <td>
+                    <a asp-controller="employee_management"
+                       asp-action="Details"
+                       asp-route-id="@emp.EmployeeId"
+                       class="btn btn-sm btn-secondary me-1">
+                        Details
+                    </a>
+                    <a asp-controller="employee_management"
+                       asp-action="Edit"
+                       asp-route-id="@emp.EmployeeId"
+                       class="btn btn-sm btn-primary me-1">
+                        Edit
+                    </a>
+                    <a asp-controller="employee_management"
+                       asp-action="Delete"
+                       asp-route-id="@emp.EmployeeId"
+                       class="btn btn-sm btn-danger">
+                        Delete
+                    </a>
+                </td>
+            </tr>
+        }
+    }
+    else
+    {
+        <tr>
+            <td colspan="8" class="text-center text-muted">
+                No employees found.
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

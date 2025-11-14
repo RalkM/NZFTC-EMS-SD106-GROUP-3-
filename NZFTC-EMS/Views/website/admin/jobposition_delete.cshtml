@@ -1,0 +1,52 @@
+@using NZFTC_EMS.Data.Entities
+@model JobPosition
+
+@{
+    Layout = "~/Views/Shared/_portal.cshtml";
+    ViewData["Title"] = "Delete Job Position";
+}
+
+<h2>Delete Job Position</h2>
+
+<div class="alert alert-warning">
+    Are you sure you want to delete the job position
+    <strong>@Model.Name</strong>
+    in department <strong>@Model.Department</strong>?
+</div>
+
+<dl class="row">
+    <dt class="col-sm-3">Department</dt>
+    <dd class="col-sm-9">@Model.Department</dd>
+
+    <dt class="col-sm-3">Job Title</dt>
+    <dd class="col-sm-9">@Model.Name</dd>
+
+    <dt class="col-sm-3">Pay Grade</dt>
+    <dd class="col-sm-9">@Model.PayGrade?.Name</dd>
+
+    <dt class="col-sm-3">Access Role</dt>
+    <dd class="col-sm-9">@Model.AccessRole</dd>
+
+    <dt class="col-sm-3">Active</dt>
+    <dd class="col-sm-9">@(Model.IsActive ? "Yes" : "No")</dd>
+
+    <dt class="col-sm-3">Description</dt>
+    <dd class="col-sm-9">@Model.Description</dd>
+</dl>
+
+<form asp-controller="jobposition_management"
+      asp-action="DeleteConfirmed"
+      asp-route-id="@Model.JobPositionId"
+      method="post">
+    @Html.AntiForgeryToken()
+
+    <a asp-controller="jobposition_management"
+       asp-action="Index"
+       class="btn btn-secondary me-2">
+        Cancel
+    </a>
+
+    <button type="submit" class="btn btn-danger">
+        Delete
+    </button>
+</form>

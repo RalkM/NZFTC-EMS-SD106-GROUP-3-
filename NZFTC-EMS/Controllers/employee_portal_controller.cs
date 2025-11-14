@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NZFTC_EMS.Data;
-using NZFTC_EMS.Models;
+using NZFTC_EMS.Data.Entities;
 
 namespace NZFTC_EMS.Controllers
 {
@@ -17,33 +17,47 @@ namespace NZFTC_EMS.Controllers
             _env = env;
         }
 
-        // --- Helper: get or create the current employee row ---
-        private async Task<employee_model?> GetOrCreateCurrentAsync()
+        // Helper: find or create the current employee row
+        private async Task<Employee?> GetOrCreateCurrentAsync()
         {
             var role = HttpContext.Session.GetString("Role");
             var name = HttpContext.Session.GetString("Username");
             var email = HttpContext.Session.GetString("UserEmail");
 
             if (string.IsNullOrEmpty(role) || role != "Employee")
-                return null; // you can redirect to AccessDenied if you prefer
+                return null;
 
-            // try to find by email first, then by name
             var emp = await _db.Employees
+                .Include(e => e.PayGrade)
+                .Include(e => e.JobPosition)
                 .FirstOrDefaultAsync(e =>
-                    (!string.IsNullOrEmpty(email) && e.email == email) ||
-                    (!string.IsNullOrEmpty(name) && e.full_name == name));
+                    (!string.IsNullOrEmpty(email) && e.Email == email) ||
+                    (!string.IsNullOrEmpty(name) &&
+                     (e.FirstName + " " + e.LastName) == name));
 
             if (emp != null) return emp;
 
-            // nothing found – create a minimal record so Profile works
-            emp = new employee_model
+            var firstName = "Employee";
+            var lastName = "";
+
+            if (!string.IsNullOrWhiteSpace(name))
             {
-                full_name = name ?? "Employee",
-                email = email ?? $"user{Guid.NewGuid():N}@example.local",
-                role = "Employee",
-                department = "Unassigned",
-                start_date = DateTime.Today
+                var parts = name.Split(' ', 2, StringSplitOptions.RemoveEmptyEntries);
+                firstName = parts[0];
+                if (parts.Length > 1) lastName = parts[1];
+            }
+
+            emp = new Employee
+            {
+                FirstName = firstName,
+                LastName = lastName,
+                Email = !string.IsNullOrEmpty(email)
+                            ? email
+                            : $"user{Guid.NewGuid():N}@example.local",
+                Role = "Employee",
+                StartDate = DateTime.Today
             };
+
             _db.Employees.Add(emp);
             await _db.SaveChangesAsync();
             return emp;
@@ -54,35 +68,42 @@ namespace NZFTC_EMS.Controllers
         public async Task<IActionResult> Profile()
         {
             var emp = await GetOrCreateCurrentAsync();
-            if (emp == null) return RedirectToAction("AccessDenied", "website");
+            if (emp == null)
+                return RedirectToAction("AccessDenied", "website");
 
-            ViewData["Layout"] = "~/Views/Shared/_portal.cshtml";   // employee left-nav
-            return View("~/Views/website/employee/profile.cshtml", emp);
+            ViewData["Layout"] = "~/Views/Shared/_portal.cshtml";
+
+            return View(
+                "~/Views/website/portal/profile.cshtml",
+                emp
+            );
         }
 
         // POST /employee_portal/update/{id}
         [HttpPost("update/{id}")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Update(int id, employee_model form)
+        public async Task<IActionResult> Update(int id, Employee form)
         {
-            var emp = await _db.Employees.FindAsync(id);
-            if (emp == null) return NotFound();
+            var emp = await GetOrCreateCurrentAsync();
+            if (emp == null || emp.EmployeeId != id)
+                return RedirectToAction("AccessDenied", "website");
 
-            // map editable fields from the profile form
-            emp.birthdate = form.birthdate;
-            emp.gender = form.gender;
+            emp.Birthday = form.Birthday;
+            emp.Gender = form.Gender;
 
-            emp.job_title = form.job_title;
-            emp.pay_frequency = form.pay_frequency;
-            emp.start_date = form.start_date;
+            emp.JobTitle = form.JobTitle;
+            emp.PayFrequency = form.PayFrequency;
+            emp.StartDate = form.StartDate;
 
-            emp.address = form.address;
-            emp.phone = form.phone;
+            emp.Address = form.Address;
+            emp.Phone = form.Phone;
 
-            emp.emergency_contact_name = form.emergency_contact_name;
-            emp.emergency_contact_relationship = form.emergency_contact_relationship;
-            emp.emergency_contact_phone = form.emergency_contact_phone;
-            emp.emergency_contact_email = form.emergency_contact_email;
+            emp.EmergencyContactName = form.EmergencyContactName;
+            emp.EmergencyContactRelationship = form.EmergencyContactRelationship;
+            emp.EmergencyContactPhone = form.EmergencyContactPhone;
+            emp.EmergencyContactEmail = form.EmergencyContactEmail;
+
+            // not touching Role, Email, JobPositionId, PayGradeId here
 
             await _db.SaveChangesAsync();
             TempData["msg"] = "Profile updated.";
@@ -94,13 +115,15 @@ namespace NZFTC_EMS.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Upload(int id, IFormFile? photo)
         {
-            var emp = await _db.Employees.FindAsync(id);
-            if (emp == null) return NotFound();
+            var emp = await GetOrCreateCurrentAsync();
+            if (emp == null || emp.EmployeeId != id)
+                return RedirectToAction("AccessDenied", "website");
 
             if (photo != null && photo.Length > 0)
             {
                 var uploads = Path.Combine(_env.WebRootPath, "uploads");
-                if (!Directory.Exists(uploads)) Directory.CreateDirectory(uploads);
+                if (!Directory.Exists(uploads))
+                    Directory.CreateDirectory(uploads);
 
                 var fname = $"{Guid.NewGuid():N}{Path.GetExtension(photo.FileName)}";
                 var full = Path.Combine(uploads, fname);
@@ -108,7 +131,7 @@ namespace NZFTC_EMS.Controllers
                 using (var fs = new FileStream(full, FileMode.Create))
                     await photo.CopyToAsync(fs);
 
-                emp.photo_path = $"/uploads/{fname}";
+                emp.PhotoPath = $"/uploads/{fname}";
                 await _db.SaveChangesAsync();
                 TempData["msg"] = "Photo updated.";
             }

@@ -1,4 +1,3 @@
-// Data/Entities/PayGrade.cs
 using System.ComponentModel.DataAnnotations;
 
 namespace NZFTC_EMS.Data.Entities
@@ -10,9 +9,12 @@ namespace NZFTC_EMS.Data.Entities
         [Required, MaxLength(50)]
         public string Name { get; set; } = null!;
 
-        public decimal BaseRate { get; set; }  // DECIMAL(12,2)
+        [MaxLength(255)]
+        public string? Description { get; set; }   // <-- NEW
 
-        public RateType RateType { get; set; } // 0=Hourly,1=Salary
+        public decimal BaseRate { get; set; }
+
+        public RateType RateType { get; set; }
 
         public bool IsActive { get; set; } = true;
     }

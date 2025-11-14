@@ -1,0 +1,40 @@
+@using NZFTC_EMS.Data.Entities
+@model PayGrade
+
+@{
+    Layout = "~/Views/Shared/_portal.cshtml";
+    ViewData["Title"] = "Delete Pay Grade";
+}
+
+<h2>Delete Pay Grade</h2>
+
+<div class="alert alert-warning">
+    Are you sure you want to delete pay grade <strong>@Model.Name</strong>?
+</div>
+
+<dl class="row">
+    <dt class="col-sm-3">Base Rate</dt>
+    <dd class="col-sm-9">@Model.BaseRate.ToString("C2")</dd>
+
+    <dt class="col-sm-3">Rate Type</dt>
+    <dd class="col-sm-9">@Model.RateType</dd>
+
+    <dt class="col-sm-3">Active</dt>
+    <dd class="col-sm-9">@(Model.IsActive ? "Yes" : "No")</dd>
+</dl>
+
+<form asp-controller="paygrade_management"
+      asp-action="DeleteConfirmed"
+      asp-route-id="@Model.PayGradeId"
+      method="post">
+    @Html.AntiForgeryToken()
+
+    <a asp-controller="paygrade_management"
+       asp-action="Index"
+       class="btn btn-secondary me-2">
+        Cancel
+    </a>
+    <button type="submit" class="btn btn-danger">
+        Delete
+    </button>
+</form>

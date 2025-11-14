@@ -173,7 +173,7 @@ namespace NZFTC_EMS.Controllers
         // ===========================
         // EDIT (POST)
         // ===========================
-        [HttpPost("edit/{id}")]
+       [HttpPost("edit/{id}")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, Employee model)
         {
@@ -184,16 +184,11 @@ namespace NZFTC_EMS.Controllers
                 return BadRequest();
 
             if (!ModelState.IsValid)
-                {
-                    ViewData["Layout"] = "~/Views/Shared/_portal.cshtml";
-                    await BuildEmployeeFormDataAsync(model);
-                    return View("~/Views/website/admin/employee_create.cshtml", model);
-                }
-
-                await ApplyJobPositionLogicAsync(model);
-
-                _context.Employees.Add(model);
-                await _context.SaveChangesAsync();
+            {
+                ViewData["Layout"] = "~/Views/Shared/_portal.cshtml";
+                await BuildEmployeeFormDataAsync(model);
+                return View("~/Views/website/admin/employee_edit.cshtml", model);
+            }
 
             var existingEmployee = await _context.Employees.FindAsync(id);
             if (existingEmployee == null)
@@ -201,20 +196,25 @@ namespace NZFTC_EMS.Controllers
 
             // PERSONAL DETAILS
             existingEmployee.FirstName = model.FirstName;
-            existingEmployee.LastName = model.LastName;
-            existingEmployee.Email = model.Email;
-            existingEmployee.Phone = model.Phone;
-            existingEmployee.Address = model.Address;
-            existingEmployee.Birthday = model.Birthday;
-            existingEmployee.Gender = model.Gender;
+            existingEmployee.LastName  = model.LastName;
+            existingEmployee.Email     = model.Email;
+            existingEmployee.Phone     = model.Phone;
+            existingEmployee.Address   = model.Address;
+            existingEmployee.Birthday  = model.Birthday;
+            existingEmployee.Gender    = model.Gender;
 
-            // JOB DETAILS (from form)
+            // JOB DETAILS
             existingEmployee.Department   = model.Department;
             existingEmployee.JobTitle     = model.JobTitle;
             existingEmployee.PayFrequency = model.PayFrequency;
             existingEmployee.StartDate    = model.StartDate;
 
-            // decide JobPositionId, PayGradeId, Role from JobPositions table
+            // EMERGENCY CONTACT (we’ll add props in step 3)
+            existingEmployee.EmergencyContactName        = model.EmergencyContactName;
+            existingEmployee.EmergencyContactRelationship = model.EmergencyContactRelationship;
+            existingEmployee.EmergencyContactPhone       = model.EmergencyContactPhone;
+
+            // link JobPosition / PayGrade / Role
             await ApplyJobPositionLogicAsync(existingEmployee);
 
             _context.Update(existingEmployee);
@@ -370,6 +370,33 @@ namespace NZFTC_EMS.Controllers
             if (!string.IsNullOrEmpty(jp.AccessRole))
                 emp.Role = jp.AccessRole;
         }
+
+    // ===========================
+// JSON: Job metadata for cascading dropdowns
+// ===========================
+[HttpGet("JobMeta")]   // <--- IMPORTANT: route name "JobMeta"
+public async Task<IActionResult> JobMeta()
+{
+    // same admin check as your other actions
+    if (HttpContext.Session.GetString("Role") != "Admin")
+        return Unauthorized();
+
+    var data = await _context.JobPositions
+        .Include(j => j.PayGrade)
+        .Where(j => j.IsActive && j.Department != null)
+        .Select(j => new
+        {
+            id           = j.JobPositionId,
+            department   = j.Department!,               // "HR", "Finance", etc.
+            jobTitle     = j.Name,                      // "HR Manager"
+            payGradeName = j.PayGrade != null ? j.PayGrade.Name : null,
+            baseRate     = j.PayGrade != null ? j.PayGrade.BaseRate : 0m,
+            rateType     = j.PayGrade != null ? j.PayGrade.RateType.ToString() : null
+        })
+        .ToListAsync();
+
+    return Json(data);
+}
 
 
     }

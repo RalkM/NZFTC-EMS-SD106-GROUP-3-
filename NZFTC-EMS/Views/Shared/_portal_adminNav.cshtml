@@ -1,36 +1,26 @@
 ﻿<nav class="container-fluid">
     <div class="container">
-        <a class="navbar-brand" asp-controller="Website" asp-action="Portal">
-            <img src="~/lib/Image-white.png" alt="NZFTC-EMS" asp-append-version="true" />
-        </a>
+    <a class="navbar-brand" asp-controller="Website" asp-action="Portal">
+        <img src="~/lib/Image-white.png" alt="NZFTC-EMS" asp-append-version="true" />
+    </a>
+
 
         <div class="navLinks">
             <a class="nav-link active" asp-controller="Website" asp-action="Portal">Dashboard</a>
 
-            <a class="nav-link" asp-controller="/employee_management" asp-action="index">Employee Management</a>            
-            
+            <a class="nav-link" asp-controller="employee_management" asp-action="Index">Employee Management</a>
             <a class="nav-link" asp-controller="paygrade_management" asp-action="Index">Pay Grades</a>
-
             <a class="nav-link" asp-controller="jobposition_management" asp-action="Index">Job Position Management</a>
-
             <a class="nav-link" asp-controller="leave_management" asp-action="Index">Leave Management</a>
-
-            <!-- Updated Payroll link -->
-            <a class="nav-link" asp-controller="payroll_management" asp-action="Index">
-                Payroll Management
-            </a>
-
-            <a class="nav-link" asp-controller="Portal" asp-action="Calendar">Calendar</a>
-
+            <a class="nav-link" asp-controller="payroll_management" asp-action="Index">Payroll Management</a>
             <a class="nav-link @(Context.Request.Path.Value?.StartsWith("/support_management", StringComparison.OrdinalIgnoreCase) == true ? "active" : "")"
-   href="/support_management">Support Management</a>
+               href="/support_management">Support Management</a>
         </div>
 
         <div class="utilities">
             <a class="nav-link logout" asp-controller="Website" asp-action="Logout" title="Sign out">
                 <i class="fa fa-sign-out" aria-hidden="true"></i>
             </a>
-
             <a class="nav-link gear" asp-controller="Portal" asp-action="Settings" title="Settings">
                 <i class="fa-solid fa-gear" aria-hidden="true"></i>
             </a>

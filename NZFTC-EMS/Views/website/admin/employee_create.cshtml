@@ -3,7 +3,7 @@
 
 @{
     Layout = "~/Views/Shared/_portal.cshtml";
-    ViewData["Title"] = "Edit Employee";
+    ViewData["Title"] = "Create Employee";
 }
 
 <h2>Edit Employee</h2>
@@ -56,68 +56,85 @@
             <span asp-validation-for="Gender" class="text-danger"></span>
         </div>
     </div>
+<br />
+    <h4>Job Details</h4>
+        <hr />
 
-    <!-- B. JOB DETAILS -->
-    <h4 class="mt-4 mb-2">Job Details</h4>
-    <hr />
-
-    <div class="row">
-        <div class="col-md-4 mb-3">
-            <label class="form-label">Department</label>
-            <select asp-for="Department"
-                    class="form-select"
-                    asp-items="ViewBag.Departments">
-            </select>
-        </div>
-
-        <div class="col-md-4 mb-3">
-            <label class="form-label">Job Title</label>
-            <select asp-for="JobTitle"
-                    class="form-select"
-                    asp-items="ViewBag.JobTitles">
-            </select>
-        </div>
-
-        <div class="col-md-4 mb-3">
-            <label class="form-label">Pay Frequency</label>
-            <select asp-for="PayFrequency"
-                    class="form-select"
-                    asp-items="ViewBag.PayFrequencies">
-            </select>
-        </div>
-
-        <div class="col-md-4 mb-3">
-            <label asp-for="StartDate" class="form-label"></label>
-            <input asp-for="StartDate" class="form-control" type="date" />
-            <span asp-validation-for="StartDate" class="text-danger"></span>
-        </div>
+<div class="row mb-3">
+    <div class="col-md-4">
+        <label asp-for="Department" class="form-label">Department</label>
+        <select asp-for="Department"
+                id="Department"
+                class="form-select"
+                asp-items="ViewBag.Departments">
+            <option value="">-- Select department --</option>
+        </select>
+        <span asp-validation-for="Department" class="text-danger"></span>
     </div>
 
-    <!-- C. PAY GRADE DETAILS (read-only) -->
-    <h4 class="mt-4 mb-2">Pay Grade Details</h4>
+    <div class="col-md-4">
+        <label asp-for="JobTitle" class="form-label">Job Title</label>
+        <select asp-for="JobTitle"
+                id="JobTitle"
+                class="form-select"
+                asp-items="ViewBag.JobTitles">
+            <option value="">-- Select job title --</option>
+        </select>
+        <span asp-validation-for="JobTitle" class="text-danger"></span>
+    </div>
+
+    <div class="col-md-4">
+        <label asp-for="PayFrequency" class="form-label">Pay Frequency</label>
+        <select asp-for="PayFrequency"
+                id="PayFrequency"
+                class="form-select"
+                asp-items="ViewBag.PayFrequencies">
+            <option value="">-- Select frequency --</option>
+        </select>
+        <span asp-validation-for="PayFrequency" class="text-danger"></span>
+    </div>
+</div>
+<br />
+<h4>Pay Grade Details</h4>
     <hr />
 
-    <div class="row">
-        <div class="col-md-4 mb-3">
-            <label class="form-label">Pay Grade (auto)</label>
-            <input class="form-control" value="@Model.PayGradeId" readonly />
-        </div>
-        <div class="col-md-4 mb-3">
-            <label class="form-label">Basic Pay (from Pay Grade)</label>
-            <input class="form-control"
-                   value="@(Model.BasicPay.HasValue ? Model.BasicPay.Value.ToString("C2") : "—")"
-                   readonly />
-        </div>
+<div class="row mb-3">
+    <div class="col-md-6">
+        <label class="form-label">Pay Grade (auto)</label>
+        <input type="text"
+               id="PayGradeDisplay"
+               class="form-control"
+               value="@Model?.PayGrade?.Name"
+               readonly />
     </div>
+    <div class="col-md-6">
+        <label class="form-label">Basic Pay (from Pay Grade)</label>
+        <input type="text"
+               id="BasicPayDisplay"
+               class="form-control"
+               value="@(Model?.BasicPay?.ToString("0.00") ?? "")"
+               readonly />
+    </div>
+</div>
+
 
     <div class="mt-4">
         <button type="submit" class="btn btn-primary">Save</button>
-        <a asp-controller="employee_management"
-           asp-action="Index"
+        <a asp-controller="/employee_management"
+           asp-action="Edit"
            class="btn btn-secondary ms-2">Cancel</a>
     </div>
 </form>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        // pass the correct URL into the external JS
+        window.employeeJobMetaUrl = '@Url.Action("JobMeta", "employee_management")';
+    </script>
+
+    <script src="~/js/employee-jobdetails.js" asp-append-version="true"></script>
 }
+
+

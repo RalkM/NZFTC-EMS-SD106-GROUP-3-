@@ -107,4 +107,5 @@ namespace NZFTC_EMS.Data.Entities
         public ICollection<EmployeeLeaveBalance> LeaveBalances { get; set; }
             = new List<EmployeeLeaveBalance>();
     }
+    
 }

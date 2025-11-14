@@ -4,10 +4,10 @@ services:
     container_name: mysql84
     restart: unless-stopped
     environment:
-      MYSQL_ROOT_PASSWORD: change-root
-      MYSQL_DATABASE: ems
-      MYSQL_USER: ems_user
-      MYSQL_PASSWORD: change-me
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: nzftc_ems
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
     ports:
       - "3307:3306"  # host:container
     command: >

@@ -1,18 +1,19 @@
 ﻿@{
     ViewData["Title"] = "Portal";
     var role = Context.Session.GetString("Role");
-    var username = Context.Session.GetString("UserName");
+    var fullName = Context.Session.GetString("FullName") ?? "Employee";
 }
 
 <div class="container mt-4">
-    <h2>Welcome, @username!</h2>
 
     @if (role == "Admin")
     {
+        <h2>Welcome, @fullName</h2>
        <h3>Dashboard here</h3>
     }
     else if (role == "Employee")
     {
+        <h2>Welcome, @fullName</h2>
         <h3>Dashboard here</h3>
     }
     else

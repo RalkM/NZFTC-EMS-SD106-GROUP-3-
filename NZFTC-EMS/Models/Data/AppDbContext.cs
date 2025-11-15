@@ -44,7 +44,10 @@ public class AppDbContext : DbContext
         b.Entity<Employee>()
             .HasIndex(x => x.Email).IsUnique();
         b.Entity<Employee>()
+            .HasIndex(x => x.EmployeeCode).IsUnique();
+        b.Entity<Employee>()
             .Property(x => x.StartDate).HasColumnType("date");
+       
         b.Entity<Employee>()
             .HasOne(x => x.JobPosition)
             .WithMany()

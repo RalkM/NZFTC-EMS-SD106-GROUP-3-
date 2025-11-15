@@ -12,8 +12,8 @@
     <div class="card-body">
 
         <dl class="row">
-            <dt class="col-sm-3">ID</dt>
-            <dd class="col-sm-9">@Model.EmployeeId</dd>
+            <dt class="col-sm-3">Employee #</dt>
+            <dd class="col-sm-9">@Model.EmployeeCode</dd>
 
             <dt class="col-sm-3">Name</dt>
             <dd class="col-sm-9">@Model.FullName</dd>
@@ -27,29 +27,37 @@
             <dt class="col-sm-3">Address</dt>
             <dd class="col-sm-9">@Model.Address</dd>
 
-            <dt class="col-sm-3">Role</dt>
+            <dt class="col-sm-3">Access Role</dt>
             <dd class="col-sm-9">@Model.Role</dd>
 
             <dt class="col-sm-3">Department</dt>
-            <dd class="col-sm-9">@Model.Department</dd>
+            <dd class="col-sm-9">@Model.JobPosition?.Department</dd>
 
-            <dt class="col-sm-3">Job Title</dt>
-            <dd class="col-sm-9">@Model.JobTitle</dd>
+            <dt class="col-sm-3">Job Position</dt>
+            <dd class="col-sm-9">@Model.JobPosition?.Name</dd>
+
+            <dt class="col-sm-3">Pay Grade</dt>
+            <dd class="col-sm-9">@Model.PayGrade?.Name</dd>
 
             <dt class="col-sm-3">Pay Frequency</dt>
-            <dd class="col-sm-9">@Model.PayFrequency</dd>
+            <dd class="col-sm-9">@Model.PayGrade?.RateType</dd>
 
             <dt class="col-sm-3">Basic Pay</dt>
+            <dd class="col-sm-9">@Model.PayGrade?.BaseRate.ToString("C2")</dd>
+
+            <dt class="col-sm-3">Emergency Contact</dt>
             <dd class="col-sm-9">
-                @if (Model.BasicPay.HasValue)
+                @if (Model.EmergencyContacts.Any())
                 {
-                    @Model.BasicPay.Value.ToString("C2")
+                    var c = Model.EmergencyContacts.First();
+                    @($"{c.FullName} ({c.Relationship}) – {c.Phone}")
                 }
                 else
                 {
-                    <span class="text-muted">—</span>
+                    @:—
                 }
             </dd>
+
 
             <dt class="col-sm-3">Birthday</dt>
             <dd class="col-sm-9">

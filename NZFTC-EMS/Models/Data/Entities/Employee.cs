@@ -7,6 +7,11 @@ namespace NZFTC_EMS.Data.Entities
     {
         public int EmployeeId { get; set; }
 
+        // PUBLIC EMPLOYEE CODE: e.g. NZFTC123456
+        [MaxLength(20)]
+        public string? EmployeeCode { get; set; }
+
+        // BASIC NAME
         // BASIC NAME
         [Required, MaxLength(100)]
         public string FirstName { get; set; } = null!;
@@ -31,6 +36,9 @@ namespace NZFTC_EMS.Data.Entities
 
         [Required, MaxLength(255)]
         public string Email { get; set; } = null!;
+
+       public byte[]? PasswordHash { get; set; }
+        public byte[]? PasswordSalt { get; set; }
 
         // ROLE + DEPARTMENT (UI / app logic only – not stored in DB)
 
@@ -79,10 +87,6 @@ namespace NZFTC_EMS.Data.Entities
         [NotMapped]
         [MaxLength(200)]
         public string? PhotoPath { get; set; }
-
-        // AUTH (optional)
-        public byte[]? PasswordHash { get; set; }
-        public byte[]? PasswordSalt { get; set; }
 
         // LOOKUPS
         public int? JobPositionId { get; set; }

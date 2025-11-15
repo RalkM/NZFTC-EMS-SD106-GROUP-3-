@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using NZFTC_EMS.Data;
 using NZFTC_EMS.Data.Entities;
+using System.Security.Cryptography;
 
 namespace NZFTC_EMS.Controllers
 {
@@ -78,78 +79,119 @@ namespace NZFTC_EMS.Controllers
         // DETAILS
         // ===========================
         [HttpGet("details/{id}")]
-        public async Task<IActionResult> Details(int id)
-        {
-            if (!IsAdmin())
-                return RedirectToAction("AccessDenied", "website");
+public async Task<IActionResult> Details(int id)
+{
+    if (!IsAdmin())
+        return RedirectToAction("AccessDenied", "website");
 
-            ViewData["Layout"] = "~/Views/Shared/_portal.cshtml";
+    ViewData["Layout"] = "~/Views/Shared/_portal.cshtml";
 
-            var emp = await _context.Employees
-                .Include(e => e.PayGrade)
-                .Include(e => e.JobPosition)
-                .FirstOrDefaultAsync(e => e.EmployeeId == id);
+    var emp = await _context.Employees
+        .Include(e => e.PayGrade)
+        .Include(e => e.JobPosition)
+        .Include(e => e.EmergencyContacts)
+        .FirstOrDefaultAsync(e => e.EmployeeId == id);
 
-            if (emp == null) return NotFound();
+    if (emp == null) return NotFound();
 
-            return View(
-                "~/Views/website/admin/employee_details.cshtml",
-                emp
-            );
-        }
+    // map nav data into NotMapped helpers (optional, if your view uses them)
+    if (emp.JobPosition != null)
+    {
+        emp.JobTitle   ??= emp.JobPosition.Name;
+        emp.Department ??= emp.JobPosition.Department;
+        emp.Role       ??= emp.JobPosition.AccessRole;
+    }
+    if (emp.PayGrade != null && string.IsNullOrEmpty(emp.PayFrequency))
+    {
+        emp.PayFrequency = emp.PayGrade.RateType.ToString();
+    }
 
-        // ===========================
+    // primary emergency contact into helpers (if view uses them)
+    var contact = emp.EmergencyContacts.FirstOrDefault();
+    if (contact != null)
+    {
+        emp.EmergencyContactName         = contact.FullName;
+        emp.EmergencyContactRelationship = contact.Relationship;
+        emp.EmergencyContactPhone        = contact.Phone;
+        emp.EmergencyContactEmail        = contact.Email;
+    }
+
+    return View(
+        "~/Views/website/admin/employee_details.cshtml",
+        emp
+    );
+}
+
+
         // CREATE (GET)
-        // ===========================
-        [HttpGet("create")]
-        public async Task<IActionResult> Create()
+[HttpGet("create")]
+public async Task<IActionResult> Create()
+{
+    if (!IsAdmin())
+        return RedirectToAction("AccessDenied", "website");
+
+    ViewData["Layout"] = "~/Views/Shared/_portal.cshtml";
+
+    var model = new Employee
+    {
+        StartDate = DateTime.UtcNow   // default date
+    };
+
+    await BuildEmployeeFormDataAsync(model);
+
+    return View(
+        "~/Views/website/admin/employee_create.cshtml",
+        model
+    );
+}
+
+// CREATE (POST)
+[HttpPost("create")]
+[ValidateAntiForgeryToken]
+public async Task<IActionResult> Create(Employee model)
+{
+    if (!IsAdmin())
+        return RedirectToAction("AccessDenied", "website");
+
+    if (!ModelState.IsValid)
+    {
+        ViewData["Layout"] = "~/Views/Shared/_portal.cshtml";
+        await BuildEmployeeFormDataAsync(model);
+        return View(
+            "~/Views/website/admin/employee_create.cshtml",
+            model
+        );
+    }
+
+    await ApplyJobPositionLogicAsync(model);
+
+    // optional primary emergency contact
+    var hasContactData =
+    !string.IsNullOrWhiteSpace(model.EmergencyContactName) ||
+    !string.IsNullOrWhiteSpace(model.EmergencyContactPhone) ||
+    !string.IsNullOrWhiteSpace(model.EmergencyContactEmail);
+
+    if (hasContactData)
+    {
+        model.EmergencyContacts.Add(new EmployeeEmergencyContact
         {
-            if (!IsAdmin())
-                return RedirectToAction("AccessDenied", "website");
+            FullName     = model.EmergencyContactName ?? string.Empty,
+            Relationship = model.EmergencyContactRelationship,
+            Phone        = model.EmergencyContactPhone,
+            Email        = model.EmergencyContactEmail
+        });
+    }
 
-            ViewData["Layout"] = "~/Views/Shared/_portal.cshtml";
+    // 🔹 generate random unique NZFTCxxxxxx code
+    model.EmployeeCode = await GenerateUniqueEmployeeCodeAsync();
 
-            var model = new Employee
-            {
-                StartDate = DateTime.UtcNow
-            };
+    _context.Employees.Add(model);
+    await _context.SaveChangesAsync();
 
-            await BuildEmployeeFormDataAsync(model);
+    TempData["msg"] = "Employee created successfully.";
+    return RedirectToAction("Index");
+    }
 
-            return View(
-                "~/Views/website/admin/employee_create.cshtml",
-                model
-            );
-        }
-
-        // ===========================
-        // CREATE (POST)
-        // ===========================
-        [HttpPost("create")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Employee model)
-        {
-            if (!IsAdmin())
-                return RedirectToAction("AccessDenied", "website");
-
-            if (!ModelState.IsValid)
-            {
-                ViewData["Layout"] = "~/Views/Shared/_portal.cshtml";
-                await BuildEmployeeFormDataAsync(model);
-                return View(
-                    "~/Views/website/admin/employee_create.cshtml",
-                    model
-                );
-            }
-
-            await ApplyJobPositionLogicAsync(model);
-
-            _context.Employees.Add(model);
-            await _context.SaveChangesAsync();
-
-            TempData["msg"] = "Employee created successfully.";
-            return RedirectToAction("Index");
-        }
 
         // ===========================
         // EDIT (GET)
@@ -162,8 +204,23 @@ namespace NZFTC_EMS.Controllers
 
             ViewData["Layout"] = "~/Views/Shared/_portal.cshtml";
 
-            var emp = await _context.Employees.FindAsync(id);
+            var emp = await _context.Employees
+            .Include(e => e.JobPosition)
+            .Include(e => e.PayGrade)
+            .Include(e => e.EmergencyContacts)
+            .FirstOrDefaultAsync(e => e.EmployeeId == id);
             if (emp == null) return NotFound();
+
+            // map primary emergency contact into NotMapped fields
+            var contact = emp.EmergencyContacts.FirstOrDefault();
+            if (contact != null)
+            {
+                emp.EmergencyContactName         = contact.FullName;
+                emp.EmergencyContactRelationship = contact.Relationship;
+                emp.EmergencyContactPhone        = contact.Phone;
+                emp.EmergencyContactEmail        = contact.Email;
+            }
+
 
             await BuildEmployeeFormDataAsync(emp);
 
@@ -173,7 +230,7 @@ namespace NZFTC_EMS.Controllers
         // ===========================
         // EDIT (POST)
         // ===========================
-       [HttpPost("edit/{id}")]
+        [HttpPost("edit/{id}")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, Employee model)
         {
@@ -190,7 +247,10 @@ namespace NZFTC_EMS.Controllers
                 return View("~/Views/website/admin/employee_edit.cshtml", model);
             }
 
-            var existingEmployee = await _context.Employees.FindAsync(id);
+            var existingEmployee = await _context.Employees
+                .Include(e => e.EmergencyContacts)
+                .FirstOrDefaultAsync(e => e.EmployeeId == id);
+
             if (existingEmployee == null)
                 return NotFound();
 
@@ -203,26 +263,53 @@ namespace NZFTC_EMS.Controllers
             existingEmployee.Birthday  = model.Birthday;
             existingEmployee.Gender    = model.Gender;
 
-            // JOB DETAILS
+            // JOB DETAILS (NotMapped helpers + stored StartDate)
             existingEmployee.Department   = model.Department;
             existingEmployee.JobTitle     = model.JobTitle;
             existingEmployee.PayFrequency = model.PayFrequency;
             existingEmployee.StartDate    = model.StartDate;
 
-            // EMERGENCY CONTACT (we’ll add props in step 3)
-            existingEmployee.EmergencyContactName        = model.EmergencyContactName;
-            existingEmployee.EmergencyContactRelationship = model.EmergencyContactRelationship;
-            existingEmployee.EmergencyContactPhone       = model.EmergencyContactPhone;
+            // EMERGENCY CONTACT -> related table
+            var hasContactData =
+                !string.IsNullOrWhiteSpace(model.EmergencyContactName) ||
+                !string.IsNullOrWhiteSpace(model.EmergencyContactPhone) ||
+                !string.IsNullOrWhiteSpace(model.EmergencyContactEmail);
 
-            // link JobPosition / PayGrade / Role
+            var existingContact = existingEmployee.EmergencyContacts.FirstOrDefault();
+
+            if (!hasContactData)
+            {
+                // user cleared the form → delete existing contact
+                if (existingContact != null)
+                    _context.EmployeeEmergencyContacts.Remove(existingContact);
+            }
+            else
+            {
+                if (existingContact == null)
+                {
+                    existingContact = new EmployeeEmergencyContact
+                    {
+                        EmployeeId = existingEmployee.EmployeeId
+                    };
+                    existingEmployee.EmergencyContacts.Add(existingContact);
+                }
+
+                existingContact.FullName     = model.EmergencyContactName ?? string.Empty;
+                existingContact.Relationship = model.EmergencyContactRelationship;
+                existingContact.Phone        = model.EmergencyContactPhone;
+                existingContact.Email        = model.EmergencyContactEmail;
+            }
+
+            // set JobPositionId / PayGradeId / Role based on Department + JobTitle
             await ApplyJobPositionLogicAsync(existingEmployee);
 
             _context.Update(existingEmployee);
             await _context.SaveChangesAsync();
 
-            TempData["msg"] = "Employee record updated successfully!";
+            TempData["msg"] = "Employee record updated successfully.";
             return RedirectToAction("Index");
         }
+
 
         // ===========================
         // DELETE (GET)
@@ -251,21 +338,46 @@ namespace NZFTC_EMS.Controllers
         // ===========================
         // DELETE (POST)
         // ===========================
-        [HttpPost("delete/{id}")]
+        [HttpPost("DeleteConfirmed/{id}")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             if (!IsAdmin())
                 return RedirectToAction("AccessDenied", "website");
 
-            var emp = await _context.Employees.FindAsync(id);
-            if (emp != null)
+            // Load employee + all dependent rows we want to clean up
+            var emp = await _context.Employees
+                .Include(e => e.PayrollSummaries)
+                .Include(e => e.LeaveRequests)
+                .Include(e => e.EmergencyContacts)
+                .Include(e => e.LeaveBalances)
+                .FirstOrDefaultAsync(e => e.EmployeeId == id);
+
+            if (emp == null)
             {
-                _context.Employees.Remove(emp);
-                await _context.SaveChangesAsync();
+                TempData["msg"] = "Employee not found.";
+                return RedirectToAction("Index");
             }
 
-            TempData["msg"] = "Employee deleted.";
+            // Remove dependents first so FK RESTRICT doesn't block us
+            if (emp.PayrollSummaries.Any())
+                _context.EmployeePayrollSummaries.RemoveRange(emp.PayrollSummaries);
+
+            if (emp.LeaveRequests.Any())
+                _context.LeaveRequests.RemoveRange(emp.LeaveRequests);
+
+            if (emp.EmergencyContacts.Any())
+                _context.EmployeeEmergencyContacts.RemoveRange(emp.EmergencyContacts);
+
+            if (emp.LeaveBalances.Any())
+                _context.EmployeeLeaveBalances.RemoveRange(emp.LeaveBalances);
+
+            // Now remove the employee
+            _context.Employees.Remove(emp);
+
+            await _context.SaveChangesAsync();
+
+            TempData["msg"] = "Employee and related records deleted.";
             return RedirectToAction("Index");
         }
 
@@ -396,9 +508,21 @@ public async Task<IActionResult> JobMeta()
         .ToListAsync();
 
     return Json(data);
-}
-
-
     }
-    
-}
+    private async Task<string> GenerateUniqueEmployeeCodeAsync()
+    {
+        string code;
+        bool exists;
+
+        do
+        {
+            int num = RandomNumberGenerator.GetInt32(0, 1_000_000); // 000000–999999
+            code = $"NZFTC{num:D6}";
+            exists = await _context.Employees.AnyAsync(e => e.EmployeeCode == code);
+        }
+        while (exists);
+
+        return code;
+    }
+    }
+    }

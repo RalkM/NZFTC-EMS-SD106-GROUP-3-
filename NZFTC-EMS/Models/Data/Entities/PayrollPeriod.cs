@@ -1,6 +1,7 @@
 // Data/Entities/PayrollPeriod.cs
 using System.ComponentModel.DataAnnotations;
 
+
 namespace NZFTC_EMS.Data.Entities
 {
     public class PayrollPeriod

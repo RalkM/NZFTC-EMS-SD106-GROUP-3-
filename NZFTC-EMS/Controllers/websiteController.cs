@@ -18,7 +18,11 @@ namespace NZFTC_EMS.Controllers
         }
 
         // When someone hits /Website, send them to Authentication
-        public IActionResult Index() => RedirectToAction("Authentication");
+        public IActionResult Index()
+        {
+            ViewData["Layout"] = "~/Views/Shared/index.cshtml";
+            return View("~/Views/website/index.cshtml");
+            }
 
         // ============ PORTAL ============
         // URL: /Website/Portal
@@ -27,8 +31,7 @@ namespace NZFTC_EMS.Controllers
             // use UserId as the "logged in" flag
             var userId = HttpContext.Session.GetInt32("UserId");
             if (userId == null)
-                return RedirectToAction("Authentication");
-
+                return RedirectToAction("Authenticatiindex");
             ViewData["Layout"] = "~/Views/Shared/_portal.cshtml";
             return View("~/Views/website/portal.cshtml");
         }
@@ -182,14 +185,19 @@ namespace NZFTC_EMS.Controllers
                 return View("~/Views/Login/login.cshtml");
             }
 
-            // ✅ SUCCESS → set session (for Portal)
-            HttpContext.Session.SetInt32("UserId", employee.EmployeeId);
-            HttpContext.Session.SetString("UserEmail", employee.Email);
-            HttpContext.Session.SetString("FirstName", employee.FirstName);
-            HttpContext.Session.SetString("LastName", employee.LastName);
-            HttpContext.Session.SetString("FullName", $"{employee.FirstName} {employee.LastName}");
-            HttpContext.Session.SetString("Role",
-                employee.JobPosition?.AccessRole ?? "Employee");
+// after you’ve confirmed the employee login is valid
+HttpContext.Session.SetInt32("UserId", employee.EmployeeId);
+HttpContext.Session.SetString("UserEmail", employee.Email);
+HttpContext.Session.SetString("FirstName", employee.FirstName);
+HttpContext.Session.SetString("LastName", employee.LastName);
+HttpContext.Session.SetString("FullName", $"{employee.FirstName} {employee.LastName}");
+HttpContext.Session.SetString("Role", employee.JobPosition?.AccessRole ?? "Employee");
+
+// 🔴 THESE TWO ARE CRITICAL FOR SUPPORT:
+HttpContext.Session.SetString("EmployeeId", employee.EmployeeId.ToString());
+HttpContext.Session.SetString("Username", $"{employee.FirstName} {employee.LastName}");
+
+
 
             // ✅ SUCCESS → go to /Website/Portal
             return RedirectToAction("Portal");

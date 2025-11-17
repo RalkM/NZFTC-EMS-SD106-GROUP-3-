@@ -1,11 +1,11 @@
-@using NZFTC_EMS.ViewModels
+@using NZFTC_EMS.Models.ViewModels
 @model IEnumerable<SupportTicketRowVm>
 @using System.Linq
 
 @{
     var hasAny = Model?.Any() ?? false;
     var rows = Model ?? Enumerable.Empty<SupportTicketRowVm>();
-    Layout = ViewData["Layout"]?.ToString();
+     Layout = (string?)ViewData["Layout"] ?? "~/Views/Shared/_portal.cshtml";
     ViewData["Title"] = "Support Management";
 
     var q = Context.Request.Query["q"].ToString();
@@ -87,98 +87,263 @@
         </form>
     </div>
 
-    <!-- Tickets Table -->
-    <div class="table-responsive shadow-sm">
-        <table class="table table-bordered align-middle">
-            <thead class="table-primary">
-                <tr class="text-center">
-                    <th style="width: 6rem;">ID</th>
-                    <th>Subject</th>
-                    <th>Preview</th>
-                    <th style="width: 8rem;">Status</th>
-                    <th style="width: 8rem;">Priority</th>
-                    <th style="width: 12rem;">Created</th>
-                    <th style="width: 14rem;">Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-            @if (!(Model?.Any() ?? false))
-            {
-                <tr><td colspan="7" class="text-center text-muted">No tickets found.</td></tr>
-            }
-            else
-            {
-                @foreach (var t in (Model ?? Enumerable.Empty<SupportTicketRowVm>()))
+<!-- Tickets + Preview -->
+<div class="row g-3">
+    <div class="col-lg-8">
+        <!-- Tickets Table -->
+        <div class="table-responsive shadow-sm">
+            <table class="table table-bordered align-middle">
+                <thead class="table-primary">
+                    <tr class="text-center">
+                        <th style="width: 6rem;">ID</th>
+                        <th style="width: 20rem;">Subject</th>
+                        <th style="width: 10rem;">Employee</th>
+                        <th style="width: 8rem;">Emp. ID</th>
+                        <th style="width: 8rem;">Status</th>
+                        <th style="width: 8rem;">Priority</th>
+                        <th style="width: 12rem;">Created</th>
+                    </tr>
+                </thead>
+                <tbody>
+                @if (!(Model?.Any() ?? false))
                 {
                     <tr>
-                        <td class="text-center fw-semibold">@t.Id</td>
-                        <td class="fw-semibold">@t.Subject</td>
-                        <td>@t.Preview</td>
-                        <td class="text-center">
-                            <span class="badge @StatusBadgeClass(t.Status)">@t.Status</span>
-                        </td>
-                        <td class="text-center">
-                            <span class="badge @PriorityBadgeClass(t.Priority)">@t.Priority</span>
-                        </td>
-                        <td class="text-nowrap text-center">@t.CreatedAt.ToLocalTime().ToString("dd/MM/yyyy HH:mm")</td>
-                        <td class="text-center">
-                            <div class="d-flex gap-2 justify-content-center">
-                                <form asp-controller="Support_Management" asp-action="SetStatus" method="post" class="d-inline">
-                                    @Html.AntiForgeryToken()
-                                    <input type="hidden" name="id" value="@t.Id" />
-                                    <input type="hidden" name="status" value="Resolved" />
-                                    <button class="btn btn-sm btn-outline-success">Resolve</button>
-                                </form>
-                                <form asp-controller="Support_Management" asp-action="SetStatus" method="post" class="d-inline">
-                                    @Html.AntiForgeryToken()
-                                    <input type="hidden" name="id" value="@t.Id" />
-                                    <input type="hidden" name="status" value="Closed" />
-                                    <button class="btn btn-sm btn-outline-secondary">Close</button>
-                                </form>
-                                <!-- Quick reply (simple demo) -->
-                                <button class="btn btn-sm btn-outline-primary" type="button"
-                                        data-bs-toggle="collapse" data-bs-target="#reply-@t.Id">Reply</button>
-                            </div>
-
-                            <div id="reply-@t.Id" class="collapse mt-2 text-start">
-                                <form asp-controller="Support_Management" asp-action="Reply" method="post">
-                                    @Html.AntiForgeryToken()
-                                    <input type="hidden" name="id" value="@t.Id" />
-                                    <div class="input-group">
-                                        <input name="body" class="form-control" placeholder="Type a quick reply…" maxlength="4000" required />
-                                        <button class="btn btn-primary">Send</button>
-                                    </div>
-                                </form>
-                            </div>
+                        <td colspan="8" class="text-center text-muted py-4">
+                            No tickets found.
                         </td>
                     </tr>
                 }
-            }
-            </tbody>
-        </table>
+                else
+                {
+                    @foreach (var t in (Model ?? Enumerable.Empty<SupportTicketRowVm>()))
+                    {
+                        <tr class="ticket-row"
+                            data-id="@t.Id"
+                            data-subject="@t.Subject"
+                            data-preview="@t.Preview"      
+                            data-employee="@((t.EmployeeName ?? "-"))"
+                            data-code="@((t.EmployeeCode ?? t.EmployeeId?.ToString()) ?? "-")"
+                            data-status="@t.Status"
+                            data-priority="@t.Priority"
+                            data-created='@t.CreatedAt.ToLocalTime().ToString("O")'>
+                            <td class="text-center fw-semibold">@t.Id</td>
+                            <td class="fw-semibold">@t.Subject</td>
+                            <td>@(t.EmployeeName ?? "-")</td>
+                            <td class="text-center">@((t.EmployeeCode ?? t.EmployeeId?.ToString()) ?? "-")</td>
+                            <td class="text-center">
+                                <span class="badge @StatusBadgeClass(t.Status)">@t.Status</span>
+                            </td>
+                            <td class="text-center">
+                                <span class="badge @PriorityBadgeClass(t.Priority)">@t.Priority</span>
+                            </td>
+                            <td class="text-nowrap text-center">
+                                @t.CreatedAt.ToLocalTime().ToString("dd/MM/yyyy HH:mm")
+                            </td>
+                        </tr>
+                    }
+                }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Side preview panel -->
+<div class="col-lg-4">
+    <div id="ticket-preview-card" class="card shadow-sm h-100">
+        <div class="card-header fw-semibold">Ticket preview</div>
+
+        <div class="card-body text-muted" id="preview-empty">
+            Select a ticket row to see its message preview here.
+        </div>
+
+        <div class="card-body d-none" id="preview-body">
+            <h5 id="pv-subject" class="fw-bold mb-1"></h5>
+            <p class="small mb-2" id="pv-employee"></p>
+
+            <p class="mb-2">
+                <span class="badge me-1" id="pv-status"></span>
+                <span class="badge" id="pv-priority"></span>
+            </p>
+
+            <p class="small text-muted mb-2" id="pv-created"></p>
+
+            <hr />
+            <div class="fw-semibold mb-1">Message</div>
+            <div id="pv-preview"
+                 class="small text-body-secondary mb-3"
+                 style="white-space:pre-wrap; min-height:120px;"></div>
+
+            <!-- ACTIONS -->
+            <div id="preview-actions" class="mt-3 d-none">
+                <!-- Reply form -->
+                <form id="replyForm" method="post" class="mb-3">
+                    @Html.AntiForgeryToken()
+                    <label for="replyBody" class="form-label small fw-semibold">
+                        Reply
+                    </label>
+                    <textarea id="replyBody"
+                              name="body"
+                              class="form-control form-control-sm"
+                              rows="3"
+                              placeholder="Type your reply to the employee..."></textarea>
+                    <button type="submit" class="btn btn-primary btn-sm mt-2">
+                        Send reply
+                    </button>
+                </form>
+
+                <!-- Status buttons -->
+                <div class="d-flex gap-2">
+                    <form id="statusInvestigatingForm" method="post">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="status" value="InProgress" />
+                        <button type="submit" class="btn btn-warning btn-sm">
+                            Investigating
+                        </button>
+                    </form>
+
+                    <form id="statusCloseForm" method="post">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="status" value="Closed" />
+                        <button type="submit" class="btn btn-secondary btn-sm">
+                            Close
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
 <script src="https://kit.fontawesome.com/5c09730e7a.js" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://kit.fontawesome.com/5c09730e7a.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const rows      = document.querySelectorAll('tr.ticket-row');
+    const emptyBox  = document.getElementById('preview-empty');
+    const bodyBox   = document.getElementById('preview-body');
+
+    const pvSubject  = document.getElementById('pv-subject');
+    const pvEmployee = document.getElementById('pv-employee');
+    const pvStatus   = document.getElementById('pv-status');
+    const pvPriority = document.getElementById('pv-priority');
+    const pvCreated  = document.getElementById('pv-created');
+    const pvPreview  = document.getElementById('pv-preview');
+
+    const actionsBox            = document.getElementById('preview-actions');
+    const replyForm             = document.getElementById('replyForm');
+    const replyBody             = document.getElementById('replyBody');
+    const statusInvestigatingForm = document.getElementById('statusInvestigatingForm');
+    const statusCloseForm       = document.getElementById('statusCloseForm');
+
+    let currentTicketId = null;
+
+    function clearActive() {
+        rows.forEach(r => r.classList.remove('table-active'));
+    }
+
+    function statusClass(status) {
+        switch (status) {
+            case 'Open':        return 'text-bg-warning';
+            case 'InProgress':  return 'text-bg-info';
+            case 'Resolved':    return 'text-bg-success';
+            case 'Closed':      return 'text-bg-secondary';
+            default:            return 'text-bg-light';
+        }
+    }
+
+    function priorityClass(priority) {
+        switch (priority) {
+            case 'Low':    return 'text-bg-secondary';
+            case 'Medium': return 'text-bg-primary';
+            case 'High':   return 'text-bg-warning';
+            case 'Urgent': return 'text-bg-danger';
+            default:       return 'text-bg-light';
+        }
+    }
+
+    rows.forEach(row => {
+        row.addEventListener('click', () => {
+            clearActive();
+            row.classList.add('table-active');
+
+            const id       = row.dataset.id;
+            const subject  = row.dataset.subject || '';
+            const employee = row.dataset.employee || '';
+            const code     = row.dataset.code || '';
+            const status   = row.dataset.status || '';
+            const priority = row.dataset.priority || '';
+            const created  = row.dataset.created || '';
+            const preview  = row.dataset.preview || '';
+
+            currentTicketId = id;
+
+            pvSubject.textContent = subject;
+
+            if (employee && code) {
+                pvEmployee.textContent = `${employee} (${code})`;
+            } else if (employee || code) {
+                pvEmployee.textContent = employee || code;
+            } else {
+                pvEmployee.textContent = '-';
+            }
+
+            pvStatus.textContent = status || '-';
+            pvStatus.className = 'badge ' + statusClass(status);
+
+            pvPriority.textContent = priority || '-';
+            pvPriority.className = 'badge ' + priorityClass(priority);
+
+            if (created) {
+                try {
+                    const d = new Date(created);
+                    pvCreated.textContent = d.toLocaleString();
+                } catch {
+                    pvCreated.textContent = created;
+                }
+            } else {
+                pvCreated.textContent = '';
+            }
+
+            pvPreview.textContent = preview || 'No message content.';
+
+            // wire up forms to this ticket
+            if (id) {
+                const base = `/support_management/${id}`;
+                replyForm.action               = `${base}/reply`;
+                statusInvestigatingForm.action = `${base}/status`;
+                statusCloseForm.action         = `${base}/status`;
+            }
+
+            // reset reply textarea
+            replyBody.value = '';
+
+            emptyBox.classList.add('d-none');
+            bodyBox.classList.remove('d-none');
+            actionsBox.classList.remove('d-none');
+        });
+    });
+});
+</script>
+
 
 @functions{
-    // Simple helpers for badge styling; tweak to your theme
     private string StatusBadgeClass(string status) => status switch
     {
-        "Open" => "text-bg-warning",
+        "Open"       => "text-bg-warning",
         "InProgress" => "text-bg-info",
-        "Resolved" => "text-bg-success",
-        "Closed" => "text-bg-secondary",
-        _ => "text-bg-light"
+        "Resolved"   => "text-bg-success",
+        "Closed"     => "text-bg-secondary",
+        _            => "text-bg-light"
     };
 
     private string PriorityBadgeClass(string priority) => priority switch
     {
-        "Low" => "text-bg-secondary",
+        "Low"    => "text-bg-secondary",
         "Medium" => "text-bg-primary",
-        "High" => "text-bg-warning",
+        "High"   => "text-bg-warning",
         "Urgent" => "text-bg-danger",
-        _ => "text-bg-light"
+        _        => "text-bg-light"
     };
 }

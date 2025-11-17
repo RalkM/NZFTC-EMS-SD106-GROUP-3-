@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace NZFTC_EMS.ViewModels
+namespace NZFTC_EMS.Models.ViewModels
 {
     public class LoginVm
     {

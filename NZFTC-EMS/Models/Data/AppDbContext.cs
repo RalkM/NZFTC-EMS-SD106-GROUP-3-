@@ -20,8 +20,6 @@ public class AppDbContext : DbContext
     public DbSet<Holiday> Holidays => Set<Holiday>();
     public DbSet<EmployeeLeaveBalance> EmployeeLeaveBalances => Set<EmployeeLeaveBalance>();
 
-
-
     // Support module
     public DbSet<SupportTicket> SupportTickets => Set<SupportTicket>();
     public DbSet<SupportMessage> SupportMessages => Set<SupportMessage>();
@@ -152,8 +150,10 @@ public class AppDbContext : DbContext
             e.Property(m => m.Body).IsRequired().HasMaxLength(4000);
         });
 
-        //b.Entity<SupportTicket>().ToTable("supporttickets");
-        //b.Entity<SupportMessage>().ToTable("supportmessages");
+        
+
+      b.Entity<SupportTicket>().ToTable("supporttickets");
+    b.Entity<SupportMessage>().ToTable("supportmessages");
         b.Entity<EmployeeLeaveBalance>(e =>
          {
              e.ToTable("employeeleavebalances");
@@ -169,6 +169,8 @@ public class AppDbContext : DbContext
              e.Property(x => x.SickUsed).HasPrecision(10, 2);
              e.Property(x => x.CarryOverAnnual).HasPrecision(10, 2);
          });
+
+         
     }
     
 }

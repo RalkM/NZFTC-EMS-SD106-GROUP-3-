@@ -13,8 +13,8 @@
             <a class="nav-link" asp-controller="jobposition_management" asp-action="Index">Job Position Management</a>
             <a class="nav-link" asp-controller="leave_management" asp-action="Index">Leave Management</a>
             <a class="nav-link" asp-controller="payroll_management" asp-action="Index">Payroll Management</a>
-            <a class="nav-link @(Context.Request.Path.Value?.StartsWith("/support_management", StringComparison.OrdinalIgnoreCase) == true ? "active" : "")"
-               href="/support_management">Support Management</a>
+            <a class="nav-link" href="/support_management">Support Tickets</a>
+
         </div>
 
         <div class="utilities">

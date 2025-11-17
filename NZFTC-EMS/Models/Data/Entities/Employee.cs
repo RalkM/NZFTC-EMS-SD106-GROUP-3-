@@ -46,7 +46,6 @@ namespace NZFTC_EMS.Data.Entities
         [MaxLength(80)] 
         public string? Role { get; set; }
 
-        [NotMapped]
         [MaxLength(80)]
         public string? Department { get; set; }
 

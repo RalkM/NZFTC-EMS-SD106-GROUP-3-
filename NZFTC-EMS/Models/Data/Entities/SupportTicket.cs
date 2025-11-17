@@ -23,6 +23,10 @@ namespace NZFTC_EMS.Data.Entities
         [Required] public SupportPriority Priority { get; set; } = SupportPriority.Medium;
 
         public int? EmployeeId { get; set; }
+
+        [ForeignKey(nameof(EmployeeId))]
+        public Employee? Employee { get; set; }
+
         public int? AssignedToId { get; set; }
 
         [Required] public DateTime CreatedAt { get; set; }
@@ -37,24 +41,30 @@ namespace NZFTC_EMS.Data.Entities
     }
 
     public class SupportMessage
-    {
-        [Key] public int Id { get; set; }
+{
+    [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]   // ✅ ONLY HERE
+    public int Id { get; set; }
 
-        [ForeignKey(nameof(Ticket))]
-        public int TicketId { get; set; }
-        public SupportTicket Ticket { get; set; } = null!;
+    public int TicketId { get; set; }
+    public SupportTicket Ticket { get; set; } = null!;
 
-        public int? SenderEmployeeId { get; set; }
+    public int? SenderEmployeeId { get; set; }
 
-        [Required, MaxLength(4000)]
-        public string Body { get; set; } = string.Empty;
+    [Required, MaxLength(4000)]
+    public string Body { get; set; } = string.Empty;
 
-        [Required] public DateTime SentAt { get; set; }
+    [Required]
+    public DateTime SentAt { get; set; }
 
-        public SupportMessage()
-        {
-            SentAt = DateTime.UtcNow;
-        }
-    }
+    public bool SenderIsAdmin { get; set; }
+
+    public string? AdminReply { get; set; }
+    public DateTime? AdminReplyAt { get; set; }
+
+    
+}
+
+    
     
 }

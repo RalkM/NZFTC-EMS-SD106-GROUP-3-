@@ -1,4 +1,4 @@
-namespace NZFTC_EMS.ViewModels;
+namespace NZFTC_EMS.Models.ViewModels;
 
 public record SupportTicketRowVm(
     int Id,
@@ -6,13 +6,15 @@ public record SupportTicketRowVm(
     string Preview,
     string Status,
     string Priority,
-    DateTime CreatedAt
+    DateTime CreatedAt,
+    string? EmployeeName,
+    string? EmployeeCode,
+    int? EmployeeId
 );
 
 public class SupportTicketCreateVm
 {
     public string Subject { get; set; } = string.Empty;
     public string Message { get; set; } = string.Empty;
-    public string Priority { get; set; } = "Medium"; // Low/Medium/High/Urgent
+    public string Priority { get; set; } = "Medium";
 }
-

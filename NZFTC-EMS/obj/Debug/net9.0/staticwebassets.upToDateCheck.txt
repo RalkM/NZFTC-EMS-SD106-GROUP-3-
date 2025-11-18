@@ -2,8 +2,9 @@ wwwroot\1-e8f22afd.ico
 wwwroot\css\authentication.css
 wwwroot\css\landing-page-stylesheet.css
 wwwroot\css\portal-StyleSheet.css
+wwwroot\css\profile.css
 wwwroot\js\employee-jobdetails.js
-wwwroot\js\support_managment.js
+wwwroot\js\support_form.js
 wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css
 wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css.map
 wwwroot\lib\bootstrap\dist\css\bootstrap-grid.min.css
@@ -66,10 +67,15 @@ wwwroot\lib\jquery\dist\jquery.slim.js
 wwwroot\lib\jquery\dist\jquery.slim.min.js
 wwwroot\lib\jquery\dist\jquery.slim.min.map
 wwwroot\lib\jquery\LICENSE.txt
+wwwroot\uploads\employees\8.jpg
+wwwroot\js\support_managment.js
 D:\xampp\htdocs\NZFTC-EMS-SD106-GROUP-3-\NZFTC-EMS\wwwroot\1-e8f22afd.ico
 D:\xampp\htdocs\NZFTC-EMS-SD106-GROUP-3-\NZFTC-EMS\wwwroot\css\authentication.css
 D:\xampp\htdocs\NZFTC-EMS-SD106-GROUP-3-\NZFTC-EMS\wwwroot\css\landing-page-stylesheet.css
-D:\xampp\htdocs\NZFTC-EMS-SD106-GROUP-3-\NZFTC-EMS\wwwroot\js\support_managment.js
+D:\xampp\htdocs\NZFTC-EMS-SD106-GROUP-3-\NZFTC-EMS\wwwroot\css\portal-StyleSheet.css
+D:\xampp\htdocs\NZFTC-EMS-SD106-GROUP-3-\NZFTC-EMS\wwwroot\css\profile.css
+D:\xampp\htdocs\NZFTC-EMS-SD106-GROUP-3-\NZFTC-EMS\wwwroot\js\employee-jobdetails.js
+D:\xampp\htdocs\NZFTC-EMS-SD106-GROUP-3-\NZFTC-EMS\wwwroot\js\support_form.js
 D:\xampp\htdocs\NZFTC-EMS-SD106-GROUP-3-\NZFTC-EMS\wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css
 D:\xampp\htdocs\NZFTC-EMS-SD106-GROUP-3-\NZFTC-EMS\wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css.map
 D:\xampp\htdocs\NZFTC-EMS-SD106-GROUP-3-\NZFTC-EMS\wwwroot\lib\bootstrap\dist\css\bootstrap-grid.min.css
@@ -129,5 +135,4 @@ D:\xampp\htdocs\NZFTC-EMS-SD106-GROUP-3-\NZFTC-EMS\wwwroot\lib\jquery\dist\jquer
 D:\xampp\htdocs\NZFTC-EMS-SD106-GROUP-3-\NZFTC-EMS\wwwroot\lib\jquery\dist\jquery.slim.min.js
 D:\xampp\htdocs\NZFTC-EMS-SD106-GROUP-3-\NZFTC-EMS\wwwroot\lib\jquery\dist\jquery.slim.min.map
 D:\xampp\htdocs\NZFTC-EMS-SD106-GROUP-3-\NZFTC-EMS\wwwroot\lib\jquery\LICENSE.txt
-D:\xampp\htdocs\NZFTC-EMS-SD106-GROUP-3-\NZFTC-EMS\wwwroot\css\portal-StyleSheet.css
-D:\xampp\htdocs\NZFTC-EMS-SD106-GROUP-3-\NZFTC-EMS\wwwroot\js\employee-jobdetails.js
+D:\xampp\htdocs\NZFTC-EMS-SD106-GROUP-3-\NZFTC-EMS\wwwroot\js\support_managment.js

@@ -1,0 +1,21 @@
+    /* Make the main details card stand out more */
+    .profile-main-card {
+        border: 1px solid #d9d9d9 !important;
+        border-radius: 12px !important;
+        box-shadow: 0 4px 18px rgba(0,0,0,0.08) !important;
+        background: #ffffff !important;
+    }
+
+    /* Section headers inside the card */
+    .profile-section-title {
+        font-size: 1.1rem;
+        font-weight: 600;
+        margin-bottom: 8px;
+    }
+
+    /* Light divider under section titles */
+    .profile-divider {
+        border-top: 1px solid #e5e5e5;
+        margin-top: 0.25rem;
+        margin-bottom: 1rem;
+    }

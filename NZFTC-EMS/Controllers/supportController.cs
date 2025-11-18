@@ -12,15 +12,42 @@ namespace NZFTC_EMS.Controllers
     private readonly AppDbContext _db;
     public Support_ManagementController(AppDbContext db) => _db = db;
 
-        // ================== LIST / FILTER ==================
-       [HttpGet("/support_management")]
+// ================== LIST / FILTER ==================
+[HttpGet("/support_management")]
 public async Task<IActionResult> Index(string? q, string? status, string? priority)
 {
     ViewData["Layout"] = "~/Views/Shared/_portal.cshtml";
 
-    // base query (you can add filters later if you want)
-    var rows = await _db.SupportTickets
+    // Base query
+    var tickets = _db.SupportTickets
         .AsNoTracking()
+        .AsQueryable();
+
+    // -------- TEXT SEARCH (subject + ticket message) --------
+    if (!string.IsNullOrWhiteSpace(q))
+    {
+        q = q.Trim();
+        tickets = tickets.Where(t =>
+            t.Subject.Contains(q) ||
+            t.Message.Contains(q));
+    }
+
+    // -------- STATUS FILTER --------
+    if (!string.IsNullOrWhiteSpace(status) &&
+        Enum.TryParse<SupportStatus>(status, ignoreCase: true, out var sVal))
+    {
+        tickets = tickets.Where(t => t.Status == sVal);
+    }
+
+    // -------- PRIORITY FILTER --------
+    if (!string.IsNullOrWhiteSpace(priority) &&
+        Enum.TryParse<SupportPriority>(priority, ignoreCase: true, out var pVal))
+    {
+        tickets = tickets.Where(t => t.Priority == pVal);
+    }
+
+    // -------- PROJECTION TO ROW VM (same as your current code) --------
+    var rows = await tickets
         .OrderByDescending(t => t.CreatedAt)
         .GroupJoin(
             _db.Employees.AsNoTracking(),
@@ -43,7 +70,7 @@ public async Task<IActionResult> Index(string? q, string? status, string? priori
         ))
         .ToListAsync();
 
-   return View("~/Views/website/admin/support_management.cshtml", rows);
+    return View("~/Views/website/admin/support_management.cshtml", rows);
 }
 
 

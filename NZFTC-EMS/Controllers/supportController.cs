@@ -117,5 +117,24 @@ public async Task<IActionResult> Index(string? q, string? status, string? priori
             await _db.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
+
+        public record AdminThreadMessageDto(string Body, bool FromAdmin, DateTime SentAt);
+
+        [HttpGet("/support_management/api/{id:int}/thread")]
+        public async Task<IActionResult> Thread(int id)
+        {
+            var msgs = await _db.SupportMessages
+                .Where(m => m.TicketId == id)
+                .OrderBy(m => m.SentAt)
+                .Select(m => new AdminThreadMessageDto(
+                    m.Body,
+                    m.SenderIsAdmin,
+                    m.SentAt
+                ))
+                .ToListAsync();
+
+            return Ok(msgs);
+        }
+
     }
 }

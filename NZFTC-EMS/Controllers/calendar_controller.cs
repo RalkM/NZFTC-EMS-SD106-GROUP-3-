@@ -1,65 +1,76 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
+using NZFTC_EMS.Data;
+using NZFTC_EMS.Data.Entities;
+using NZFTC_EMS.Models.ViewModels;
 
 namespace NZFTC_EMS.Controllers
 {
-    // Simple ViewModel for calendar events (you can replace with your own later)
-    public class CalendarEventVm
-    {
-        public int Id { get; set; }
-        public string Title { get; set; } = "";
-        public DateTime Start { get; set; }
-        public DateTime? End { get; set; }
-        public bool AllDay { get; set; }
-        public string? Description { get; set; }
-    }
-
     [Route("calendar")]
     public class calendar_controller : Controller
     {
-        // TEMP: in-memory events (just so the view has something to bind to)
-        // You can delete this later when you wire to the database.
-        private static readonly List<CalendarEventVm> _sampleEvents = new()
-        {
-            new CalendarEventVm
-            {
-                Id = 1,
-                Title = "Public Holiday",
-                Start = DateTime.Today.AddDays(3),
-                AllDay = true
-            },
-            new CalendarEventVm
-            {
-                Id = 2,
-                Title = "Payroll Cutoff",
-                Start = DateTime.Today.AddDays(7),
-                AllDay = true
-            }
-        };
+        private readonly AppDbContext _context;
 
-        // ==== ADMIN CALENDAR ====
-        // URL: /calendar/admin
-        [HttpGet("admin")]
-        public IActionResult Admin()
+        public calendar_controller(AppDbContext context)
+        {
+            _context = context;
+        }
+
+        private bool IsAdmin() => HttpContext.Session.GetString("Role") == "Admin";
+
+        private string? CurrentUsername => HttpContext.Session.GetString("Username");
+
+        // GET /calendar or /calendar/UserCalendar?month=11&year=2025
+        [HttpGet("")]
+        [HttpGet("UserCalendar")]
+        public async Task<IActionResult> UserCalendar(int? month, int? year)
         {
             ViewData["Layout"] = "~/Views/Shared/_portal.cshtml";
             ViewData["Title"] = "Calendar";
 
-            return View("~/Views/website/admin/calendar.cshtml", _sampleEvents);
-        }
+            var isAdmin = IsAdmin();
 
-        // ==== EMPLOYEE CALENDAR ====
-        // URL: /calendar/employee
-        [HttpGet("employee")]
-        public IActionResult Employee()
-        {
-            ViewData["Layout"] = "~/Views/Shared/_portal.cshtml";
-            ViewData["Title"] = "My Calendar";
+            var today = DateTime.Today;
+            int targetMonth = month ?? today.Month;
+            int targetYear = year ?? today.Year;
 
-            return View("~/Views/website/employee/calendar.cshtml", _sampleEvents);
+            IQueryable<CalendarEvent> query = _context.CalendarEvents;
+
+            // Phase 2 rules (simple):
+            // Admin: see all events
+            // Employee: see their own events + global events (OwnerUsername == null)
+            if (!isAdmin)
+            {
+                var username = CurrentUsername;
+                query = query.Where(e =>
+                    e.OwnerUsername == null ||
+                    (username != null && e.OwnerUsername == username));
+            }
+
+            // Only events in the target month/year
+            query = query.Where(e => e.Start.Month == targetMonth && e.Start.Year == targetYear);
+
+            var events = await query
+                .OrderBy(e => e.Start)
+                .ToListAsync();
+
+            var vm = new CalendarVm
+            {
+                Events = events,
+                CurrentMonth = targetMonth,
+                CurrentYear = targetYear,
+                IsAdmin = isAdmin
+            };
+
+            if (isAdmin)
+            {
+                return View("~/Views/website/admin/calendar_user.cshtml", vm);
+            }
+
+            return View("~/Views/website/employee/calendar_user.cshtml", vm);
         }
     }
 }
+
 

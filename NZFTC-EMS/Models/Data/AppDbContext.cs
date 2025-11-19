@@ -20,6 +20,9 @@ public class AppDbContext : DbContext
     public DbSet<Holiday> Holidays => Set<Holiday>();
     public DbSet<EmployeeLeaveBalance> EmployeeLeaveBalances => Set<EmployeeLeaveBalance>();
 
+    // Calendar module
+    public DbSet<CalendarEvent> CalendarEvents => Set<CalendarEvent>();
+
     // Support module
     public DbSet<SupportTicket> SupportTickets => Set<SupportTicket>();
     public DbSet<SupportMessage> SupportMessages => Set<SupportMessage>();

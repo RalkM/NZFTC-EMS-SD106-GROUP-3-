@@ -1,54 +1,60 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
-  <PropertyGroup>
-    <TargetFramework>net9.0</TargetFramework>
-    <Nullable>enable</Nullable>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <RootNamespace>NZFTC_EMS</RootNamespace>
-    <ApplicationIcon>wwwroot\1-e8f22afd.ico</ApplicationIcon>
-	<UseAppHost>false</UseAppHost>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net9.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<RootNamespace>NZFTC_EMS</RootNamespace>
+		<ApplicationIcon>wwwroot\1-e8f22afd.ico</ApplicationIcon>
+		<UseAppHost>false</UseAppHost>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <Compile Remove="RESOURCE\**" />
-    <Compile Remove="Services\**" />
-    <Compile Remove="Views\website\admin - Copy\**" />
-    <Compile Remove="Views\website\employee - Copy\**" />
-    <Content Remove="RESOURCE\**" />
-    <Content Remove="Services\**" />
-    <Content Remove="Views\website\admin - Copy\**" />
-    <Content Remove="Views\website\employee - Copy\**" />
-    <EmbeddedResource Remove="RESOURCE\**" />
-    <EmbeddedResource Remove="Services\**" />
-    <EmbeddedResource Remove="Views\website\admin - Copy\**" />
-    <EmbeddedResource Remove="Views\website\employee - Copy\**" />
-    <None Remove="RESOURCE\**" />
-    <None Remove="Services\**" />
-    <None Remove="Views\website\admin - Copy\**" />
-    <None Remove="Views\website\employee - Copy\**" />
-  </ItemGroup>
+	<ItemGroup>
+		<Compile Remove="RESOURCE\**" />
+		<Compile Remove="Services\**" />
+		<Compile Remove="Views\website\admin - Copy\**" />
+		<Compile Remove="Views\website\employee - Copy\**" />
+		<Content Remove="RESOURCE\**" />
+		<Content Remove="Services\**" />
+		<Content Remove="Views\website\admin - Copy\**" />
+		<Content Remove="Views\website\employee - Copy\**" />
+		<EmbeddedResource Remove="RESOURCE\**" />
+		<EmbeddedResource Remove="Services\**" />
+		<EmbeddedResource Remove="Views\website\admin - Copy\**" />
+		<EmbeddedResource Remove="Views\website\employee - Copy\**" />
+		<None Remove="RESOURCE\**" />
+		<None Remove="Services\**" />
+		<None Remove="Views\website\admin - Copy\**" />
+		<None Remove="Views\website\employee - Copy\**" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Data\Entities\" />
-    <Folder Include="wwwroot\js\" />
-  </ItemGroup>
+	<ItemGroup>
+		<Folder Include="wwwroot\js\" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <None Include="wwwroot\lib\Image.png" />
-  </ItemGroup>
+	<ItemGroup>
+		<None Include="wwwroot\lib\Image.png" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="EFCore.NamingConventions" Version="9.0.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.10" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.10">
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="9.0.10" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.10" />
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="9.0.0" />
-    <PackageReference Include="MySqlConnector" Version="2.4.0" />
-    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="9.0.0" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="EFCore.NamingConventions" Version="9.0.0" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.10" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.10">
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+			<PrivateAssets>all</PrivateAssets>
+		</PackageReference>
+		<PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="9.0.10" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.10" />
+
+		<!-- FIXED VERSION HERE -->
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.10">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+
+		<PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="9.0.0" />
+		<PackageReference Include="MySqlConnector" Version="2.4.0" />
+		<PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="9.0.0" />
+	</ItemGroup>
 
 </Project>

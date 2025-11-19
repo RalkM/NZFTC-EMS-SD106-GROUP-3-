@@ -22,6 +22,53 @@ namespace NZFTC_EMS.Migrations
 
             MySqlModelBuilderExtensions.AutoIncrementColumns(modelBuilder);
 
+            modelBuilder.Entity("NZFTC_EMS.Data.Entities.CalendarEvent", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(2000)
+                        .HasColumnType("varchar(2000)");
+
+                    b.Property<DateTime>("End")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<int>("EventType")
+                        .HasColumnType("int");
+
+                    b.Property<string>("OwnerUsername")
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<DateTime>("Start")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("varchar(200)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("CalendarEvents");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Description = "NZFTC EMS officially launched!",
+                            End = new DateTime(2025, 11, 20, 17, 0, 0, 0, DateTimeKind.Unspecified),
+                            EventType = 3,
+                            OwnerUsername = "System",
+                            Start = new DateTime(2025, 11, 20, 9, 0, 0, 0, DateTimeKind.Unspecified),
+                            Title = "System Go-Live"
+                        });
+                });
+
             modelBuilder.Entity("NZFTC_EMS.Data.Entities.Employee", b =>
                 {
                     b.Property<int>("EmployeeId")
@@ -95,7 +142,41 @@ namespace NZFTC_EMS.Migrations
 
                     b.HasIndex("PayGradeId");
 
-                    b.ToTable("Employees");
+                    b.ToTable("employees", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            EmployeeId = 1001,
+                            Address = "N/A",
+                            Department = "HR",
+                            Email = "admin@nzftc.local",
+                            EmployeeCode = "TEMP001",
+                            FirstName = "Temp",
+                            Gender = "N/A",
+                            JobPositionId = 11,
+                            LastName = "Admin",
+                            PasswordHash = new byte[0],
+                            PasswordSalt = new byte[0],
+                            PayGradeId = 8,
+                            StartDate = new DateTime(2025, 11, 20, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            EmployeeId = 1002,
+                            Address = "N/A",
+                            Department = "Operations",
+                            Email = "emp@nzftc.local",
+                            EmployeeCode = "TEMP002",
+                            FirstName = "Temp",
+                            Gender = "N/A",
+                            JobPositionId = 31,
+                            LastName = "Employee",
+                            PasswordHash = new byte[0],
+                            PasswordSalt = new byte[0],
+                            PayGradeId = 2,
+                            StartDate = new DateTime(2025, 11, 20, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        });
                 });
 
             modelBuilder.Entity("NZFTC_EMS.Data.Entities.EmployeeEmergencyContact", b =>
@@ -130,7 +211,27 @@ namespace NZFTC_EMS.Migrations
 
                     b.HasIndex("EmployeeId");
 
-                    b.ToTable("EmployeeEmergencyContacts");
+                    b.ToTable("employeeemergencycontacts", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            EmergencyContactId = 1,
+                            Email = "none@local",
+                            EmployeeId = 1001,
+                            FullName = "Temp Admin Contact",
+                            Phone = "0000",
+                            Relationship = "N/A"
+                        },
+                        new
+                        {
+                            EmergencyContactId = 2,
+                            Email = "none@local",
+                            EmployeeId = 1002,
+                            FullName = "Temp Employee Contact",
+                            Phone = "0000",
+                            Relationship = "N/A"
+                        });
                 });
 
             modelBuilder.Entity("NZFTC_EMS.Data.Entities.EmployeeLeaveBalance", b =>
@@ -172,6 +273,30 @@ namespace NZFTC_EMS.Migrations
                     b.HasIndex("EmployeeId");
 
                     b.ToTable("employeeleavebalances", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            EmployeeLeaveBalanceId = 1,
+                            AnnualAccrued = 0m,
+                            AnnualUsed = 0m,
+                            CarryOverAnnual = 0m,
+                            EmployeeId = 1001,
+                            SickAccrued = 0m,
+                            SickUsed = 0m,
+                            UpdatedAt = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            EmployeeLeaveBalanceId = 2,
+                            AnnualAccrued = 0m,
+                            AnnualUsed = 0m,
+                            CarryOverAnnual = 0m,
+                            EmployeeId = 1002,
+                            SickAccrued = 0m,
+                            SickUsed = 0m,
+                            UpdatedAt = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        });
                 });
 
             modelBuilder.Entity("NZFTC_EMS.Data.Entities.EmployeePayrollSummary", b =>
@@ -216,7 +341,7 @@ namespace NZFTC_EMS.Migrations
                     b.HasIndex("PayrollPeriodId", "EmployeeId")
                         .IsUnique();
 
-                    b.ToTable("EmployeePayrollSummaries");
+                    b.ToTable("employeepayrollsummaries", (string)null);
                 });
 
             modelBuilder.Entity("NZFTC_EMS.Data.Entities.Grievance", b =>
@@ -252,7 +377,7 @@ namespace NZFTC_EMS.Migrations
 
                     b.HasIndex("EmployeeId");
 
-                    b.ToTable("Grievances");
+                    b.ToTable("grievances", (string)null);
                 });
 
             modelBuilder.Entity("NZFTC_EMS.Data.Entities.Holiday", b =>
@@ -283,7 +408,49 @@ namespace NZFTC_EMS.Migrations
                     b.HasIndex("HolidayDate")
                         .IsUnique();
 
-                    b.ToTable("Holidays");
+                    b.ToTable("holidays", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            HolidayId = 1,
+                            HolidayDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            HolidayType = "Public",
+                            IsPaidHoliday = true,
+                            Name = "New Year's Day"
+                        },
+                        new
+                        {
+                            HolidayId = 2,
+                            HolidayDate = new DateTime(2025, 2, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            HolidayType = "Public",
+                            IsPaidHoliday = true,
+                            Name = "Waitangi Day"
+                        },
+                        new
+                        {
+                            HolidayId = 3,
+                            HolidayDate = new DateTime(2025, 4, 18, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            HolidayType = "Public",
+                            IsPaidHoliday = true,
+                            Name = "Good Friday"
+                        },
+                        new
+                        {
+                            HolidayId = 4,
+                            HolidayDate = new DateTime(2025, 4, 21, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            HolidayType = "Public",
+                            IsPaidHoliday = true,
+                            Name = "Easter Monday"
+                        },
+                        new
+                        {
+                            HolidayId = 5,
+                            HolidayDate = new DateTime(2025, 4, 25, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            HolidayType = "Public",
+                            IsPaidHoliday = true,
+                            Name = "ANZAC Day"
+                        });
                 });
 
             modelBuilder.Entity("NZFTC_EMS.Data.Entities.JobPosition", b =>
@@ -317,6 +484,9 @@ namespace NZFTC_EMS.Migrations
                     b.Property<int?>("PayGradeId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("PayGradeId1")
+                        .HasColumnType("int");
+
                     b.HasKey("JobPositionId");
 
                     b.HasIndex("Name")
@@ -324,7 +494,341 @@ namespace NZFTC_EMS.Migrations
 
                     b.HasIndex("PayGradeId");
 
-                    b.ToTable("JobPositions");
+                    b.HasIndex("PayGradeId1");
+
+                    b.ToTable("jobpositions", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            JobPositionId = 1,
+                            AccessRole = "Admin",
+                            Department = "Finance",
+                            Description = "Top-level finance leadership",
+                            IsActive = true,
+                            Name = "Chief Financial Officer (CFO)",
+                            PayGradeId = 10
+                        },
+                        new
+                        {
+                            JobPositionId = 2,
+                            AccessRole = "Admin",
+                            Department = "Finance",
+                            Description = "Leads the finance team and reporting",
+                            IsActive = true,
+                            Name = "Finance Manager",
+                            PayGradeId = 9
+                        },
+                        new
+                        {
+                            JobPositionId = 3,
+                            AccessRole = "Employee",
+                            Department = "Finance",
+                            Description = "Handles complex accounting and reporting",
+                            IsActive = true,
+                            Name = "Senior Accountant",
+                            PayGradeId = 8
+                        },
+                        new
+                        {
+                            JobPositionId = 4,
+                            AccessRole = "Employee",
+                            Department = "Finance",
+                            Description = "General accounting duties",
+                            IsActive = true,
+                            Name = "Accountant",
+                            PayGradeId = 7
+                        },
+                        new
+                        {
+                            JobPositionId = 5,
+                            AccessRole = "Employee",
+                            Department = "Finance",
+                            Description = "Manages supplier invoices and payments",
+                            IsActive = true,
+                            Name = "Accounts Payable Officer",
+                            PayGradeId = 3
+                        },
+                        new
+                        {
+                            JobPositionId = 6,
+                            AccessRole = "Employee",
+                            Department = "Finance",
+                            Description = "Manages customer invoicing and collections",
+                            IsActive = true,
+                            Name = "Accounts Receivable Officer",
+                            PayGradeId = 3
+                        },
+                        new
+                        {
+                            JobPositionId = 7,
+                            AccessRole = "Employee",
+                            Department = "Finance",
+                            Description = "Processes staff payroll",
+                            IsActive = true,
+                            Name = "Payroll Officer",
+                            PayGradeId = 6
+                        },
+                        new
+                        {
+                            JobPositionId = 8,
+                            AccessRole = "Employee",
+                            Department = "Finance",
+                            Description = "Provides general admin support to finance",
+                            IsActive = true,
+                            Name = "Finance Administrator",
+                            PayGradeId = 2
+                        },
+                        new
+                        {
+                            JobPositionId = 9,
+                            AccessRole = "Employee",
+                            Department = "Finance",
+                            Description = "Prepares and manages billing",
+                            IsActive = true,
+                            Name = "Billing Specialist",
+                            PayGradeId = 2
+                        },
+                        new
+                        {
+                            JobPositionId = 10,
+                            AccessRole = "Employee",
+                            Department = "Finance",
+                            Description = "Entry-level support in finance",
+                            IsActive = true,
+                            Name = "Accounts Assistant",
+                            PayGradeId = 1
+                        },
+                        new
+                        {
+                            JobPositionId = 11,
+                            AccessRole = "Admin",
+                            Department = "HR",
+                            Description = "Leads HR operations and strategy",
+                            IsActive = true,
+                            Name = "HR Manager",
+                            PayGradeId = 8
+                        },
+                        new
+                        {
+                            JobPositionId = 12,
+                            AccessRole = "Admin",
+                            Department = "HR",
+                            Description = "Senior advisory role in HR",
+                            IsActive = true,
+                            Name = "Senior HR Advisor",
+                            PayGradeId = 7
+                        },
+                        new
+                        {
+                            JobPositionId = 13,
+                            AccessRole = "Admin",
+                            Department = "HR",
+                            Description = "Generalist HR support",
+                            IsActive = true,
+                            Name = "HR Advisor",
+                            PayGradeId = 3
+                        },
+                        new
+                        {
+                            JobPositionId = 14,
+                            AccessRole = "Admin",
+                            Department = "HR",
+                            Description = "Coordinates HR processes and documentation",
+                            IsActive = true,
+                            Name = "HR Coordinator",
+                            PayGradeId = 2
+                        },
+                        new
+                        {
+                            JobPositionId = 15,
+                            AccessRole = "Admin",
+                            Department = "HR",
+                            Description = "Admin support across HR functions",
+                            IsActive = true,
+                            Name = "HR Administrator",
+                            PayGradeId = 1
+                        },
+                        new
+                        {
+                            JobPositionId = 16,
+                            AccessRole = "Admin",
+                            Department = "HR",
+                            Description = "Manages recruitment and selection",
+                            IsActive = true,
+                            Name = "Recruitment Specialist",
+                            PayGradeId = 6
+                        },
+                        new
+                        {
+                            JobPositionId = 17,
+                            AccessRole = "Admin",
+                            Department = "HR",
+                            Description = "Supports talent acquisition activities",
+                            IsActive = true,
+                            Name = "Talent Acquisition Coordinator",
+                            PayGradeId = 3
+                        },
+                        new
+                        {
+                            JobPositionId = 18,
+                            AccessRole = "Admin",
+                            Department = "HR",
+                            Description = "Coordinates training and staff development",
+                            IsActive = true,
+                            Name = "Training & Development Officer",
+                            PayGradeId = 6
+                        },
+                        new
+                        {
+                            JobPositionId = 19,
+                            AccessRole = "Admin",
+                            Department = "IT",
+                            Description = "Leads IT operations and projects",
+                            IsActive = true,
+                            Name = "IT Manager",
+                            PayGradeId = 8
+                        },
+                        new
+                        {
+                            JobPositionId = 20,
+                            AccessRole = "Employee",
+                            Department = "IT",
+                            Description = "Maintains servers and systems",
+                            IsActive = true,
+                            Name = "Systems Administrator",
+                            PayGradeId = 3
+                        },
+                        new
+                        {
+                            JobPositionId = 21,
+                            AccessRole = "Employee",
+                            Department = "IT",
+                            Description = "Manages network infrastructure",
+                            IsActive = true,
+                            Name = "Network Administrator",
+                            PayGradeId = 6
+                        },
+                        new
+                        {
+                            JobPositionId = 22,
+                            AccessRole = "Employee",
+                            Department = "IT",
+                            Description = "Develops and maintains software applications",
+                            IsActive = true,
+                            Name = "Software Developer",
+                            PayGradeId = 6
+                        },
+                        new
+                        {
+                            JobPositionId = 23,
+                            AccessRole = "Employee",
+                            Department = "IT",
+                            Description = "Supports business applications",
+                            IsActive = true,
+                            Name = "Application Support Analyst",
+                            PayGradeId = 3
+                        },
+                        new
+                        {
+                            JobPositionId = 24,
+                            AccessRole = "Employee",
+                            Department = "IT",
+                            Description = "First-line IT support",
+                            IsActive = true,
+                            Name = "IT Support Technician",
+                            PayGradeId = 2
+                        },
+                        new
+                        {
+                            JobPositionId = 25,
+                            AccessRole = "Employee",
+                            Department = "IT",
+                            Description = "Handles basic IT helpdesk requests",
+                            IsActive = true,
+                            Name = "Helpdesk Support",
+                            PayGradeId = 1
+                        },
+                        new
+                        {
+                            JobPositionId = 26,
+                            AccessRole = "Employee",
+                            Department = "IT",
+                            Description = "Manages databases and performance",
+                            IsActive = true,
+                            Name = "Database Administrator (DBA)",
+                            PayGradeId = 6
+                        },
+                        new
+                        {
+                            JobPositionId = 27,
+                            AccessRole = "Admin",
+                            Department = "Operations",
+                            Description = "Oversees day-to-day operations",
+                            IsActive = true,
+                            Name = "Operations Manager",
+                            PayGradeId = 8
+                        },
+                        new
+                        {
+                            JobPositionId = 28,
+                            AccessRole = "Employee",
+                            Department = "Operations",
+                            Description = "Leads an operations team",
+                            IsActive = true,
+                            Name = "Team Leader – Operations",
+                            PayGradeId = 4
+                        },
+                        new
+                        {
+                            JobPositionId = 29,
+                            AccessRole = "Employee",
+                            Department = "Operations",
+                            Description = "Supervises operational staff",
+                            IsActive = true,
+                            Name = "Supervisor – Operations",
+                            PayGradeId = 5
+                        },
+                        new
+                        {
+                            JobPositionId = 30,
+                            AccessRole = "Employee",
+                            Department = "Operations",
+                            Description = "Senior operations officer role",
+                            IsActive = true,
+                            Name = "Senior Officer – Operations",
+                            PayGradeId = 3
+                        },
+                        new
+                        {
+                            JobPositionId = 31,
+                            AccessRole = "Employee",
+                            Department = "Operations",
+                            Description = "General office administration",
+                            IsActive = true,
+                            Name = "Office Administrator",
+                            PayGradeId = 2
+                        },
+                        new
+                        {
+                            JobPositionId = 32,
+                            AccessRole = "Employee",
+                            Department = "Operations",
+                            Description = "Frontline customer service",
+                            IsActive = true,
+                            Name = "Customer Service Representative",
+                            PayGradeId = 2
+                        },
+                        new
+                        {
+                            JobPositionId = 33,
+                            AccessRole = "Employee",
+                            Department = "Operations",
+                            Description = "Data entry and basic admin tasks",
+                            IsActive = true,
+                            Name = "Data Entry Operator",
+                            PayGradeId = 1
+                        });
                 });
 
             modelBuilder.Entity("NZFTC_EMS.Data.Entities.LeaveRequest", b =>
@@ -337,6 +841,9 @@ namespace NZFTC_EMS.Migrations
 
                     b.Property<DateTime?>("ApprovedAt")
                         .HasColumnType("datetime(6)");
+
+                    b.Property<int?>("ApprovedByEmployeeEmployeeId")
+                        .HasColumnType("int");
 
                     b.Property<int?>("ApprovedByEmployeeId")
                         .HasColumnType("int");
@@ -367,13 +874,15 @@ namespace NZFTC_EMS.Migrations
 
                     b.HasKey("LeaveRequestId");
 
+                    b.HasIndex("ApprovedByEmployeeEmployeeId");
+
                     b.HasIndex("ApprovedByEmployeeId");
 
                     b.HasIndex("EmployeeId");
 
                     b.HasIndex("StartDate", "EndDate");
 
-                    b.ToTable("LeaveRequests");
+                    b.ToTable("leaverequests", (string)null);
                 });
 
             modelBuilder.Entity("NZFTC_EMS.Data.Entities.PayGrade", b =>
@@ -408,7 +917,99 @@ namespace NZFTC_EMS.Migrations
                     b.HasIndex("Name")
                         .IsUnique();
 
-                    b.ToTable("PayGrades");
+                    b.ToTable("paygrades", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            PayGradeId = 1,
+                            BaseRate = 23.50m,
+                            Description = "Minimum Pay",
+                            IsActive = true,
+                            Name = "PG-minimum",
+                            RateType = (byte)0
+                        },
+                        new
+                        {
+                            PayGradeId = 2,
+                            BaseRate = 28.00m,
+                            Description = "Regular Staff",
+                            IsActive = true,
+                            Name = "PG-REG",
+                            RateType = (byte)0
+                        },
+                        new
+                        {
+                            PayGradeId = 3,
+                            BaseRate = 32.00m,
+                            Description = "Senior Staff",
+                            IsActive = true,
+                            Name = "PG-SSTAFF",
+                            RateType = (byte)0
+                        },
+                        new
+                        {
+                            PayGradeId = 4,
+                            BaseRate = 38.00m,
+                            Description = "Team Leader",
+                            IsActive = true,
+                            Name = "PG-TL",
+                            RateType = (byte)0
+                        },
+                        new
+                        {
+                            PayGradeId = 5,
+                            BaseRate = 45.00m,
+                            Description = "Supervisor",
+                            IsActive = true,
+                            Name = "PG-SUP",
+                            RateType = (byte)0
+                        },
+                        new
+                        {
+                            PayGradeId = 6,
+                            BaseRate = 50.00m,
+                            Description = "Specialist",
+                            IsActive = true,
+                            Name = "PG-SPEC",
+                            RateType = (byte)0
+                        },
+                        new
+                        {
+                            PayGradeId = 7,
+                            BaseRate = 65000.00m,
+                            Description = "Salary - Junior/Assistant Manager",
+                            IsActive = true,
+                            Name = "PG-SAL-JM",
+                            RateType = (byte)1
+                        },
+                        new
+                        {
+                            PayGradeId = 8,
+                            BaseRate = 80000.00m,
+                            Description = "Salary - Department Manager",
+                            IsActive = true,
+                            Name = "PG-SAL-MAN",
+                            RateType = (byte)1
+                        },
+                        new
+                        {
+                            PayGradeId = 9,
+                            BaseRate = 95000.00m,
+                            Description = "Salary - Senior Manager",
+                            IsActive = true,
+                            Name = "PG-SAL-SRMAN",
+                            RateType = (byte)1
+                        },
+                        new
+                        {
+                            PayGradeId = 10,
+                            BaseRate = 100000.00m,
+                            Description = "Salary - General Manager",
+                            IsActive = true,
+                            Name = "PG-SAL-GM",
+                            RateType = (byte)1
+                        });
                 });
 
             modelBuilder.Entity("NZFTC_EMS.Data.Entities.PayrollPeriod", b =>
@@ -442,7 +1043,18 @@ namespace NZFTC_EMS.Migrations
                     b.HasIndex("PeriodCode")
                         .IsUnique();
 
-                    b.ToTable("PayrollPeriods");
+                    b.ToTable("payrollperiods", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            PayrollPeriodId = 1,
+                            Closed = false,
+                            PeriodCode = "2025-11-M1",
+                            PeriodEnd = new DateTime(2025, 11, 30, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            PeriodStart = new DateTime(2025, 11, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            TotalAmount = 0.00m
+                        });
                 });
 
             modelBuilder.Entity("NZFTC_EMS.Data.Entities.SupportMessage", b =>
@@ -481,6 +1093,26 @@ namespace NZFTC_EMS.Migrations
                     b.HasIndex("TicketId");
 
                     b.ToTable("supportmessages", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Body = "Hi, I need help setting up my account.",
+                            SenderEmployeeId = 1002,
+                            SenderIsAdmin = false,
+                            SentAt = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            TicketId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Body = "Admin here — your account is now active!",
+                            SenderEmployeeId = 1001,
+                            SenderIsAdmin = false,
+                            SentAt = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            TicketId = 1
+                        });
                 });
 
             modelBuilder.Entity("NZFTC_EMS.Data.Entities.SupportTicket", b =>
@@ -524,6 +1156,19 @@ namespace NZFTC_EMS.Migrations
                     b.HasIndex("EmployeeId");
 
                     b.ToTable("supporttickets", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            AssignedToId = 1001,
+                            CreatedAt = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            EmployeeId = 1002,
+                            Message = "This is a sample seeded ticket.",
+                            Priority = 0,
+                            Status = 0,
+                            Subject = "Welcome to Support"
+                        });
                 });
 
             modelBuilder.Entity("NZFTC_EMS.Data.Entities.Employee", b =>
@@ -597,9 +1242,14 @@ namespace NZFTC_EMS.Migrations
 
             modelBuilder.Entity("NZFTC_EMS.Data.Entities.JobPosition", b =>
                 {
+                    b.HasOne("NZFTC_EMS.Data.Entities.PayGrade", null)
+                        .WithMany()
+                        .HasForeignKey("PayGradeId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.HasOne("NZFTC_EMS.Data.Entities.PayGrade", "PayGrade")
                         .WithMany()
-                        .HasForeignKey("PayGradeId");
+                        .HasForeignKey("PayGradeId1");
 
                     b.Navigation("PayGrade");
                 });
@@ -608,7 +1258,12 @@ namespace NZFTC_EMS.Migrations
                 {
                     b.HasOne("NZFTC_EMS.Data.Entities.Employee", "ApprovedByEmployee")
                         .WithMany()
-                        .HasForeignKey("ApprovedByEmployeeId");
+                        .HasForeignKey("ApprovedByEmployeeEmployeeId");
+
+                    b.HasOne("NZFTC_EMS.Data.Entities.Employee", null)
+                        .WithMany()
+                        .HasForeignKey("ApprovedByEmployeeId")
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.HasOne("NZFTC_EMS.Data.Entities.Employee", "Employee")
                         .WithMany("LeaveRequests")

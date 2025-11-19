@@ -1,3 +1,72 @@
 ﻿@{
     ViewData["Title"] = "Home";
 }
+<!-- Hero Section -->
+<section class="bg-light text-center py-5" id="home">
+    <div class="container">
+        <h1 class="fw-bold mb-3">
+            Simplify Employee Management for a Smarter Workplace
+        </h1>
+        <p class="text-muted mb-4">
+            Manage payroll, leave, and employee data securely — all in one place.
+        </p>
+        <a class="btn btn-primary me-2" asp-controller="Website" asp-action="Authentication" method="get">Log In</a>
+        <a class="btn btn-outline-secondary" href="#learn-more">Learn More</a>
+    </div>
+</section>
+
+<!-- Learn More Section -->
+<section id="learn-more" class="py-5 bg-white">
+    <div class="container text-center">
+        <h2 class="fw-bold mb-4">Learn More About NZFTC EMS</h2>
+        <p class="text-muted mb-5">
+            The NZFTC Employee Management System (EMS) streamlines HR operations
+            by managing employee information, payroll, leave, and support in one place.
+        </p>
+
+        <div class="row g-4">
+            <div class="col-md-3">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body">
+                        <h5 class="card-title fw-bold">Employee Management</h5>
+                        <p class="card-text text-muted">
+                            Maintain accurate employee profiles with easy updates.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body">
+                        <h5 class="card-title fw-bold">Leave Tracking</h5>
+                        <p class="card-text text-muted">
+                            Paperless leave applications and approval workflows.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body">
+                        <h5 class="card-title fw-bold">Payroll Automation</h5>
+                        <p class="card-text text-muted">
+                            Auto-calculate deductions, taxes, and net pay securely.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body">
+                        <h5 class="card-title fw-bold">Employee Support</h5>
+                        <p class="card-text text-muted">
+                            Submit and track workplace inquiries or grievances.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+

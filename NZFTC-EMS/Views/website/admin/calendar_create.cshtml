@@ -1,0 +1,145 @@
+﻿@using NZFTC_EMS.Data.Entities
+@model CalendarEvent
+
+@{
+    Layout = ViewData["Layout"]?.ToString() ?? "~/Views/Shared/_portal.cshtml";
+    ViewData["Title"] = "Add Event";
+}
+
+<style>
+    .calendar-wrapper {
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    .calendar-card {
+        background-color: #ffffff;
+        border-radius: 16px;
+        border: 1px solid #e1e1e1;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+        overflow: hidden;
+    }
+
+    .page-title {
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        font-weight: 700;
+    }
+
+    .field-label {
+        font-weight: 500;
+        font-size: 0.9rem;
+    }
+
+    .section-muted {
+        font-size: 0.85rem;
+        color: #6c757d;
+    }
+
+    .pill-date {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.25rem 0.75rem;
+        border-radius: 999px;
+        background-color: #e7f1ff;
+        color: #6aa7ff;
+        font-size: 0.85rem;
+        gap: 0.35rem;
+    }
+
+    .pill-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 999px;
+        background-color: #6aa7ff;
+    }
+</style>
+
+<div class="container py-4 calendar-wrapper">
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h3 class="m-0 fw-bold">Calendar</h3>
+        <a asp-controller="calendar"
+           asp-action="UserCalendar"
+           asp-route-month="@Model.Start.Month"
+           asp-route-year="@Model.Start.Year"
+           class="btn btn-outline-secondary btn-sm">
+            Back to Calendar
+        </a>
+    </div>
+
+    <div class="calendar-card p-4">
+
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h4 class="page-title mb-1">ADD EVENT</h4>
+                <p class="section-muted mb-0">
+                    Create a new calendar item for all employees.
+                </p>
+            </div>
+
+            <div class="text-end">
+                <div class="pill-date">
+                    <span class="pill-dot"></span>
+                    <span>
+                        @Model.Start.ToString("ddd, dd MMM yyyy")
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <form asp-controller="calendar" asp-action="AdminCreate" method="post" class="row g-3">
+            @Html.AntiForgeryToken()
+
+            <div class="col-12">
+                <label asp-for="Title" class="form-label field-label"></label>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+
+            <div class="col-12">
+                <label asp-for="Description" class="form-label field-label"></label>
+                <textarea asp-for="Description" class="form-control" rows="3"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+
+            <div class="col-md-6">
+                <label asp-for="Start" class="form-label field-label">Start</label>
+                <input asp-for="Start" type="datetime-local" class="form-control" />
+                <span asp-validation-for="Start" class="text-danger"></span>
+            </div>
+
+            <div class="col-md-6">
+                <label asp-for="End" class="form-label field-label">End</label>
+                <input asp-for="End" type="datetime-local" class="form-control" />
+                <span asp-validation-for="End" class="text-danger"></span>
+            </div>
+
+            <div class="col-md-6">
+                <label asp-for="EventType" class="form-label field-label">Event Type</label>
+                <select asp-for="EventType"
+                        class="form-select"
+                        asp-items="Html.GetEnumSelectList<CalendarEventType>()">
+                </select>
+                <span asp-validation-for="EventType" class="text-danger"></span>
+            </div>
+
+            <div class="col-12 d-flex justify-content-end gap-2 mt-3">
+                <a asp-controller="calendar"
+                   asp-action="UserCalendar"
+                   asp-route-month="@Model.Start.Month"
+                   asp-route-year="@Model.Start.Year"
+                   class="btn btn-outline-secondary">Cancel</a>
+
+                <button type="submit" class="btn btn-primary">Save Event</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+

@@ -22,5 +22,9 @@ namespace NZFTC_EMS.Data.Entities
         // we’ll match this with Session["Username"]
         [MaxLength(100)]
         public string? OwnerUsername { get; set; }
+
+        public bool IsTodo { get; set; } = false;
+        public bool IsPublicHoliday { get; set; } = false;
+
     }
 }

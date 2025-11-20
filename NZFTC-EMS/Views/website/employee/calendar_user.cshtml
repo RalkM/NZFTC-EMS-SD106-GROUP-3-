@@ -1,4 +1,5 @@
-﻿@using NZFTC_EMS.Data.Entities
+﻿@using System.Linq
+@using NZFTC_EMS.Data.Entities
 @model NZFTC_EMS.Models.ViewModels.CalendarVm
 
 @{
@@ -13,6 +14,7 @@
     int startOffset = (int)firstDayOfMonth.DayOfWeek;
 
     int totalCells = (startOffset + daysInMonth <= 35) ? 35 : 42;
+    int rows = totalCells / 7;
 
     int prevMonth = month == 1 ? 12 : month - 1;
     int prevYear = month == 1 ? year - 1 : year;
@@ -41,6 +43,7 @@
         font-weight: 700;
     }
 
+    /* Day number pill (clickable) */
     .day-number {
         position: absolute;
         top: 6px;
@@ -48,6 +51,10 @@
         font-weight: 600;
         font-size: 0.85rem;
         opacity: 0.9;
+        border-radius: 999px;
+        padding: 2px 6px;
+        cursor: pointer;
+        transition: background-color 0.15s ease, color 0.15s ease;
     }
 
     .calendar-day,
@@ -57,40 +64,67 @@
         height: 110px;
         vertical-align: top;
         background-color: #ffffff;
+        transition: background-color 0.15s ease, box-shadow 0.15s ease;
     }
 
     .calendar-empty {
         background-color: #f8f9fa;
     }
 
+    /* push events down a bit under the day number */
+    .calendar-events {
+        margin-top: 1.6rem;
+    }
+
+    /* Hover effect like admin */
+    .calendar-day:hover {
+        background-color: #f5f7fb;
+        box-shadow: inset 0 0 0 1px #d0d7ff;
+    }
+
+        .calendar-day:hover .day-number {
+            background-color: #0d6efd;
+            color: #ffffff;
+        }
+
+    /* Weekend subtle shading */
     .calendar-weekend {
         background-color: #fafafa;
     }
 
+    /* Today's cell highlight (same as admin) */
     .calendar-today {
-        box-shadow: inset 0 0 0 2px #0d6efd;
+        box-shadow: inset 0 0 0 2px #6aa7ff;
         background-color: #e7f1ff;
     }
+
+        .calendar-today .day-number {
+            background-color: #6aa7ff;
+            color: #ffffff;
+        }
 
     .calendar-event {
         font-size: 0.7rem;
     }
 
     .badge-public {
-        background-color: #d9534f; /* red-ish */
+        background-color: #20c997;
+        color: #ffffff;
     }
 
     .badge-meeting {
-        background-color: #0dcaf0; /* info */
+        background-color: #0d6efd;
+        color: #ffffff;
     }
 
     .badge-leave {
-        background-color: #ffc107; /* warning */
+        background-color: #ffb100;
         color: #212529;
     }
 
     .badge-other {
         background-color: #6c757d;
+        color: #ffffff;
     }
 
     @@media (max-width: 768px) {
@@ -115,14 +149,27 @@
     }
 </style>
 
-    <div class="container py-4 calendar-wrapper" >
+<div class="container py-4 calendar-wrapper">
 
-    <div class="d-flex justify-content-between align-items-center mb-3" >
-    <h3 class="m-0 fw-bold" > My Calendar</h3 >
-    <button class="btn btn-primary btn-sm" disabled >
-    + Add Event (Create coming later)
-    </button >
-    </div >
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger">@TempData["Error"]</div>
+    }
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success">@TempData["Success"]</div>
+    }
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h3 class="m-0 fw-bold">My Calendar</h3>
+
+        <a asp-controller="calendar"
+           asp-action="EmployeeCreateTodo"
+           class="btn btn-primary btn-sm">
+            + Add To-Do
+        </a>
+    </div>
+
     <div class="calendar-card p-3">
 
         <div class="d-flex justify-content-between align-items-center mb-3">
@@ -165,60 +212,94 @@
                     @{
                         int day = 1;
 
-                        for (int i = 0; i < totalCells; i++)
+                        for (int row = 0; row < rows; row++)
                         {
-                            if (i % 7 == 0)
-                            {
-                                @:<tr>
-                            }
+                            <tr>
+                                @for (int col = 0; col < 7; col++)
+                                {
+                                    int cellIndex = row * 7 + col;
 
-                            if (i < startOffset || day > daysInMonth)
-                            {
-                                <td class="calendar-empty"></td>
-                            }
-                            else
-                            {
-                                var date = new DateTime(year, month, day);
-                                bool isToday = date.Date == DateTime.Today.Date;
-                                bool isWeekend = date.DayOfWeek == DayOfWeek.Saturday || date.DayOfWeek == DayOfWeek.Sunday;
-
-                                var tdClasses = "calendar-day";
-                                if (isWeekend) tdClasses += " calendar-weekend";
-                                if (isToday) tdClasses += " calendar-today";
-
-                                var eventsForDay = Model.Events
-                                    .Where(e => e.Start.Date == date.Date)
-                                    .OrderBy(e => e.EventType)
-                                    .ToList();
-
-                                <td class="@tdClasses">
-                                    <div class="day-number">@day</div>
-
-                                    @foreach (var ev in eventsForDay)
+                                    if (cellIndex < startOffset || day > daysInMonth)
                                     {
-                                        var badgeClass = "badge-other";
-
-                                        if (ev.EventType == CalendarEventType.PublicHoliday)
-                                            badgeClass = "badge-public";
-                                        else if (ev.EventType == CalendarEventType.Meeting)
-                                            badgeClass = "badge-meeting";
-                                        else if (ev.EventType == CalendarEventType.AnnualLeave)
-                                            badgeClass = "badge-leave";
-
-                                        <span class="badge calendar-event d-block mb-1 text-truncate @badgeClass"
-                                              title="@($"{ev.Title} | {ev.Start:HH\\:mm}-{ev.End:HH\\:mm}")">
-                                            @ev.Title
-                                        </span>
+                                        <td class="calendar-empty"></td>
                                     }
-                                </td>;
+                                    else
+                                    {
+                                        var date = new DateTime(year, month, day);
+                                        bool isToday = date.Date == DateTime.Today.Date;
+                                        bool isWeekend = date.DayOfWeek == DayOfWeek.Saturday || date.DayOfWeek == DayOfWeek.Sunday;
 
-                                day++;
-                            }
+                                        var tdClasses = "calendar-day";
+                                        if (isWeekend) tdClasses += " calendar-weekend";
+                                        if (isToday) tdClasses += " calendar-today";
 
-                            if (i % 7 == 6)
-                            {
-                                @:</tr>
-                            }
+                                        var eventsForDay = Model.Events
+                                        .Where(e => e.Start.Date == date.Date)
+                                        .OrderBy(e => e.EventType)
+                                        .ToList();
+
+                                        var holidaysForDay = Model.Holidays
+                                        .Where(h => h.HolidayDate.Date == date.Date)
+                                        .ToList();
+
+                                        <td class="@tdClasses">
+                                            <!-- Click day to add to-do for that date -->
+                                            <a asp-controller="calendar"
+                                               asp-action="EmployeeCreateTodo"
+                                               asp-route-date="@date.ToString("yyyy-MM-ddTHH:mm")"
+                                               class="day-number text-decoration-none text-dark">
+                                                @day
+                                            </a>
+
+                                            <div class="calendar-events">
+                                                @foreach (var ev in eventsForDay)
+                                                {
+                                                    var badgeClass = "badge-other";
+
+                                                    if (ev.EventType == CalendarEventType.PublicHoliday)
+                                                        badgeClass = "badge-public";
+                                                    else if (ev.EventType == CalendarEventType.Meeting)
+                                                        badgeClass = "badge-meeting";
+                                                    else if (ev.EventType == CalendarEventType.AnnualLeave)
+                                                        badgeClass = "badge-leave";
+
+                                                    var displayTitle = ev.IsTodo
+                                                    ? $"To-Do: {ev.Title}"
+                                                    : ev.Title;
+
+                                                    if (ev.IsTodo)
+                                                    {
+                                                        <a asp-controller="calendar"
+                                                           asp-action="EmployeeEditTodo"
+                                                           asp-route-id="@ev.Id"
+                                                           class="badge calendar-event d-block mb-1 text-truncate @badgeClass text-decoration-none"
+                                                           title="@($"{displayTitle} | {ev.Start:HH\\:mm}-{ev.End:HH\\:mm}")">
+                                                            @displayTitle
+                                                        </a>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span class="badge calendar-event d-block mb-1 text-truncate @badgeClass"
+                                                              title="@($"{displayTitle} | {ev.Start:HH\\:mm}-{ev.End:HH\\:mm}")">
+                                                            @displayTitle
+                                                        </span>
+                                                    }
+                                                }
+
+                                                @foreach (var h in holidaysForDay)
+                                                {
+                                                    <span class="badge calendar-event d-block mb-1 text-truncate badge-public"
+                                                          title="@h.Name">
+                                                        @h.Name
+                                                    </span>
+                                                }
+                                            </div>
+                                        </td>
+
+                                        day++;
+                                    }
+                                }
+                            </tr>
                         }
                     }
                 </tbody>
@@ -232,7 +313,10 @@
             <span class="badge badge-public">Public Holiday</span>
             <span class="badge badge-meeting">Meeting</span>
             <span class="badge badge-leave">Annual Leave</span>
-            <span class="badge badge-other">Other</span>
+            <span class="badge badge-other">Other / To-Do</span>
         </div>
     </div>
 </div>
+
+
+

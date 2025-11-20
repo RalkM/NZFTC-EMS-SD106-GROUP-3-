@@ -1,14 +1,50 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "D:\\xampp\\htdocs\\NZFTC-EMS-SD106-GROUP-3-\\NZFTC-EMS\\",
+  "WorkspaceRootPath": "C:\\SD106-EMS-Group5-\\NZFTC-EMS-SD106-GROUP-3-\\NZFTC-EMS\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{427B2A8B-8A94-4595-9501-A49D687916B0}|NZFTC-EMS.csproj|d:\\xampp\\htdocs\\nzftc-ems-sd106-group-3-\\nzftc-ems\\views\\shared\\_portal_employeenav.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{427B2A8B-8A94-4595-9501-A49D687916B0}|NZFTC-EMS.csproj|solutionrelative:views\\shared\\_portal_employeenav.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{427B2A8B-8A94-4595-9501-A49D687916B0}|NZFTC-EMS.csproj|c:\\sd106-ems-group5-\\nzftc-ems-sd106-group-3-\\nzftc-ems\\models\\viewmodels\\calendarvm.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{427B2A8B-8A94-4595-9501-A49D687916B0}|NZFTC-EMS.csproj|solutionrelative:models\\viewmodels\\calendarvm.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{427B2A8B-8A94-4595-9501-A49D687916B0}|NZFTC-EMS.csproj|d:\\xampp\\htdocs\\nzftc-ems-sd106-group-3-\\nzftc-ems\\views\\shared\\_portal_adminnav.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{427B2A8B-8A94-4595-9501-A49D687916B0}|NZFTC-EMS.csproj|solutionrelative:views\\shared\\_portal_adminnav.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{427B2A8B-8A94-4595-9501-A49D687916B0}|NZFTC-EMS.csproj|c:\\sd106-ems-group5-\\nzftc-ems-sd106-group-3-\\nzftc-ems\\views\\website\\admin\\calendar_user.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{427B2A8B-8A94-4595-9501-A49D687916B0}|NZFTC-EMS.csproj|solutionrelative:views\\website\\admin\\calendar_user.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{427B2A8B-8A94-4595-9501-A49D687916B0}|NZFTC-EMS.csproj|c:\\sd106-ems-group5-\\nzftc-ems-sd106-group-3-\\nzftc-ems\\controllers\\calendar_controller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{427B2A8B-8A94-4595-9501-A49D687916B0}|NZFTC-EMS.csproj|solutionrelative:controllers\\calendar_controller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{427B2A8B-8A94-4595-9501-A49D687916B0}|NZFTC-EMS.csproj|c:\\sd106-ems-group5-\\nzftc-ems-sd106-group-3-\\nzftc-ems\\data\\entities\\calendarevent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{427B2A8B-8A94-4595-9501-A49D687916B0}|NZFTC-EMS.csproj|solutionrelative:data\\entities\\calendarevent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{427B2A8B-8A94-4595-9501-A49D687916B0}|NZFTC-EMS.csproj|c:\\sd106-ems-group5-\\nzftc-ems-sd106-group-3-\\nzftc-ems\\views\\website\\employee\\calendar_todo_edit.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{427B2A8B-8A94-4595-9501-A49D687916B0}|NZFTC-EMS.csproj|solutionrelative:views\\website\\employee\\calendar_todo_edit.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{427B2A8B-8A94-4595-9501-A49D687916B0}|NZFTC-EMS.csproj|c:\\sd106-ems-group5-\\nzftc-ems-sd106-group-3-\\nzftc-ems\\views\\website\\employee\\calendar_todo_create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{427B2A8B-8A94-4595-9501-A49D687916B0}|NZFTC-EMS.csproj|solutionrelative:views\\website\\employee\\calendar_todo_create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{427B2A8B-8A94-4595-9501-A49D687916B0}|NZFTC-EMS.csproj|c:\\sd106-ems-group5-\\nzftc-ems-sd106-group-3-\\nzftc-ems\\views\\website\\employee\\calendar_user.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{427B2A8B-8A94-4595-9501-A49D687916B0}|NZFTC-EMS.csproj|solutionrelative:views\\website\\employee\\calendar_user.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{427B2A8B-8A94-4595-9501-A49D687916B0}|NZFTC-EMS.csproj|c:\\sd106-ems-group5-\\nzftc-ems-sd106-group-3-\\nzftc-ems\\views\\website\\admin\\calendar_edit.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{427B2A8B-8A94-4595-9501-A49D687916B0}|NZFTC-EMS.csproj|solutionrelative:views\\website\\admin\\calendar_edit.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{427B2A8B-8A94-4595-9501-A49D687916B0}|NZFTC-EMS.csproj|c:\\sd106-ems-group5-\\nzftc-ems-sd106-group-3-\\nzftc-ems\\views\\website\\admin\\calendar_create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{427B2A8B-8A94-4595-9501-A49D687916B0}|NZFTC-EMS.csproj|solutionrelative:views\\website\\admin\\calendar_create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\SD106-EMS-Group5-\\NZFTC-EMS-SD106-GROUP-3-\\NZFTC-EMS\\Migrations\\20251120095516_AddCalendarEventPhase2Fields.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Migrations\\20251120095516_AddCalendarEventPhase2Fields.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{427B2A8B-8A94-4595-9501-A49D687916B0}|NZFTC-EMS.csproj|c:\\sd106-ems-group5-\\nzftc-ems-sd106-group-3-\\nzftc-ems\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{427B2A8B-8A94-4595-9501-A49D687916B0}|NZFTC-EMS.csproj|solutionrelative:appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
     }
   ],
   "DocumentGroupContainers": [
@@ -18,32 +54,154 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 8,
           "Children": [
             {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
+            },
+            {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "_portal_employeeNav.cshtml",
-              "DocumentMoniker": "D:\\xampp\\htdocs\\NZFTC-EMS-SD106-GROUP-3-\\NZFTC-EMS\\Views\\Shared\\_portal_employeeNav.cshtml",
-              "RelativeDocumentMoniker": "Views\\Shared\\_portal_employeeNav.cshtml",
-              "ToolTip": "D:\\xampp\\htdocs\\NZFTC-EMS-SD106-GROUP-3-\\NZFTC-EMS\\Views\\Shared\\_portal_employeeNav.cshtml",
-              "RelativeToolTip": "Views\\Shared\\_portal_employeeNav.cshtml",
-              "ViewState": "AgIAAAMAAAAAAAAAAAAAAAMAAAA7AAAAAAAAAA==",
+              "DocumentIndex": 4,
+              "Title": "calendar_todo_edit.cshtml",
+              "DocumentMoniker": "C:\\SD106-EMS-Group5-\\NZFTC-EMS-SD106-GROUP-3-\\NZFTC-EMS\\Views\\website\\employee\\calendar_todo_edit.cshtml",
+              "RelativeDocumentMoniker": "Views\\website\\employee\\calendar_todo_edit.cshtml",
+              "ToolTip": "C:\\SD106-EMS-Group5-\\NZFTC-EMS-SD106-GROUP-3-\\NZFTC-EMS\\Views\\website\\employee\\calendar_todo_edit.cshtml",
+              "RelativeToolTip": "Views\\website\\employee\\calendar_todo_edit.cshtml",
+              "ViewState": "AgIAAHEAAAAAAAAAAAAgwKEAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-11-20T06:58:36.51Z",
+              "WhenOpened": "2025-11-20T10:48:00.862Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "calendar_todo_create.cshtml",
+              "DocumentMoniker": "C:\\SD106-EMS-Group5-\\NZFTC-EMS-SD106-GROUP-3-\\NZFTC-EMS\\Views\\website\\employee\\calendar_todo_create.cshtml",
+              "RelativeDocumentMoniker": "Views\\website\\employee\\calendar_todo_create.cshtml",
+              "ToolTip": "C:\\SD106-EMS-Group5-\\NZFTC-EMS-SD106-GROUP-3-\\NZFTC-EMS\\Views\\website\\employee\\calendar_todo_create.cshtml",
+              "RelativeToolTip": "Views\\website\\employee\\calendar_todo_create.cshtml",
+              "ViewState": "AgIAAFoAAAAAAAAAAAAgwIoAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-20T10:47:33.145Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "calendar_edit.cshtml",
+              "DocumentMoniker": "C:\\SD106-EMS-Group5-\\NZFTC-EMS-SD106-GROUP-3-\\NZFTC-EMS\\Views\\website\\admin\\calendar_edit.cshtml",
+              "RelativeDocumentMoniker": "Views\\website\\admin\\calendar_edit.cshtml",
+              "ToolTip": "C:\\SD106-EMS-Group5-\\NZFTC-EMS-SD106-GROUP-3-\\NZFTC-EMS\\Views\\website\\admin\\calendar_edit.cshtml",
+              "RelativeToolTip": "Views\\website\\admin\\calendar_edit.cshtml",
+              "ViewState": "AgIAAD4AAAAAAAAAAAAgwFMAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-20T10:46:18.435Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "calendar_create.cshtml",
+              "DocumentMoniker": "C:\\SD106-EMS-Group5-\\NZFTC-EMS-SD106-GROUP-3-\\NZFTC-EMS\\Views\\website\\admin\\calendar_create.cshtml",
+              "RelativeDocumentMoniker": "Views\\website\\admin\\calendar_create.cshtml",
+              "ToolTip": "C:\\SD106-EMS-Group5-\\NZFTC-EMS-SD106-GROUP-3-\\NZFTC-EMS\\Views\\website\\admin\\calendar_create.cshtml",
+              "RelativeToolTip": "Views\\website\\admin\\calendar_create.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAATAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-20T10:45:40.101Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "_portal_adminNav.cshtml",
-              "DocumentMoniker": "D:\\xampp\\htdocs\\NZFTC-EMS-SD106-GROUP-3-\\NZFTC-EMS\\Views\\Shared\\_portal_adminNav.cshtml",
-              "RelativeDocumentMoniker": "Views\\Shared\\_portal_adminNav.cshtml",
-              "ToolTip": "D:\\xampp\\htdocs\\NZFTC-EMS-SD106-GROUP-3-\\NZFTC-EMS\\Views\\Shared\\_portal_adminNav.cshtml",
-              "RelativeToolTip": "Views\\Shared\\_portal_adminNav.cshtml",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAA3AAAAAAAAAA==",
+              "Title": "calendar_user.cshtml",
+              "DocumentMoniker": "C:\\SD106-EMS-Group5-\\NZFTC-EMS-SD106-GROUP-3-\\NZFTC-EMS\\Views\\website\\admin\\calendar_user.cshtml",
+              "RelativeDocumentMoniker": "Views\\website\\admin\\calendar_user.cshtml",
+              "ToolTip": "C:\\SD106-EMS-Group5-\\NZFTC-EMS-SD106-GROUP-3-\\NZFTC-EMS\\Views\\website\\admin\\calendar_user.cshtml",
+              "RelativeToolTip": "Views\\website\\admin\\calendar_user.cshtml",
+              "ViewState": "AgIAABsBAAAAAAAAAAAUwDQBAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-11-20T06:58:31.021Z"
+              "WhenOpened": "2025-11-20T10:22:29.56Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "calendar_user.cshtml",
+              "DocumentMoniker": "C:\\SD106-EMS-Group5-\\NZFTC-EMS-SD106-GROUP-3-\\NZFTC-EMS\\Views\\website\\employee\\calendar_user.cshtml",
+              "RelativeDocumentMoniker": "Views\\website\\employee\\calendar_user.cshtml",
+              "ToolTip": "C:\\SD106-EMS-Group5-\\NZFTC-EMS-SD106-GROUP-3-\\NZFTC-EMS\\Views\\website\\employee\\calendar_user.cshtml",
+              "RelativeToolTip": "Views\\website\\employee\\calendar_user.cshtml",
+              "ViewState": "AgIAACYBAAAAAAAAAAAUwD8BAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-20T10:09:52.435Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "calendar_controller.cs",
+              "DocumentMoniker": "C:\\SD106-EMS-Group5-\\NZFTC-EMS-SD106-GROUP-3-\\NZFTC-EMS\\Controllers\\calendar_controller.cs",
+              "RelativeDocumentMoniker": "Controllers\\calendar_controller.cs",
+              "ToolTip": "C:\\SD106-EMS-Group5-\\NZFTC-EMS-SD106-GROUP-3-\\NZFTC-EMS\\Controllers\\calendar_controller.cs",
+              "RelativeToolTip": "Controllers\\calendar_controller.cs",
+              "ViewState": "AgIAACEAAAAAAAAAAAAQwDgAAAAXAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-20T10:00:56.668Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "CalendarVm.cs",
+              "DocumentMoniker": "C:\\SD106-EMS-Group5-\\NZFTC-EMS-SD106-GROUP-3-\\NZFTC-EMS\\Models\\ViewModels\\CalendarVm.cs",
+              "RelativeDocumentMoniker": "Models\\ViewModels\\CalendarVm.cs",
+              "ToolTip": "C:\\SD106-EMS-Group5-\\NZFTC-EMS-SD106-GROUP-3-\\NZFTC-EMS\\Models\\ViewModels\\CalendarVm.cs",
+              "RelativeToolTip": "Models\\ViewModels\\CalendarVm.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-20T10:00:18.023Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "20251120095516_AddCalendarEventPhase2Fields.cs",
+              "DocumentMoniker": "C:\\SD106-EMS-Group5-\\NZFTC-EMS-SD106-GROUP-3-\\NZFTC-EMS\\Migrations\\20251120095516_AddCalendarEventPhase2Fields.cs",
+              "RelativeDocumentMoniker": "Migrations\\20251120095516_AddCalendarEventPhase2Fields.cs",
+              "ToolTip": "C:\\SD106-EMS-Group5-\\NZFTC-EMS-SD106-GROUP-3-\\NZFTC-EMS\\Migrations\\20251120095516_AddCalendarEventPhase2Fields.cs",
+              "RelativeToolTip": "Migrations\\20251120095516_AddCalendarEventPhase2Fields.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-20T09:55:16.792Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "CalendarEvent.cs",
+              "DocumentMoniker": "C:\\SD106-EMS-Group5-\\NZFTC-EMS-SD106-GROUP-3-\\NZFTC-EMS\\Data\\Entities\\CalendarEvent.cs",
+              "RelativeDocumentMoniker": "Data\\Entities\\CalendarEvent.cs",
+              "ToolTip": "C:\\SD106-EMS-Group5-\\NZFTC-EMS-SD106-GROUP-3-\\NZFTC-EMS\\Data\\Entities\\CalendarEvent.cs",
+              "RelativeToolTip": "Data\\Entities\\CalendarEvent.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABkAAAAUAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-20T09:50:07.32Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "C:\\SD106-EMS-Group5-\\NZFTC-EMS-SD106-GROUP-3-\\NZFTC-EMS\\appsettings.json",
+              "RelativeDocumentMoniker": "appsettings.json",
+              "ToolTip": "C:\\SD106-EMS-Group5-\\NZFTC-EMS-SD106-GROUP-3-\\NZFTC-EMS\\appsettings.json",
+              "RelativeToolTip": "appsettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAABpAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-11-20T08:42:00.5Z",
+              "EditorCaption": ""
             }
           ]
         }

@@ -1,0 +1,161 @@
+﻿@using NZFTC_EMS.Data.Entities
+@model CalendarEvent
+
+@{
+    Layout = ViewData["Layout"]?.ToString() ?? "~/Views/Shared/_portal.cshtml";
+    ViewData["Title"] = "Edit To-Do";
+}
+
+<style>
+    .calendar-wrapper {
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    .calendar-card {
+        background-color: #ffffff;
+        border-radius: 16px;
+        border: 1px solid #e1e1e1;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+        overflow: hidden;
+    }
+
+    .page-title {
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        font-weight: 700;
+    }
+
+    .field-label {
+        font-weight: 500;
+        font-size: 0.9rem;
+    }
+
+    .section-muted {
+        font-size: 0.85rem;
+        color: #6c757d;
+    }
+
+    .pill-date {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.25rem 0.75rem;
+        border-radius: 999px;
+        background-color: #e7f1ff;
+        color: #6aa7ff;
+        font-size: 0.85rem;
+        gap: 0.35rem;
+    }
+
+    .pill-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 999px;
+        background-color: #6aa7ff;
+    }
+</style>
+
+<div class="container py-4 calendar-wrapper">
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h3 class="m-0 fw-bold">My Calendar</h3>
+        <a asp-controller="calendar"
+           asp-action="UserCalendar"
+           asp-route-month="@Model.Start.Month"
+           asp-route-year="@Model.Start.Year"
+           class="btn btn-outline-secondary btn-sm">
+            Back to Calendar
+        </a>
+    </div>
+
+    <div class="calendar-card p-4">
+
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h4 class="page-title mb-1">EDIT TO-DO</h4>
+                <p class="section-muted mb-0">
+                    Update or remove this personal reminder.
+                </p>
+            </div>
+
+            <div class="text-end">
+                <div class="pill-date">
+                    <span class="pill-dot"></span>
+                    <span>
+                        @Model.Start.ToString("ddd, dd MMM yyyy")
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <!-- EDIT FORM -->
+        <form asp-controller="calendar"
+              asp-action="EmployeeEditTodo"
+              method="post"
+              class="row g-3">
+            @Html.AntiForgeryToken()
+            <input type="hidden" asp-for="Id" />
+
+            <div class="col-12">
+                <label asp-for="Title" class="form-label field-label"></label>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+
+            <div class="col-12">
+                <label asp-for="Description" class="form-label field-label"></label>
+                <textarea asp-for="Description" class="form-control" rows="3"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+
+            <div class="col-md-6">
+                <label asp-for="Start" class="form-label field-label">Start</label>
+                <input asp-for="Start" type="datetime-local" class="form-control" />
+                <span asp-validation-for="Start" class="text-danger"></span>
+            </div>
+
+            <div class="col-md-6">
+                <label asp-for="End" class="form-label field-label">End</label>
+                <input asp-for="End" type="datetime-local" class="form-control" />
+                <span asp-validation-for="End" class="text-danger"></span>
+            </div>
+
+            <div class="col-12 d-flex justify-content-between mt-3">
+                <a asp-controller="calendar"
+                   asp-action="UserCalendar"
+                   asp-route-month="@Model.Start.Month"
+                   asp-route-year="@Model.Start.Year"
+                   class="btn btn-outline-secondary">
+                    Cancel
+                </a>
+
+                <button type="submit" class="btn btn-primary">
+                    Save Changes
+                </button>
+            </div>
+        </form>
+
+        <!-- DELETE FORM (separate, not nested) -->
+        <div class="mt-3 text-end">
+            <form asp-controller="calendar"
+                  asp-action="EmployeeDeleteTodo"
+                  method="post"
+                  class="d-inline"
+                  onsubmit="return confirm('Are you sure you want to delete this to-do?');">
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="id" value="@Model.Id" />
+                <input type="hidden" name="month" value="@Model.Start.Month" />
+                <input type="hidden" name="year" value="@Model.Start.Year" />
+                <button type="submit" class="btn btn-outline-danger">
+                    Delete To-Do
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

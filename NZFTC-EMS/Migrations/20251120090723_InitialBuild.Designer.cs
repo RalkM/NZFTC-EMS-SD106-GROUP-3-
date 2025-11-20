@@ -12,8 +12,8 @@ using NZFTC_EMS.Data;
 namespace NZFTC_EMS.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20251120070430_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20251120090723_InitialBuild")]
+    partial class InitialBuild
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

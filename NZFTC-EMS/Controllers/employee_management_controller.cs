@@ -396,25 +396,31 @@ public async Task<IActionResult> Create(Employee model)
 
             string currentDept = emp.Department;
 
+            // If editing and JobPositionId is set, infer dept from job
             if (string.IsNullOrEmpty(currentDept) && emp.JobPositionId.HasValue)
             {
                 var jp = await _context.JobPositions.FindAsync(emp.JobPositionId.Value);
                 currentDept = jp?.Department;
             }
 
-            if (string.IsNullOrEmpty(currentDept))
+            // 🔹 Only auto-pick the first department for *existing* employees
+            bool isNew = emp.EmployeeId == 0;
+            if (!isNew && string.IsNullOrEmpty(currentDept))
+            {
                 currentDept = departments.FirstOrDefault() ?? string.Empty;
+            }
 
             emp.Department = currentDept;
 
             ViewBag.Departments = departments
                 .Select(d => new SelectListItem
                 {
-                    Text = d,
-                    Value = d,
-                    Selected = (d == currentDept)
+                    Text     = d,
+                    Value    = d,
+                    Selected = (d == currentDept && !string.IsNullOrEmpty(currentDept))
                 })
                 .ToList();
+
 
             // Job titles for selected department
             var jobs = await _context.JobPositions

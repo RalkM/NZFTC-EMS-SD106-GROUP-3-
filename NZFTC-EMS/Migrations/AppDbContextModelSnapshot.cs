@@ -481,10 +481,7 @@ namespace NZFTC_EMS.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("varchar(100)");
 
-                    b.Property<int?>("PayGradeId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("PayGradeId1")
+                    b.Property<int>("PayGradeId")
                         .HasColumnType("int");
 
                     b.HasKey("JobPositionId");
@@ -493,8 +490,6 @@ namespace NZFTC_EMS.Migrations
                         .IsUnique();
 
                     b.HasIndex("PayGradeId");
-
-                    b.HasIndex("PayGradeId1");
 
                     b.ToTable("jobpositions", (string)null);
 
@@ -1242,14 +1237,11 @@ namespace NZFTC_EMS.Migrations
 
             modelBuilder.Entity("NZFTC_EMS.Data.Entities.JobPosition", b =>
                 {
-                    b.HasOne("NZFTC_EMS.Data.Entities.PayGrade", null)
-                        .WithMany()
-                        .HasForeignKey("PayGradeId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
                     b.HasOne("NZFTC_EMS.Data.Entities.PayGrade", "PayGrade")
-                        .WithMany()
-                        .HasForeignKey("PayGradeId1");
+                        .WithMany("JobPositions")
+                        .HasForeignKey("PayGradeId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.Navigation("PayGrade");
                 });
@@ -1307,6 +1299,11 @@ namespace NZFTC_EMS.Migrations
                     b.Navigation("LeaveRequests");
 
                     b.Navigation("PayrollSummaries");
+                });
+
+            modelBuilder.Entity("NZFTC_EMS.Data.Entities.PayGrade", b =>
+                {
+                    b.Navigation("JobPositions");
                 });
 
             modelBuilder.Entity("NZFTC_EMS.Data.Entities.PayrollPeriod", b =>

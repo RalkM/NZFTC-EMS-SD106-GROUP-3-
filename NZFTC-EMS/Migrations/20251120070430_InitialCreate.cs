@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace NZFTC_EMS.Migrations
 {
     /// <inheritdoc />
-    public partial class FullSync : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -107,8 +107,7 @@ namespace NZFTC_EMS.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Department = table.Column<string>(type: "varchar(80)", maxLength: 80, nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    PayGradeId = table.Column<int>(type: "int", nullable: true),
-                    PayGradeId1 = table.Column<int>(type: "int", nullable: true),
+                    PayGradeId = table.Column<int>(type: "int", nullable: false),
                     AccessRole = table.Column<string>(type: "varchar(20)", maxLength: 20, nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Description = table.Column<string>(type: "varchar(400)", maxLength: 400, nullable: true)
@@ -124,11 +123,6 @@ namespace NZFTC_EMS.Migrations
                         principalTable: "paygrades",
                         principalColumn: "PayGradeId",
                         onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_jobpositions_paygrades_PayGradeId1",
-                        column: x => x.PayGradeId1,
-                        principalTable: "paygrades",
-                        principalColumn: "PayGradeId");
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -431,42 +425,42 @@ namespace NZFTC_EMS.Migrations
 
             migrationBuilder.InsertData(
                 table: "jobpositions",
-                columns: new[] { "JobPositionId", "AccessRole", "Department", "Description", "IsActive", "Name", "PayGradeId", "PayGradeId1" },
+                columns: new[] { "JobPositionId", "AccessRole", "Department", "Description", "IsActive", "Name", "PayGradeId" },
                 values: new object[,]
                 {
-                    { 1, "Admin", "Finance", "Top-level finance leadership", true, "Chief Financial Officer (CFO)", 10, null },
-                    { 2, "Admin", "Finance", "Leads the finance team and reporting", true, "Finance Manager", 9, null },
-                    { 3, "Employee", "Finance", "Handles complex accounting and reporting", true, "Senior Accountant", 8, null },
-                    { 4, "Employee", "Finance", "General accounting duties", true, "Accountant", 7, null },
-                    { 5, "Employee", "Finance", "Manages supplier invoices and payments", true, "Accounts Payable Officer", 3, null },
-                    { 6, "Employee", "Finance", "Manages customer invoicing and collections", true, "Accounts Receivable Officer", 3, null },
-                    { 7, "Employee", "Finance", "Processes staff payroll", true, "Payroll Officer", 6, null },
-                    { 8, "Employee", "Finance", "Provides general admin support to finance", true, "Finance Administrator", 2, null },
-                    { 9, "Employee", "Finance", "Prepares and manages billing", true, "Billing Specialist", 2, null },
-                    { 10, "Employee", "Finance", "Entry-level support in finance", true, "Accounts Assistant", 1, null },
-                    { 11, "Admin", "HR", "Leads HR operations and strategy", true, "HR Manager", 8, null },
-                    { 12, "Admin", "HR", "Senior advisory role in HR", true, "Senior HR Advisor", 7, null },
-                    { 13, "Admin", "HR", "Generalist HR support", true, "HR Advisor", 3, null },
-                    { 14, "Admin", "HR", "Coordinates HR processes and documentation", true, "HR Coordinator", 2, null },
-                    { 15, "Admin", "HR", "Admin support across HR functions", true, "HR Administrator", 1, null },
-                    { 16, "Admin", "HR", "Manages recruitment and selection", true, "Recruitment Specialist", 6, null },
-                    { 17, "Admin", "HR", "Supports talent acquisition activities", true, "Talent Acquisition Coordinator", 3, null },
-                    { 18, "Admin", "HR", "Coordinates training and staff development", true, "Training & Development Officer", 6, null },
-                    { 19, "Admin", "IT", "Leads IT operations and projects", true, "IT Manager", 8, null },
-                    { 20, "Employee", "IT", "Maintains servers and systems", true, "Systems Administrator", 3, null },
-                    { 21, "Employee", "IT", "Manages network infrastructure", true, "Network Administrator", 6, null },
-                    { 22, "Employee", "IT", "Develops and maintains software applications", true, "Software Developer", 6, null },
-                    { 23, "Employee", "IT", "Supports business applications", true, "Application Support Analyst", 3, null },
-                    { 24, "Employee", "IT", "First-line IT support", true, "IT Support Technician", 2, null },
-                    { 25, "Employee", "IT", "Handles basic IT helpdesk requests", true, "Helpdesk Support", 1, null },
-                    { 26, "Employee", "IT", "Manages databases and performance", true, "Database Administrator (DBA)", 6, null },
-                    { 27, "Admin", "Operations", "Oversees day-to-day operations", true, "Operations Manager", 8, null },
-                    { 28, "Employee", "Operations", "Leads an operations team", true, "Team Leader – Operations", 4, null },
-                    { 29, "Employee", "Operations", "Supervises operational staff", true, "Supervisor – Operations", 5, null },
-                    { 30, "Employee", "Operations", "Senior operations officer role", true, "Senior Officer – Operations", 3, null },
-                    { 31, "Employee", "Operations", "General office administration", true, "Office Administrator", 2, null },
-                    { 32, "Employee", "Operations", "Frontline customer service", true, "Customer Service Representative", 2, null },
-                    { 33, "Employee", "Operations", "Data entry and basic admin tasks", true, "Data Entry Operator", 1, null }
+                    { 1, "Admin", "Finance", "Top-level finance leadership", true, "Chief Financial Officer (CFO)", 10 },
+                    { 2, "Admin", "Finance", "Leads the finance team and reporting", true, "Finance Manager", 9 },
+                    { 3, "Employee", "Finance", "Handles complex accounting and reporting", true, "Senior Accountant", 8 },
+                    { 4, "Employee", "Finance", "General accounting duties", true, "Accountant", 7 },
+                    { 5, "Employee", "Finance", "Manages supplier invoices and payments", true, "Accounts Payable Officer", 3 },
+                    { 6, "Employee", "Finance", "Manages customer invoicing and collections", true, "Accounts Receivable Officer", 3 },
+                    { 7, "Employee", "Finance", "Processes staff payroll", true, "Payroll Officer", 6 },
+                    { 8, "Employee", "Finance", "Provides general admin support to finance", true, "Finance Administrator", 2 },
+                    { 9, "Employee", "Finance", "Prepares and manages billing", true, "Billing Specialist", 2 },
+                    { 10, "Employee", "Finance", "Entry-level support in finance", true, "Accounts Assistant", 1 },
+                    { 11, "Admin", "HR", "Leads HR operations and strategy", true, "HR Manager", 8 },
+                    { 12, "Admin", "HR", "Senior advisory role in HR", true, "Senior HR Advisor", 7 },
+                    { 13, "Admin", "HR", "Generalist HR support", true, "HR Advisor", 3 },
+                    { 14, "Admin", "HR", "Coordinates HR processes and documentation", true, "HR Coordinator", 2 },
+                    { 15, "Admin", "HR", "Admin support across HR functions", true, "HR Administrator", 1 },
+                    { 16, "Admin", "HR", "Manages recruitment and selection", true, "Recruitment Specialist", 6 },
+                    { 17, "Admin", "HR", "Supports talent acquisition activities", true, "Talent Acquisition Coordinator", 3 },
+                    { 18, "Admin", "HR", "Coordinates training and staff development", true, "Training & Development Officer", 6 },
+                    { 19, "Admin", "IT", "Leads IT operations and projects", true, "IT Manager", 8 },
+                    { 20, "Employee", "IT", "Maintains servers and systems", true, "Systems Administrator", 3 },
+                    { 21, "Employee", "IT", "Manages network infrastructure", true, "Network Administrator", 6 },
+                    { 22, "Employee", "IT", "Develops and maintains software applications", true, "Software Developer", 6 },
+                    { 23, "Employee", "IT", "Supports business applications", true, "Application Support Analyst", 3 },
+                    { 24, "Employee", "IT", "First-line IT support", true, "IT Support Technician", 2 },
+                    { 25, "Employee", "IT", "Handles basic IT helpdesk requests", true, "Helpdesk Support", 1 },
+                    { 26, "Employee", "IT", "Manages databases and performance", true, "Database Administrator (DBA)", 6 },
+                    { 27, "Admin", "Operations", "Oversees day-to-day operations", true, "Operations Manager", 8 },
+                    { 28, "Employee", "Operations", "Leads an operations team", true, "Team Leader – Operations", 4 },
+                    { 29, "Employee", "Operations", "Supervises operational staff", true, "Supervisor – Operations", 5 },
+                    { 30, "Employee", "Operations", "Senior operations officer role", true, "Senior Officer – Operations", 3 },
+                    { 31, "Employee", "Operations", "General office administration", true, "Office Administrator", 2 },
+                    { 32, "Employee", "Operations", "Frontline customer service", true, "Customer Service Representative", 2 },
+                    { 33, "Employee", "Operations", "Data entry and basic admin tasks", true, "Data Entry Operator", 1 }
                 });
 
             migrationBuilder.InsertData(
@@ -574,11 +568,6 @@ namespace NZFTC_EMS.Migrations
                 name: "IX_jobpositions_PayGradeId",
                 table: "jobpositions",
                 column: "PayGradeId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_jobpositions_PayGradeId1",
-                table: "jobpositions",
-                column: "PayGradeId1");
 
             migrationBuilder.CreateIndex(
                 name: "IX_leaverequests_ApprovedByEmployeeEmployeeId",

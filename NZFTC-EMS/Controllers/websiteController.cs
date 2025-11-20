@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NZFTC_EMS.Data;
-using NZFTC_EMS.Data.Entities;
 using System.Security.Cryptography;
 using System.Text;
 using System.Linq;

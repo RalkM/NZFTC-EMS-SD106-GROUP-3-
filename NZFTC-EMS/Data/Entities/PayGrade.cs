@@ -17,5 +17,7 @@ namespace NZFTC_EMS.Data.Entities
         public RateType RateType { get; set; }
 
         public bool IsActive { get; set; } = true;
+
+        public ICollection<JobPosition> JobPositions { get; set; } = new List<JobPosition>();
     }
 }

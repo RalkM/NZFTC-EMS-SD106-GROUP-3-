@@ -1,22 +1,14 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\denis\\source\\repos\\NZFTC-EMS-SD106-GROUP-3-\\NZFTC-EMS\\",
+  "WorkspaceRootPath": "D:\\xampp\\htdocs\\NZFTC-EMS-SD106-GROUP-3-\\NZFTC-EMS\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{427B2A8B-8A94-4595-9501-A49D687916B0}|NZFTC-EMS.csproj|c:\\users\\denis\\source\\repos\\nzftc-ems-sd106-group-3-\\nzftc-ems\\migrations\\20251119172906_fullsync.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{427B2A8B-8A94-4595-9501-A49D687916B0}|NZFTC-EMS.csproj|solutionrelative:migrations\\20251119172906_fullsync.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{427B2A8B-8A94-4595-9501-A49D687916B0}|NZFTC-EMS.csproj|d:\\xampp\\htdocs\\nzftc-ems-sd106-group-3-\\nzftc-ems\\views\\shared\\_portal_employeenav.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{427B2A8B-8A94-4595-9501-A49D687916B0}|NZFTC-EMS.csproj|solutionrelative:views\\shared\\_portal_employeenav.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{427B2A8B-8A94-4595-9501-A49D687916B0}|NZFTC-EMS.csproj|c:\\users\\denis\\source\\repos\\nzftc-ems-sd106-group-3-\\nzftc-ems\\data\\appdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{427B2A8B-8A94-4595-9501-A49D687916B0}|NZFTC-EMS.csproj|solutionrelative:data\\appdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{427B2A8B-8A94-4595-9501-A49D687916B0}|NZFTC-EMS.csproj|c:\\users\\denis\\source\\repos\\nzftc-ems-sd106-group-3-\\nzftc-ems\\nzftc-ems.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
-      "RelativeMoniker": "D:0:0:{427B2A8B-8A94-4595-9501-A49D687916B0}|NZFTC-EMS.csproj|solutionrelative:nzftc-ems.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{427B2A8B-8A94-4595-9501-A49D687916B0}|NZFTC-EMS.csproj|c:\\users\\denis\\source\\repos\\nzftc-ems-sd106-group-3-\\nzftc-ems\\controllers\\websitecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{427B2A8B-8A94-4595-9501-A49D687916B0}|NZFTC-EMS.csproj|solutionrelative:controllers\\websitecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{427B2A8B-8A94-4595-9501-A49D687916B0}|NZFTC-EMS.csproj|d:\\xampp\\htdocs\\nzftc-ems-sd106-group-3-\\nzftc-ems\\views\\shared\\_portal_adminnav.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{427B2A8B-8A94-4595-9501-A49D687916B0}|NZFTC-EMS.csproj|solutionrelative:views\\shared\\_portal_adminnav.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     }
   ],
   "DocumentGroupContainers": [
@@ -31,53 +23,27 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "20251119172906_FullSync.cs",
-              "DocumentMoniker": "C:\\Users\\denis\\source\\repos\\NZFTC-EMS-SD106-GROUP-3-\\NZFTC-EMS\\Migrations\\20251119172906_FullSync.cs",
-              "RelativeDocumentMoniker": "Migrations\\20251119172906_FullSync.cs",
-              "ToolTip": "C:\\Users\\denis\\source\\repos\\NZFTC-EMS-SD106-GROUP-3-\\NZFTC-EMS\\Migrations\\20251119172906_FullSync.cs",
-              "RelativeToolTip": "Migrations\\20251119172906_FullSync.cs",
-              "ViewState": "AgIAABwAAAAAAAAAAAAgwAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-19T17:29:07.019Z",
+              "Title": "_portal_employeeNav.cshtml",
+              "DocumentMoniker": "D:\\xampp\\htdocs\\NZFTC-EMS-SD106-GROUP-3-\\NZFTC-EMS\\Views\\Shared\\_portal_employeeNav.cshtml",
+              "RelativeDocumentMoniker": "Views\\Shared\\_portal_employeeNav.cshtml",
+              "ToolTip": "D:\\xampp\\htdocs\\NZFTC-EMS-SD106-GROUP-3-\\NZFTC-EMS\\Views\\Shared\\_portal_employeeNav.cshtml",
+              "RelativeToolTip": "Views\\Shared\\_portal_employeeNav.cshtml",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAAAMAAAA7AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-20T06:58:36.51Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "AppDbContext.cs",
-              "DocumentMoniker": "C:\\Users\\denis\\source\\repos\\NZFTC-EMS-SD106-GROUP-3-\\NZFTC-EMS\\Data\\AppDbContext.cs",
-              "RelativeDocumentMoniker": "Data\\AppDbContext.cs",
-              "ToolTip": "C:\\Users\\denis\\source\\repos\\NZFTC-EMS-SD106-GROUP-3-\\NZFTC-EMS\\Data\\AppDbContext.cs",
-              "RelativeToolTip": "Data\\AppDbContext.cs",
-              "ViewState": "AgIAAN4BAAAAAAAAAAAYwPUBAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-19T16:31:41.092Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "websiteController.cs",
-              "DocumentMoniker": "C:\\Users\\denis\\source\\repos\\NZFTC-EMS-SD106-GROUP-3-\\NZFTC-EMS\\Controllers\\websiteController.cs",
-              "RelativeDocumentMoniker": "Controllers\\websiteController.cs",
-              "ToolTip": "C:\\Users\\denis\\source\\repos\\NZFTC-EMS-SD106-GROUP-3-\\NZFTC-EMS\\Controllers\\websiteController.cs",
-              "RelativeToolTip": "Controllers\\websiteController.cs",
-              "ViewState": "AgIAAKIAAAAAAAAAAAAkwIsAAABGAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-19T15:54:28.651Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "NZFTC-EMS.csproj",
-              "DocumentMoniker": "C:\\Users\\denis\\Source\\Repos\\NZFTC-EMS-SD106-GROUP-3-\\NZFTC-EMS\\NZFTC-EMS.csproj",
-              "RelativeDocumentMoniker": "NZFTC-EMS.csproj",
-              "ToolTip": "C:\\Users\\denis\\Source\\Repos\\NZFTC-EMS-SD106-GROUP-3-\\NZFTC-EMS\\NZFTC-EMS.csproj",
-              "RelativeToolTip": "NZFTC-EMS.csproj",
-              "ViewState": "AgIAADAAAAAAAAAAAIAwwDwAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
-              "WhenOpened": "2025-11-19T14:27:49.134Z",
-              "EditorCaption": ""
+              "Title": "_portal_adminNav.cshtml",
+              "DocumentMoniker": "D:\\xampp\\htdocs\\NZFTC-EMS-SD106-GROUP-3-\\NZFTC-EMS\\Views\\Shared\\_portal_adminNav.cshtml",
+              "RelativeDocumentMoniker": "Views\\Shared\\_portal_adminNav.cshtml",
+              "ToolTip": "D:\\xampp\\htdocs\\NZFTC-EMS-SD106-GROUP-3-\\NZFTC-EMS\\Views\\Shared\\_portal_adminNav.cshtml",
+              "RelativeToolTip": "Views\\Shared\\_portal_adminNav.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAA3AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-20T06:58:31.021Z"
             }
           ]
         }

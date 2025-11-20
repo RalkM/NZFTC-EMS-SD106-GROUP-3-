@@ -11,16 +11,13 @@ namespace NZFTC_EMS.Data.Entities
 
         [MaxLength(80)]
         public string? Department { get; set; }       // e.g. Accounting, HR
+       public int PayGradeId { get; set; }
 
-        public int? PayGradeId { get; set; }
-        public PayGrade? PayGrade { get; set; }
+    // Navigation
+    public PayGrade PayGrade { get; set; } = null!;
 
-        [MaxLength(20)]
-        public string? AccessRole { get; set; }       // "Admin" or "Employee"
-
-        [MaxLength(400)]
-        public string? Description { get; set; }
-
-        public bool IsActive { get; set; } = true;
-    }
+    public string? AccessRole { get; set; }
+    public string? Description { get; set; }
+    public bool IsActive { get; set; } = true;
+}
 }

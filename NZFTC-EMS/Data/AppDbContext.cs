@@ -260,11 +260,13 @@ namespace NZFTC_EMS.Data
 
                 e.Property(x => x.IsActive).IsRequired();
 
-                e.HasOne<PayGrade>()
-                    .WithMany()
-                    .HasForeignKey(x => x.PayGradeId)
-                    .OnDelete(DeleteBehavior.Restrict);
+                // 🔹 Tie FK + navigation together so EF only makes ONE relationship
+                e.HasOne(x => x.PayGrade)
+                .WithMany(pg => pg.JobPositions)
+                .HasForeignKey(x => x.PayGradeId)
+                .OnDelete(DeleteBehavior.Restrict);
             });
+
 
 
             // ======================

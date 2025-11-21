@@ -1,32 +1,18 @@
-﻿<nav class="container-fluid">
+﻿<link rel="stylesheet" href="~/css/nav_employee.css" asp-append-version="true" />
+
+<nav class="container-fluid">
     <div class="container">
         <a class="navbar-brand" asp-controller="Website" asp-action="Portal">
             <img src="~/lib/Image-white.png" alt="NZFTC-EMS" asp-append-version="true" />
         </a>
 
         <div class="navLinks">
-            <!-- Dashboard -->
             <a class="nav-link active" asp-controller="Website" asp-action="Portal">Dashboard</a>
-
-            <!-- Profile -->
-            <a class="nav-link" asp-controller="Employee_Profile" asp-action="Profile">Profile</a>
-
-            <!-- Updated Leave Page -->
-            <a class="nav-link" asp-controller="leave_management" asp-action="Dashboard">
-                Apply for Leave
-            </a>
-
-            <!-- Updated Payroll Page -->
-            <a class="nav-link" asp-controller="payroll_management" asp-action="Payslip">
-                Payslip
-            </a>
-
-            <!-- Calendar -->
-            <a class="nav-link" asp-controller="calendar" asp-action="UserCalendar">Calendar</a>
-
-            <!-- Support (grievances) -->
-             <a class="nav-link" asp-controller="Support_Client" asp-action="Index">Support</a>
-
+            <a class="nav-link" asp-controller="Employee_Profile" asp-action="Profile">MyProfile</a>
+            <a class="nav-link" asp-controller="leave_management" asp-action="Dashboard">Leave Application</a>
+            <a class="nav-link" asp-controller="payroll_management" asp-action="Payslip">MyPayslip</a>
+            <a class="nav-link" asp-controller="calendar" asp-action="UserCalendar">MyCalendar</a>
+            <a class="nav-link" asp-controller="Support_Client" asp-action="Index">Support</a>
         </div>
 
         <div class="utilities">

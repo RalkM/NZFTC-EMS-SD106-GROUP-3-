@@ -1,25 +1,328 @@
-﻿@{
+﻿@using NZFTC_EMS.Models.ViewModels
+
+@{
     ViewData["Title"] = "Portal";
-    var role = Context.Session.GetString("Role");
-    var fullName = Context.Session.GetString("FullName") ?? "Employee";
+
+    var role     = (string?)ViewBag.Role     ?? "Employee";
+    var fullName = (string?)ViewBag.FullName ?? "User";
+
+    var admin = ViewBag.AdminVm    as AdminDashboardVm    ?? new AdminDashboardVm();
+    var emp   = ViewBag.EmployeeVm as EmployeeDashboardVm ?? new EmployeeDashboardVm();
+
+    bool isAdmin = role.Equals("Admin", StringComparison.OrdinalIgnoreCase)
+                || role.Equals("HR",    StringComparison.OrdinalIgnoreCase);
+
+    int grievancesInProgress        = ViewBag.GrievancesInProgress        is int gip ? gip : 0;
+    int grievancesResolvedLast30    = ViewBag.GrievancesResolvedLast30Days is int gr ? gr : 0;
+    int employeeOpenTickets         = ViewBag.EmployeeOpenTicketsCount    is int eot ? eot : 0;
 }
 
-<div class="container mt-4">
+    <link rel="stylesheet" href="~/css/dashboard.css" asp-append-version="true" />
 
-    @if (role == "Admin")
+<main class="portal-main">
+
+    @* ================= ADMIN DASHBOARD ================= *@
+    @if (isAdmin)
     {
-        <h2>Welcome, @fullName</h2>
-       <h3>Dashboard here</h3>
+        <section class="dashboard admin-dashboard">
+                <div>
+                    <h1>Welcome, @fullName</h1>
+                    <p class="dash-subtitle">@DateTime.Today</p>
+                </div>
+                <div class="dash-user">
+                    <div class="avatar-circle">@fullName.First()</div>
+                    <div class="dash-user-meta">
+                        <span class="dash-user-name">@fullName</span>
+                        <span class="dash-user-role">Admin</span>
+                    </div>
+                </div>
+
+            <!-- KPI STRIP -->
+            <section class="dash-kpis">
+                <article class="kpi-card">
+                    <span class="kpi-label">Total Employees</span>
+                    <span class="kpi-value">@admin.TotalEmployees</span>
+                    <span class="kpi-meta">Company-wide headcount</span>
+                </article>
+                <article class="kpi-card">
+                    <span class="kpi-label">Active Leave Today</span>
+                    <span class="kpi-value">@admin.ActiveLeave</span>
+                    <span class="kpi-meta">Employees currently on leave</span>
+                </article>
+                <article class="kpi-card">
+                    <span class="kpi-label">Pending Leave Requests</span>
+                    <span class="kpi-value">@admin.PendingLeave</span>
+                    <span class="kpi-meta">Awaiting approval</span>
+                </article>
+                <article class="kpi-card kpi-accent">
+                    <span class="kpi-label">Open Grievances</span>
+                    <span class="kpi-value">@admin.OpenGrievances</span>
+                    <span class="kpi-meta">Support tickets open / in progress</span>
+                </article>
+            </section>
+
+            <!-- QUICK ACTIONS -->
+            <section class="dash-quick-actions">
+                <a asp-controller="Employees" asp-action="Create" class="chip-btn">+ Add employee</a>
+                <a asp-controller="LeaveManagement" asp-action="Index" class="chip-btn">Review approvals</a>
+                <a asp-controller="PayrollManagement" asp-action="Index" class="chip-btn">Run payroll</a>
+            </section>
+
+            <!-- MIDDLE BAND: 2 COLUMNS -->
+            <section class="dash-grid dash-grid-2">
+                <!-- People & Approvals -->
+                <div class="dash-column">
+                    <article class="dash-card">
+                        <div class="dash-card-header">
+                            <h2>Employee Summary</h2>
+                            <div class="dash-actions">
+                                <a asp-controller="Employees" asp-action="Index" class="btn-secondary">View all</a>
+                            </div>
+                        </div>
+                        <ul class="dash-list">
+                            <li><strong>@admin.TotalEmployees</strong> employees in the system</li>
+                            <li><strong>@admin.ActiveLeave</strong> currently on leave</li>
+                            <li><strong>@admin.PendingLeave</strong> leave requests awaiting approval</li>
+                        </ul>
+                    </article>
+
+                    <article class="dash-card dash-card-primary">
+                        <div class="dash-card-header">
+                            <h2>Items Awaiting Your Review</h2>
+                            <div class="dash-pill-group">
+                                <button class="pill active">Leave (@admin.PendingLeaveRequests)</button>
+                                <button class="pill">Support (@admin.PendingSupportTickets)</button>
+                            </div>
+                        </div>
+                        <div class="dash-table">
+                            <div class="dash-table-row">
+                                <span>Leave requests</span>
+                                <span class="dash-tag warning">Pending: @admin.PendingLeaveRequests</span>
+                                <span class="dash-table-meta">check Leave Management</span>
+                            </div>
+                            <div class="dash-table-row">
+                                <span>Support tickets</span>
+                                <span class="dash-tag info">Open: @admin.PendingSupportTickets</span>
+                                <span class="dash-table-meta">check Support Tickets</span>
+                            </div>
+                        </div>
+                        <div class="dash-card-footer">
+                            <a asp-controller="LeaveManagement" asp-action="Index" class="btn-light">Review all approvals</a>
+                        </div>
+                    </article>
+                </div>
+
+                <!-- Payroll & Grievances -->
+                <div class="dash-column">
+                    <article class="dash-card">
+                        <div class="dash-card-header">
+                            <h2>Payroll Overview</h2>
+                            <a asp-controller="PayrollManagement" asp-action="Index" class="btn-secondary">View payroll</a>
+                        </div>
+                        <div class="dash-mini-chart">
+                            <div class="chart-placeholder">[ Sparkline – last 6 periods ]</div>
+                            <div class="chart-meta">
+                                <p><strong>Next run:</strong> soon</p>
+                                <p><strong>Latest totals</strong> available in Payroll Management.</p>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="dash-card">
+                        <div class="dash-card-header">
+                            <h2>Grievances Overview</h2>
+                            <a asp-controller="Support_Management" asp-action="Index" class="btn-secondary">View tickets</a>
+                        </div>
+                        <div class="dash-mini-chart dash-mini-chart--split">
+                            <div class="chart-placeholder">[ Donut • Open / In progress / Resolved ]</div>
+                            <ul class="dash-legend">
+                                <li><span class="legend-dot dot-open"></span>Open / in progress: @admin.OpenGrievances</li>
+                                <li><span class="legend-dot dot-progress"></span>In progress: @grievancesInProgress</li>
+                                <li><span class="legend-dot dot-resolved"></span>Resolved (30d): @grievancesResolvedLast30</li>
+                            </ul>
+                        </div>
+                        <p class="dash-note">
+                            Use the Support Tickets page to follow up on open cases and close resolved grievances.
+                        </p>
+                    </article>
+                </div>
+            </section>
+
+            <!-- BOTTOM BAND -->
+            <section class="dash-grid dash-grid-3">
+                <article class="dash-card">
+                    <div class="dash-card-header">
+                        <h2>Recent Activity</h2>
+                    </div>
+                    <ul class="timeline">
+                        <li>
+                            <span class="timeline-dot"></span>
+                            <div>
+                                <p>HR &amp; payroll events will appear here.</p>
+                                <span class="timeline-meta">Coming soon</span>
+                            </div>
+                        </li>
+                    </ul>
+                </article>
+
+                <article class="dash-card">
+                    <div class="dash-card-header">
+                        <h2>Upcoming Dates</h2>
+                    </div>
+                    <ul class="dash-list">
+                        <li>Use MyCalendar to add key HR / payroll events.</li>
+                    </ul>
+                </article>
+
+                <article class="dash-card">
+                    <div class="dash-card-header">
+                        <h2>Announcements</h2>
+                    </div>
+                    <ul class="dash-list">
+                        <li>You can use this space for quick company-wide notes.</li>
+                    </ul>
+                </article>
+            </section>
+        </section>
     }
-    else if (role == "Employee")
+
+    @* ================= EMPLOYEE DASHBOARD ================= *@
+    @if (!isAdmin)
     {
-        <h2>Welcome, @fullName</h2>
-        <h3>Dashboard here</h3>
+        <section class="dashboard employee-dashboard">
+                <div>
+                    <h1>Welcome, @emp.FullName</h1>
+                    <p class="dash-subtitle">Here’s a snapshot of your employment info</p>
+                </div>
+
+            <!-- KPI STRIP -->
+            <section class="dash-kpis">
+                <article class="kpi-card">
+                    <span class="kpi-label">Annual Salary</span>
+                    <span class="kpi-value">@emp.AnnualSalary.ToString("N2")</span>
+                    <span class="kpi-meta">Based on your latest pay rate</span>
+                </article>
+                <article class="kpi-card">
+                    <span class="kpi-label">YTD Total Earnings</span>
+                    <span class="kpi-value">@emp.YtdEarnings.ToString("N2")</span>
+                    <span class="kpi-meta">Since the start of the tax year</span>
+                </article>
+                <article class="kpi-card">
+                    <span class="kpi-label">Annual Leave</span>
+                    <span class="kpi-value">@emp.AnnualLeaveHours.ToString("0.0") hrs</span>
+                    <span class="kpi-meta">Remaining balance</span>
+                </article>
+                <article class="kpi-card">
+                    <span class="kpi-label">Sick Leave</span>
+                    <span class="kpi-value">@emp.SickLeaveHours.ToString("0.0") hrs</span>
+                    <span class="kpi-meta">Remaining balance</span>
+                </article>
+            </section>
+
+            <!-- QUICK ACTIONS -->
+            <section class="dash-quick-actions">
+                <a asp-controller="LeaveApplication" asp-action="Create" class="chip-btn">+ Apply for leave</a>
+                <a asp-controller="MyPayslip" asp-action="Index" class="chip-btn">View latest payslip</a>
+                <a asp-controller="Support_Client" asp-action="Index" class="chip-btn">Submit support ticket</a>
+            </section>
+
+            <!-- MIDDLE BAND -->
+            <section class="dash-grid dash-grid-2">
+                <div class="dash-column">
+                    <article class="dash-card">
+                        <div class="dash-card-header">
+                            <h2>My Profile</h2>
+                            <a asp-controller="MyProfile" asp-action="Index" class="btn-secondary">View full profile</a>
+                        </div>
+                        <div class="profile-summary">
+                            <div class="avatar-circle">@emp.FullName.First()</div>
+                            <div class="profile-info">
+                                <p class="profile-name">@emp.FullName</p>
+                                <p class="profile-meta">
+                                    Birthday: @(emp.Birthday == DateTime.MinValue ? "N/A" : emp.Birthday.ToString("dd MMM yyyy"))<br />
+                                    Gender: @emp.Gender
+                                </p>
+                            </div>
+                        </div>
+                        <div class="dash-card-footer">
+                            <a asp-controller="MyProfile" asp-action="Edit" class="btn-primary">Edit profile</a>
+                        </div>
+                    </article>
+                </div>
+
+                <div class="dash-column">
+                    <article class="dash-card">
+                        <div class="dash-card-header">
+                            <h2>Leave Requests</h2>
+                            <a asp-controller="LeaveApplication" asp-action="Index" class="btn-secondary">View all</a>
+                        </div>
+                        <div class="dash-pill-group">
+                            <button class="pill active">Upcoming</button>
+                            <button class="pill">History</button>
+                        </div>
+                        <div class="dash-table">
+                            <div class="dash-table-row">
+                                <span>Your upcoming leave requests will appear here.</span>
+                            </div>
+                        </div>
+                        <div class="dash-card-footer">
+                            <a asp-controller="LeaveApplication" asp-action="Create" class="btn-primary">+ New leave</a>
+                        </div>
+                    </article>
+                </div>
+            </section>
+
+            <!-- BOTTOM BAND -->
+            <section class="dash-grid dash-grid-2">
+                <article class="dash-card">
+                    <div class="dash-card-header">
+                        <h2>Recent Payslips</h2>
+                        <a asp-controller="MyPayslip" asp-action="Index" class="btn-secondary">View history</a>
+                    </div>
+                    <div class="dash-table">
+                        <div class="dash-table-row">
+                            <span>Your last 3 payslips will show here.</span>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="dash-card">
+                    <div class="dash-card-header">
+                        <h2>Support / Grievances</h2>
+                        <a asp-controller="Support_Client" asp-action="Index" class="btn-secondary">View all tickets</a>
+                    </div>
+                    <p class="dash-note">
+                        You have <strong>@employeeOpenTickets</strong> open support ticket@(employeeOpenTickets == 1 ? "" : "s").
+                    </p>
+                    <div class="dash-table">
+                        <div class="dash-table-row">
+                            <span>Your most recent ticket details will appear here.</span>
+                        </div>
+                    </div>
+                    <div class="dash-card-footer">
+                        <a asp-controller="Support_Client" asp-action="Index" class="btn-primary">Submit new ticket</a>
+                    </div>
+                </article>
+
+                 <article class="dash-card">
+                    <div class="dash-card-header">
+                        <h2>Upcoming Dates</h2>
+                    </div>
+                    <ul class="dash-list">
+                        <li>Use MyCalendar to add key HR / payroll events.</li>
+                    </ul>
+                </article>
+
+                <article class="dash-card">
+                    <div class="dash-card-header">
+                        <h2>Announcements</h2>
+                    </div>
+                    <ul class="dash-list">
+                        <li>You can use this space for quick company-wide notes.</li>
+                    </ul>
+                </article>
+            </section>
+        </section>
     }
-    else
-    {
-        <div class="alert alert-danger mt-3">
-            Role not recognized. Please log in again.
-        </div>
-    }
-</div>
+
+</main>

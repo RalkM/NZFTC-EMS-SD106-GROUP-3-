@@ -1,0 +1,390 @@
+ .portal-main {
+            padding: 24px 32px;
+            background: #f5f6fa;
+            min-height: 100vh;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        }
+
+        .dashboard {
+            max-width: 1320px;
+            margin: 0 auto 48px;
+        }
+
+        /* Header */
+        .dash-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .dash-header h1 {
+            font-size: 32px;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .dash-subtitle {
+            margin: 4px 0 0;
+            color: #6c757d;
+            font-size: 14px;
+        }
+
+        .dash-user {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .avatar-circle {
+            width: 40px;
+            height: 40px;
+            border-radius: 999px;
+            background: #0d6efd;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+        }
+
+        .dash-user-name {
+            display: block;
+            font-weight: 600;
+        }
+
+        .dash-user-role {
+            font-size: 12px;
+            color: #6c757d;
+        }
+
+        /* KPI cards */
+        .dash-kpis {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 16px;
+            margin-bottom: 12px;
+        }
+
+        .kpi-card {
+            background: #fff;
+            border-radius: 14px;
+            padding: 16px 20px;
+            box-shadow: 0 2px 6px rgba(15, 23, 42, 0.06);
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .kpi-accent {
+            border: 1px solid #0d6efd;
+        }
+
+        .kpi-label {
+            text-transform: uppercase;
+            font-size: 11px;
+            letter-spacing: 0.08em;
+            color: #6c757d;
+        }
+
+        .kpi-value {
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .kpi-meta {
+            font-size: 12px;
+            color: #6c757d;
+        }
+
+        /* Quick actions */
+        .dash-quick-actions {
+            margin: 10px 0 20px;
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .chip-btn {
+            border-radius: 999px;
+            border: 1px solid #dee2e6;
+            background: #fff;
+            padding: 6px 14px;
+            font-size: 13px;
+            cursor: pointer;
+        }
+
+        /* Grid / cards */
+        .dash-grid {
+            display: grid;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .dash-grid-2 {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .dash-grid-3 {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+
+        .dash-card {
+            background: #fff;
+            border-radius: 14px;
+            padding: 16px 20px;
+            box-shadow: 0 2px 6px rgba(15, 23, 42, 0.06);
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .dash-card-primary {
+            background: #0d6efd;
+            color: #fff;
+        }
+
+        .dash-card-primary .btn-light {
+            background: #fff;
+            color: #0d6efd;
+        }
+
+        .dash-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .dash-card-header h2 {
+            font-size: 16px;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .dash-card-footer {
+            padding-top: 6px;
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        /* Buttons */
+        .btn-primary,
+        .btn-secondary,
+        .btn-light {
+            border-radius: 10px;
+            border: none;
+            padding: 6px 14px;
+            font-size: 13px;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background: #0d6efd;
+            color: #fff;
+        }
+
+        .btn-secondary {
+            background: #f8f9fa;
+            color: #212529;
+            border: 1px solid #dee2e6;
+        }
+
+        .btn-light {
+            background: #fff;
+            color: #0d6efd;
+            border: 1px solid rgba(255, 255, 255, 0.7);
+        }
+
+        /* Pills */
+        .dash-pill-group {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .pill {
+            border-radius: 999px;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            background: transparent;
+            color: inherit;
+            font-size: 11px;
+            padding: 4px 10px;
+            cursor: pointer;
+        }
+
+        .pill.active {
+            background: #fff;
+            color: #0d6efd;
+        }
+
+        /* Lists & tables */
+        .dash-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            font-size: 14px;
+        }
+
+        .dash-list li + li {
+            margin-top: 4px;
+        }
+
+        .dash-table {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .dash-table-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 14px;
+        }
+
+        .dash-table-meta {
+            font-size: 12px;
+            color: #6c757d;
+        }
+
+        .dash-tag {
+            border-radius: 999px;
+            padding: 3px 8px;
+            font-size: 11px;
+            font-weight: 500;
+        }
+
+        .dash-tag.warning { background: #fff3cd; color: #856404; }
+        .dash-tag.info    { background: #cfe2ff; color: #084298; }
+        .dash-tag.success { background: #d1e7dd; color: #0f5132; }
+
+        /* Charts / legend placeholders */
+        .chart-placeholder {
+            border-radius: 10px;
+            border: 1px dashed #ced4da;
+            padding: 16px;
+            font-size: 12px;
+            color: #6c757d;
+            text-align: center;
+        }
+
+        .dash-mini-chart {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .dash-mini-chart--split {
+            align-items: flex-start;
+        }
+
+        .chart-meta p {
+            margin: 0 0 4px;
+            font-size: 13px;
+        }
+
+        .dash-legend {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            font-size: 13px;
+        }
+
+        .legend-dot {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 999px;
+            margin-right: 6px;
+        }
+
+        .dot-open     { background: #dc3545; }
+        .dot-progress { background: #ffc107; }
+        .dot-resolved { background: #198754; }
+
+        /* Timeline */
+        .timeline {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .timeline li {
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+            font-size: 14px;
+        }
+
+        .timeline-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 999px;
+            background: #0d6efd;
+            margin-top: 4px;
+        }
+
+        .timeline-meta {
+            font-size: 12px;
+            color: #6c757d;
+        }
+
+        /* Profile block */
+        .profile-summary {
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+        }
+
+        .profile-info {
+            font-size: 14px;
+        }
+
+        .profile-name {
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .profile-meta {
+            font-size: 13px;
+            color: #6c757d;
+            margin: 0 0 4px;
+        }
+
+        /* Notes */
+        .dash-note {
+            font-size: 13px;
+            color: #6c757d;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .dash-kpis {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+            .dash-grid-3 {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            .portal-main {
+                padding: 16px;
+            }
+            .dash-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+            }
+            .dash-kpis {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+            .dash-grid-2,
+            .dash-grid-3 {
+                grid-template-columns: minmax(0, 1fr);
+            }
+        }

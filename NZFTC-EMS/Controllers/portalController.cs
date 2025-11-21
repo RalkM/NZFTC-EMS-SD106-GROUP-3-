@@ -6,8 +6,7 @@ namespace NZFTC_EMS.Controllers
     {
         public IActionResult index()
         {
-            ViewData["Layout"] = "~/Views/Shared/_portal.cshtml"; // switch layout only for this page
-            return View("~/Views/website/portal.cshtml"); // renders Views/website/Authentication.cshtml
+             return RedirectToAction("Portal", "Website");
         }
         public IActionResult Support()
         {

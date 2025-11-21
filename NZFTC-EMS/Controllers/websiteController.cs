@@ -4,6 +4,9 @@ using NZFTC_EMS.Data;
 using System.Security.Cryptography;
 using System.Text;
 using System.Linq;
+using Microsoft.AspNetCore.Http;
+using NZFTC_EMS.Data.Entities;
+using NZFTC_EMS.Models.ViewModels;
 
 namespace NZFTC_EMS.Controllers
 {
@@ -23,17 +26,109 @@ namespace NZFTC_EMS.Controllers
             return View("~/Views/website/index.cshtml");
             }
 
-        // ============ PORTAL ============
-        // URL: /Website/Portal
-        public IActionResult Portal()
+// ============ PORTAL ============
+public async Task<IActionResult> Portal()
+{
+    var userId = HttpContext.Session.GetInt32("UserId");
+    if (userId == null)
+        return RedirectToAction("Authentication");
+
+    var role     = HttpContext.Session.GetString("Role")     ?? "Employee";
+    var fullName = HttpContext.Session.GetString("FullName") ?? "Employee";
+
+    ViewData["Layout"] = "~/Views/Shared/_portal.cshtml";
+
+    var adminVm    = new AdminDashboardVm();
+    var employeeVm = new EmployeeDashboardVm();
+
+    // ADMIN SIDE
+    if (role.Equals("Admin", StringComparison.OrdinalIgnoreCase) ||
+        role.Equals("HR",    StringComparison.OrdinalIgnoreCase))
+    {
+        var today = DateTime.Today;
+
+        adminVm.TotalEmployees = await _context.Employees.CountAsync();
+
+        adminVm.ActiveLeave = await _context.LeaveRequests
+            .CountAsync(l => l.Status == LeaveStatus.Approved &&
+                             l.StartDate <= today &&
+                             l.EndDate   >= today);
+
+        adminVm.PendingLeave = await _context.LeaveRequests
+            .CountAsync(l => l.Status == LeaveStatus.Pending);
+
+        // treat support tickets as grievances
+        adminVm.OpenGrievances = await _context.SupportTickets
+            .CountAsync(t => t.Status == SupportStatus.Open ||
+                             t.Status == SupportStatus.InProgress);
+
+        adminVm.PendingLeaveRequests = adminVm.PendingLeave;
+
+        adminVm.PendingSupportTickets = await _context.SupportTickets
+            .CountAsync(t => t.Status == SupportStatus.Open);
+
+        // extra breakdown for the donut + text
+        ViewBag.GrievancesInProgress = await _context.SupportTickets
+            .CountAsync(t => t.Status == SupportStatus.InProgress);
+
+        ViewBag.GrievancesResolvedLast30Days = await _context.SupportTickets
+            .CountAsync(t => t.Status == SupportStatus.Resolved &&
+                             t.UpdatedAt >= DateTime.UtcNow.AddDays(-30));
+    }
+    // EMPLOYEE SIDE
+    else
+    {
+        var emp = await _context.Employees
+            .Include(e => e.LeaveBalances)
+            .Include(e => e.PayrollSummaries)
+                .ThenInclude(ps => ps.PayrollPeriod)
+            .FirstOrDefaultAsync(e => e.EmployeeId == userId.Value);
+
+        if (emp != null)
         {
-            // use UserId as the "logged in" flag
-            var userId = HttpContext.Session.GetInt32("UserId");
-            if (userId == null)
-                return RedirectToAction("Authenticatiindex");
-            ViewData["Layout"] = "~/Views/Shared/_portal.cshtml";
-            return View("~/Views/website/portal.cshtml");
+            var latestBalance = emp.LeaveBalances
+                .OrderByDescending(b => b.UpdatedAt)
+                .FirstOrDefault();
+
+            decimal annualRemaining = latestBalance?.AnnualRemaining ?? 0m;
+            decimal sickRemaining   = latestBalance?.SickRemaining   ?? 0m;
+
+            var payrollSummaries = emp.PayrollSummaries;
+            decimal ytdEarnings  = payrollSummaries.Sum(p => p.NetPay);
+
+            var latestSummary = payrollSummaries
+                .OrderByDescending(p => p.PayrollPeriod.PeriodStart)
+                .FirstOrDefault();
+
+            decimal annualSalary = latestSummary?.PayRate ?? 0m;
+
+            employeeVm.AnnualSalary     = annualSalary;
+            employeeVm.YtdEarnings      = ytdEarnings;
+            employeeVm.AnnualLeaveHours = (double)annualRemaining;
+            employeeVm.SickLeaveHours   = (double)sickRemaining;
+            employeeVm.FullName         = emp.FullName;
+            employeeVm.Birthday         = emp.Birthday ?? DateTime.MinValue;
+            employeeVm.Gender           = emp.Gender ?? "Not specified";
+
+            // employee open support / grievances
+            var openTicketsCount = await _context.SupportTickets
+                .CountAsync(t => t.EmployeeId == emp.EmployeeId &&
+                                 (t.Status == SupportStatus.Open ||
+                                  t.Status == SupportStatus.InProgress));
+
+            ViewBag.EmployeeOpenTicketsCount = openTicketsCount;
         }
+    }
+
+    ViewBag.Role       = role;
+    ViewBag.FullName   = fullName;
+    ViewBag.AdminVm    = adminVm;
+    ViewBag.EmployeeVm = employeeVm;
+
+    return View("~/Views/website/portal.cshtml");
+}
+
+
 
         // ===== PASSWORD HELPERS =====
         private void CreatePasswordHash(string password, out byte[] hash, out byte[] salt)
@@ -201,6 +296,89 @@ HttpContext.Session.SetString("Username", $"{employee.FirstName} {employee.LastN
             // ✅ SUCCESS → go to /Website/Portal
             return RedirectToAction("Portal");
         }
+
+        // ============ ADMIN DASHBOARD ============
+public async Task<IActionResult> AdminDashboard()
+{
+    var userId = HttpContext.Session.GetInt32("UserId");
+    if (userId == null)
+        return RedirectToAction("Authentication");
+
+    ViewData["Layout"] = "~/Views/Shared/_portal.cshtml";
+
+    var today = DateTime.Today;
+
+    var vm = new AdminDashboardVm
+    {
+        TotalEmployees = await _context.Employees.CountAsync(),
+        ActiveLeave    = await _context.LeaveRequests
+                            .CountAsync(l => l.Status == LeaveStatus.Approved &&
+                                             l.StartDate <= today &&
+                                             l.EndDate   >= today),
+        PendingLeave   = await _context.LeaveRequests
+                            .CountAsync(l => l.Status == LeaveStatus.Pending),
+        OpenGrievances = await _context.Grievances
+                            .CountAsync(g => g.Status == GrievanceStatus.Open),
+
+        PendingLeaveRequests = await _context.LeaveRequests
+                                   .CountAsync(l => l.Status == LeaveStatus.Pending),
+        PendingSupportTickets = 0 // hook SupportTickets later
+    };
+
+    return View("~/Views/Website/portal.cshtml", vm);
+}
+
+// ============ EMPLOYEE DASHBOARD ============
+public async Task<IActionResult> EmployeeDashboard()
+{
+    var userId = HttpContext.Session.GetInt32("UserId");
+    if (userId == null)
+        return RedirectToAction("Authentication");
+
+    ViewData["Layout"] = "~/Views/Shared/_portal.cshtml";
+
+    var emp = await _context.Employees
+        .Include(e => e.LeaveBalances)
+        .Include(e => e.PayrollSummaries)
+            .ThenInclude(ps => ps.PayrollPeriod)
+        .FirstOrDefaultAsync(e => e.EmployeeId == userId.Value);
+
+    if (emp == null)
+    {
+        HttpContext.Session.Clear();
+        return RedirectToAction("Login");
+    }
+
+    var latestBalance = emp.LeaveBalances
+        .OrderByDescending(b => b.UpdatedAt)
+        .FirstOrDefault();
+
+    decimal annualRemaining = latestBalance?.AnnualRemaining ?? 0m;
+    decimal sickRemaining   = latestBalance?.SickRemaining   ?? 0m;
+
+    var payrollSummaries = emp.PayrollSummaries;
+    decimal ytdEarnings  = payrollSummaries.Sum(p => p.NetPay);
+
+ var latestSummary = payrollSummaries
+    .OrderByDescending(p => p.PayrollPeriod.PeriodStart)
+    .FirstOrDefault();
+
+
+    decimal annualSalary = latestSummary?.PayRate ?? 0m;
+
+    var vm = new EmployeeDashboardVm
+    {
+        AnnualSalary      = annualSalary,
+        YtdEarnings       = ytdEarnings,
+        AnnualLeaveHours  = (double)annualRemaining,
+        SickLeaveHours    = (double)sickRemaining,
+        FullName          = emp.FullName,
+        Birthday          = emp.Birthday ?? DateTime.MinValue,
+        Gender            = emp.Gender ?? "Not specified"
+    };
+
+    return View("~/Views/Website/portal.cshtml", vm);
+}
 
         // ============ LOGOUT ============
         public IActionResult Logout()

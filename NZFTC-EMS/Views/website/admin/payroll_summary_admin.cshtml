@@ -1,6 +1,10 @@
-﻿@model List<NZFTC_EMS.ViewModels.Payroll.PayrollSummaryVM>
+﻿@using NZFTC_EMS.ViewModels.Payroll
+@model IEnumerable<PayrollSummaryVM>
+
 @{
     Layout = "~/Views/Shared/_portal.cshtml";
+
+    
 }
 
 <div class="page-container">
@@ -48,44 +52,83 @@
         <div class="table-responsive">
             <table class="table table-hover align-middle styled-table mb-0">
                 <thead class="table-light">
-                    <tr>
-                        <th>Employee</th>
-                        <th>Rate</th>
-                        <th>Gross Pay</th>
-                        <th>PAYE</th>
-                        <th>KiwiSaver (Emp)</th>
-                        <th>KiwiSaver (Employer)</th>
-                        <th>ACC Levy</th>
-                        <th>Student Loan</th>
-                        <th>Net Pay</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
+    <tr>
+        <th>Employee</th>
+        <th>Rate</th>
+        <th>Hours</th>
+        <th>Gross Pay</th>
+        <th>PAYE</th>
+        <th>KiwiSaver (Emp)</th>
+        <th>KiwiSaver (Employer)</th>
+        <th>ACC Levy</th>
+        <th>Student Loan</th>
+        <th>Net Pay</th>
+        <th>Status</th>
+    </tr>
+</thead>
+
 
                 <tbody id="payrollTableBody">
-                    @foreach (var p in Model)
+                    @foreach (var row in Model)
                     {
                         <tr>
-                            <td>@p.EmployeeName</td>
+                            <td>@row.EmployeeName</td>
+                                    <!-- Rate -->
+        <td>$@row.PayRate.ToString("N2") (@row.RateType)</td>
 
-                            <td>$@p.PayRate.ToString("N2") (@p.RateType)</td>
+        <!-- Hours (Start, End, Break, Total) -->
+        <td style="min-width: 260px;">
+            <form asp-action="UpdateHours" method="post" class="d-flex flex-wrap align-items-center gap-1">
+                <input type="hidden" name="summaryId" value="@row.EmployeePayrollSummaryId" />
 
-                            <td class="fw-semibold text-primary">$@p.GrossPay.ToString("N2")</td>
+                <input type="time"
+                       name="startTime"
+                       value="@(row.StartTime.HasValue ? row.StartTime.Value.ToString(@"hh\:mm") : "07:00")"
+                       class="form-control form-control-sm" />
 
-                            <td>$@p.PAYE.ToString("N2")</td>
-                            <td>$@p.KiwiSaverEmployee.ToString("N2")</td>
-                            <td>$@p.KiwiSaverEmployer.ToString("N2")</td>
-                            <td>$@p.ACCLevy.ToString("N2")</td>
-                            <td>$@p.StudentLoan.ToString("N2")</td>
+                <span>–</span>
 
-                            <td class="fw-bold text-success">$@p.NetPay.ToString("N2")</td>
+                <input type="time"
+                       name="endTime"
+                       value="@(row.EndTime.HasValue ? row.EndTime.Value.ToString(@"hh\:mm") : "16:30")"
+                       class="form-control form-control-sm" />
+
+                <input type="number"
+                       name="breakMinutes"
+                       value="@row.BreakMinutes"
+                       min="0"
+                       class="form-control form-control-sm"
+                       style="width:80px;"
+                       placeholder="Break (min)" />
+
+                <button type="submit" class="btn btn-sm btn-outline-primary">
+                    Save
+                </button>
+            </form>
+
+            <div class="small text-muted mt-1">
+                Total: @row.TotalHours.ToString("N2") h
+            </div>
+        </td>
+
+        <!-- Gross Pay -->
+        <td class="fw-semibold text-primary">$@row.GrossPay.ToString("N2")</td>
+
+
+                            <td>@row.PAYE.ToString("N2")</td>
+                            <td>@row.KiwiSaverEmployee.ToString("N2")</td>
+                            <td>@row.KiwiSaverEmployer.ToString("N2")</td>
+                            <td>@row.ACCLevy.ToString("N2")</td>
+                            <td>@row.StudentLoan.ToString("N2")</td>
+
+                            <td class="fw-bold text-success">@row.NetPay.ToString("N2")</td>
 
                             <td>
-                                @if (p.Status == "Finalized")
+                                @if (row.Status == "Finalized")
                                 {
                                     <span class="badge bg-primary">Finalized</span>
                                 }
-                                else if (p.Status == "Paid")
+                                else if (row.Status == "Paid")
                                 {
                                     <span class="badge bg-success">Paid</span>
                                 }
@@ -93,6 +136,24 @@
                                 {
                                     <span class="badge bg-warning text-dark">Draft</span>
                                 }
+                            </td>
+
+                            <td style="max-width: 120px;">
+                                <form asp-action="UpdateHours" method="post" class="d-flex gap-1">
+                                    <input type="hidden" name="summaryId" value="@row.EmployeePayrollSummaryId" />
+
+                                    <input type="number"
+                                        step="0.01"
+                                        min="0"
+                                        name="totalHours"
+                                        value="@row.TotalHours"
+                                        class="form-control form-control-sm" />  
+                                </form>
+                            </td>
+                            <td>
+                                <button type="submit" class="btn btn-sm btn-primary">
+                                    Save
+                                </button>
                             </td>
                         </tr>
                     }
@@ -111,10 +172,11 @@
             Finalize Payroll
         </a>
 
-        <a href="/PayrollManagement/MarkPaid/@Model.First().EmployeePayrollSummaryId"
-           class="btn btn-success px-4">
-            Mark as Paid
-        </a>
+        <a href="/PayrollManagement/MarkPaid/@ViewBag.PeriodId"
+   class="btn btn-success px-4">
+    Mark as Paid
+</a>
+
 
     </div>
 

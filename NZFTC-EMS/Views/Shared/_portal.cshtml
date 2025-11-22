@@ -16,21 +16,20 @@
     <link rel="stylesheet" href="~/css/portal-StyleSheet.css" asp-append-version="true" />
 </head>
 
-<body>
+    <body>
+        <header class="border-right">
+                @await Html.PartialAsync(role == "Admin" ? "_portal_adminNav" : "_portal_employeeNav")
+        </header>
 
-    <header class="border-right">
-        @await Html.PartialAsync(
-        role == "Admin" ? "_portal_adminNav" : "_portal_employeeNav"
-                )
-    </header>
+        <!-- FIXED CONTENT WRAPPER -->
+        <main class="page-content">
+            @RenderBody()
+        </main>
+        </div>
 
-    <!-- FIXED CONTENT WRAPPER -->
-    <main class="page-content">
-        @RenderBody()
-    </main>
+        @RenderSection("Scripts", required: false)
 
-    @RenderSection("Scripts", required: false)
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
-</body>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="~/js/_portal.js"></script>
+    </body>
 </html>

@@ -20,5 +20,13 @@
         public decimal NetPay { get; set; }
 
         public string Status { get; set; } = string.Empty; // Draft, Finalized, Paid
+        public decimal TotalHours { get; set; }
+
+        public TimeSpan? StartTime { get; set; }
+public TimeSpan? EndTime { get; set; }
+public int BreakMinutes { get; set; }
+
+
+
     }
 }

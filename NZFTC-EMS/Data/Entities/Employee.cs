@@ -104,9 +104,6 @@ namespace NZFTC_EMS.Data.Entities
         public ICollection<EmployeePayrollSummary> PayrollSummaries { get; set; }
             = new List<EmployeePayrollSummary>();
 
-        public ICollection<Grievance> Grievances { get; set; }
-            = new List<Grievance>();
-
         public ICollection<EmployeeLeaveBalance> LeaveBalances { get; set; }
             = new List<EmployeeLeaveBalance>();
     }

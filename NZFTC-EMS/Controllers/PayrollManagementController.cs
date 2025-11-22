@@ -127,7 +127,10 @@ namespace NZFTC_EMS.Controllers
                 EmployeeName = x.Employee.FirstName + " " + x.Employee.LastName,
                 PayRate = x.PayRate,
                 RateType = x.Employee.PayGrade?.RateType.ToString() ?? "Unknown",
-
+    StartTime    = x.StartTime,
+    EndTime      = x.EndTime,
+    BreakMinutes = x.BreakMinutes,
+    TotalHours   = x.TotalHours,
                 GrossPay = x.GrossPay,
                 PAYE = Math.Round(x.Deductions, 2),
                 KiwiSaverEmployee = Math.Round(x.GrossPay * 0.03m, 2),
@@ -139,8 +142,46 @@ namespace NZFTC_EMS.Controllers
                 Status = x.Status.ToString()
             }).ToList();
 
-            return View("~/Views/website/admin/payroll_summary_admin.cshtml", vm);
+                ViewBag.PeriodId = id;
+    return View("~/Views/website/admin/payroll_summary_admin.cshtml", vm);
+
         }
+
+        // ============================================================
+        // ADMIN — UPDATE HOURS FOR ONE EMPLOYEE
+        // ============================================================
+        [HttpPost]
+        public async Task<IActionResult> UpdateHours(
+            int summaryId,
+            TimeSpan startTime,
+            TimeSpan endTime,
+            int breakMinutes)
+        {
+            try
+            {
+                await _payrollService.UpdateHoursAndRecalculateAsync(
+                    summaryId,
+                    startTime,
+                    endTime,
+                    breakMinutes);
+
+                TempData["Success"] = "Hours updated and payslip recalculated.";
+            }
+            catch (Exception ex)
+            {
+                TempData["Error"] = ex.Message;
+            }
+
+            // Get the period id so we can go back to summary page
+            var periodId = await _db.EmployeePayrollSummaries
+                .Where(x => x.EmployeePayrollSummaryId == summaryId)
+                .Select(x => x.PayrollPeriodId)
+                .FirstOrDefaultAsync();
+
+            return RedirectToAction("ViewSummary", new { id = periodId });
+        }
+
+
 
         // ============================================================
         // ADMIN — FINALIZE PAYROLL
@@ -206,12 +247,15 @@ namespace NZFTC_EMS.Controllers
         {
             int employeeId = GetEmployeeId();
 
-            var payslips = await _db.EmployeePayrollSummaries
-                .Include(x => x.PayrollPeriod)
-                .Where(x => x.EmployeeId == employeeId &&
-                            x.Status == PayrollSummaryStatus.Finalized)
-                .OrderByDescending(x => x.PayrollPeriod.PeriodStart)
-                .ToListAsync();
+                var payslips = await _db.EmployeePayrollSummaries
+        .Include(x => x.PayrollPeriod)
+        .Where(x => x.EmployeeId == employeeId &&
+               (x.Status == PayrollSummaryStatus.Finalized ||
+                x.Status == PayrollSummaryStatus.Paid))
+        .OrderByDescending(x => x.PayrollPeriod.PeriodStart)
+        .ToListAsync();
+
+
 
             return View("~/Views/website/employee/payslips.cshtml", payslips);
         }

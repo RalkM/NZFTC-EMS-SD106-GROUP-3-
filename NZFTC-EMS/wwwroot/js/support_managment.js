@@ -48,7 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const who = document.createElement('span');
             who.className = fromAdmin ? 'fw-semibold text-primary' : 'fw-semibold';
-            who.textContent = fromAdmin ? 'You (Admin)' : 'Employee';
+            who.textContent = fromAdmin ? 'Admin' : 'Employee';
 
             const time = document.createElement('span');
             time.className = 'text-muted';

@@ -18,7 +18,6 @@ namespace NZFTC_EMS.Data
         public DbSet<LeaveRequest> LeaveRequests => Set<LeaveRequest>();
         public DbSet<PayrollPeriod> PayrollPeriods => Set<PayrollPeriod>();
         public DbSet<EmployeePayrollSummary> EmployeePayrollSummaries => Set<EmployeePayrollSummary>();
-        public DbSet<Grievance> Grievances => Set<Grievance>();
         public DbSet<Holiday> Holidays => Set<Holiday>();
         public DbSet<EmployeeLeaveBalance> EmployeeLeaveBalances => Set<EmployeeLeaveBalance>();
 
@@ -28,8 +27,12 @@ namespace NZFTC_EMS.Data
 
         public DbSet<LeavePolicy> LeavePolicies => Set<LeavePolicy>();
         public DbSet<PayrollSettings> PayrollSettings => Set<PayrollSettings>();
+        public DbSet<EmployeeTimesheet> EmployeeTimesheets { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder b)
+
+        
         {
             base.OnModelCreating(b);
 
@@ -41,7 +44,6 @@ namespace NZFTC_EMS.Data
             ConfigureLeaveRequest(b);
             ConfigurePayrollPeriod(b);
             ConfigureEmployeePayrollSummary(b);
-            ConfigureGrievance(b);
             ConfigureHoliday(b);
             ConfigureSupportTicket(b);
             ConfigureSupportMessage(b);
@@ -253,19 +255,6 @@ namespace NZFTC_EMS.Data
                 e.Property(x => x.RateType)
                     .HasConversion<int>();
 
-            });
-        }
-
-
-
-
-        private void ConfigureGrievance(ModelBuilder b)
-        {
-            b.Entity<Grievance>(e =>
-            {
-                e.ToTable("grievances");
-                e.HasKey(x => x.GrievanceId);
-                e.Property(x => x.Subject).HasMaxLength(200).IsRequired();
             });
         }
 
@@ -496,7 +485,7 @@ namespace NZFTC_EMS.Data
                     Department = "HR",
                     JobPositionId = 11,     // HR Manager
                     PayGradeId = 8,
-                    EmployeeCode = "TEMP001",
+                    EmployeeCode = "NZFTC1001",
                     StartDate = new DateTime(2025, 11, 20),
                     Birthday = new DateTime(1990, 1, 1),
                     Gender = "Other",
@@ -513,7 +502,7 @@ namespace NZFTC_EMS.Data
                     Department = "IT",
                     JobPositionId = 22,  // Software Developer
                     PayGradeId = 6,
-                    EmployeeCode = "EMP1003",
+                    EmployeeCode = "NZFTC1003",
                     StartDate = new DateTime(2025, 11, 10),
                     Birthday = new DateTime(1997, 3, 12),
                     Gender = "Female",
@@ -530,7 +519,7 @@ namespace NZFTC_EMS.Data
                     Department = "Finance",
                     JobPositionId = 3,   // Senior Accountant
                     PayGradeId = 8,
-                    EmployeeCode = "EMP1004",
+                    EmployeeCode = "NZFTC1004",
                     StartDate = new DateTime(2025, 10, 5),
                     Birthday = new DateTime(1988, 9, 14),
                     Gender = "Male",
@@ -548,7 +537,7 @@ namespace NZFTC_EMS.Data
                     Department = "Finance",
                     JobPositionId = 4,     // Accountant
                     PayGradeId = 7,
-                    EmployeeCode = "EMP1002",
+                    EmployeeCode = "NZFTC1002",
                     StartDate = new DateTime(2025, 11, 20),
                     Birthday = new DateTime(1995, 5, 15),
                     Gender = "Male",
@@ -656,6 +645,7 @@ namespace NZFTC_EMS.Data
                     Id = 1,
                     TicketId = 1,
                     SenderEmployeeId = 1002,
+                    SenderIsAdmin = false,
                     Body = "Hi, I need help setting up my account.",
                     SentAt = new DateTime(2025, 11, 20, 9, 0, 0)
                 },
@@ -665,6 +655,7 @@ namespace NZFTC_EMS.Data
                     Id = 2,
                     TicketId = 1,
                     SenderEmployeeId = 1001,
+                    SenderIsAdmin = true,
                     Body = "Admin here — your account is now active!",
                     SentAt = new DateTime(2025, 11, 20, 9, 5, 0)
                 }

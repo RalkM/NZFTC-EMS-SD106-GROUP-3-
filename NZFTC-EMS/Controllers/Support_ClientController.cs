@@ -16,18 +16,12 @@ namespace NZFTC_EMS.Controllers
 
         // Resolve current employee id from Session or query
        // Resolve current employee id from Session or query
-        private Task<int?> GetEmployeeId()
+ private Task<int?> GetEmployeeId()
 {
-    var id = HttpContext.Session.GetInt32("UserId");
+    var id = HttpContext.Session.GetInt32("EmployeeId");
     return Task.FromResult<int?>(id);
 }
 
-
-
-
-
-
-        
     // PAGE
     [HttpGet("")]
     public IActionResult Index()

@@ -1,7 +1,11 @@
-﻿@model List<NZFTC_EMS.Data.Entities.EmployeePayrollSummary>
+﻿@using NZFTC_EMS.Data.Entities
+@model List<EmployeePayrollSummary>
+
+
 @{
     Layout = "~/Views/Shared/_portal.cshtml";
 }
+
 
 <div class="page-container">
 
@@ -26,73 +30,54 @@
         <div class="table-responsive">
             <table class="table table-hover align-middle styled-table mb-0">
 
-                <thead class="table-light">
-                    <tr>
-                        <th>Period</th>
-                        <th>Date Range</th>
-                        <th>Gross Pay</th>
-                        <th>Deductions</th>
-                        <th>Net Pay</th>
-                        <th>Status</th>
-                        <th></th>
-                    </tr>
-                </thead>
+               <thead>
+    <tr>
+        <th>Period</th>
+        <th>Gross</th>
+        <th>Net</th>
+        <th>Status</th>
+        <th></th>
+    </tr>
+</thead>
+<tbody>
+@foreach (NZFTC_EMS.Data.Entities.EmployeePayrollSummary s in Model)
+{
+    <tr>
+        <td>@s.PayrollPeriod.PeriodCode</td>
+        <td>@s.GrossPay.ToString("C")</td>
+        <td>@s.NetPay.ToString("C")</td>
+       <!-- Status -->
+<td>
+    @if (s.Status == PayrollSummaryStatus.Finalized)
+    {
+        <span class="badge bg-success px-3 py-2">Paid</span>
+    }
+    else if (s.Status == PayrollSummaryStatus.Paid)
+    {
+        <span class="badge bg-primary px-3 py-2">Finalized</span>
+    }
+    else
+    {
+        <span class="badge bg-warning text-dark px-3 py-2">@s.Status</span>
+    }
+</td>
 
-                <tbody>
-                    @foreach (var p in Model)
-                    {
-                        <tr>
-                            <!-- Period Code -->
-                            <td class="fw-semibold">@p.PayrollPeriod.PeriodCode</td>
+        <td>
+            <a asp-action="PayslipDetails"
+               asp-route-id="@s.EmployeePayrollSummaryId">
+                View
+            </a>
+        </td>
 
-                            <!-- Date Range -->
-                            <td>
-                                @p.PayrollPeriod.PeriodStart.ToShortDateString()
-                                –
-                                @p.PayrollPeriod.PeriodEnd.ToShortDateString()
-                            </td>
+        <a href="/PayrollManagement/PayslipDetails/@s.EmployeePayrollSummaryId"
+   class="btn btn-primary btn-sm px-3">
+    View
+</a>
 
-                            <!-- Gross Pay -->
-                            <td class="text-primary fw-bold">
-                                $@p.GrossPay.ToString("N2")
-                            </td>
+    </tr>
+}
+</tbody>
 
-                            <!-- Deductions -->
-                            <td>
-                                $@p.Deductions.ToString("N2")
-                            </td>
-
-                            <!-- Net Pay -->
-                            <td class="fw-bold text-success">
-                                $@p.NetPay.ToString("N2")
-                            </td>
-
-                            <!-- Status -->
-                            <td>
-                                @if (p.Status == NZFTC_EMS.Data.Entities.PayrollSummaryStatus.Finalized)
-                                {
-                                    <span class="badge bg-primary px-3 py-2">Finalized</span>
-                                }
-                                else if (p.Status == NZFTC_EMS.Data.Entities.PayrollSummaryStatus.Paid)
-                                {
-                                    <span class="badge bg-success px-3 py-2">Paid</span>
-                                }
-                                else
-                                {
-                                    <span class="badge bg-warning text-dark px-3 py-2">Draft</span>
-                                }
-                            </td>
-
-                            <!-- View Button -->
-                            <td class="text-end">
-                                <a href="/PayrollManagement/PayslipDetails/@p.EmployeePayrollSummaryId"
-                                   class="btn btn-primary btn-sm px-3">
-                                    View
-                                </a>
-                            </td>
-                        </tr>
-                    }
-                </tbody>
 
             </table>
         </div>

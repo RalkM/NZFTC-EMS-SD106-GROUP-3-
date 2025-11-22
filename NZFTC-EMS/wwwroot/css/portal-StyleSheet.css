@@ -17,19 +17,19 @@ html, body {
     background: var(--bg-light);
 }
 
-/* ================================
-   SIDEBAR
-================================ */
 header {
+    position: fixed; 
     width: var(--sidebar-width);
     height: 100vh;
     background-color: var(--primary-blue);
-    position: fixed;
     top: 0;
     left: 0;
     padding-top: 15px;
-    overflow-y: auto;
 }
+
+
+
+
 
 /* Navigation container */
 .border-right .container-fluid .container {
@@ -75,6 +75,63 @@ img {
 }
 
 /* ================================
+   HAMBURGER BUTTON
+================================ */
+.hamburger {
+    position: fixed;
+    top: 15px;
+    left: 15px;
+    width: 42px;
+    height: 42px;
+    border-radius: 999px;
+    border: none;
+    background: #ffffff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 100000;
+}
+
+/* ================================
+   RESPONSIVE SIDEBAR BEHAVIOUR
+================================ */
+
+/* Mobile & tablet: sidebar is off-canvas by default */
+@media (max-width: 991.98px) {
+
+    /* Hide sidebar off-screen */
+    header {
+        transform: translateX(-100%);
+    }
+
+    /* When toggled open */
+    body.sidebar-open header {
+        transform: translateX(0);
+    }
+
+    /* Content always full-width on small screens */
+    .page-content {
+        margin-left: 0;
+        width: 100%;
+    }
+}
+
+/* Desktop: sidebar fixed, content shifted (default behaviour already set) */
+@media (min-width: 992px) {
+    body.sidebar-open header {
+        transform: translateX(0);
+    }
+
+    body.sidebar-open .page-content {
+        margin-left: var(--sidebar-width);
+        width: calc(100% - var(--sidebar-width));
+    }
+}
+
+
+/* ================================
    MAIN CONTENT WRAPPER
 ================================ */
 .page-content {
@@ -83,6 +140,7 @@ img {
     min-height: 100vh;
     width: calc(100% - var(--sidebar-width));
     background: var(--bg-light);
+    transition: margin-left 0.25s ease, width 0.25s ease;
 }
 
 /* Optional general content spacing */
@@ -158,3 +216,5 @@ table.table {
         z-index: 1;
         background-color: #f8f9fa;
     }
+
+    

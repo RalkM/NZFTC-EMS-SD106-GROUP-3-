@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NZFTC_EMS.Data;
 
@@ -11,9 +12,11 @@ using NZFTC_EMS.Data;
 namespace NZFTC_EMS.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251122104845_initialMigration")]
+    partial class initialMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -370,18 +373,12 @@ namespace NZFTC_EMS.Migrations
                         .HasPrecision(14, 2)
                         .HasColumnType("decimal(14,2)");
 
-                    b.Property<int>("BreakMinutes")
-                        .HasColumnType("int");
-
                     b.Property<decimal>("Deductions")
                         .HasPrecision(14, 2)
                         .HasColumnType("decimal(14,2)");
 
                     b.Property<int>("EmployeeId")
                         .HasColumnType("int");
-
-                    b.Property<TimeSpan?>("EndTime")
-                        .HasColumnType("time(6)");
 
                     b.Property<DateTime>("GeneratedAt")
                         .HasColumnType("datetime(6)");
@@ -432,9 +429,6 @@ namespace NZFTC_EMS.Migrations
 
                     b.Property<int>("RateType")
                         .HasColumnType("int");
-
-                    b.Property<TimeSpan?>("StartTime")
-                        .HasColumnType("time(6)");
 
                     b.Property<byte>("Status")
                         .ValueGeneratedOnAdd()

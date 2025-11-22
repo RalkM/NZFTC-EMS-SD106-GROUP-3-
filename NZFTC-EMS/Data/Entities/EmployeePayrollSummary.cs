@@ -14,12 +14,15 @@ namespace NZFTC_EMS.Data.Entities
         public int EmployeeId { get; set; }
         public Employee Employee { get; set; } = null!;
 
+
         // ============================
         // PAY RATE & TYPE
         // ============================
         public decimal PayRate { get; set; }  // DECIMAL(12,2)
 
         public RateType RateType { get; set; }  // Hourly / Salary
+
+        public decimal GrossEarnings { get; set; }
 
 
         // ============================
@@ -35,6 +38,20 @@ namespace NZFTC_EMS.Data.Entities
         public decimal StudentLoan { get; set; }         // DECIMAL(14,2)
 
         public decimal Deductions { get; set; }          // DECIMAL(14,2)
+        // ============================
+        // HOURS WORKED (PER PERIOD)
+        // ============================
+        [DataType(DataType.Time)]
+        public TimeSpan? StartTime { get; set; }
+
+        [DataType(DataType.Time)]
+        public TimeSpan? EndTime { get; set; }
+
+        // Break duration in minutes (e.g. 30 for 30-min lunch)
+        public int BreakMinutes { get; set; }
+
+        // Total hours worked in this payroll period
+        public decimal TotalHours { get; set; }
 
 
         // ============================
@@ -50,5 +67,16 @@ namespace NZFTC_EMS.Data.Entities
         public PayrollSummaryStatus Status { get; set; } = PayrollSummaryStatus.Draft;
 
         public DateTime GeneratedAt { get; set; } = DateTime.UtcNow;
+
+    // Deductions:
+    public decimal PayeTax { get; set; }
+    public decimal OtherDeductions { get; set; }
+
+    [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+ 
+    // Optional: when actually paid
+    public DateTime? PaidAt { get; set; }
+
     }
-}
+    }
+

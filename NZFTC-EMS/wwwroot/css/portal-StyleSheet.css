@@ -1,119 +1,160 @@
 ﻿:root {
-    --font-sans: 'Poppins', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    --sidebar-width: 260px;
+    --bg-light: #f5f7fb;
+    --primary-blue: #0d52b9;
+    --font-sans: 'Poppins', system-ui, sans-serif;
 }
-
-html, body {
-    font-family: var(--font-sans);
-}
-
 
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Poppins', sans-serif;
+    font-family: var(--font-sans);
 }
 
-html {
-    scroll-behavior: smooth;
-}
-
-
-body {
+html, body {
     height: 100%;
-    display: flex;
-    flex-direction: row;
+    background: var(--bg-light);
 }
 
-header{
-    width: 20vw;
-    height: 120vh;
-    background-color: #0d52b9;
-    padding: 5px;
-    position: fixed;
-}
-
-
-.border-right .container-fluid .container{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
+/* ================================
+   SIDEBAR
+================================ */
+header {
+    width: var(--sidebar-width);
     height: 100vh;
-    padding: 20px 40px 40px 40px;
-}
-
-.navLinks{
-    display: flex;
-    justify-content: space-between;
-    flex-direction: column;
-    font-size:18px;
-    font-weight: 700;
-    color: rgb(219, 219, 219);
-    width: 15vw;
-    height: 70%;
-    padding: 0 40px 0 0;
-}
-
-.navLinks a{
-     display: flex;
-    justify-content: end;
-}
-
-.nav-link:hover{
-    color: #000000;
-    font-weight: 900;
-}
-
-.utilities{
-     display: flex;
-    flex-direction: row-reverse;
-    font-size:18px;
-    font-weight: 700;
-    color: rgb(219, 219, 219);
-    width: 100%;
-}
-
-.utilities a{
-    margin-left: 50px;
-}
-
-.div-container{
-    padding-left: 50px;
-    width: 100%;
-    margin-left: 90px;
-}
-
-
-img {
-    height: 12vh;
-}
-
-
-
-
-/* Portal Support */
-.gm-shell{max-width:1100px;margin:auto}
-.gm-card{border:1px solid #ddd;border-radius:.5rem}
-.gm-left{border-right:1px solid #eee}
-.gm-head{font-weight:600}
-.gm-table thead th{background:#e8f1fb;color:#0a6cc2}
-.gm-table tbody tr{cursor:pointer}
-.gm-table tbody tr.active{outline:2px solid #0d6efd}
-.gm-label{font-weight:600;color:#666}
-.gm-panel-title{background:#eee;padding:.5rem .75rem;border-radius:.35rem;margin-bottom:.5rem}
-.gm-textarea{min-height:120px}
-
-/* Job Position Management – scrollable table */
-.jobposition-table-wrapper {
-    max-height: 80vh;   /* change height if you want */
+    background-color: var(--primary-blue);
+    position: fixed;
+    top: 0;
+    left: 0;
+    padding-top: 15px;
     overflow-y: auto;
 }
 
-/* OPTIONAL: keep table header visible while scrolling */
-.jobposition-table-wrapper thead th {
-    position: sticky;
-    top: 0;
-    z-index: 1;
-    background-color: #f8f9fa; /* matches Bootstrap .table-light */
+/* Navigation container */
+.border-right .container-fluid .container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    justify-content: space-between;
 }
+
+/* Navigation links */
+.navLinks {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #e5e5e5;
+}
+
+    .navLinks a {
+        color: #e5e5e5;
+        text-decoration: none;
+        padding: 6px 0;
+    }
+
+        .navLinks a:hover {
+            color: #ffffff;
+            font-weight: 700;
+        }
+
+/* Bottom utilities */
+.utilities {
+    display: flex;
+    justify-content: flex-end;
+    gap: 25px;
+    color: #e5e5e5;
+}
+
+/* Logo */
+img {
+    height: 70px;
+    margin-bottom: 20px;
+}
+
+/* ================================
+   MAIN CONTENT WRAPPER
+================================ */
+.page-content {
+    margin-left: var(--sidebar-width);
+    padding: 30px;
+    min-height: 100vh;
+    width: calc(100% - var(--sidebar-width));
+    background: var(--bg-light);
+}
+
+/* Optional general content spacing */
+.page-wrapper,
+.div-container {
+    width: 100%;
+}
+
+/* Tables */
+table.table {
+    background: white;
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+/* Support page styles (keep your custom ones) */
+.gm-shell {
+    max-width: 1100px;
+    margin: auto
+}
+
+.gm-card {
+    border: 1px solid #ddd;
+    border-radius: .5rem
+}
+
+.gm-left {
+    border-right: 1px solid #eee
+}
+
+.gm-head {
+    font-weight: 600
+}
+
+.gm-table thead th {
+    background: #e8f1fb;
+    color: #0a6cc2
+}
+
+.gm-table tbody tr {
+    cursor: pointer
+}
+
+    .gm-table tbody tr.active {
+        outline: 2px solid #0d6efd
+    }
+
+.gm-label {
+    font-weight: 600;
+    color: #666
+}
+
+.gm-panel-title {
+    background: #eee;
+    padding: .5rem .75rem;
+    border-radius: .35rem;
+    margin-bottom: .5rem
+}
+
+.gm-textarea {
+    min-height: 120px
+}
+
+/* Job Position scroll behavior */
+.jobposition-table-wrapper {
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+    .jobposition-table-wrapper thead th {
+        position: sticky;
+        top: 0;
+        z-index: 1;
+        background-color: #f8f9fa;
+    }

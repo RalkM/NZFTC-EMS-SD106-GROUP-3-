@@ -12,8 +12,8 @@ using NZFTC_EMS.Data;
 namespace NZFTC_EMS.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20251120095516_AddCalendarEventPhase2Fields")]
-    partial class AddCalendarEventPhase2Fields
+    [Migration("20251122031431_InitialBuild")]
+    partial class InitialBuild
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -63,7 +63,7 @@ namespace NZFTC_EMS.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("CalendarEvents");
+                    b.ToTable("calendarevents", (string)null);
 
                     b.HasData(
                         new
@@ -160,11 +160,12 @@ namespace NZFTC_EMS.Migrations
                         {
                             EmployeeId = 1001,
                             Address = "N/A",
+                            Birthday = new DateTime(1990, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Department = "HR",
                             Email = "admin@nzftc.local",
                             EmployeeCode = "TEMP001",
                             FirstName = "Temp",
-                            Gender = "N/A",
+                            Gender = "Other",
                             JobPositionId = 11,
                             LastName = "Admin",
                             PasswordHash = new byte[0],
@@ -174,18 +175,53 @@ namespace NZFTC_EMS.Migrations
                         },
                         new
                         {
-                            EmployeeId = 1002,
-                            Address = "N/A",
-                            Department = "Operations",
-                            Email = "emp@nzftc.local",
-                            EmployeeCode = "TEMP002",
-                            FirstName = "Temp",
-                            Gender = "N/A",
-                            JobPositionId = 31,
-                            LastName = "Employee",
+                            EmployeeId = 1003,
+                            Address = "42 Eden Terrace",
+                            Birthday = new DateTime(1997, 3, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Department = "IT",
+                            Email = "sarah@nzftc.local",
+                            EmployeeCode = "EMP1003",
+                            FirstName = "Sarah",
+                            Gender = "Female",
+                            JobPositionId = 22,
+                            LastName = "Williams",
                             PasswordHash = new byte[0],
                             PasswordSalt = new byte[0],
-                            PayGradeId = 2,
+                            PayGradeId = 6,
+                            StartDate = new DateTime(2025, 11, 10, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            EmployeeId = 1004,
+                            Address = "19 Queen Street",
+                            Birthday = new DateTime(1988, 9, 14, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Department = "Finance",
+                            Email = "michael@nzftc.local",
+                            EmployeeCode = "EMP1004",
+                            FirstName = "Michael",
+                            Gender = "Male",
+                            JobPositionId = 3,
+                            LastName = "Brown",
+                            PasswordHash = new byte[0],
+                            PasswordSalt = new byte[0],
+                            PayGradeId = 8,
+                            StartDate = new DateTime(2025, 10, 5, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            EmployeeId = 1002,
+                            Address = "123 Finance Street",
+                            Birthday = new DateTime(1995, 5, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Department = "Finance",
+                            Email = "emp@nzftc.local",
+                            EmployeeCode = "EMP1002",
+                            FirstName = "TEMP",
+                            Gender = "Male",
+                            JobPositionId = 4,
+                            LastName = "Emp",
+                            PasswordHash = new byte[0],
+                            PasswordSalt = new byte[0],
+                            PayGradeId = 7,
                             StartDate = new DateTime(2025, 11, 20, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         });
                 });
@@ -230,18 +266,16 @@ namespace NZFTC_EMS.Migrations
                             EmergencyContactId = 1,
                             Email = "none@local",
                             EmployeeId = 1001,
-                            FullName = "Temp Admin Contact",
-                            Phone = "0000",
-                            Relationship = "N/A"
+                            FullName = "Admin Contact",
+                            Phone = "0000"
                         },
                         new
                         {
                             EmergencyContactId = 2,
-                            Email = "none@local",
+                            Email = "jane.doe@example.com",
                             EmployeeId = 1002,
-                            FullName = "Temp Employee Contact",
-                            Phone = "0000",
-                            Relationship = "N/A"
+                            FullName = "Jane Doe",
+                            Phone = "0211234567"
                         });
                 });
 
@@ -254,27 +288,22 @@ namespace NZFTC_EMS.Migrations
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("EmployeeLeaveBalanceId"));
 
                     b.Property<decimal>("AnnualAccrued")
-                        .HasPrecision(10, 2)
-                        .HasColumnType("decimal(10,2)");
+                        .HasColumnType("decimal(65,30)");
 
                     b.Property<decimal>("AnnualUsed")
-                        .HasPrecision(10, 2)
-                        .HasColumnType("decimal(10,2)");
+                        .HasColumnType("decimal(65,30)");
 
                     b.Property<decimal>("CarryOverAnnual")
-                        .HasPrecision(10, 2)
-                        .HasColumnType("decimal(10,2)");
+                        .HasColumnType("decimal(65,30)");
 
                     b.Property<int>("EmployeeId")
                         .HasColumnType("int");
 
                     b.Property<decimal>("SickAccrued")
-                        .HasPrecision(10, 2)
-                        .HasColumnType("decimal(10,2)");
+                        .HasColumnType("decimal(65,30)");
 
                     b.Property<decimal>("SickUsed")
-                        .HasPrecision(10, 2)
-                        .HasColumnType("decimal(10,2)");
+                        .HasColumnType("decimal(65,30)");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime(6)");
@@ -299,6 +328,28 @@ namespace NZFTC_EMS.Migrations
                         },
                         new
                         {
+                            EmployeeLeaveBalanceId = 3,
+                            AnnualAccrued = 5m,
+                            AnnualUsed = 0m,
+                            CarryOverAnnual = 0m,
+                            EmployeeId = 1003,
+                            SickAccrued = 2m,
+                            SickUsed = 0m,
+                            UpdatedAt = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            EmployeeLeaveBalanceId = 4,
+                            AnnualAccrued = 10m,
+                            AnnualUsed = 2m,
+                            CarryOverAnnual = 0m,
+                            EmployeeId = 1004,
+                            SickAccrued = 5m,
+                            SickUsed = 1m,
+                            UpdatedAt = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
                             EmployeeLeaveBalanceId = 2,
                             AnnualAccrued = 0m,
                             AnnualUsed = 0m,
@@ -318,6 +369,10 @@ namespace NZFTC_EMS.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("EmployeePayrollSummaryId"));
 
+                    b.Property<decimal>("ACCLevy")
+                        .HasPrecision(14, 2)
+                        .HasColumnType("decimal(14,2)");
+
                     b.Property<decimal>("Deductions")
                         .HasPrecision(14, 2)
                         .HasColumnType("decimal(14,2)");
@@ -325,7 +380,18 @@ namespace NZFTC_EMS.Migrations
                     b.Property<int>("EmployeeId")
                         .HasColumnType("int");
 
+                    b.Property<DateTime>("GeneratedAt")
+                        .HasColumnType("datetime(6)");
+
                     b.Property<decimal>("GrossPay")
+                        .HasPrecision(14, 2)
+                        .HasColumnType("decimal(14,2)");
+
+                    b.Property<decimal>("KiwiSaverEmployee")
+                        .HasPrecision(14, 2)
+                        .HasColumnType("decimal(14,2)");
+
+                    b.Property<decimal>("KiwiSaverEmployer")
                         .HasPrecision(14, 2)
                         .HasColumnType("decimal(14,2)");
 
@@ -335,6 +401,10 @@ namespace NZFTC_EMS.Migrations
                         .HasColumnType("decimal(14,2)")
                         .HasComputedColumnSql("(`GrossPay` - `Deductions`)", true);
 
+                    b.Property<decimal>("PAYE")
+                        .HasPrecision(14, 2)
+                        .HasColumnType("decimal(14,2)");
+
                     b.Property<decimal>("PayRate")
                         .HasPrecision(12, 2)
                         .HasColumnType("decimal(12,2)");
@@ -342,15 +412,23 @@ namespace NZFTC_EMS.Migrations
                     b.Property<int>("PayrollPeriodId")
                         .HasColumnType("int");
 
+                    b.Property<int>("RateType")
+                        .HasColumnType("int");
+
                     b.Property<byte>("Status")
-                        .HasColumnType("tinyint unsigned");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("tinyint unsigned")
+                        .HasDefaultValue((byte)0);
+
+                    b.Property<decimal>("StudentLoan")
+                        .HasPrecision(14, 2)
+                        .HasColumnType("decimal(14,2)");
 
                     b.HasKey("EmployeePayrollSummaryId");
 
                     b.HasIndex("EmployeeId");
 
-                    b.HasIndex("PayrollPeriodId", "EmployeeId")
-                        .IsUnique();
+                    b.HasIndex("PayrollPeriodId");
 
                     b.ToTable("employeepayrollsummaries", (string)null);
                 });
@@ -400,7 +478,7 @@ namespace NZFTC_EMS.Migrations
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("HolidayId"));
 
                     b.Property<DateTime>("HolidayDate")
-                        .HasColumnType("date");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("HolidayType")
                         .HasMaxLength(50)
@@ -433,6 +511,14 @@ namespace NZFTC_EMS.Migrations
                         new
                         {
                             HolidayId = 2,
+                            HolidayDate = new DateTime(2025, 1, 2, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            HolidayType = "Public",
+                            IsPaidHoliday = true,
+                            Name = "Day After New Year's Day"
+                        },
+                        new
+                        {
+                            HolidayId = 3,
                             HolidayDate = new DateTime(2025, 2, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             HolidayType = "Public",
                             IsPaidHoliday = true,
@@ -440,7 +526,7 @@ namespace NZFTC_EMS.Migrations
                         },
                         new
                         {
-                            HolidayId = 3,
+                            HolidayId = 4,
                             HolidayDate = new DateTime(2025, 4, 18, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             HolidayType = "Public",
                             IsPaidHoliday = true,
@@ -448,7 +534,7 @@ namespace NZFTC_EMS.Migrations
                         },
                         new
                         {
-                            HolidayId = 4,
+                            HolidayId = 5,
                             HolidayDate = new DateTime(2025, 4, 21, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             HolidayType = "Public",
                             IsPaidHoliday = true,
@@ -456,11 +542,51 @@ namespace NZFTC_EMS.Migrations
                         },
                         new
                         {
-                            HolidayId = 5,
+                            HolidayId = 6,
                             HolidayDate = new DateTime(2025, 4, 25, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             HolidayType = "Public",
                             IsPaidHoliday = true,
                             Name = "ANZAC Day"
+                        },
+                        new
+                        {
+                            HolidayId = 7,
+                            HolidayDate = new DateTime(2025, 6, 2, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            HolidayType = "Public",
+                            IsPaidHoliday = true,
+                            Name = "King's Birthday"
+                        },
+                        new
+                        {
+                            HolidayId = 8,
+                            HolidayDate = new DateTime(2025, 6, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            HolidayType = "Public",
+                            IsPaidHoliday = true,
+                            Name = "Matariki"
+                        },
+                        new
+                        {
+                            HolidayId = 9,
+                            HolidayDate = new DateTime(2025, 10, 27, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            HolidayType = "Public",
+                            IsPaidHoliday = true,
+                            Name = "Labour Day"
+                        },
+                        new
+                        {
+                            HolidayId = 10,
+                            HolidayDate = new DateTime(2025, 12, 25, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            HolidayType = "Public",
+                            IsPaidHoliday = true,
+                            Name = "Christmas Day"
+                        },
+                        new
+                        {
+                            HolidayId = 11,
+                            HolidayDate = new DateTime(2025, 12, 26, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            HolidayType = "Public",
+                            IsPaidHoliday = true,
+                            Name = "Boxing Day"
                         });
                 });
 
@@ -510,7 +636,6 @@ namespace NZFTC_EMS.Migrations
                             JobPositionId = 1,
                             AccessRole = "Admin",
                             Department = "Finance",
-                            Description = "Top-level finance leadership",
                             IsActive = true,
                             Name = "Chief Financial Officer (CFO)",
                             PayGradeId = 10
@@ -520,7 +645,6 @@ namespace NZFTC_EMS.Migrations
                             JobPositionId = 2,
                             AccessRole = "Admin",
                             Department = "Finance",
-                            Description = "Leads the finance team and reporting",
                             IsActive = true,
                             Name = "Finance Manager",
                             PayGradeId = 9
@@ -530,7 +654,6 @@ namespace NZFTC_EMS.Migrations
                             JobPositionId = 3,
                             AccessRole = "Employee",
                             Department = "Finance",
-                            Description = "Handles complex accounting and reporting",
                             IsActive = true,
                             Name = "Senior Accountant",
                             PayGradeId = 8
@@ -540,7 +663,6 @@ namespace NZFTC_EMS.Migrations
                             JobPositionId = 4,
                             AccessRole = "Employee",
                             Department = "Finance",
-                            Description = "General accounting duties",
                             IsActive = true,
                             Name = "Accountant",
                             PayGradeId = 7
@@ -550,7 +672,6 @@ namespace NZFTC_EMS.Migrations
                             JobPositionId = 5,
                             AccessRole = "Employee",
                             Department = "Finance",
-                            Description = "Manages supplier invoices and payments",
                             IsActive = true,
                             Name = "Accounts Payable Officer",
                             PayGradeId = 3
@@ -560,7 +681,6 @@ namespace NZFTC_EMS.Migrations
                             JobPositionId = 6,
                             AccessRole = "Employee",
                             Department = "Finance",
-                            Description = "Manages customer invoicing and collections",
                             IsActive = true,
                             Name = "Accounts Receivable Officer",
                             PayGradeId = 3
@@ -570,7 +690,6 @@ namespace NZFTC_EMS.Migrations
                             JobPositionId = 7,
                             AccessRole = "Employee",
                             Department = "Finance",
-                            Description = "Processes staff payroll",
                             IsActive = true,
                             Name = "Payroll Officer",
                             PayGradeId = 6
@@ -580,7 +699,6 @@ namespace NZFTC_EMS.Migrations
                             JobPositionId = 8,
                             AccessRole = "Employee",
                             Department = "Finance",
-                            Description = "Provides general admin support to finance",
                             IsActive = true,
                             Name = "Finance Administrator",
                             PayGradeId = 2
@@ -590,7 +708,6 @@ namespace NZFTC_EMS.Migrations
                             JobPositionId = 9,
                             AccessRole = "Employee",
                             Department = "Finance",
-                            Description = "Prepares and manages billing",
                             IsActive = true,
                             Name = "Billing Specialist",
                             PayGradeId = 2
@@ -600,7 +717,6 @@ namespace NZFTC_EMS.Migrations
                             JobPositionId = 10,
                             AccessRole = "Employee",
                             Department = "Finance",
-                            Description = "Entry-level support in finance",
                             IsActive = true,
                             Name = "Accounts Assistant",
                             PayGradeId = 1
@@ -610,7 +726,6 @@ namespace NZFTC_EMS.Migrations
                             JobPositionId = 11,
                             AccessRole = "Admin",
                             Department = "HR",
-                            Description = "Leads HR operations and strategy",
                             IsActive = true,
                             Name = "HR Manager",
                             PayGradeId = 8
@@ -620,7 +735,6 @@ namespace NZFTC_EMS.Migrations
                             JobPositionId = 12,
                             AccessRole = "Admin",
                             Department = "HR",
-                            Description = "Senior advisory role in HR",
                             IsActive = true,
                             Name = "Senior HR Advisor",
                             PayGradeId = 7
@@ -630,7 +744,6 @@ namespace NZFTC_EMS.Migrations
                             JobPositionId = 13,
                             AccessRole = "Admin",
                             Department = "HR",
-                            Description = "Generalist HR support",
                             IsActive = true,
                             Name = "HR Advisor",
                             PayGradeId = 3
@@ -640,7 +753,6 @@ namespace NZFTC_EMS.Migrations
                             JobPositionId = 14,
                             AccessRole = "Admin",
                             Department = "HR",
-                            Description = "Coordinates HR processes and documentation",
                             IsActive = true,
                             Name = "HR Coordinator",
                             PayGradeId = 2
@@ -650,7 +762,6 @@ namespace NZFTC_EMS.Migrations
                             JobPositionId = 15,
                             AccessRole = "Admin",
                             Department = "HR",
-                            Description = "Admin support across HR functions",
                             IsActive = true,
                             Name = "HR Administrator",
                             PayGradeId = 1
@@ -660,7 +771,6 @@ namespace NZFTC_EMS.Migrations
                             JobPositionId = 16,
                             AccessRole = "Admin",
                             Department = "HR",
-                            Description = "Manages recruitment and selection",
                             IsActive = true,
                             Name = "Recruitment Specialist",
                             PayGradeId = 6
@@ -670,7 +780,6 @@ namespace NZFTC_EMS.Migrations
                             JobPositionId = 17,
                             AccessRole = "Admin",
                             Department = "HR",
-                            Description = "Supports talent acquisition activities",
                             IsActive = true,
                             Name = "Talent Acquisition Coordinator",
                             PayGradeId = 3
@@ -680,7 +789,6 @@ namespace NZFTC_EMS.Migrations
                             JobPositionId = 18,
                             AccessRole = "Admin",
                             Department = "HR",
-                            Description = "Coordinates training and staff development",
                             IsActive = true,
                             Name = "Training & Development Officer",
                             PayGradeId = 6
@@ -690,7 +798,6 @@ namespace NZFTC_EMS.Migrations
                             JobPositionId = 19,
                             AccessRole = "Admin",
                             Department = "IT",
-                            Description = "Leads IT operations and projects",
                             IsActive = true,
                             Name = "IT Manager",
                             PayGradeId = 8
@@ -700,7 +807,6 @@ namespace NZFTC_EMS.Migrations
                             JobPositionId = 20,
                             AccessRole = "Employee",
                             Department = "IT",
-                            Description = "Maintains servers and systems",
                             IsActive = true,
                             Name = "Systems Administrator",
                             PayGradeId = 3
@@ -710,7 +816,6 @@ namespace NZFTC_EMS.Migrations
                             JobPositionId = 21,
                             AccessRole = "Employee",
                             Department = "IT",
-                            Description = "Manages network infrastructure",
                             IsActive = true,
                             Name = "Network Administrator",
                             PayGradeId = 6
@@ -720,7 +825,6 @@ namespace NZFTC_EMS.Migrations
                             JobPositionId = 22,
                             AccessRole = "Employee",
                             Department = "IT",
-                            Description = "Develops and maintains software applications",
                             IsActive = true,
                             Name = "Software Developer",
                             PayGradeId = 6
@@ -730,7 +834,6 @@ namespace NZFTC_EMS.Migrations
                             JobPositionId = 23,
                             AccessRole = "Employee",
                             Department = "IT",
-                            Description = "Supports business applications",
                             IsActive = true,
                             Name = "Application Support Analyst",
                             PayGradeId = 3
@@ -740,7 +843,6 @@ namespace NZFTC_EMS.Migrations
                             JobPositionId = 24,
                             AccessRole = "Employee",
                             Department = "IT",
-                            Description = "First-line IT support",
                             IsActive = true,
                             Name = "IT Support Technician",
                             PayGradeId = 2
@@ -750,7 +852,6 @@ namespace NZFTC_EMS.Migrations
                             JobPositionId = 25,
                             AccessRole = "Employee",
                             Department = "IT",
-                            Description = "Handles basic IT helpdesk requests",
                             IsActive = true,
                             Name = "Helpdesk Support",
                             PayGradeId = 1
@@ -760,7 +861,6 @@ namespace NZFTC_EMS.Migrations
                             JobPositionId = 26,
                             AccessRole = "Employee",
                             Department = "IT",
-                            Description = "Manages databases and performance",
                             IsActive = true,
                             Name = "Database Administrator (DBA)",
                             PayGradeId = 6
@@ -770,7 +870,6 @@ namespace NZFTC_EMS.Migrations
                             JobPositionId = 27,
                             AccessRole = "Admin",
                             Department = "Operations",
-                            Description = "Oversees day-to-day operations",
                             IsActive = true,
                             Name = "Operations Manager",
                             PayGradeId = 8
@@ -780,7 +879,6 @@ namespace NZFTC_EMS.Migrations
                             JobPositionId = 28,
                             AccessRole = "Employee",
                             Department = "Operations",
-                            Description = "Leads an operations team",
                             IsActive = true,
                             Name = "Team Leader – Operations",
                             PayGradeId = 4
@@ -790,7 +888,6 @@ namespace NZFTC_EMS.Migrations
                             JobPositionId = 29,
                             AccessRole = "Employee",
                             Department = "Operations",
-                            Description = "Supervises operational staff",
                             IsActive = true,
                             Name = "Supervisor – Operations",
                             PayGradeId = 5
@@ -800,7 +897,6 @@ namespace NZFTC_EMS.Migrations
                             JobPositionId = 30,
                             AccessRole = "Employee",
                             Department = "Operations",
-                            Description = "Senior operations officer role",
                             IsActive = true,
                             Name = "Senior Officer – Operations",
                             PayGradeId = 3
@@ -810,7 +906,6 @@ namespace NZFTC_EMS.Migrations
                             JobPositionId = 31,
                             AccessRole = "Employee",
                             Department = "Operations",
-                            Description = "General office administration",
                             IsActive = true,
                             Name = "Office Administrator",
                             PayGradeId = 2
@@ -820,7 +915,6 @@ namespace NZFTC_EMS.Migrations
                             JobPositionId = 32,
                             AccessRole = "Employee",
                             Department = "Operations",
-                            Description = "Frontline customer service",
                             IsActive = true,
                             Name = "Customer Service Representative",
                             PayGradeId = 2
@@ -830,10 +924,65 @@ namespace NZFTC_EMS.Migrations
                             JobPositionId = 33,
                             AccessRole = "Employee",
                             Department = "Operations",
-                            Description = "Data entry and basic admin tasks",
                             IsActive = true,
                             Name = "Data Entry Operator",
                             PayGradeId = 1
+                        });
+                });
+
+            modelBuilder.Entity("NZFTC_EMS.Data.Entities.LeavePolicy", b =>
+                {
+                    b.Property<int>("LeavePolicyId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("LeavePolicyId"));
+
+                    b.Property<bool>("AllowNegativeAnnual")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<bool>("AllowUnpaidSick")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<decimal>("AnnualAccrualRate")
+                        .HasColumnType("decimal(65,30)");
+
+                    b.Property<decimal>("AnnualCarryOverLimit")
+                        .HasColumnType("decimal(65,30)");
+
+                    b.Property<decimal>("AnnualDefault")
+                        .HasColumnType("decimal(65,30)");
+
+                    b.Property<string>("CustomLeaveTypesJson")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<decimal>("SickAccrualRate")
+                        .HasColumnType("decimal(65,30)");
+
+                    b.Property<decimal>("SickDefault")
+                        .HasColumnType("decimal(65,30)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.HasKey("LeavePolicyId");
+
+                    b.ToTable("leavepolicies", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            LeavePolicyId = 1,
+                            AllowNegativeAnnual = false,
+                            AllowUnpaidSick = true,
+                            AnnualAccrualRate = 1.67m,
+                            AnnualCarryOverLimit = 5m,
+                            AnnualDefault = 20m,
+                            CustomLeaveTypesJson = "[]",
+                            SickAccrualRate = 0m,
+                            SickDefault = 10m,
+                            UpdatedAt = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         });
                 });
 
@@ -847,9 +996,6 @@ namespace NZFTC_EMS.Migrations
 
                     b.Property<DateTime?>("ApprovedAt")
                         .HasColumnType("datetime(6)");
-
-                    b.Property<int?>("ApprovedByEmployeeEmployeeId")
-                        .HasColumnType("int");
 
                     b.Property<int?>("ApprovedByEmployeeId")
                         .HasColumnType("int");
@@ -875,12 +1021,14 @@ namespace NZFTC_EMS.Migrations
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("date");
 
-                    b.Property<byte>("Status")
-                        .HasColumnType("tinyint unsigned");
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(20)
+                        .HasColumnType("varchar(20)")
+                        .HasDefaultValue("Pending");
 
                     b.HasKey("LeaveRequestId");
-
-                    b.HasIndex("ApprovedByEmployeeEmployeeId");
 
                     b.HasIndex("ApprovedByEmployeeId");
 
@@ -983,7 +1131,7 @@ namespace NZFTC_EMS.Migrations
                         new
                         {
                             PayGradeId = 7,
-                            BaseRate = 65000.00m,
+                            BaseRate = 65000m,
                             Description = "Salary - Junior/Assistant Manager",
                             IsActive = true,
                             Name = "PG-SAL-JM",
@@ -992,7 +1140,7 @@ namespace NZFTC_EMS.Migrations
                         new
                         {
                             PayGradeId = 8,
-                            BaseRate = 80000.00m,
+                            BaseRate = 80000m,
                             Description = "Salary - Department Manager",
                             IsActive = true,
                             Name = "PG-SAL-MAN",
@@ -1001,7 +1149,7 @@ namespace NZFTC_EMS.Migrations
                         new
                         {
                             PayGradeId = 9,
-                            BaseRate = 95000.00m,
+                            BaseRate = 95000m,
                             Description = "Salary - Senior Manager",
                             IsActive = true,
                             Name = "PG-SAL-SRMAN",
@@ -1010,7 +1158,7 @@ namespace NZFTC_EMS.Migrations
                         new
                         {
                             PayGradeId = 10,
-                            BaseRate = 100000.00m,
+                            BaseRate = 100000m,
                             Description = "Salary - General Manager",
                             IsActive = true,
                             Name = "PG-SAL-GM",
@@ -1056,10 +1204,77 @@ namespace NZFTC_EMS.Migrations
                         {
                             PayrollPeriodId = 1,
                             Closed = false,
-                            PeriodCode = "2025-11-M1",
+                            PeriodCode = "2025-M11",
                             PeriodEnd = new DateTime(2025, 11, 30, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            PeriodStart = new DateTime(2025, 11, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            PayrollPeriodId = 2,
+                            Closed = false,
+                            PeriodCode = "2025-M12",
+                            PeriodEnd = new DateTime(2025, 12, 31, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            PeriodStart = new DateTime(2025, 12, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            PayrollPeriodId = 3,
+                            Closed = true,
+                            PeriodCode = "2025-FN13",
+                            PeriodEnd = new DateTime(2025, 11, 14, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             PeriodStart = new DateTime(2025, 11, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            TotalAmount = 0.00m
+                            TotalAmount = 90000m
+                        });
+                });
+
+            modelBuilder.Entity("NZFTC_EMS.Data.Entities.PayrollSettings", b =>
+                {
+                    b.Property<int>("PayrollSettingsId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("PayrollSettingsId"));
+
+                    b.Property<decimal>("ACCLevyPercent")
+                        .HasPrecision(5, 3)
+                        .HasColumnType("decimal(5,3)");
+
+                    b.Property<bool>("EnableStudentLoan")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<decimal>("KiwiSaverEmployeePercent")
+                        .HasPrecision(5, 2)
+                        .HasColumnType("decimal(5,2)");
+
+                    b.Property<decimal>("KiwiSaverEmployerPercent")
+                        .HasPrecision(5, 2)
+                        .HasColumnType("decimal(5,2)");
+
+                    b.Property<decimal>("OvertimeMultiplier")
+                        .HasPrecision(5, 2)
+                        .HasColumnType("decimal(5,2)");
+
+                    b.Property<int>("RegularHoursPerWeek")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.HasKey("PayrollSettingsId");
+
+                    b.ToTable("payrollsettings", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            PayrollSettingsId = 1,
+                            ACCLevyPercent = 1.53m,
+                            EnableStudentLoan = true,
+                            KiwiSaverEmployeePercent = 3.0m,
+                            KiwiSaverEmployerPercent = 3.0m,
+                            OvertimeMultiplier = 1.5m,
+                            RegularHoursPerWeek = 40,
+                            UpdatedAt = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         });
                 });
 
@@ -1107,7 +1322,7 @@ namespace NZFTC_EMS.Migrations
                             Body = "Hi, I need help setting up my account.",
                             SenderEmployeeId = 1002,
                             SenderIsAdmin = false,
-                            SentAt = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            SentAt = new DateTime(2025, 11, 20, 9, 0, 0, 0, DateTimeKind.Unspecified),
                             TicketId = 1
                         },
                         new
@@ -1116,7 +1331,7 @@ namespace NZFTC_EMS.Migrations
                             Body = "Admin here — your account is now active!",
                             SenderEmployeeId = 1001,
                             SenderIsAdmin = false,
-                            SentAt = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            SentAt = new DateTime(2025, 11, 20, 9, 5, 0, 0, DateTimeKind.Unspecified),
                             TicketId = 1
                         });
                 });
@@ -1168,9 +1383,9 @@ namespace NZFTC_EMS.Migrations
                         {
                             Id = 1,
                             AssignedToId = 1001,
-                            CreatedAt = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedAt = new DateTime(2025, 11, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             EmployeeId = 1002,
-                            Message = "This is a sample seeded ticket.",
+                            Message = "This is the initial seeded support ticket.",
                             Priority = 0,
                             Status = 0,
                             Subject = "Welcome to Support"
@@ -1221,7 +1436,7 @@ namespace NZFTC_EMS.Migrations
                     b.HasOne("NZFTC_EMS.Data.Entities.Employee", "Employee")
                         .WithMany("PayrollSummaries")
                         .HasForeignKey("EmployeeId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("NZFTC_EMS.Data.Entities.PayrollPeriod", "PayrollPeriod")
@@ -1260,10 +1475,6 @@ namespace NZFTC_EMS.Migrations
             modelBuilder.Entity("NZFTC_EMS.Data.Entities.LeaveRequest", b =>
                 {
                     b.HasOne("NZFTC_EMS.Data.Entities.Employee", "ApprovedByEmployee")
-                        .WithMany()
-                        .HasForeignKey("ApprovedByEmployeeEmployeeId");
-
-                    b.HasOne("NZFTC_EMS.Data.Entities.Employee", null)
                         .WithMany()
                         .HasForeignKey("ApprovedByEmployeeId")
                         .OnDelete(DeleteBehavior.NoAction);

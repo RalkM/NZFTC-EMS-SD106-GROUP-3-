@@ -1,0 +1,117 @@
+﻿@model List<NZFTC_EMS.Data.Entities.EmployeePayrollSummary>
+@{
+    Layout = "~/Views/Shared/_portal.cshtml";
+}
+
+<div class="page-container">
+
+    <!-- HEADER -->
+    <div class="header-row d-flex justify-content-between align-items-center mb-4">
+        <h2 class="page-title fw-bold">My Payslips</h2>
+    </div>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success">@TempData["Success"]</div>
+    }
+
+    <!-- MAIN CARD -->
+    <div class="card shadow-sm border-0">
+
+        <div class="card-header text-white fw-semibold"
+             style="background-color:#1E4DB7; border-radius:6px 6px 0 0;">
+            Available Payslips
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-hover align-middle styled-table mb-0">
+
+                <thead class="table-light">
+                    <tr>
+                        <th>Period</th>
+                        <th>Date Range</th>
+                        <th>Gross Pay</th>
+                        <th>Deductions</th>
+                        <th>Net Pay</th>
+                        <th>Status</th>
+                        <th></th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach (var p in Model)
+                    {
+                        <tr>
+                            <!-- Period Code -->
+                            <td class="fw-semibold">@p.PayrollPeriod.PeriodCode</td>
+
+                            <!-- Date Range -->
+                            <td>
+                                @p.PayrollPeriod.PeriodStart.ToShortDateString()
+                                –
+                                @p.PayrollPeriod.PeriodEnd.ToShortDateString()
+                            </td>
+
+                            <!-- Gross Pay -->
+                            <td class="text-primary fw-bold">
+                                $@p.GrossPay.ToString("N2")
+                            </td>
+
+                            <!-- Deductions -->
+                            <td>
+                                $@p.Deductions.ToString("N2")
+                            </td>
+
+                            <!-- Net Pay -->
+                            <td class="fw-bold text-success">
+                                $@p.NetPay.ToString("N2")
+                            </td>
+
+                            <!-- Status -->
+                            <td>
+                                @if (p.Status == NZFTC_EMS.Data.Entities.PayrollSummaryStatus.Finalized)
+                                {
+                                    <span class="badge bg-primary px-3 py-2">Finalized</span>
+                                }
+                                else if (p.Status == NZFTC_EMS.Data.Entities.PayrollSummaryStatus.Paid)
+                                {
+                                    <span class="badge bg-success px-3 py-2">Paid</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-warning text-dark px-3 py-2">Draft</span>
+                                }
+                            </td>
+
+                            <!-- View Button -->
+                            <td class="text-end">
+                                <a href="/PayrollManagement/PayslipDetails/@p.EmployeePayrollSummaryId"
+                                   class="btn btn-primary btn-sm px-3">
+                                    View
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+
+            </table>
+        </div>
+
+    </div>
+</div>
+
+<style>
+    .page-container {
+        max-width: 1150px;
+        margin: auto;
+    }
+
+    .styled-table th {
+        background: #f8f9fa;
+        font-weight: 600;
+    }
+
+    .styled-table td {
+        background: #ffffff;
+    }
+</style>

@@ -1,0 +1,109 @@
+﻿@using NZFTC_EMS.Models.ViewModels.Leave
+@model LeavePolicyVM
+
+@{
+    Layout = "~/Views/Shared/_portal.cshtml";
+}
+
+<div class="page-container">
+
+    <!-- HEADER -->
+    <div class="header-row d-flex justify-content-between align-items-center mb-4">
+        <h2 class="page-title fw-bold">Leave Policies</h2>
+
+        <a href="/LeaveManagement/LeaveManagement" class="btn btn-secondary px-4">
+            Back
+        </a>
+    </div>
+
+    <!-- SUCCESS ALERT -->
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success mb-4">
+            @TempData["Success"]
+        </div>
+    }
+
+    <form method="post">
+
+        <!-- ========================= -->
+        <!-- ANNUAL LEAVE POLICY CARD -->
+        <!-- ========================= -->
+        <div class="card shadow-sm border-0 mb-4">
+            <div class="card-header text-white fw-semibold"
+                 style="background-color:#1E4DB7; border-radius:6px 6px 0 0;">
+                Annual Leave Policy
+            </div>
+
+            <div class="card-body row g-4">
+
+                <div class="col-md-4">
+                    <label class="form-label fw-semibold">Default Annual Leave</label>
+                    <input asp-for="AnnualDefault" class="form-control" type="number" min="0" />
+                </div>
+
+                <div class="col-md-4">
+                    <label class="form-label fw-semibold">Accrual Rate (per month)</label>
+                    <input asp-for="AnnualAccrualRate" class="form-control" type="number" step="0.1" min="0" />
+                </div>
+
+                <div class="col-md-4">
+                    <label class="form-label fw-semibold">Carry Over Limit</label>
+                    <input asp-for="AnnualCarryOverLimit" class="form-control" type="number" min="0" />
+                </div>
+
+                <div class="col-12 mt-2">
+                    <div class="form-check">
+                        <input asp-for="AllowNegativeAnnual" class="form-check-input" />
+                        <label class="form-check-label fw-semibold">
+                            Allow employees to go negative on annual leave
+                        </label>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- ====================== -->
+        <!-- SICK LEAVE POLICY CARD -->
+        <!-- ====================== -->
+        <div class="card shadow-sm border-0 mb-4">
+            <div class="card-header text-white fw-semibold"
+                 style="background-color:#1E4DB7; border-radius:6px 6px 0 0;">
+                Sick Leave Policy
+            </div>
+
+            <div class="card-body row g-4">
+
+                <div class="col-md-4">
+                    <label class="form-label fw-semibold">Default Sick Leave</label>
+                    <input asp-for="SickDefault" class="form-control" type="number" min="0" />
+                </div>
+
+                <div class="col-md-4">
+                    <label class="form-label fw-semibold">Accrual Rate (per month)</label>
+                    <input asp-for="SickAccrualRate" class="form-control" type="number" step="0.1" min="0" />
+                </div>
+
+                <div class="col-12 mt-2">
+                    <div class="form-check">
+                        <input asp-for="AllowUnpaidSick" class="form-check-input" />
+                        <label class="form-check-label fw-semibold">
+                            Allow unpaid sick leave when balance is insufficient
+                        </label>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- SAVE BUTTON -->
+        <div class="text-end">
+            <button type="submit" class="btn btn-primary px-4">
+                Save Changes
+            </button>
+        </div>
+
+    </form>
+
+</div>

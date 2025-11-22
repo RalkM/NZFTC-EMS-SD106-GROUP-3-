@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
 	<PropertyGroup>
 		<TargetFramework>net9.0</TargetFramework>
@@ -11,25 +11,17 @@
 
 	<ItemGroup>
 		<Compile Remove="RESOURCE\**" />
-		<Compile Remove="Services\**" />
 		<Compile Remove="Views\website\admin - Copy\**" />
 		<Compile Remove="Views\website\employee - Copy\**" />
 		<Content Remove="RESOURCE\**" />
-		<Content Remove="Services\**" />
 		<Content Remove="Views\website\admin - Copy\**" />
 		<Content Remove="Views\website\employee - Copy\**" />
 		<EmbeddedResource Remove="RESOURCE\**" />
-		<EmbeddedResource Remove="Services\**" />
 		<EmbeddedResource Remove="Views\website\admin - Copy\**" />
 		<EmbeddedResource Remove="Views\website\employee - Copy\**" />
 		<None Remove="RESOURCE\**" />
-		<None Remove="Services\**" />
 		<None Remove="Views\website\admin - Copy\**" />
 		<None Remove="Views\website\employee - Copy\**" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<Folder Include="wwwroot\js\" />
 	</ItemGroup>
 
 	<ItemGroup>

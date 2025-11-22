@@ -1,74 +1,161 @@
-@using NZFTC_EMS.Controllers
-@model IEnumerable<LeaveRequestVm>
+﻿@using NZFTC_EMS.Models.ViewModels.Leave
+@model List<AdminLeaveListVM>
 
 @{
-    Layout = ViewData["Layout"]?.ToString();
-    ViewData["Title"] = "Leave Management";
-    var q = ViewBag.Search as string;
-    var status = ViewBag.Status as string ?? "All";
+    Layout = "~/Views/Shared/_portal.cshtml";
 }
 
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
-<link rel="stylesheet" href="~/css/portal-StyleSheet.css" />
+<div class="page-wrapper">
 
-<div class="container-fluid py-4">
-    <!-- Header -->
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <h3 class="mb-0 fw-bold">Leave Management</h3>
-        <div class="d-flex gap-2">
-            <a href="/leave_management/seed-test" class="btn btn-secondary">Seed Test Data</a>
-            <a href="/leave_management/export-excel" class="btn btn-success">Export CSV</a>
-            <a href="/leave_management/export-pdf" class="btn btn-danger">Export TXT</a>
+    <!-- PAGE HEADER -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="page-title fw-bold mb-0">Leave Management</h2>
+
+        <a href="/LeaveManagement/LeavePolicies" class="btn btn-primary px-4">
+            Policies
+        </a>
+    </div>
+
+    <!-- ALERTS -->
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success mb-3">@TempData["Success"]</div>
+    }
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger mb-3">@TempData["Error"]</div>
+    }
+
+    <!-- FILTER CARD -->
+    <div class="card shadow-sm border-0 mb-4" style="border-radius:12px;">
+        <div class="card-body row g-3">
+
+            <div class="col-md-6">
+                <input id="searchBox"
+                       type="text"
+                       class="form-control"
+                       placeholder="Search by employee, leave type, date..." />
+            </div>
+
+            <div class="col-md-4">
+                <select id="statusFilter" class="form-select">
+                    <option value="">All Statuses</option>
+                    <option value="Pending">Pending</option>
+                    <option value="Approved">Approved</option>
+                    <option value="Rejected">Rejected</option>
+                    <option value="Cancelled">Cancelled</option>
+                </select>
+            </div>
+
         </div>
     </div>
 
-    <!-- Filters -->
-    <form method="get" class="row g-2 mb-4 align-items-center">
-        <div class="col-md-4">
-            <input name="q" class="form-control" placeholder="Search employee name..." value="@q" />
-        </div>
-        <div class="col-md-3">
-            <select name="status" class="form-select">
-                <option value="All" selected="@(status == "All")">All</option>
-                <option value="Pending" selected="@(status == "Pending")">Pending</option>
-                <option value="Approved" selected="@(status == "Approved")">Approved</option>
-                <option value="Declined" selected="@(status == "Declined")">Declined</option>
-            </select>
-        </div>
-        <div class="col-md-2">
-            <button class="btn btn-outline-primary w-100" type="submit">Filter</button>
-        </div>
-    </form>
+    <!-- TABLE CARD -->
+    <div class="card shadow-sm border-0" style="border-radius:12px;">
 
-    <!-- Leave Requests Table -->
-    <div class="table-responsive shadow-sm">
-        <table class="table table-bordered align-middle text-center">
-            <<thead>
-  <tr>
-    <th>Employee</th><th>Type</th><th>Start</th><th>End</th><th>Reason</th><th>Status</th><th>Requested</th>
-  </tr>
-</thead>
-<<tbody>
-@if (!(Model?.Any() ?? false))
-{
-    <tr><td colspan="7" class="text-center text-muted">No leave requests found.</td></tr>
-}
-else
-{
-    foreach (var r in Model)
-    {
-        <tr>
-            <td>@r.EmployeeName</td>
-            <td>@r.LeaveType</td>
-            <td>@r.StartDate.ToString("dd/MM/yyyy")</td>
-            <td>@r.EndDate.ToString("dd/MM/yyyy")</td>
-            <td>@r.Reason</td>
-            <td>@r.Status</td>
-            <td>@r.RequestedAt.ToString("dd/MM/yyyy HH:mm")</td>
-        </tr>
-    }
-}
-</tbody>
-        </table>
+        <div class="card-header text-white fw-semibold"
+             style="background-color:#1E4DB7; border-radius:12px 12px 0 0;">
+            All Leave Requests
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-hover align-middle styled-table mb-0" id="leaveTable">
+
+                <thead class="table-light">
+                    <tr>
+                        <th>Employee</th>
+                        <th>Type</th>
+                        <th>Dates</th>
+                        <th>Status</th>
+                        <th>Requested At</th>
+                        <th></th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+
+                            <!-- Employee -->
+                            <td>@item.EmployeeName</td>
+
+                            <!-- Leave Type -->
+                            <td>@item.LeaveType</td>
+
+                            <!-- Dates -->
+                            <td>
+                                @item.StartDate.ToShortDateString()
+                                –
+                                @item.EndDate.ToShortDateString()
+                            </td>
+
+                            <!-- Status -->
+                            <td>
+                                @if (item.Status == NZFTC_EMS.Data.Entities.LeaveStatus.Pending)
+                                {
+                                    <span class="badge bg-warning text-dark">Pending</span>
+                                }
+                                else if (item.Status == NZFTC_EMS.Data.Entities.LeaveStatus.Approved)
+                                {
+                                    <span class="badge bg-success">Approved</span>
+                                }
+                                else if (item.Status == NZFTC_EMS.Data.Entities.LeaveStatus.Rejected)
+                                {
+                                    <span class="badge bg-danger">Rejected</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-secondary">Cancelled</span>
+                                }
+                            </td>
+
+                            <!-- Requested At -->
+                            <td>@item.RequestedAt.ToShortDateString()</td>
+
+                            <!-- Action -->
+                            <td class="text-end">
+                                <a href="/LeaveManagement/LeaveRequestDetails/@item.LeaveRequestId"
+                                   class="btn btn-primary btn-sm px-3">
+                                    View
+                                </a>
+                            </td>
+
+                        </tr>
+                    }
+                </tbody>
+
+            </table>
+        </div>
+
     </div>
 </div>
+
+@section Scripts {
+    <script>
+        // SEARCH + FILTER
+        const searchBox = document.getElementById("searchBox");
+        const statusFilter = document.getElementById("statusFilter");
+        const rows = Array.from(document.querySelectorAll("#leaveTable tbody tr"));
+
+        function filterTable() {
+            const search = searchBox.value.toLowerCase();
+            const status = statusFilter.value.toLowerCase();
+
+            rows.forEach(row => {
+                const text = row.innerText.toLowerCase();
+                const statusText = row.children[3].innerText.toLowerCase();
+
+                const matchesSearch = text.includes(search);
+                const matchesStatus = status === "" || statusText.includes(status);
+
+                row.style.display = (matchesSearch && matchesStatus) ? "" : "none";
+            });
+        }
+
+        searchBox.addEventListener("input", filterTable);
+        statusFilter.addEventListener("change", filterTable);
+    </script>
+
+    <script src="~/js/leave_management_admin.js"></script>
+}

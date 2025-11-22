@@ -1,0 +1,125 @@
+﻿@model List<NZFTC_EMS.ViewModels.Payroll.PayrollSummaryVM>
+@{
+    Layout = "~/Views/Shared/_portal.cshtml";
+}
+
+<div class="page-container">
+
+    <!-- PAGE HEAD -->
+    <div class="header-row d-flex justify-content-between align-items-center mb-4">
+        <h2 class="page-title fw-bold">Payroll Summary</h2>
+    </div>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success">@TempData["Success"]</div>
+    }
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger">@TempData["Error"]</div>
+    }
+
+    <!-- SEARCH & FILTER -->
+    <div class="card shadow-sm border-0 mb-4">
+        <div class="card-body row g-3">
+            <div class="col-md-6">
+                <input id="payrollSearchBox" class="form-control" placeholder="Search employees, gross, net..." />
+            </div>
+
+            <div class="col-md-4">
+                <select id="payrollStatusFilter" class="form-select">
+                    <option value="">All Statuses</option>
+                    <option value="Draft">Draft</option>
+                    <option value="Finalized">Finalized</option>
+                    <option value="Paid">Paid</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN CARD -->
+    <div class="card shadow-sm border-0">
+        
+        <div class="card-header text-white fw-semibold"
+             style="background-color:#1E4DB7; border-radius:6px 6px 0 0;">
+            Employee Payroll Breakdown
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-hover align-middle styled-table mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>Employee</th>
+                        <th>Rate</th>
+                        <th>Gross Pay</th>
+                        <th>PAYE</th>
+                        <th>KiwiSaver (Emp)</th>
+                        <th>KiwiSaver (Employer)</th>
+                        <th>ACC Levy</th>
+                        <th>Student Loan</th>
+                        <th>Net Pay</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+
+                <tbody id="payrollTableBody">
+                    @foreach (var p in Model)
+                    {
+                        <tr>
+                            <td>@p.EmployeeName</td>
+
+                            <td>$@p.PayRate.ToString("N2") (@p.RateType)</td>
+
+                            <td class="fw-semibold text-primary">$@p.GrossPay.ToString("N2")</td>
+
+                            <td>$@p.PAYE.ToString("N2")</td>
+                            <td>$@p.KiwiSaverEmployee.ToString("N2")</td>
+                            <td>$@p.KiwiSaverEmployer.ToString("N2")</td>
+                            <td>$@p.ACCLevy.ToString("N2")</td>
+                            <td>$@p.StudentLoan.ToString("N2")</td>
+
+                            <td class="fw-bold text-success">$@p.NetPay.ToString("N2")</td>
+
+                            <td>
+                                @if (p.Status == "Finalized")
+                                {
+                                    <span class="badge bg-primary">Finalized</span>
+                                }
+                                else if (p.Status == "Paid")
+                                {
+                                    <span class="badge bg-success">Paid</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-warning text-dark">Draft</span>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+
+    <!-- ACTION BUTTONS -->
+    <div class="d-flex justify-content-end gap-2 mt-4">
+
+        <a href="/PayrollManagement/FinalizePayroll/@Model.First().EmployeePayrollSummaryId"
+           class="btn btn-primary px-4"
+           onclick="return confirm('Finalize payroll? This will lock all values.');">
+            Finalize Payroll
+        </a>
+
+        <a href="/PayrollManagement/MarkPaid/@Model.First().EmployeePayrollSummaryId"
+           class="btn btn-success px-4">
+            Mark as Paid
+        </a>
+
+    </div>
+
+</div>
+
+@section Scripts {
+    <script src="~/js/payroll_admin.js"></script>
+}

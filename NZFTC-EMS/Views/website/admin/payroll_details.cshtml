@@ -1,0 +1,135 @@
+﻿@model NZFTC_EMS.ViewModels.Payroll.PayrollSummaryVM
+@{
+    Layout = "~/Views/Shared/_portal.cshtml";
+}
+
+<div class="page-container">
+
+    <!-- HEADER -->
+    <div class="header-row d-flex justify-content-between align-items-center mb-4">
+        <h2 class="page-title fw-bold">Payroll Details</h2>
+
+        <a href="javascript:history.back()" class="btn btn-secondary px-4">
+            Back
+        </a>
+    </div>
+
+    <!-- EMPLOYEE INFORMATION -->
+    <div class="card shadow-sm border-0 mb-4">
+
+        <div class="card-header text-white fw-semibold"
+             style="background-color:#1E4DB7; border-radius:6px 6px 0 0;">
+            Employee Information
+        </div>
+
+        <div class="card-body row g-3 p-4">
+
+            <div class="col-md-4">
+                <label class="fw-semibold text-secondary small">Name</label>
+                <div class="fw-bold">@Model.EmployeeName</div>
+            </div>
+
+            <div class="col-md-4">
+                <label class="fw-semibold text-secondary small">Employee ID</label>
+                <div class="fw-bold">@Model.EmployeeId</div>
+            </div>
+
+            <div class="col-md-4">
+                <label class="fw-semibold text-secondary small">Pay Rate</label>
+                <div class="fw-bold">$@Model.PayRate.ToString("N2") (@Model.RateType)</div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- PAYROLL BREAKDOWN -->
+    <div class="card shadow-sm border-0">
+
+        <div class="card-header text-white fw-semibold"
+             style="background-color:#1E4DB7; border-radius:6px 6px 0 0;">
+            Payroll Breakdown
+        </div>
+
+        <div class="card-body p-4">
+
+            <table class="table table-bordered align-middle styled-table">
+
+                <tbody>
+
+                    <tr>
+                        <th>Gross Pay</th>
+                        <td class="fw-bold text-primary">$@Model.GrossPay.ToString("N2")</td>
+                    </tr>
+
+                    <tr>
+                        <th>PAYE (Tax)</th>
+                        <td>$@Model.PAYE.ToString("N2")</td>
+                    </tr>
+
+                    <tr>
+                        <th>KiwiSaver (Employee)</th>
+                        <td>$@Model.KiwiSaverEmployee.ToString("N2")</td>
+                    </tr>
+
+                    <tr>
+                        <th>KiwiSaver (Employer)</th>
+                        <td>$@Model.KiwiSaverEmployer.ToString("N2")</td>
+                    </tr>
+
+                    <tr>
+                        <th>ACC Earners’ Levy</th>
+                        <td>$@Model.ACCLevy.ToString("N2")</td>
+                    </tr>
+
+                    <tr>
+                        <th>Student Loan</th>
+                        <td>$@Model.StudentLoan.ToString("N2")</td>
+                    </tr>
+
+                    <tr class="table-primary">
+                        <th>Net Pay</th>
+                        <td class="fw-bold text-success">$@Model.NetPay.ToString("N2")</td>
+                    </tr>
+
+                    <tr>
+                        <th>Status</th>
+                        <td>
+                            @if (Model.Status == "Draft")
+                            {
+                                <span class="badge bg-warning text-dark px-3 py-2">Draft</span>
+                            }
+                            else if (Model.Status == "Finalized")
+                            {
+                                <span class="badge bg-primary px-3 py-2">Finalized</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-success px-3 py-2">Paid</span>
+                            }
+                        </td>
+                    </tr>
+
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+
+</div>
+
+<style>
+    .page-container {
+        max-width: 1150px;
+        margin: auto;
+    }
+
+    .styled-table th {
+        width: 250px;
+        background: #f8f9fa;
+        font-weight: 600;
+    }
+
+    .styled-table td {
+        background: #ffffff;
+    }
+</style>

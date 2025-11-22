@@ -1,0 +1,175 @@
+﻿@using NZFTC_EMS.Models.ViewModels.Leave
+@model ApplyLeaveVM
+@{
+    Layout = "~/Views/Shared/_portal.cshtml";
+}
+
+<div class="page-container">
+
+    <!-- Page Header -->
+    <div class="header-row d-flex justify-content-between align-items-center mb-4">
+        <h2 class="page-title fw-bold">Apply for Leave</h2>
+    </div>
+
+    <!-- Success/Error Alerts -->
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success">@TempData["Success"]</div>
+    }
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger">@TempData["Error"]</div>
+    }
+
+    <!-- Leave Application Card -->
+    <div class="card shadow-sm border-0" style="border-radius: 10px;">
+        <div class="card-header text-white fw-semibold"
+             style="background-color:#1E4DB7; border-radius: 10px 10px 0 0;">
+            Apply Leave
+        </div>
+
+        <div class="card-body p-4">
+
+            <form asp-action="ApplyLeave" method="post">
+                <input type="hidden" asp-for="EmployeeId" />
+
+                <!-- Leave Type -->
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Leave Type</label>
+
+                    <div class="d-flex flex-wrap gap-4 mt-1">
+                        <label class="fw-normal">
+                            <input type="radio" asp-for="LeaveType" value="Annual" checked /> Annual
+                        </label>
+
+                        <label class="fw-normal">
+                            <input type="radio" asp-for="LeaveType" value="Sick" /> Sick
+                        </label>
+
+                        <label class="fw-normal">
+                            <input type="radio" asp-for="LeaveType" value="Casual" /> Casual
+                        </label>
+
+                        <label class="fw-normal">
+                            <input type="radio" asp-for="LeaveType" value="Other" /> Other
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Half Day -->
+                <div class="form-check mb-4">
+                    <input class="form-check-input" asp-for="IsHalfDay" />
+                    <label class="form-check-label fw-semibold">Half Day</label>
+                </div>
+
+                <!-- Dates -->
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label asp-for="StartDate" class="form-label fw-semibold">From</label>
+                        <input asp-for="StartDate"
+                               type="date"
+                               class="form-control"
+                               id="startDate"
+                               required />
+                    </div>
+
+                    <div class="col-md-4 mb-3">
+                        <label asp-for="EndDate" class="form-label fw-semibold">To</label>
+                        <input asp-for="EndDate"
+                               type="date"
+                               class="form-control"
+                               id="endDate"
+                               required />
+                    </div>
+
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label fw-semibold">No. of Days</label>
+                        <input asp-for="NumberOfDays"
+                               id="daysCount"
+                               class="form-control"
+                               readonly />
+                    </div>
+                </div>
+
+                <!-- Leave Balances -->
+                <div class="mb-4">
+                    <label class="form-label fw-semibold">Leave Balances</label>
+
+                    <div class="p-3 rounded" style="background:#f8f9fa;">
+                        <div class="mb-1">
+                            Annual Remaining:
+                            <b>@Model.AnnualRemaining</b> days
+                        </div>
+
+                        <div>
+                            Sick Remaining:
+                            <b>@Model.SickRemaining</b> days
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Reason -->
+                <div class="mb-4">
+                    <label asp-for="Reason" class="form-label fw-semibold">Reason</label>
+
+                    <textarea asp-for="Reason"
+                              class="form-control"
+                              maxlength="300"
+                              rows="3"
+                              placeholder="Enter reason..."
+                              id="reasonBox"></textarea>
+
+                    <div class="text-end mt-1">
+                        <small id="charCount">0/300</small>
+                    </div>
+                </div>
+
+                <!-- Buttons -->
+                <div class="mt-4 d-flex gap-2">
+                    <button type="submit" class="btn px-4 text-white" style="background-color:#1E4DB7;">
+                        Submit Application
+                    </button>
+
+                    <a href="/LeaveManagement/LeaveHistory" class="btn btn-secondary px-4">
+                        Cancel
+                    </a>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+
+</div>
+
+@section Scripts {
+
+    <script>
+        // Character Counter
+        const reasonBox = document.getElementById("reasonBox");
+        const charCount = document.getElementById("charCount");
+
+        reasonBox.addEventListener("input", () => {
+            charCount.textContent = `${reasonBox.value.length}/300`;
+        });
+
+        // Auto-calc days
+        const start = document.getElementById("startDate");
+        const end = document.getElementById("endDate");
+        const days = document.getElementById("daysCount");
+
+        function calcDays() {
+            if (start.value && end.value) {
+                const s = new Date(start.value);
+                const e = new Date(end.value);
+                const diff = (e - s) / (1000 * 3600 * 24) + 1;
+                days.value = diff > 0 ? diff : 0;
+            }
+        }
+
+        start.addEventListener("change", calcDays);
+        end.addEventListener("change", calcDays);
+    </script>
+
+    <script src="~/js/leave_apply.js"></script>
+}

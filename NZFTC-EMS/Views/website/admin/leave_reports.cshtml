@@ -1,0 +1,112 @@
+﻿@using NZFTC_EMS.Models.ViewModels.Leave
+@model List<LeaveReportVM>
+
+@{
+    Layout = "~/Views/Shared/_portal.cshtml";
+}
+
+<div class="page-container">
+
+    <!-- PAGE HEADER -->
+    <div class="header-row d-flex justify-content-between align-items-center mb-4">
+        <h2 class="page-title fw-bold">Leave Reports</h2>
+    </div>
+
+    <!-- =============================== -->
+    <!-- SUMMARY CARDS -->
+    <!-- =============================== -->
+    <div class="row mb-4">
+
+        <div class="col-md-3">
+            <div class="card shadow-sm border-0 text-center">
+                <div class="card-body">
+                    <h6 class="text-muted mb-1">Total Requests</h6>
+                    <h4 class="fw-bold text-primary">
+                        @Model.Sum(x => x.TotalRequests)
+                    </h4>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card shadow-sm border-0 text-center">
+                <div class="card-body">
+                    <h6 class="text-muted mb-1">Approved</h6>
+                    <h4 class="fw-bold text-success">
+                        @Model.Sum(x => x.Approved)
+                    </h4>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card shadow-sm border-0 text-center">
+                <div class="card-body">
+                    <h6 class="text-muted mb-1">Rejected</h6>
+                    <h4 class="fw-bold text-danger">
+                        @Model.Sum(x => x.Rejected)
+                    </h4>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card shadow-sm border-0 text-center">
+                <div class="card-body">
+                    <h6 class="text-muted mb-1">Total Days Taken</h6>
+                    <h4 class="fw-bold text-secondary">
+                        @Model.Sum(x => x.TotalDaysTaken)
+                    </h4>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- =============================== -->
+    <!-- MAIN REPORT TABLE -->
+    <!-- =============================== -->
+    <div class="card shadow-sm border-0">
+
+        <div class="card-header text-white fw-semibold"
+             style="background-color:#1E4DB7; border-radius:6px 6px 0 0;">
+            Leave Summary Breakdown
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-hover align-middle styled-table mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>Employee</th>
+                        <th>Leave Type</th>
+                        <th>Total Requests</th>
+                        <th>Approved</th>
+                        <th>Rejected</th>
+                        <th>Pending</th>
+                        <th>Days Taken</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach (var r in Model)
+                    {
+                        <tr>
+                            <td>@r.EmployeeName</td>
+                            <td>@r.LeaveType</td>
+                            <td class="fw-semibold">@r.TotalRequests</td>
+
+                            <td class="text-success fw-semibold">@r.Approved</td>
+                            <td class="text-danger fw-semibold">@r.Rejected</td>
+                            <td class="text-warning fw-semibold">@r.Pending</td>
+
+                            <td class="fw-bold text-primary">@r.TotalDaysTaken</td>
+                        </tr>
+                    }
+                </tbody>
+
+            </table>
+        </div>
+
+    </div>
+
+</div>

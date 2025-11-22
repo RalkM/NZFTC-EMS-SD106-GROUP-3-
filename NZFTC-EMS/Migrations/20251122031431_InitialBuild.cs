@@ -18,7 +18,7 @@ namespace NZFTC_EMS.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "CalendarEvents",
+                name: "calendarevents",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -31,11 +31,13 @@ namespace NZFTC_EMS.Migrations
                     End = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     EventType = table.Column<int>(type: "int", nullable: false),
                     OwnerUsername = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4")
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    IsTodo = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    IsPublicHoliday = table.Column<bool>(type: "tinyint(1)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CalendarEvents", x => x.Id);
+                    table.PrimaryKey("PK_calendarevents", x => x.Id);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -47,7 +49,7 @@ namespace NZFTC_EMS.Migrations
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Name = table.Column<string>(type: "varchar(150)", maxLength: 150, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    HolidayDate = table.Column<DateTime>(type: "date", nullable: false),
+                    HolidayDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     HolidayType = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     IsPaidHoliday = table.Column<bool>(type: "tinyint(1)", nullable: false)
@@ -55,6 +57,29 @@ namespace NZFTC_EMS.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_holidays", x => x.HolidayId);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "leavepolicies",
+                columns: table => new
+                {
+                    LeavePolicyId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    AnnualDefault = table.Column<decimal>(type: "decimal(65,30)", nullable: false),
+                    AnnualAccrualRate = table.Column<decimal>(type: "decimal(65,30)", nullable: false),
+                    AnnualCarryOverLimit = table.Column<decimal>(type: "decimal(65,30)", nullable: false),
+                    AllowNegativeAnnual = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    SickDefault = table.Column<decimal>(type: "decimal(65,30)", nullable: false),
+                    SickAccrualRate = table.Column<decimal>(type: "decimal(65,30)", nullable: false),
+                    AllowUnpaidSick = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    CustomLeaveTypesJson = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_leavepolicies", x => x.LeavePolicyId);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -94,6 +119,26 @@ namespace NZFTC_EMS.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_payrollperiods", x => x.PayrollPeriodId);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "payrollsettings",
+                columns: table => new
+                {
+                    PayrollSettingsId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    KiwiSaverEmployeePercent = table.Column<decimal>(type: "decimal(5,2)", precision: 5, scale: 2, nullable: false),
+                    KiwiSaverEmployerPercent = table.Column<decimal>(type: "decimal(5,2)", precision: 5, scale: 2, nullable: false),
+                    ACCLevyPercent = table.Column<decimal>(type: "decimal(5,3)", precision: 5, scale: 3, nullable: false),
+                    EnableStudentLoan = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    RegularHoursPerWeek = table.Column<int>(type: "int", nullable: false),
+                    OvertimeMultiplier = table.Column<decimal>(type: "decimal(5,2)", precision: 5, scale: 2, nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_payrollsettings", x => x.PayrollSettingsId);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -208,11 +253,11 @@ namespace NZFTC_EMS.Migrations
                     EmployeeLeaveBalanceId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     EmployeeId = table.Column<int>(type: "int", nullable: false),
-                    AnnualAccrued = table.Column<decimal>(type: "decimal(10,2)", precision: 10, scale: 2, nullable: false),
-                    AnnualUsed = table.Column<decimal>(type: "decimal(10,2)", precision: 10, scale: 2, nullable: false),
-                    SickAccrued = table.Column<decimal>(type: "decimal(10,2)", precision: 10, scale: 2, nullable: false),
-                    SickUsed = table.Column<decimal>(type: "decimal(10,2)", precision: 10, scale: 2, nullable: false),
-                    CarryOverAnnual = table.Column<decimal>(type: "decimal(10,2)", precision: 10, scale: 2, nullable: false),
+                    AnnualAccrued = table.Column<decimal>(type: "decimal(65,30)", nullable: false),
+                    AnnualUsed = table.Column<decimal>(type: "decimal(65,30)", nullable: false),
+                    SickAccrued = table.Column<decimal>(type: "decimal(65,30)", nullable: false),
+                    SickUsed = table.Column<decimal>(type: "decimal(65,30)", nullable: false),
+                    CarryOverAnnual = table.Column<decimal>(type: "decimal(65,30)", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false)
                 },
                 constraints: table =>
@@ -236,10 +281,17 @@ namespace NZFTC_EMS.Migrations
                     PayrollPeriodId = table.Column<int>(type: "int", nullable: false),
                     EmployeeId = table.Column<int>(type: "int", nullable: false),
                     PayRate = table.Column<decimal>(type: "decimal(12,2)", precision: 12, scale: 2, nullable: false),
+                    RateType = table.Column<int>(type: "int", nullable: false),
                     GrossPay = table.Column<decimal>(type: "decimal(14,2)", precision: 14, scale: 2, nullable: false),
+                    PAYE = table.Column<decimal>(type: "decimal(14,2)", precision: 14, scale: 2, nullable: false),
+                    KiwiSaverEmployee = table.Column<decimal>(type: "decimal(14,2)", precision: 14, scale: 2, nullable: false),
+                    KiwiSaverEmployer = table.Column<decimal>(type: "decimal(14,2)", precision: 14, scale: 2, nullable: false),
+                    ACCLevy = table.Column<decimal>(type: "decimal(14,2)", precision: 14, scale: 2, nullable: false),
+                    StudentLoan = table.Column<decimal>(type: "decimal(14,2)", precision: 14, scale: 2, nullable: false),
                     Deductions = table.Column<decimal>(type: "decimal(14,2)", precision: 14, scale: 2, nullable: false),
                     NetPay = table.Column<decimal>(type: "decimal(14,2)", precision: 14, scale: 2, nullable: false, computedColumnSql: "(`GrossPay` - `Deductions`)", stored: true),
-                    Status = table.Column<byte>(type: "tinyint unsigned", nullable: false)
+                    Status = table.Column<byte>(type: "tinyint unsigned", nullable: false, defaultValue: (byte)0),
+                    GeneratedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -249,7 +301,7 @@ namespace NZFTC_EMS.Migrations
                         column: x => x.EmployeeId,
                         principalTable: "employees",
                         principalColumn: "EmployeeId",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_employeepayrollsummaries_payrollperiods_PayrollPeriodId",
                         column: x => x.PayrollPeriodId,
@@ -300,20 +352,15 @@ namespace NZFTC_EMS.Migrations
                     EndDate = table.Column<DateTime>(type: "date", nullable: false),
                     Reason = table.Column<string>(type: "varchar(500)", maxLength: 500, nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Status = table.Column<byte>(type: "tinyint unsigned", nullable: false),
+                    Status = table.Column<string>(type: "varchar(20)", maxLength: 20, nullable: false, defaultValue: "Pending")
+                        .Annotation("MySql:CharSet", "utf8mb4"),
                     RequestedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     ApprovedByEmployeeId = table.Column<int>(type: "int", nullable: true),
-                    ApprovedByEmployeeEmployeeId = table.Column<int>(type: "int", nullable: true),
                     ApprovedAt = table.Column<DateTime>(type: "datetime(6)", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_leaverequests", x => x.LeaveRequestId);
-                    table.ForeignKey(
-                        name: "FK_leaverequests_employees_ApprovedByEmployeeEmployeeId",
-                        column: x => x.ApprovedByEmployeeEmployeeId,
-                        principalTable: "employees",
-                        principalColumn: "EmployeeId");
                     table.ForeignKey(
                         name: "FK_leaverequests_employees_ApprovedByEmployeeId",
                         column: x => x.ApprovedByEmployeeId,
@@ -385,9 +432,9 @@ namespace NZFTC_EMS.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.InsertData(
-                table: "CalendarEvents",
-                columns: new[] { "Id", "Description", "End", "EventType", "OwnerUsername", "Start", "Title" },
-                values: new object[] { 1, "NZFTC EMS officially launched!", new DateTime(2025, 11, 20, 17, 0, 0, 0, DateTimeKind.Unspecified), 3, "System", new DateTime(2025, 11, 20, 9, 0, 0, 0, DateTimeKind.Unspecified), "System Go-Live" });
+                table: "calendarevents",
+                columns: new[] { "Id", "Description", "End", "EventType", "IsPublicHoliday", "IsTodo", "OwnerUsername", "Start", "Title" },
+                values: new object[] { 1, "NZFTC EMS officially launched!", new DateTime(2025, 11, 20, 17, 0, 0, 0, DateTimeKind.Unspecified), 3, false, false, "System", new DateTime(2025, 11, 20, 9, 0, 0, 0, DateTimeKind.Unspecified), "System Go-Live" });
 
             migrationBuilder.InsertData(
                 table: "holidays",
@@ -395,11 +442,22 @@ namespace NZFTC_EMS.Migrations
                 values: new object[,]
                 {
                     { 1, new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Public", true, "New Year's Day" },
-                    { 2, new DateTime(2025, 2, 6, 0, 0, 0, 0, DateTimeKind.Unspecified), "Public", true, "Waitangi Day" },
-                    { 3, new DateTime(2025, 4, 18, 0, 0, 0, 0, DateTimeKind.Unspecified), "Public", true, "Good Friday" },
-                    { 4, new DateTime(2025, 4, 21, 0, 0, 0, 0, DateTimeKind.Unspecified), "Public", true, "Easter Monday" },
-                    { 5, new DateTime(2025, 4, 25, 0, 0, 0, 0, DateTimeKind.Unspecified), "Public", true, "ANZAC Day" }
+                    { 2, new DateTime(2025, 1, 2, 0, 0, 0, 0, DateTimeKind.Unspecified), "Public", true, "Day After New Year's Day" },
+                    { 3, new DateTime(2025, 2, 6, 0, 0, 0, 0, DateTimeKind.Unspecified), "Public", true, "Waitangi Day" },
+                    { 4, new DateTime(2025, 4, 18, 0, 0, 0, 0, DateTimeKind.Unspecified), "Public", true, "Good Friday" },
+                    { 5, new DateTime(2025, 4, 21, 0, 0, 0, 0, DateTimeKind.Unspecified), "Public", true, "Easter Monday" },
+                    { 6, new DateTime(2025, 4, 25, 0, 0, 0, 0, DateTimeKind.Unspecified), "Public", true, "ANZAC Day" },
+                    { 7, new DateTime(2025, 6, 2, 0, 0, 0, 0, DateTimeKind.Unspecified), "Public", true, "King's Birthday" },
+                    { 8, new DateTime(2025, 6, 20, 0, 0, 0, 0, DateTimeKind.Unspecified), "Public", true, "Matariki" },
+                    { 9, new DateTime(2025, 10, 27, 0, 0, 0, 0, DateTimeKind.Unspecified), "Public", true, "Labour Day" },
+                    { 10, new DateTime(2025, 12, 25, 0, 0, 0, 0, DateTimeKind.Unspecified), "Public", true, "Christmas Day" },
+                    { 11, new DateTime(2025, 12, 26, 0, 0, 0, 0, DateTimeKind.Unspecified), "Public", true, "Boxing Day" }
                 });
+
+            migrationBuilder.InsertData(
+                table: "leavepolicies",
+                columns: new[] { "LeavePolicyId", "AllowNegativeAnnual", "AllowUnpaidSick", "AnnualAccrualRate", "AnnualCarryOverLimit", "AnnualDefault", "CustomLeaveTypesJson", "SickAccrualRate", "SickDefault", "UpdatedAt" },
+                values: new object[] { 1, false, true, 1.67m, 5m, 20m, "[]", 0m, 10m, new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) });
 
             migrationBuilder.InsertData(
                 table: "paygrades",
@@ -412,55 +470,65 @@ namespace NZFTC_EMS.Migrations
                     { 4, 38.00m, "Team Leader", true, "PG-TL", (byte)0 },
                     { 5, 45.00m, "Supervisor", true, "PG-SUP", (byte)0 },
                     { 6, 50.00m, "Specialist", true, "PG-SPEC", (byte)0 },
-                    { 7, 65000.00m, "Salary - Junior/Assistant Manager", true, "PG-SAL-JM", (byte)1 },
-                    { 8, 80000.00m, "Salary - Department Manager", true, "PG-SAL-MAN", (byte)1 },
-                    { 9, 95000.00m, "Salary - Senior Manager", true, "PG-SAL-SRMAN", (byte)1 },
-                    { 10, 100000.00m, "Salary - General Manager", true, "PG-SAL-GM", (byte)1 }
+                    { 7, 65000m, "Salary - Junior/Assistant Manager", true, "PG-SAL-JM", (byte)1 },
+                    { 8, 80000m, "Salary - Department Manager", true, "PG-SAL-MAN", (byte)1 },
+                    { 9, 95000m, "Salary - Senior Manager", true, "PG-SAL-SRMAN", (byte)1 },
+                    { 10, 100000m, "Salary - General Manager", true, "PG-SAL-GM", (byte)1 }
                 });
 
             migrationBuilder.InsertData(
                 table: "payrollperiods",
                 columns: new[] { "PayrollPeriodId", "Closed", "PeriodCode", "PeriodEnd", "PeriodStart", "TotalAmount" },
-                values: new object[] { 1, false, "2025-11-M1", new DateTime(2025, 11, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2025, 11, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 0.00m });
+                values: new object[,]
+                {
+                    { 1, false, "2025-M11", new DateTime(2025, 11, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2025, 11, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null },
+                    { 2, false, "2025-M12", new DateTime(2025, 12, 31, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2025, 12, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null },
+                    { 3, true, "2025-FN13", new DateTime(2025, 11, 14, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2025, 11, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 90000m }
+                });
+
+            migrationBuilder.InsertData(
+                table: "payrollsettings",
+                columns: new[] { "PayrollSettingsId", "ACCLevyPercent", "EnableStudentLoan", "KiwiSaverEmployeePercent", "KiwiSaverEmployerPercent", "OvertimeMultiplier", "RegularHoursPerWeek", "UpdatedAt" },
+                values: new object[] { 1, 1.53m, true, 3.0m, 3.0m, 1.5m, 40, new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) });
 
             migrationBuilder.InsertData(
                 table: "jobpositions",
                 columns: new[] { "JobPositionId", "AccessRole", "Department", "Description", "IsActive", "Name", "PayGradeId" },
                 values: new object[,]
                 {
-                    { 1, "Admin", "Finance", "Top-level finance leadership", true, "Chief Financial Officer (CFO)", 10 },
-                    { 2, "Admin", "Finance", "Leads the finance team and reporting", true, "Finance Manager", 9 },
-                    { 3, "Employee", "Finance", "Handles complex accounting and reporting", true, "Senior Accountant", 8 },
-                    { 4, "Employee", "Finance", "General accounting duties", true, "Accountant", 7 },
-                    { 5, "Employee", "Finance", "Manages supplier invoices and payments", true, "Accounts Payable Officer", 3 },
-                    { 6, "Employee", "Finance", "Manages customer invoicing and collections", true, "Accounts Receivable Officer", 3 },
-                    { 7, "Employee", "Finance", "Processes staff payroll", true, "Payroll Officer", 6 },
-                    { 8, "Employee", "Finance", "Provides general admin support to finance", true, "Finance Administrator", 2 },
-                    { 9, "Employee", "Finance", "Prepares and manages billing", true, "Billing Specialist", 2 },
-                    { 10, "Employee", "Finance", "Entry-level support in finance", true, "Accounts Assistant", 1 },
-                    { 11, "Admin", "HR", "Leads HR operations and strategy", true, "HR Manager", 8 },
-                    { 12, "Admin", "HR", "Senior advisory role in HR", true, "Senior HR Advisor", 7 },
-                    { 13, "Admin", "HR", "Generalist HR support", true, "HR Advisor", 3 },
-                    { 14, "Admin", "HR", "Coordinates HR processes and documentation", true, "HR Coordinator", 2 },
-                    { 15, "Admin", "HR", "Admin support across HR functions", true, "HR Administrator", 1 },
-                    { 16, "Admin", "HR", "Manages recruitment and selection", true, "Recruitment Specialist", 6 },
-                    { 17, "Admin", "HR", "Supports talent acquisition activities", true, "Talent Acquisition Coordinator", 3 },
-                    { 18, "Admin", "HR", "Coordinates training and staff development", true, "Training & Development Officer", 6 },
-                    { 19, "Admin", "IT", "Leads IT operations and projects", true, "IT Manager", 8 },
-                    { 20, "Employee", "IT", "Maintains servers and systems", true, "Systems Administrator", 3 },
-                    { 21, "Employee", "IT", "Manages network infrastructure", true, "Network Administrator", 6 },
-                    { 22, "Employee", "IT", "Develops and maintains software applications", true, "Software Developer", 6 },
-                    { 23, "Employee", "IT", "Supports business applications", true, "Application Support Analyst", 3 },
-                    { 24, "Employee", "IT", "First-line IT support", true, "IT Support Technician", 2 },
-                    { 25, "Employee", "IT", "Handles basic IT helpdesk requests", true, "Helpdesk Support", 1 },
-                    { 26, "Employee", "IT", "Manages databases and performance", true, "Database Administrator (DBA)", 6 },
-                    { 27, "Admin", "Operations", "Oversees day-to-day operations", true, "Operations Manager", 8 },
-                    { 28, "Employee", "Operations", "Leads an operations team", true, "Team Leader – Operations", 4 },
-                    { 29, "Employee", "Operations", "Supervises operational staff", true, "Supervisor – Operations", 5 },
-                    { 30, "Employee", "Operations", "Senior operations officer role", true, "Senior Officer – Operations", 3 },
-                    { 31, "Employee", "Operations", "General office administration", true, "Office Administrator", 2 },
-                    { 32, "Employee", "Operations", "Frontline customer service", true, "Customer Service Representative", 2 },
-                    { 33, "Employee", "Operations", "Data entry and basic admin tasks", true, "Data Entry Operator", 1 }
+                    { 1, "Admin", "Finance", null, true, "Chief Financial Officer (CFO)", 10 },
+                    { 2, "Admin", "Finance", null, true, "Finance Manager", 9 },
+                    { 3, "Employee", "Finance", null, true, "Senior Accountant", 8 },
+                    { 4, "Employee", "Finance", null, true, "Accountant", 7 },
+                    { 5, "Employee", "Finance", null, true, "Accounts Payable Officer", 3 },
+                    { 6, "Employee", "Finance", null, true, "Accounts Receivable Officer", 3 },
+                    { 7, "Employee", "Finance", null, true, "Payroll Officer", 6 },
+                    { 8, "Employee", "Finance", null, true, "Finance Administrator", 2 },
+                    { 9, "Employee", "Finance", null, true, "Billing Specialist", 2 },
+                    { 10, "Employee", "Finance", null, true, "Accounts Assistant", 1 },
+                    { 11, "Admin", "HR", null, true, "HR Manager", 8 },
+                    { 12, "Admin", "HR", null, true, "Senior HR Advisor", 7 },
+                    { 13, "Admin", "HR", null, true, "HR Advisor", 3 },
+                    { 14, "Admin", "HR", null, true, "HR Coordinator", 2 },
+                    { 15, "Admin", "HR", null, true, "HR Administrator", 1 },
+                    { 16, "Admin", "HR", null, true, "Recruitment Specialist", 6 },
+                    { 17, "Admin", "HR", null, true, "Talent Acquisition Coordinator", 3 },
+                    { 18, "Admin", "HR", null, true, "Training & Development Officer", 6 },
+                    { 19, "Admin", "IT", null, true, "IT Manager", 8 },
+                    { 20, "Employee", "IT", null, true, "Systems Administrator", 3 },
+                    { 21, "Employee", "IT", null, true, "Network Administrator", 6 },
+                    { 22, "Employee", "IT", null, true, "Software Developer", 6 },
+                    { 23, "Employee", "IT", null, true, "Application Support Analyst", 3 },
+                    { 24, "Employee", "IT", null, true, "IT Support Technician", 2 },
+                    { 25, "Employee", "IT", null, true, "Helpdesk Support", 1 },
+                    { 26, "Employee", "IT", null, true, "Database Administrator (DBA)", 6 },
+                    { 27, "Admin", "Operations", null, true, "Operations Manager", 8 },
+                    { 28, "Employee", "Operations", null, true, "Team Leader – Operations", 4 },
+                    { 29, "Employee", "Operations", null, true, "Supervisor – Operations", 5 },
+                    { 30, "Employee", "Operations", null, true, "Senior Officer – Operations", 3 },
+                    { 31, "Employee", "Operations", null, true, "Office Administrator", 2 },
+                    { 32, "Employee", "Operations", null, true, "Customer Service Representative", 2 },
+                    { 33, "Employee", "Operations", null, true, "Data Entry Operator", 1 }
                 });
 
             migrationBuilder.InsertData(
@@ -468,8 +536,10 @@ namespace NZFTC_EMS.Migrations
                 columns: new[] { "EmployeeId", "Address", "Birthday", "Department", "Email", "EmployeeCode", "FirstName", "Gender", "JobPositionId", "LastName", "PasswordHash", "PasswordSalt", "PayGradeId", "Phone", "StartDate" },
                 values: new object[,]
                 {
-                    { 1001, "N/A", null, "HR", "admin@nzftc.local", "TEMP001", "Temp", "N/A", 11, "Admin", new byte[0], new byte[0], 8, null, new DateTime(2025, 11, 20, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 1002, "N/A", null, "Operations", "emp@nzftc.local", "TEMP002", "Temp", "N/A", 31, "Employee", new byte[0], new byte[0], 2, null, new DateTime(2025, 11, 20, 0, 0, 0, 0, DateTimeKind.Unspecified) }
+                    { 1001, "N/A", new DateTime(1990, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "HR", "admin@nzftc.local", "TEMP001", "Temp", "Other", 11, "Admin", new byte[0], new byte[0], 8, null, new DateTime(2025, 11, 20, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 1002, "123 Finance Street", new DateTime(1995, 5, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "Finance", "emp@nzftc.local", "EMP1002", "TEMP", "Male", 4, "Emp", new byte[0], new byte[0], 7, null, new DateTime(2025, 11, 20, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 1003, "42 Eden Terrace", new DateTime(1997, 3, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), "IT", "sarah@nzftc.local", "EMP1003", "Sarah", "Female", 22, "Williams", new byte[0], new byte[0], 6, null, new DateTime(2025, 11, 10, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 1004, "19 Queen Street", new DateTime(1988, 9, 14, 0, 0, 0, 0, DateTimeKind.Unspecified), "Finance", "michael@nzftc.local", "EMP1004", "Michael", "Male", 3, "Brown", new byte[0], new byte[0], 8, null, new DateTime(2025, 10, 5, 0, 0, 0, 0, DateTimeKind.Unspecified) }
                 });
 
             migrationBuilder.InsertData(
@@ -477,8 +547,8 @@ namespace NZFTC_EMS.Migrations
                 columns: new[] { "EmergencyContactId", "Email", "EmployeeId", "FullName", "Phone", "Relationship" },
                 values: new object[,]
                 {
-                    { 1, "none@local", 1001, "Temp Admin Contact", "0000", "N/A" },
-                    { 2, "none@local", 1002, "Temp Employee Contact", "0000", "N/A" }
+                    { 1, "none@local", 1001, "Admin Contact", "0000", null },
+                    { 2, "jane.doe@example.com", 1002, "Jane Doe", "0211234567", null }
                 });
 
             migrationBuilder.InsertData(
@@ -487,21 +557,23 @@ namespace NZFTC_EMS.Migrations
                 values: new object[,]
                 {
                     { 1, 0m, 0m, 0m, 1001, 0m, 0m, new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 2, 0m, 0m, 0m, 1002, 0m, 0m, new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) }
+                    { 2, 0m, 0m, 0m, 1002, 0m, 0m, new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 3, 5m, 0m, 0m, 1003, 2m, 0m, new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 4, 10m, 2m, 0m, 1004, 5m, 1m, new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) }
                 });
 
             migrationBuilder.InsertData(
                 table: "supporttickets",
                 columns: new[] { "Id", "AssignedToId", "CreatedAt", "EmployeeId", "Message", "Priority", "Status", "Subject", "UpdatedAt" },
-                values: new object[] { 1, 1001, new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 1002, "This is a sample seeded ticket.", 0, 0, "Welcome to Support", null });
+                values: new object[] { 1, 1001, new DateTime(2025, 11, 20, 0, 0, 0, 0, DateTimeKind.Unspecified), 1002, "This is the initial seeded support ticket.", 0, 0, "Welcome to Support", null });
 
             migrationBuilder.InsertData(
                 table: "supportmessages",
                 columns: new[] { "Id", "AdminReply", "AdminReplyAt", "Body", "SenderEmployeeId", "SenderIsAdmin", "SentAt", "TicketId" },
                 values: new object[,]
                 {
-                    { 1, null, null, "Hi, I need help setting up my account.", 1002, false, new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 1 },
-                    { 2, null, null, "Admin here — your account is now active!", 1001, false, new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 1 }
+                    { 1, null, null, "Hi, I need help setting up my account.", 1002, false, new DateTime(2025, 11, 20, 9, 0, 0, 0, DateTimeKind.Unspecified), 1 },
+                    { 2, null, null, "Admin here — your account is now active!", 1001, false, new DateTime(2025, 11, 20, 9, 5, 0, 0, DateTimeKind.Unspecified), 1 }
                 });
 
             migrationBuilder.CreateIndex(
@@ -520,10 +592,9 @@ namespace NZFTC_EMS.Migrations
                 column: "EmployeeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_employeepayrollsummaries_PayrollPeriodId_EmployeeId",
+                name: "IX_employeepayrollsummaries_PayrollPeriodId",
                 table: "employeepayrollsummaries",
-                columns: new[] { "PayrollPeriodId", "EmployeeId" },
-                unique: true);
+                column: "PayrollPeriodId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_employees_Email",
@@ -570,11 +641,6 @@ namespace NZFTC_EMS.Migrations
                 column: "PayGradeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_leaverequests_ApprovedByEmployeeEmployeeId",
-                table: "leaverequests",
-                column: "ApprovedByEmployeeEmployeeId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_leaverequests_ApprovedByEmployeeId",
                 table: "leaverequests",
                 column: "ApprovedByEmployeeId");
@@ -616,7 +682,7 @@ namespace NZFTC_EMS.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "CalendarEvents");
+                name: "calendarevents");
 
             migrationBuilder.DropTable(
                 name: "employeeemergencycontacts");
@@ -634,7 +700,13 @@ namespace NZFTC_EMS.Migrations
                 name: "holidays");
 
             migrationBuilder.DropTable(
+                name: "leavepolicies");
+
+            migrationBuilder.DropTable(
                 name: "leaverequests");
+
+            migrationBuilder.DropTable(
+                name: "payrollsettings");
 
             migrationBuilder.DropTable(
                 name: "supportmessages");

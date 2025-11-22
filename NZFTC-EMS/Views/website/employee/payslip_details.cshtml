@@ -1,0 +1,166 @@
+﻿@model NZFTC_EMS.ViewModels.Payroll.PayslipVM
+@{
+    Layout = "~/Views/Shared/_portal.cshtml";
+}
+
+<div class="page-container">
+
+    <!-- PAGE HEADER -->
+    <div class="header-row d-flex justify-content-between align-items-center mb-4">
+        <h2 class="page-title fw-bold">Payslip</h2>
+
+        <button class="btn btn-primary px-4" onclick="window.print()">
+            Print Payslip
+        </button>
+    </div>
+
+    <!-- PAYSLIP CARD -->
+    <div class="card shadow-sm border-0 payslip-card" style="max-width:900px;margin:auto;">
+
+        <div class="card-header text-white fw-semibold"
+             style="background-color:#1E4DB7; border-radius:6px 6px 0 0;">
+            NZFTC Employee Payslip
+        </div>
+
+        <div class="card-body p-4">
+
+            <!-- EMPLOYEE INFO -->
+            <h5 class="fw-semibold mb-3 text-secondary">Employee Information</h5>
+
+            <table class="table table-bordered small-table mb-4">
+                <tbody>
+                    <tr>
+                        <th>Name</th>
+                        <td>@Model.EmployeeName</td>
+                    </tr>
+                    <tr>
+                        <th>Employee Code</th>
+                        <td>@Model.EmployeeCode</td>
+                    </tr>
+                    <tr>
+                        <th>Department</th>
+                        <td>@Model.Department</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!-- PAY PERIOD -->
+            <h5 class="fw-semibold mb-3 text-secondary">Pay Period</h5>
+
+            <table class="table table-bordered small-table mb-4">
+                <tbody>
+                    <tr>
+                        <th>Period Code</th>
+                        <td>@Model.PeriodCode</td>
+                    </tr>
+                    <tr>
+                        <th>Start</th>
+                        <td>@Model.Start.ToShortDateString()</td>
+                    </tr>
+                    <tr>
+                        <th>End</th>
+                        <td>@Model.End.ToShortDateString()</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!-- PAY DETAILS -->
+            <h5 class="fw-semibold mb-3 text-secondary">Pay Details</h5>
+
+            <table class="table table-bordered small-table">
+                <tbody>
+                    <tr>
+                        <th>Pay Rate</th>
+                        <td>$@Model.PayRate.ToString("N2") (@Model.RateType)</td>
+                    </tr>
+
+                    <tr>
+                        <th>Gross Pay</th>
+                        <td class="fw-bold text-primary">$@Model.GrossPay.ToString("N2")</td>
+                    </tr>
+
+                    <tr>
+                        <th>PAYE (Tax)</th>
+                        <td>$@Model.PAYE.ToString("N2")</td>
+                    </tr>
+
+                    <tr>
+                        <th>KiwiSaver (Employee)</th>
+                        <td>$@Model.KiwiSaverEmployee.ToString("N2")</td>
+                    </tr>
+
+                    <tr>
+                        <th>KiwiSaver (Employer)</th>
+                        <td>$@Model.KiwiSaverEmployer.ToString("N2")</td>
+                    </tr>
+
+                    <tr>
+                        <th>ACC Earners’ Levy</th>
+                        <td>$@Model.ACCLevy.ToString("N2")</td>
+                    </tr>
+
+                    <tr>
+                        <th>Student Loan</th>
+                        <td>$@Model.StudentLoan.ToString("N2")</td>
+                    </tr>
+
+                    <tr class="table-primary">
+                        <th>Net Pay</th>
+                        <td class="fw-bold text-success">$@Model.NetPay.ToString("N2")</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <hr />
+
+            <p class="text-muted small mb-0">
+                Generated on @Model.GeneratedAt.ToString("f")
+            </p>
+
+        </div>
+    </div>
+
+</div>
+
+<style>
+    .page-container {
+        max-width: 1150px;
+        margin: auto;
+    }
+
+    .small-table th {
+        width: 220px;
+        background: #f8f9fa;
+        font-weight: 600;
+    }
+
+    .small-table td {
+        background: white;
+    }
+
+    /* PRINT MODE */
+    @@media print {
+        body *
+
+    {
+        visibility: hidden;
+    }
+
+    .payslip-card, .payslip-card * {
+        visibility: visible;
+    }
+
+    .payslip-card {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        box-shadow: none !important;
+    }
+
+    button, .header-row {
+        display: none !important;
+    }
+
+    }
+</style>

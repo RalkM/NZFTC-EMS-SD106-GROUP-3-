@@ -1,0 +1,132 @@
+﻿@model NZFTC_EMS.ViewModels.Payroll.PayrollSettingsVM
+@{
+    Layout = "~/Views/Shared/_portal.cshtml";
+}
+
+<div class="page-container">
+
+    <!-- PAGE HEADER -->
+    <div class="header-row d-flex justify-content-between align-items-center mb-4">
+        <h2 class="page-title fw-bold">Payroll Settings</h2>
+    </div>
+
+    <!-- SUCCESS MESSAGE -->
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success">@TempData["Success"]</div>
+    }
+
+    <form method="post" class="settings-form">
+
+        <!-- KIWI SAVER -->
+        <div class="card shadow-sm border-0 mb-4 settings-card">
+            <div class="card-header fw-semibold text-white"
+                 style="background-color:#1E4DB7; border-radius:6px 6px 0 0;">
+                KiwiSaver Settings
+            </div>
+
+            <div class="card-body row g-4">
+
+                <div class="col-md-6">
+                    <label class="form-label fw-semibold">Employee Contribution (%)</label>
+                    <input asp-for="KiwiSaverEmployeePercent"
+                           class="form-control form-control-lg"
+                           type="number" min="0" step="0.1" />
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label fw-semibold">Employer Contribution (%)</label>
+                    <input asp-for="KiwiSaverEmployerPercent"
+                           class="form-control form-control-lg"
+                           type="number" min="0" step="0.1" />
+                </div>
+
+            </div>
+        </div>
+
+        <!-- ACC LEVY -->
+        <div class="card shadow-sm border-0 mb-4 settings-card">
+            <div class="card-header fw-semibold text-white"
+                 style="background-color:#1E4DB7; border-radius:6px 6px 0 0;">
+                ACC Earners’ Levy
+            </div>
+
+            <div class="card-body">
+                <label class="form-label fw-semibold">ACC Levy (%)</label>
+                <input asp-for="ACCLevyPercent"
+                       class="form-control form-control-lg"
+                       type="number" min="0" step="0.01" />
+            </div>
+        </div>
+
+        <!-- STUDENT LOAN -->
+        <div class="card shadow-sm border-0 mb-4 settings-card">
+            <div class="card-header fw-semibold text-white"
+                 style="background-color:#1E4DB7; border-radius:6px 6px 0 0;">
+                Student Loan
+            </div>
+
+            <div class="card-body">
+                <div class="form-check">
+                    <input asp-for="EnableStudentLoan" class="form-check-input" />
+                    <label class="form-check-label fw-semibold">
+                        Enable Student Loan Deductions
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <!-- HOURS + OVERTIME -->
+        <div class="card shadow-sm border-0 mb-4 settings-card">
+            <div class="card-header fw-semibold text-white"
+                 style="background-color:#1E4DB7; border-radius:6px 6px 0 0;">
+                Hours & Overtime
+            </div>
+
+            <div class="card-body row g-4">
+
+                <div class="col-md-6">
+                    <label class="form-label fw-semibold">Regular Hours Per Week</label>
+                    <input asp-for="RegularHoursPerWeek"
+                           type="number" min="1" step="1"
+                           class="form-control form-control-lg" />
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label fw-semibold">Overtime Multiplier</label>
+                    <input asp-for="OvertimeMultiplier"
+                           type="number" min="1" step="0.1"
+                           class="form-control form-control-lg" />
+                </div>
+
+            </div>
+        </div>
+
+        <!-- SAVE BUTTON -->
+        <div class="text-end mt-4">
+            <button type="submit" class="btn btn-primary px-4 py-2"
+                    style="font-size:1.1rem;">
+                Save Settings
+            </button>
+        </div>
+
+    </form>
+
+</div>
+
+<style>
+    .settings-card .card-body {
+        padding: 25px;
+    }
+
+    .form-control-lg {
+        padding: 12px;
+        font-size: 1rem;
+    }
+
+    .page-container {
+        max-width: 1150px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+</style>

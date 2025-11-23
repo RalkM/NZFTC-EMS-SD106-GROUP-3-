@@ -1,72 +1,316 @@
 ﻿@{
     ViewData["Title"] = "Home";
 }
-<!-- Hero Section -->
-<section class="bg-light text-center py-5" id="home">
-    <div class="container">
-        <h1 class="fw-bold mb-3">
-            Simplify Employee Management for a Smarter Workplace
-        </h1>
-        <p class="text-muted mb-4">
-            Manage payroll, leave, and employee data securely — all in one place.
-        </p>
-        <a class="btn btn-primary me-2" asp-controller="Website" asp-action="Authentication" method="get">Log In</a>
-        <a class="btn btn-outline-secondary" href="#learn-more">Learn More</a>
-    </div>
-</section>
+<!-- =========================
+     MAIN CONTENT
+========================== -->
+<main>
+    <!-- HERO SECTION -->
+    <section class="hero reveal-on-scroll" id="home">
 
-<!-- Learn More Section -->
-<section id="learn-more" class="py-5 bg-white">
-    <div class="container text-center">
-        <h2 class="fw-bold mb-4">Learn More About NZFTC EMS</h2>
-        <p class="text-muted mb-5">
-            The NZFTC Employee Management System (EMS) streamlines HR operations
-            by managing employee information, payroll, leave, and support in one place.
-        </p>
+        <div class="container">
+            <p class="hero-kicker">NZFTC Employee Management System</p>
 
-        <div class="row g-4">
-            <div class="col-md-3">
-                <div class="card border-0 shadow-sm h-100">
-                    <div class="card-body">
-                        <h5 class="card-title fw-bold">Employee Management</h5>
-                        <p class="card-text text-muted">
-                            Maintain accurate employee profiles with easy updates.
-                        </p>
-                    </div>
+            <h1>Simplify Employee Management</h1>
+            <h2>for a Smarter Workplace</h2>
+
+            <p>
+                Manage payroll, leave, and employee data securely — all in one place.
+            </p>
+
+            <a class="btn btn-primary me-2"
+               asp-controller="Website"
+               asp-action="Authentication">
+                Log In
+            </a>
+            <a class="btn btn-outline-secondary" href="#overview">
+                Know More
+            </a>
+        </div>
+    </section>
+
+    <!-- OVERVIEW SECTION (FORMER LEARN-MORE) -->
+    <section id="overview" class="py-5 bg-white reveal-on-scroll">
+        <div class="container text-center">
+            <p class="hero-kicker mb-2">Overview</p>
+            <h2 class="fw-bold mb-3">Learn More About NZFTC EMS</h2>
+            <p class="text-muted mb-4">
+                Core modules that support HR, payroll, and employee experience in one central system.
+            </p>
+
+            <div class="row g-4 overview-grid">
+                <!-- Employee Management -->
+                <div class="col-6 col-md-3">
+                    <a href="#feature-employee-management" class="text-decoration-none feature-card-link">
+                        <div class="card border-0 shadow-sm h-100 feature-card">
+                            <div class="card-body">
+                                <img src="~/lib/img/feature-employee-management.png"
+                                     alt="Employee management dashboard"
+                                     class="feature-icon img-fluid mx-auto d-block mb-3">
+                                <h5 class="card-title fw-bold text-dark">Employee Management</h5>
+                                <p class="card-text text-muted">
+                                    Maintain accurate employee profiles with easy updates.
+                                </p>
+                            </div>
+                        </div>
+                    </a>
                 </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card border-0 shadow-sm h-100">
-                    <div class="card-body">
-                        <h5 class="card-title fw-bold">Leave Tracking</h5>
-                        <p class="card-text text-muted">
-                            Paperless leave applications and approval workflows.
-                        </p>
-                    </div>
+
+                <!-- Leave Tracking -->
+                <div class="col-6 col-md-3">
+                    <a href="#feature-leave-tracking" class="text-decoration-none feature-card-link">
+                        <div class="card border-0 shadow-sm h-100 feature-card">
+                            <div class="card-body">
+                                <img src="~/lib/feature-leave-tracking.png"
+                                     alt="Leave tracking calendar"
+                                     class="feature-icon img-fluid mx-auto d-block mb-3">
+                                <h5 class="card-title fw-bold text-dark">Leave Tracking</h5>
+                                <p class="card-text text-muted">
+                                    Paperless leave applications and approval workflows.
+                                </p>
+                            </div>
+                        </div>
+                    </a>
                 </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card border-0 shadow-sm h-100">
-                    <div class="card-body">
-                        <h5 class="card-title fw-bold">Payroll Automation</h5>
-                        <p class="card-text text-muted">
-                            Auto-calculate deductions, taxes, and net pay securely.
-                        </p>
-                    </div>
+
+                <!-- Payroll Automation -->
+                <div class="col-6 col-md-3">
+                    <a href="#feature-payroll" class="text-decoration-none feature-card-link">
+                        <div class="card border-0 shadow-sm h-100 feature-card">
+                            <div class="card-body">
+                                <img src="~/lib/img/feature-payroll.png"
+                                     alt="Payroll automation"
+                                     class="feature-icon img-fluid mx-auto d-block mb-3">
+                                <h5 class="card-title fw-bold text-dark">Payroll Automation</h5>
+                                <p class="card-text text-muted">
+                                    Auto-calculate deductions, taxes, and net pay securely.
+                                </p>
+                            </div>
+                        </div>
+                    </a>
                 </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card border-0 shadow-sm h-100">
-                    <div class="card-body">
-                        <h5 class="card-title fw-bold">Employee Support</h5>
-                        <p class="card-text text-muted">
-                            Submit and track workplace inquiries or grievances.
-                        </p>
-                    </div>
+
+                <!-- Employee Support -->
+                <div class="col-6 col-md-3">
+                    <a href="#feature-support" class="text-decoration-none feature-card-link">
+                        <div class="card border-0 shadow-sm h-100 feature-card">
+                            <div class="card-body">
+                                <img src="~/lib/img/feature-support.png"
+                                     alt="Employee support portal"
+                                     class="feature-icon img-fluid mx-auto d-block mb-3">
+                                <h5 class="card-title fw-bold text-dark">Employee Support</h5>
+                                <p class="card-text text-muted">
+                                    Submit and track workplace inquiries or grievances.
+                                </p>
+                            </div>
+                        </div>
+                    </a>
                 </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
+
+    <!-- FEATURE: EMPLOYEE MANAGEMENT -->
+    <section id="feature-employee-management" class="feature-section py-5 reveal-on-scroll">
+        <div class="container">
+            <div class="row align-items-center">
+                <!-- Image left -->
+                <div class="col-md-6 mb-4 mb-md-0">
+                    <img src="~/lib/img/feature-employee-management-detail.png"
+                         alt="HR manager viewing employee records"
+                         class="img-fluid rounded shadow-sm">
+                </div>
+                <!-- Text right -->
+                <div class="col-md-6">
+                    <h3 class="fw-bold mb-3">Centralised Employee Profiles</h3>
+                    <p class="text-muted mb-3">
+                        Our EMS keeps all employee information in one place — personal details,
+                        roles, pay grades, and employment history. This supports our project goal
+                        of reducing manual paperwork and providing staff with accurate, real-time data.
+                    </p>
+                    <ul class="text-muted">
+                        <li>Single source of truth for employee data</li>
+                        <li>Secure access for authorised HR staff only</li>
+                        <li>Designed to scale as NZFTC grows</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FEATURE: LEAVE TRACKING -->
+    <section id="feature-leave-tracking" class="feature-section feature-section-alt py-5 reveal-on-scroll">
+        <div class="container">
+            <div class="row align-items-center">
+                <!-- Text left -->
+                <div class="col-md-6 order-md-1 order-2">
+                    <h3 class="fw-bold mb-3">Paperless Leave Management</h3>
+                    <p class="text-muted mb-3">
+                        Staff can submit leave online, and managers can approve from the same system.
+                        This aligns with the project requirement to replace manual forms and improve
+                        visibility of staff availability.
+                    </p>
+                    <ul class="text-muted">
+                        <li>Online submission and approval workflows</li>
+                        <li>Clear leave balances for employees</li>
+                        <li>Integrated with the calendar and payroll modules</li>
+                    </ul>
+                </div>
+                <!-- Image right -->
+                <div class="col-md-6 order-md-2 order-1 mb-4 mb-md-0">
+                    <img src="~/lib/img/feature-leave-tracking-detail.png"
+                         alt="Leave calendar interface"
+                         class="img-fluid rounded shadow-sm">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FEATURE: PAYROLL -->
+    <section id="feature-payroll" class="feature-section py-5 reveal-on-scroll">
+        <div class="container">
+            <div class="row align-items-center">
+                <!-- Image left -->
+                <div class="col-md-6 mb-4 mb-md-0">
+                    <img src="~/lib/img/feature-payroll-detail.png"
+                         alt="Automated payroll calculation"
+                         class="img-fluid rounded shadow-sm">
+                </div>
+                <!-- Text right -->
+                <div class="col-md-6">
+                    <h3 class="fw-bold mb-3">Accurate &amp; Automated Payroll</h3>
+                    <p class="text-muted mb-3">
+                        Payroll automation reduces human error and ensures staff are paid correctly.
+                        This supports compliance with NZ employment standards and simplifies audits.
+                    </p>
+                    <ul class="text-muted">
+                        <li>Automatic tax and deduction calculations</li>
+                        <li>Integration with leave and attendance records</li>
+                        <li>Audit-ready reports for finance and management</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FEATURE: SUPPORT -->
+    <section id="feature-support" class="feature-section feature-section-alt py-5 reveal-on-scroll">
+        <div class="container">
+            <div class="row align-items-center">
+                <!-- Text left -->
+                <div class="col-md-6 order-md-1 order-2">
+                    <h3 class="fw-bold mb-3">Employee Support &amp; Feedback</h3>
+                    <p class="text-muted mb-3">
+                        The support module gives employees a safe space to raise workplace issues
+                        and track responses. This aligns with project goals around transparency,
+                        communication, and staff wellbeing.
+                    </p>
+                    <ul class="text-muted">
+                        <li>Submit HR requests or concerns online</li>
+                        <li>Track status and responses in one place</li>
+                        <li>Provide data for continuous improvement</li>
+                    </ul>
+                </div>
+                <!-- Image right -->
+                <div class="col-md-6 order-md-2 order-1 mb-4 mb-md-0">
+                    <img src="~/lib/img/feature-support-detail.png"
+                         alt="Employee support conversation"
+                         class="img-fluid rounded shadow-sm">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CONTACT DEVELOPERS / SUPPORT FORM -->
+    <section class="contact-section py-5 reveal-on-scroll" id="support">
+        <div class="container">
+            <div class="row g-4 align-items-start">
+                <!-- Left: intro text -->
+                <div class="col-md-5">
+                    <h2 class="fw-bold mb-3">Get in touch with the developers</h2>
+                    <p class="text-muted mb-3">
+                        Have a question about the NZFTC Employee Management System (EMS),
+                        found an issue, or want to suggest an improvement? Send a message
+                        directly to the development team and we&apos;ll get back to you.
+                    </p>
+                    <ul class="list-unstyled text-muted mb-0">
+                        <li class="mb-2">
+                            <i class="fa-solid fa-circle-check me-2 text-primary"></i>
+                            Technical support and bug reports
+                        </li>
+                        <li class="mb-2">
+                            <i class="fa-solid fa-circle-check me-2 text-primary"></i>
+                            Feature requests and feedback
+                        </li>
+                        <li class="mb-2">
+                            <i class="fa-solid fa-circle-check me-2 text-primary"></i>
+                            Questions about the EMS implementation
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Right: form -->
+                <div class="col-md-7">
+                    <div class="contact-card p-4 rounded-3 shadow-sm bg-white">
+                        <form method="post" action="#">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label for="contactName" class="form-label">Full name</label>
+                                    <input type="text"
+                                           class="form-control"
+                                           id="contactName"
+                                           name="Name"
+                                           placeholder="Jane Doe">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="contactEmail" class="form-label">Email address</label>
+                                    <input type="email"
+                                           class="form-control"
+                                           id="contactEmail"
+                                           name="Email"
+                                           placeholder="jane.doe@example.com">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="contactRole" class="form-label">Role</label>
+                                    <select class="form-select" id="contactRole" name="Role">
+                                        <option selected disabled>Choose an option</option>
+                                        <option>Student</option>
+                                        <option>Staff</option>
+                                        <option>Admin</option>
+                                        <option>Other</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="contactSubject" class="form-label">Subject</label>
+                                    <input type="text"
+                                           class="form-control"
+                                           id="contactSubject"
+                                           name="Subject"
+                                           placeholder="Issue, question, or feedback">
+                                </div>
+                                <div class="col-12">
+                                    <label for="contactMessage" class="form-label">Message</label>
+                                    <textarea class="form-control"
+                                              id="contactMessage"
+                                              name="Message"
+                                              rows="4"
+                                              placeholder="Describe your question or request in detail..."></textarea>
+                                </div>
+                                <div class="col-12 text-end">
+                                    <button type="submit" class="btn btn-primary px-4">
+                                        <i class="fa-solid fa-paper-plane me-2"></i>
+                                        Send message
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+</main>
+
 
 

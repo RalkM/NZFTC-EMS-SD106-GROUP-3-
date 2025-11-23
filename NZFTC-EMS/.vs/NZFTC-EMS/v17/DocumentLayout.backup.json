@@ -1,10 +1,18 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "D:\\xampp\\htdocs\\NZFTC-EMS-SD106-GROUP-3-\\NZFTC-EMS\\",
+  "WorkspaceRootPath": "C:\\SD106-EMS-Group5-\\NZFTC-EMS-SD106-GROUP-3-\\NZFTC-EMS\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{427B2A8B-8A94-4595-9501-A49D687916B0}|NZFTC-EMS.csproj|d:\\xampp\\htdocs\\nzftc-ems-sd106-group-3-\\nzftc-ems\\controllers\\payrollmanagementcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{427B2A8B-8A94-4595-9501-A49D687916B0}|NZFTC-EMS.csproj|solutionrelative:controllers\\payrollmanagementcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{427B2A8B-8A94-4595-9501-A49D687916B0}|NZFTC-EMS.csproj|c:\\sd106-ems-group5-\\nzftc-ems-sd106-group-3-\\nzftc-ems\\views\\website\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{427B2A8B-8A94-4595-9501-A49D687916B0}|NZFTC-EMS.csproj|solutionrelative:views\\website\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{427B2A8B-8A94-4595-9501-A49D687916B0}|NZFTC-EMS.csproj|c:\\sd106-ems-group5-\\nzftc-ems-sd106-group-3-\\nzftc-ems\\wwwroot\\css\\landing-page-stylesheet.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
+      "RelativeMoniker": "D:0:0:{427B2A8B-8A94-4595-9501-A49D687916B0}|NZFTC-EMS.csproj|solutionrelative:wwwroot\\css\\landing-page-stylesheet.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{427B2A8B-8A94-4595-9501-A49D687916B0}|NZFTC-EMS.csproj|c:\\sd106-ems-group5-\\nzftc-ems-sd106-group-3-\\nzftc-ems\\views\\shared\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{427B2A8B-8A94-4595-9501-A49D687916B0}|NZFTC-EMS.csproj|solutionrelative:views\\shared\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     }
   ],
   "DocumentGroupContainers": [
@@ -14,7 +22,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 3,
           "Children": [
             {
               "$type": "Bookmark",
@@ -22,15 +30,41 @@
             },
             {
               "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\SD106-EMS-Group5-\\NZFTC-EMS-SD106-GROUP-3-\\NZFTC-EMS\\Views\\Shared\\Index.cshtml",
+              "RelativeDocumentMoniker": "Views\\Shared\\Index.cshtml",
+              "ToolTip": "C:\\SD106-EMS-Group5-\\NZFTC-EMS-SD106-GROUP-3-\\NZFTC-EMS\\Views\\Shared\\Index.cshtml",
+              "RelativeToolTip": "Views\\Shared\\Index.cshtml",
+              "ViewState": "AgIAABIAAAAAAAAAAAAtwCkAAAAfAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-23T02:46:06.284Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "landing-page-stylesheet.css",
+              "DocumentMoniker": "C:\\SD106-EMS-Group5-\\NZFTC-EMS-SD106-GROUP-3-\\NZFTC-EMS\\wwwroot\\css\\landing-page-stylesheet.css",
+              "RelativeDocumentMoniker": "wwwroot\\css\\landing-page-stylesheet.css",
+              "ToolTip": "C:\\SD106-EMS-Group5-\\NZFTC-EMS-SD106-GROUP-3-\\NZFTC-EMS\\wwwroot\\css\\landing-page-stylesheet.css",
+              "RelativeToolTip": "wwwroot\\css\\landing-page-stylesheet.css",
+              "ViewState": "AgIAAOkAAAAAAAAAAAAswPUAAAAhAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
+              "WhenOpened": "2025-11-23T02:44:26.083Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "PayrollManagementController.cs",
-              "DocumentMoniker": "D:\\xampp\\htdocs\\NZFTC-EMS-SD106-GROUP-3-\\NZFTC-EMS\\Controllers\\PayrollManagementController.cs",
-              "RelativeDocumentMoniker": "Controllers\\PayrollManagementController.cs",
-              "ToolTip": "D:\\xampp\\htdocs\\NZFTC-EMS-SD106-GROUP-3-\\NZFTC-EMS\\Controllers\\PayrollManagementController.cs",
-              "RelativeToolTip": "Controllers\\PayrollManagementController.cs",
-              "ViewState": "AgIAAA4AAAAAAAAAAAAAAA4AAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-22T13:06:20.505Z",
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\SD106-EMS-Group5-\\NZFTC-EMS-SD106-GROUP-3-\\NZFTC-EMS\\Views\\website\\Index.cshtml",
+              "RelativeDocumentMoniker": "Views\\website\\Index.cshtml",
+              "ToolTip": "C:\\SD106-EMS-Group5-\\NZFTC-EMS-SD106-GROUP-3-\\NZFTC-EMS\\Views\\website\\Index.cshtml",
+              "RelativeToolTip": "Views\\website\\Index.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAzAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-23T02:42:39.831Z",
               "EditorCaption": ""
             }
           ]

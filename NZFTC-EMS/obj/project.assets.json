@@ -7815,23 +7815,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\aries\\.nuget\\packages\\": {},
+    "C:\\Users\\rr_ob\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\xampp\\htdocs\\NZFTC-EMS-SD106-GROUP-3-\\NZFTC-EMS\\NZFTC-EMS.csproj",
+      "projectUniqueName": "C:\\SD106-EMS-Group5-\\NZFTC-EMS-SD106-GROUP-3-\\NZFTC-EMS\\NZFTC-EMS.csproj",
       "projectName": "NZFTC-EMS",
-      "projectPath": "D:\\xampp\\htdocs\\NZFTC-EMS-SD106-GROUP-3-\\NZFTC-EMS\\NZFTC-EMS.csproj",
-      "packagesPath": "C:\\Users\\aries\\.nuget\\packages\\",
-      "outputPath": "D:\\xampp\\htdocs\\NZFTC-EMS-SD106-GROUP-3-\\NZFTC-EMS\\obj\\",
+      "projectPath": "C:\\SD106-EMS-Group5-\\NZFTC-EMS-SD106-GROUP-3-\\NZFTC-EMS\\NZFTC-EMS.csproj",
+      "packagesPath": "C:\\Users\\rr_ob\\.nuget\\packages\\",
+      "outputPath": "C:\\SD106-EMS-Group5-\\NZFTC-EMS-SD106-GROUP-3-\\NZFTC-EMS\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\aries\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\rr_ob\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -7840,7 +7840,6 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-        "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -7925,7 +7924,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.300/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.306/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

@@ -1,45 +1,84 @@
-﻿﻿
-<!DOCTYPE html>
-<html>
+﻿<!DOCTYPE html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          crossorigin="anonymous">
+
+    <!-- Font Awesome -->
     <script src="https://kit.fontawesome.com/5c09730e7a.js" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
-    <title>NZFT | @ViewData["Title"]</title>
+
+    
+   <title>NZFT | @ViewData["Title"]</title> 
+
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100..900;1,100..900&display=swap"
+          rel="stylesheet">
+
+    <!-- Site CSS -->
     <link rel="stylesheet" href="~/css/landing-page-stylesheet.css" asp-append-version="true" />
 </head>
 <body>
+    <!-- =========================
+         NAVBAR
+    ========================== -->
     <header>
-        <nav>
-            <div class="logo">
-                <a class="nav_brand"><img src="./lib/Image.png" alt="Company logo"></a>
-            </div>
-            <div class="container_fluid">
-                <ul class="navbar_nav">
-                    <li class="nav_item">
-                        <a class="nav_link" aria-current="page" href="#home">Home</a>
-                    </li>
-                    <li class="nav_item">
-                        <a class="nav_link" href="#about">About us</a>
-                    </li>
-                    <li class="nav_item">
-                        <a class="nav_link" href="#contacts">Contact us</a>
-                    </li>
-                    <li class="nav_item">
-                        <form asp-controller="Website" asp-action="Authentication" method="get">
-                            <button type="button" class="btn btn-primary"
-                                    onclick="location.href='@Url.Action("Authentication", "Website")'">
-                                Login
-                            </button>
-                        </form>
-                    </li>
-                </ul>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container-fluid">
+                <!-- LOGO -->
+                <a class="logo navbar-brand nav_brand" href="#home">
+                    <!-- Desktop + Tablet logo -->
+                    <img src="~/lib/img/logo-full.png" 
+                         alt="NZFTC EMS Logo Full"
+                         class="logo-full d-none d-md-block"/>
+
+                    <!-- Mobile icon logo -->
+                    <img src="~/lib/img/logo-icon.png"
+                         alt="NZFTC Logo Icon"
+                         class="logo-icon d-block d-md-none">
+                </a>
+
+                <!-- MOBILE TOGGLER -->
+                <button class="navbar-toggler"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#mainNavbar"
+                        aria-controls="mainNavbar"
+                        aria-expanded="false"
+                        aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- NAV LINKS -->
+                <div class="collapse navbar-collapse" id="mainNavbar">
+                    <ul class="navbar-nav ms-auto navbar_nav">
+                        <li class="nav-item nav_item">
+                            <a class="nav-link nav_link" aria-current="page" href="#home">HOME</a>
+                        </li>
+                        <li class="nav-item nav_item">
+                            <a class="nav-link nav_link" href="#overview">OVERVIEW</a>
+                        </li>
+                        <li class="nav-item nav_item">
+                            <a class="nav-link nav_link" href="#support">SUPPORT</a>
+                        </li>
+                        <li class="nav-item nav_item d-flex align-items-center mt-3 mt-lg-0">
+                            <form asp-controller="Website" asp-action="Authentication" method="get" class="m-0">
+                                <button type="button"
+                                        class="btn login-outline-btn"
+                                        onclick="location.href='@Url.Action("Authentication", "Website")'">
+                                    <i class="fa-solid fa-user"></i>
+                                </button>
+                            </form>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </nav>
     </header>
@@ -48,7 +87,62 @@
             @RenderBody()
         </div>
     </main>
+    <!-- =========================
+         FOOTER
+    ========================== -->
+    <footer class="footer-bg text-white">
+        <div class="container py-5">
+            <div class="row">
+                <!-- Contact Info -->
+                <div class="col-md-6 mb-4">
+                    <h4 class="fw-bold">Contact Us</h4>
+                    <p class="mb-1">
+                        <i class="fa-solid fa-location-dot me-2"></i>
+                        Christchurch &amp; Auckland | New Zealand
+                    </p>
+                    <p class="mb-1">
+                        <i class="fa-solid fa-phone me-2"></i>
+                        0800 888 808
+                    </p>
+                    <p class="mb-1">
+                        <i class="fa-solid fa-envelope me-2"></i>
+                        support@nzftc.co.nz
+                    </p>
+                </div>
 
+                <!-- Quick Links -->
+                <div class="col-md-6 mb-4">
+                    <h4 class="fw-bold">Quick Links</h4>
+                    <ul class="list-unstyled">
+                        <li><a href="#home" class="footer-link">Home</a></li>
+                        <li><a href="#overview" class="footer-link">Overview</a></li>
+                        <li><a href="#support" class="footer-link">Support form</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
 
+        <!-- Copyright -->
+        <div class="footer-bg text-center py-3">
+            <small>© 2025 NZFTC. All rights reserved.</small>
+        </div>
+    </footer>
+
+    <!-- OPTIONAL: Scroll-to-top button -->
+    <button id="scrollTopBtn" class="scroll-top-btn" type="button">
+        <i class="fa-solid fa-arrow-up"></i>
+    </button>
+
+    <!-- =========================
+         SCRIPTS
+    ========================== -->
+    <!-- Bootstrap Bundle (JS) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"
+            crossorigin="anonymous"></script>
+
+    <!-- Your site JS (in wwwroot/js) -->
+    <script src="~/js/navbar.js" asp-append-version="true"></script>
+    <script src="~/js/reveal-on-scroll.js" asp-append-version="true"></script>
+    <script src="~/js/to-top.js" asp-append-version="true"></script>
 </body>
 </html>

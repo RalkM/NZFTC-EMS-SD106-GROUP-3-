@@ -1,5 +1,4 @@
 wwwroot\1-e8f22afd.ico
-wwwroot\css\authentication.css
 wwwroot\css\dashboard.css
 wwwroot\css\landing-page-stylesheet.css
 wwwroot\css\nav_employee.css
@@ -90,8 +89,8 @@ wwwroot\lib\jquery\dist\jquery.slim.js
 wwwroot\lib\jquery\dist\jquery.slim.min.js
 wwwroot\lib\jquery\dist\jquery.slim.min.map
 wwwroot\lib\jquery\LICENSE.txt
+wwwroot\css\authentication.css
 C:\SD106-EMS-Group5-\NZFTC-EMS-SD106-GROUP-3-\NZFTC-EMS\wwwroot\1-e8f22afd.ico
-C:\SD106-EMS-Group5-\NZFTC-EMS-SD106-GROUP-3-\NZFTC-EMS\wwwroot\css\authentication.css
 C:\SD106-EMS-Group5-\NZFTC-EMS-SD106-GROUP-3-\NZFTC-EMS\wwwroot\css\dashboard.css
 C:\SD106-EMS-Group5-\NZFTC-EMS-SD106-GROUP-3-\NZFTC-EMS\wwwroot\css\landing-page-stylesheet.css
 C:\SD106-EMS-Group5-\NZFTC-EMS-SD106-GROUP-3-\NZFTC-EMS\wwwroot\css\nav_employee.css
@@ -100,9 +99,12 @@ C:\SD106-EMS-Group5-\NZFTC-EMS-SD106-GROUP-3-\NZFTC-EMS\wwwroot\css\profile.css
 C:\SD106-EMS-Group5-\NZFTC-EMS-SD106-GROUP-3-\NZFTC-EMS\wwwroot\js\employee-jobdetails.js
 C:\SD106-EMS-Group5-\NZFTC-EMS-SD106-GROUP-3-\NZFTC-EMS\wwwroot\js\leave_apply.js
 C:\SD106-EMS-Group5-\NZFTC-EMS-SD106-GROUP-3-\NZFTC-EMS\wwwroot\js\leave_management_admin.js
+C:\SD106-EMS-Group5-\NZFTC-EMS-SD106-GROUP-3-\NZFTC-EMS\wwwroot\js\navbar.js
 C:\SD106-EMS-Group5-\NZFTC-EMS-SD106-GROUP-3-\NZFTC-EMS\wwwroot\js\payroll_admin.js
+C:\SD106-EMS-Group5-\NZFTC-EMS-SD106-GROUP-3-\NZFTC-EMS\wwwroot\js\reveal-on-scroll.js
 C:\SD106-EMS-Group5-\NZFTC-EMS-SD106-GROUP-3-\NZFTC-EMS\wwwroot\js\support_form.js
 C:\SD106-EMS-Group5-\NZFTC-EMS-SD106-GROUP-3-\NZFTC-EMS\wwwroot\js\support_managment.js
+C:\SD106-EMS-Group5-\NZFTC-EMS-SD106-GROUP-3-\NZFTC-EMS\wwwroot\js\to-top.js
 C:\SD106-EMS-Group5-\NZFTC-EMS-SD106-GROUP-3-\NZFTC-EMS\wwwroot\js\_portal.js
 C:\SD106-EMS-Group5-\NZFTC-EMS-SD106-GROUP-3-\NZFTC-EMS\wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css
 C:\SD106-EMS-Group5-\NZFTC-EMS-SD106-GROUP-3-\NZFTC-EMS\wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css.map
@@ -148,6 +150,7 @@ C:\SD106-EMS-Group5-\NZFTC-EMS-SD106-GROUP-3-\NZFTC-EMS\wwwroot\lib\bootstrap\di
 C:\SD106-EMS-Group5-\NZFTC-EMS-SD106-GROUP-3-\NZFTC-EMS\wwwroot\lib\bootstrap\dist\js\bootstrap.js.map
 C:\SD106-EMS-Group5-\NZFTC-EMS-SD106-GROUP-3-\NZFTC-EMS\wwwroot\lib\bootstrap\dist\js\bootstrap.min.js
 C:\SD106-EMS-Group5-\NZFTC-EMS-SD106-GROUP-3-\NZFTC-EMS\wwwroot\lib\bootstrap\dist\js\bootstrap.min.js.map
+C:\SD106-EMS-Group5-\NZFTC-EMS-SD106-GROUP-3-\NZFTC-EMS\wwwroot\lib\img\logo-icon.ico
 C:\SD106-EMS-Group5-\NZFTC-EMS-SD106-GROUP-3-\NZFTC-EMS\wwwroot\lib\jquery-validation-unobtrusive\dist\jquery.validate.unobtrusive.js
 C:\SD106-EMS-Group5-\NZFTC-EMS-SD106-GROUP-3-\NZFTC-EMS\wwwroot\lib\jquery-validation-unobtrusive\dist\jquery.validate.unobtrusive.min.js
 C:\SD106-EMS-Group5-\NZFTC-EMS-SD106-GROUP-3-\NZFTC-EMS\wwwroot\lib\jquery-validation-unobtrusive\LICENSE.txt
@@ -163,7 +166,4 @@ C:\SD106-EMS-Group5-\NZFTC-EMS-SD106-GROUP-3-\NZFTC-EMS\wwwroot\lib\jquery\dist\
 C:\SD106-EMS-Group5-\NZFTC-EMS-SD106-GROUP-3-\NZFTC-EMS\wwwroot\lib\jquery\dist\jquery.slim.min.js
 C:\SD106-EMS-Group5-\NZFTC-EMS-SD106-GROUP-3-\NZFTC-EMS\wwwroot\lib\jquery\dist\jquery.slim.min.map
 C:\SD106-EMS-Group5-\NZFTC-EMS-SD106-GROUP-3-\NZFTC-EMS\wwwroot\lib\jquery\LICENSE.txt
-C:\SD106-EMS-Group5-\NZFTC-EMS-SD106-GROUP-3-\NZFTC-EMS\wwwroot\js\navbar.js
-C:\SD106-EMS-Group5-\NZFTC-EMS-SD106-GROUP-3-\NZFTC-EMS\wwwroot\js\reveal-on-scroll.js
-C:\SD106-EMS-Group5-\NZFTC-EMS-SD106-GROUP-3-\NZFTC-EMS\wwwroot\js\to-top.js
-C:\SD106-EMS-Group5-\NZFTC-EMS-SD106-GROUP-3-\NZFTC-EMS\wwwroot\lib\img\logo-icon.ico
+C:\SD106-EMS-Group5-\NZFTC-EMS-SD106-GROUP-3-\NZFTC-EMS\wwwroot\css\authentication.css

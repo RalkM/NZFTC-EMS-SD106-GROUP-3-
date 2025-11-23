@@ -1,65 +1,86 @@
-﻿@using System.Linq
-@{
+﻿@{
+    Layout = "~/Views/Shared/_Auth.cshtml";
     ViewData["Title"] = "Login";
 }
-<div class="container d-flex justify-content-center align-items-center" style="min-height: 100vh;">
-    <div class="card shadow" style="min-width: 380px; max-width: 420px;">
-        <div class="card-header text-center">
-            <h3>NZFTC EMS Login</h3>
-        </div>
-        <div class="card-body">
 
-            @* INFO MESSAGE (for "Password created. Please log in again.") *@
-            @if (TempData["msg"] != null)
-            {
-                <div class="alert alert-info mb-3">
-                    @TempData["msg"]
-                </div>
-            }
-
-            @* ERROR MESSAGES (invalid email/password, required fields, etc.) *@
-            @if (!ViewData.ModelState.IsValid)
-            {
-                <div class="alert alert-danger mb-3">
-                    @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
-                    {
-                        <div>@error.ErrorMessage</div>
-                    }
-                </div>
-            }
-
-            <form asp-controller="Website"
-                  asp-action="Login"
-                  method="post">
-                @Html.AntiForgeryToken()
-
-                <div class="mb-3">
-                    <label for="email" class="form-label">Email</label>
-                    <input type="email"
-                           class="form-control"
-                           id="email"
-                           name="email"
-                           required />
-                </div>
-
-                <div class="mb-3">
-                    <label for="password" class="form-label">Password</label>
-                    <input type="password"
-                           class="form-control"
-                           id="password"
-                           name="password"
-                           required />
-                </div>
-
-                <button type="submit" class="btn btn-primary w-100">
-                    Login
-                </button>
-
-                <p class="mt-3 text-muted small text-center">
-                    First time logging in? Enter your email and your chosen password.
-                    We’ll save it the first time, then you’ll log in again.
-                </p>
-            </form>
-        </div>
+<section class="auth-shell">
+    <!-- Brand / tagline -->
+    <div class="auth-brand text-center mb-4">
+        <span class="auth-kicker">NZFTC Employee Management System</span>
+        <h1 class="auth-title">Secure Login</h1>
+        <p class="auth-subtitle">
+            Sign in to manage employees, leave, payroll, and support in one place.
+        </p>
     </div>
-</div>
+
+    <!-- Glassy login card -->
+    <div class="login-card reveal-on-scroll">
+        <div class="auth-card-header text-center mb-3">
+            <h2 class="auth-card-title">NZFTC EMS Login</h2>
+            <p class="auth-card-subtitle small text-muted mb-0">
+                Use your NZFTC staff email and password.
+            </p>
+        </div>
+
+        @* INFO MESSAGE (e.g. "Password created. Please log in again.") *@
+        @if (TempData["msg"] != null)
+        {
+            <div class="alert alert-info mb-3">
+                @TempData["msg"]
+            </div>
+        }
+
+        @* ERROR MESSAGES (invalid email/password, required fields, etc.) *@
+        @if (!ViewData.ModelState.IsValid)
+        {
+            <div class="alert alert-danger mb-3">
+                @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                {
+                    <div>@error.ErrorMessage</div>
+                }
+            </div>
+        }
+
+        <form asp-controller="Website"
+              asp-action="Login"
+              method="post">
+            @Html.AntiForgeryToken()
+
+            <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input type="email"
+                       class="form-control"
+                       id="email"
+                       name="email"
+                       required />
+            </div>
+
+            <div class="mb-3">
+                <label for="password" class="form-label">Password</label>
+                <input type="password"
+                       class="form-control"
+                       id="password"
+                       name="password"
+                       required />
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100">
+                Login
+            </button>
+
+            <p class="mt-3 text-muted small text-center mb-0">
+                First time logging in? Enter your email and your chosen password.
+                We’ll save it the first time, then you’ll log in again.
+            </p>
+        </form>
+    </div>
+
+    <!-- Helper links under the card -->
+    <div class="auth-meta-links text-center mt-3">
+        <a href="@Url.Action("Index", "Website")#support" class="auth-link">Need help?</a>
+        <span class="auth-link-sep">•</span>
+        <a href="#" class="auth-link">Privacy</a>
+        <span class="auth-link-sep">•</span>
+        <a href="#" class="auth-link">Terms</a>
+    </div>
+</section>

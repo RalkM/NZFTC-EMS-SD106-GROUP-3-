@@ -1,10 +1,8 @@
-﻿@using NZFTC_EMS.ViewModels.Payroll
-@model IEnumerable<PayrollSummaryVM>
+﻿@using NZFTC_EMS.Data.Entities
+@model IEnumerable<PayrollRun>
 
 @{
     Layout = "~/Views/Shared/_portal.cshtml";
-
-    
 }
 
 <div class="page-container">
@@ -12,8 +10,29 @@
     <!-- PAGE HEAD -->
     <div class="header-row d-flex justify-content-between align-items-center mb-4">
         <h2 class="page-title fw-bold">Payroll Summary</h2>
+
+  <form asp-controller="payroll_management"
+      asp-action="create_weekly" method="post" class="d-inline">
+    @Html.AntiForgeryToken()
+    <button class="btn btn-primary">Generate Latest Weekly Payroll</button>
+</form>
+
+<form asp-controller="payroll_management"
+      asp-action="create_fortnightly" method="post" class="d-inline ms-2">
+    @Html.AntiForgeryToken()
+    <button class="btn btn-outline-primary">Generate Latest Fortnightly Payroll</button>
+</form>
+
+<form asp-controller="payroll_management"
+      asp-action="create_monthly" method="post" class="d-inline ms-2">
+    @Html.AntiForgeryToken()
+    <button class="btn btn-outline-primary">Generate Latest Monthly Payroll</button>
+</form>
+
+       
     </div>
 
+    <!-- ALERTS -->
     @if (TempData["Success"] != null)
     {
         <div class="alert alert-success">@TempData["Success"]</div>
@@ -23,165 +42,115 @@
         <div class="alert alert-danger">@TempData["Error"]</div>
     }
 
-    <!-- SEARCH & FILTER -->
-    <div class="card shadow-sm border-0 mb-4">
-        <div class="card-body row g-3">
-            <div class="col-md-6">
-                <input id="payrollSearchBox" class="form-control" placeholder="Search employees, gross, net..." />
-            </div>
-
-            <div class="col-md-4">
-                <select id="payrollStatusFilter" class="form-select">
-                    <option value="">All Statuses</option>
-                    <option value="Draft">Draft</option>
-                    <option value="Finalized">Finalized</option>
-                    <option value="Paid">Paid</option>
-                </select>
-            </div>
-        </div>
-    </div>
-
-    <!-- MAIN CARD -->
     <div class="card shadow-sm border-0">
-        
-        <div class="card-header text-white fw-semibold"
-             style="background-color:#1E4DB7; border-radius:6px 6px 0 0;">
-            Employee Payroll Breakdown
-        </div>
+        <div class="card-body">
 
-        <div class="table-responsive">
-            <table class="table table-hover align-middle styled-table mb-0">
-                <thead class="table-light">
-    <tr>
-        <th>Employee</th>
-        <th>Rate</th>
-        <th>Hours</th>
-        <th>Gross Pay</th>
-        <th>PAYE</th>
-        <th>KiwiSaver (Emp)</th>
-        <th>KiwiSaver (Employer)</th>
-        <th>ACC Levy</th>
-        <th>Student Loan</th>
-        <th>Net Pay</th>
-        <th>Status</th>
-    </tr>
-</thead>
+            @if (!Model.Any())
+            {
+                <p class="text-muted mb-0">No payroll runs yet.</p>
+            }
+            else
+            {
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle styled-table mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Pay Period</th>
+                                <th>Frequency</th>
+                                <th>Employees</th>
+                                <th class="text-end">Total Gross</th>
+                                <th class="text-end">Total Net</th>
+                                <th>Status</th>
+                                <th>Created</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var run in Model)
+                            {
+                                var payslips = run.Payslips ?? new List<EmployeePayrollSummary>();
+                                var employeeCount = payslips.Count;
+                                var grossTotal = payslips.Sum(p => p.GrossPay);
+                                var netTotal = payslips.Sum(p => p.NetPay);
 
+                                string statusLabel;
+                                string badgeClass;
 
-                <tbody id="payrollTableBody">
-                    @foreach (var row in Model)
-                    {
-                        <tr>
-                            <td>@row.EmployeeName</td>
-                                    <!-- Rate -->
-        <td>$@row.PayRate.ToString("N2") (@row.RateType)</td>
-
-        <!-- Hours (Start, End, Break, Total) -->
-        <td style="min-width: 260px;">
-            <form asp-action="UpdateHours" method="post" class="d-flex flex-wrap align-items-center gap-1">
-                <input type="hidden" name="summaryId" value="@row.EmployeePayrollSummaryId" />
-
-                <input type="time"
-                       name="startTime"
-                       value="@(row.StartTime.HasValue ? row.StartTime.Value.ToString(@"hh\:mm") : "07:00")"
-                       class="form-control form-control-sm" />
-
-                <span>–</span>
-
-                <input type="time"
-                       name="endTime"
-                       value="@(row.EndTime.HasValue ? row.EndTime.Value.ToString(@"hh\:mm") : "16:30")"
-                       class="form-control form-control-sm" />
-
-                <input type="number"
-                       name="breakMinutes"
-                       value="@row.BreakMinutes"
-                       min="0"
-                       class="form-control form-control-sm"
-                       style="width:80px;"
-                       placeholder="Break (min)" />
-
-                <button type="submit" class="btn btn-sm btn-outline-primary">
-                    Save
-                </button>
-            </form>
-
-            <div class="small text-muted mt-1">
-                Total: @row.TotalHours.ToString("N2") h
-            </div>
-        </td>
-
-        <!-- Gross Pay -->
-        <td class="fw-semibold text-primary">$@row.GrossPay.ToString("N2")</td>
-
-
-                            <td>@row.PAYE.ToString("N2")</td>
-                            <td>@row.KiwiSaverEmployee.ToString("N2")</td>
-                            <td>@row.KiwiSaverEmployer.ToString("N2")</td>
-                            <td>@row.ACCLevy.ToString("N2")</td>
-                            <td>@row.StudentLoan.ToString("N2")</td>
-
-                            <td class="fw-bold text-success">@row.NetPay.ToString("N2")</td>
-
-                            <td>
-                                @if (row.Status == "Finalized")
+                                switch (run.Status)
                                 {
-                                    <span class="badge bg-primary">Finalized</span>
+                                    case PayrollRunStatus.Paid:
+                                        statusLabel = "Paid";
+                                        badgeClass = "bg-success";
+                                        break;
+                                    case PayrollRunStatus.Finalizing:
+                                        statusLabel = "Finalizing";
+                                        badgeClass = "bg-info";
+                                        break;
+                                    case PayrollRunStatus.Open:
+                                        statusLabel = "Open";
+                                        badgeClass = "bg-secondary";
+                                        break;
+                                    default:
+                                        statusLabel = "Cancelled";
+                                        badgeClass = "bg-danger";
+                                        break;
                                 }
-                                else if (row.Status == "Paid")
-                                {
-                                    <span class="badge bg-success">Paid</span>
-                                }
-                                else
-                                {
-                                    <span class="badge bg-warning text-dark">Draft</span>
-                                }
-                            </td>
 
-                            <td style="max-width: 120px;">
-                                <form asp-action="UpdateHours" method="post" class="d-flex gap-1">
-                                    <input type="hidden" name="summaryId" value="@row.EmployeePayrollSummaryId" />
+                                <tr>
+                                    <td>
+                                        @run.PeriodStart.ToString("dd MMM yyyy") – @run.PeriodEnd.ToString("dd MMM yyyy")
+                                    </td>
+                                    <td>@run.PayFrequency</td>
+                                    <td>@employeeCount</td>
+                                    <td class="text-end">@grossTotal.ToString("C")</td>
+                                    <td class="text-end">@netTotal.ToString("C")</td>
+                                    <td>
+                                        <span class="badge @badgeClass px-3">@statusLabel</span>
+                                    </td>
+                                    <td>@run.CreatedAt.ToLocalTime().ToString("dd MMM yyyy HH:mm")</td>
+                                    <td class="text-end">
+                                        <a asp-controller="payroll_management"
+                                           asp-action="Details"
+                                           asp-route-id="@run.PayrollRunId"
+                                           class="btn btn-sm btn-outline-primary">
+                                            Details
+                                        </a>
 
-                                    <input type="number"
-                                        step="0.01"
-                                        min="0"
-                                        name="totalHours"
-                                        value="@row.TotalHours"
-                                        class="form-control form-control-sm" />  
-                                </form>
-                            </td>
-                            <td>
-                                <button type="submit" class="btn btn-sm btn-primary">
-                                    Save
-                                </button>
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-
-            </table>
+                                        <form asp-controller="payroll_management"
+                                              asp-action="mark_paid"
+                                              asp-route-id="@run.PayrollRunId"
+                                              method="post"
+                                              class="d-inline">
+                                            @Html.AntiForgeryToken()
+                                            <button type="submit"
+                                                    class="btn btn-sm btn-success ms-1"
+                                                    @(run.Status == PayrollRunStatus.Paid ? "disabled" : null)>
+                                                Mark as Paid
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
         </div>
     </div>
-
-    <!-- ACTION BUTTONS -->
-    <div class="d-flex justify-content-end gap-2 mt-4">
-
-        <a href="/PayrollManagement/FinalizePayroll/@Model.First().EmployeePayrollSummaryId"
-           class="btn btn-primary px-4"
-           onclick="return confirm('Finalize payroll? This will lock all values.');">
-            Finalize Payroll
-        </a>
-
-        <a href="/PayrollManagement/MarkPaid/@ViewBag.PeriodId"
-   class="btn btn-success px-4">
-    Mark as Paid
-</a>
-
-
-    </div>
-
 </div>
 
-@section Scripts {
-    <script src="~/js/payroll_admin.js"></script>
-}
+<style>
+    .page-container {
+        max-width: 1150px;
+        margin: auto;
+    }
+
+    .styled-table th {
+        background: #f8f9fa;
+        font-weight: 600;
+    }
+
+    .styled-table td {
+        background: #ffffff;
+    }
+</style>

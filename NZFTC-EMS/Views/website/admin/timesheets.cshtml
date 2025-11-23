@@ -1,0 +1,171 @@
+@using NZFTC_EMS.Data.Entities
+@model IEnumerable<TimesheetEntry>
+
+@{
+    Layout = "~/Views/Shared/_portal.cshtml";
+    var from = ViewBag.From as string ?? DateTime.Today.AddDays(-6).ToString("yyyy-MM-dd");
+    var to   = ViewBag.To   as string ?? DateTime.Today.ToString("yyyy-MM-dd");
+}
+
+<div class="page-container">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold mb-0">Timesheet Management</h2>
+    </div>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success">@TempData["Success"]</div>
+    }
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger">@TempData["Error"]</div>
+    }
+
+    <!-- FILTER -->
+    <div class="card shadow-sm border-0 mb-4">
+        <div class="card-body">
+            <form asp-controller="timesheet_management"
+                  asp-action="Index"
+                  method="get"
+                  class="row g-3 align-items-end">
+
+                <div class="col-md-4">
+                    <label class="form-label">From</label>
+                    <input type="date" name="from" value="@from" class="form-control" />
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">To</label>
+                    <input type="date" name="to" value="@to" class="form-control" />
+                </div>
+                <div class="col-md-4 text-md-end">
+                    <button type="submit" class="btn btn-outline-primary mt-3 mt-md-0">
+                        Apply Filter
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- TABLE -->
+    <div class="card shadow-sm border-0">
+        <div class="card-body">
+            @if (!Model.Any())
+            {
+                <p class="text-muted mb-0">No timesheet entries found for this period.</p>
+            }
+            else
+            {
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle styled-table mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Date</th>
+                                <th>Employee</th>
+                                <th>Start</th>
+                                <th>Break</th>
+                                <th>Finish</th>
+                                <th class="text-end">Total Hours</th>
+                                <th class="text-center">Status</th>
+                                <th>Admin Note</th>
+                                <th class="text-end">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var t in Model)
+                            {
+                                string badge;
+                                switch (t.Status)
+                                {
+                                    case TimesheetStatus.Approved:
+                                        badge = "bg-success";
+                                        break;
+                                    case TimesheetStatus.Submitted:
+                                        badge = "bg-info";
+                                        break;
+                                    case TimesheetStatus.Rejected:
+                                        badge = "bg-danger";
+                                        break;
+                                    default:
+                                        badge = "bg-secondary";
+                                        break;
+                                }
+
+                                <tr>
+                                    <td>@t.WorkDate.ToString("dd MMM yyyy")</td>
+                                    <td>
+                                        @if (t.Employee != null)
+                                        {
+                                            @($"{t.Employee.FirstName} {t.Employee.LastName}")
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted">Employee @t.EmployeeId</span>
+                                        }
+                                    </td>
+                                    <td>@t.StartTime.ToString(@"hh\:mm")</td>
+                                    <td>@t.BreakStartTime.ToString(@"hh\:mm") – @t.BreakEndTime.ToString(@"hh\:mm")</td>
+                                    <td>@t.FinishTime.ToString(@"hh\:mm")</td>
+                                    <td class="text-end">@t.TotalHours.ToString("0.##")</td>
+                                    <td class="text-center">
+                                        <span class="badge @badge px-3">@t.Status</span>
+                                    </td>
+                                    <td>@(string.IsNullOrWhiteSpace(t.AdminNote) ? "—" : t.AdminNote)</td>
+                                    <td class="text-end">
+                                        <div class="d-flex justify-content-end">
+                                            <form asp-controller="timesheet_management"
+                                                  asp-action="Approve"
+                                                  asp-route-id="@t.TimesheetEntryId"
+                                                  method="post"
+                                                  class="me-1">
+                                                @Html.AntiForgeryToken()
+                                                <button type="submit"
+                                                        class="btn btn-sm btn-success"
+                                                        @(t.Status == TimesheetStatus.Approved ? "disabled" : null)>
+                                                    Approve
+                                                </button>
+                                            </form>
+
+                                            <form asp-controller="timesheet_management"
+                                                  asp-action="Reject"
+                                                  asp-route-id="@t.TimesheetEntryId"
+                                                  method="post"
+                                                  class="d-flex">
+                                                @Html.AntiForgeryToken()
+                                                <input type="text"
+                                                       name="note"
+                                                       class="form-control form-control-sm me-1"
+                                                       placeholder="Reason"
+                                                       style="max-width: 160px;" />
+                                                <button type="submit"
+                                                        class="btn btn-sm btn-outline-danger">
+                                                    Reject
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<style>
+    .page-container {
+        max-width: 1150px;
+        margin: auto;
+    }
+
+    .styled-table th {
+        background: #f8f9fa;
+        font-weight: 600;
+    }
+
+    .styled-table td {
+        background: #ffffff;
+    }
+</style>

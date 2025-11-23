@@ -1,11 +1,18 @@
-﻿@model List<NZFTC_EMS.ViewModels.Payroll.PayrollReportVM>
+﻿@using NZFTC_EMS.Data.Entities
+@model IEnumerable<PayrollRun>
+
 @{
     Layout = "~/Views/Shared/_portal.cshtml";
+
+    var totalRuns = Model.Count();
+    var totalGross = Model.SelectMany(r => r.Payslips ?? new List<EmployeePayrollSummary>())
+                          .Sum(p => p.GrossPay);
+    var totalNet = Model.SelectMany(r => r.Payslips ?? new List<EmployeePayrollSummary>())
+                        .Sum(p => p.NetPay);
 }
 
 <div class="page-container">
 
-    <!-- PAGE HEADER -->
     <div class="header-row d-flex justify-content-between align-items-center mb-4">
         <h2 class="page-title fw-bold">Payroll Reports</h2>
     </div>
@@ -16,133 +23,83 @@
     }
 
     <!-- SUMMARY CARDS -->
-    <div class="row g-4 mb-4">
-
-        <div class="col-md-3">
-            <div class="settings-card card shadow-sm border-0">
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0 mb-3">
                 <div class="card-body">
-                    <h6 class="text-muted">Total Gross Paid</h6>
-                    <h4 class="fw-bold text-primary">
-                        $@Model.Sum(x => x.GrossPaid).ToString("N2")
-                    </h4>
+                    <div class="small text-muted mb-1">Total Payroll Runs</div>
+                    <div class="h4 mb-0">@totalRuns</div>
                 </div>
             </div>
         </div>
-
-        <div class="col-md-3">
-            <div class="settings-card card shadow-sm border-0">
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0 mb-3">
                 <div class="card-body">
-                    <h6 class="text-muted">Total Tax Paid</h6>
-                    <h4 class="fw-bold text-danger">
-                        $@Model.Sum(x => x.TaxPaid).ToString("N2")
-                    </h4>
+                    <div class="small text-muted mb-1">Total Gross Paid</div>
+                    <div class="h4 mb-0">@totalGross.ToString("C")</div>
                 </div>
             </div>
         </div>
-
-        <div class="col-md-3">
-            <div class="settings-card card shadow-sm border-0">
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0 mb-3">
                 <div class="card-body">
-                    <h6 class="text-muted">Total KiwiSaver (Employee)</h6>
-                    <h4 class="fw-bold text-success">
-                        $@Model.Sum(x => x.KiwiSaverEmployeePaid).ToString("N2")
-                    </h4>
+                    <div class="small text-muted mb-1">Total Net Paid</div>
+                    <div class="h4 mb-0">@totalNet.ToString("C")</div>
                 </div>
             </div>
         </div>
-
-        <div class="col-md-3">
-            <div class="settings-card card shadow-sm border-0">
-                <div class="card-body">
-                    <h6 class="text-muted">Total ACC Levy</h6>
-                    <h4 class="fw-bold text-secondary">
-                        $@Model.Sum(x => x.ACCPaid).ToString("N2")
-                    </h4>
-                </div>
-            </div>
-        </div>
-
     </div>
 
-    <!-- PAYROLL REPORT TABLE -->
+    <!-- TABLE -->
     <div class="card shadow-sm border-0">
-        <div class="card-header text-white fw-semibold"
-             style="background-color:#1E4DB7; border-radius:6px 6px 0 0;">
-            Payroll Breakdown by Employee
-        </div>
+        <div class="card-body">
+            @if (!Model.Any())
+            {
+                <p class="text-muted mb-0">No payroll data available.</p>
+            }
+            else
+            {
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle styled-table mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Pay Period</th>
+                                <th>Frequency</th>
+                                <th>Status</th>
+                                <th>Employees</th>
+                                <th class="text-end">Gross</th>
+                                <th class="text-end">Net</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var run in Model)
+                            {
+                                var slips = run.Payslips ?? new List<EmployeePayrollSummary>();
+                                var gross = slips.Sum(x => x.GrossPay);
+                                var net = slips.Sum(x => x.NetPay);
 
-        <div class="table-responsive">
-            <table class="table table-hover styled-table align-middle mb-0">
-                <thead class="table-light">
-                    <tr>
-                        <th>Employee</th>
-                        <th>Department</th>
-                        <th>Gross Paid</th>
-                        <th>Tax Paid</th>
-                        <th>KiwiSaver (Emp)</th>
-                        <th>ACC Levy</th>
-                        <th>Net Paid</th>
-                        <th>Pay Runs</th>
-                    </tr>
-                </thead>
-
-                <tbody>
-                    @foreach (var p in Model)
-                    {
-                        <tr>
-                            <td>@p.EmployeeName</td>
-                            <td>@p.Department</td>
-
-                            <td class="fw-semibold text-primary">
-                                $@p.GrossPaid.ToString("N2")
-                            </td>
-
-                            <td class="text-danger">
-                                $@p.TaxPaid.ToString("N2")
-                            </td>
-
-                            <td class="text-success">
-                                $@p.KiwiSaverEmployeePaid.ToString("N2")
-                            </td>
-
-                            <td class="text-secondary">
-                                $@p.ACCPaid.ToString("N2")
-                            </td>
-
-                            <td class="fw-bold text-success">
-                                $@p.NetPaid.ToString("N2")
-                            </td>
-
-                            <td>@p.PayRuns</td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
+                                <tr>
+                                    <td>@run.PeriodStart:dd MMM yyyy – @run.PeriodEnd:dd MMM yyyy</td>
+                                    <td>@run.PayFrequency</td>
+                                    <td>@run.Status</td>
+                                    <td>@slips.Count</td>
+                                    <td class="text-end">@gross.ToString("C")</td>
+                                    <td class="text-end">@net.ToString("C")</td>
+                                    <td class="text-end">
+                                        <a asp-controller="payroll_management"
+                                           asp-action="Details"
+                                           asp-route-id="@run.PayrollRunId"
+                                           class="btn btn-sm btn-outline-primary">
+                                            View
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
         </div>
     </div>
-
 </div>
-
-@section Scripts {
-    <script src="~/js/payroll_admin.js"></script>
-}
-
-<style>
-    .page-container {
-        max-width: 1150px;
-        margin: auto;
-    }
-
-    .settings-card .card-body {
-        padding: 20px 22px;
-    }
-
-    .styled-table th {
-        font-weight: 600;
-    }
-
-    .styled-table td {
-        padding-top: 14px !important;
-        padding-bottom: 14px !important;
-    }
-</style>

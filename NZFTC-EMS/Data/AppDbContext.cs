@@ -11,23 +11,30 @@ namespace NZFTC_EMS.Data
         // ==========================
         //        DB SETS
         // ==========================
-        public DbSet<JobPosition> JobPositions => Set<JobPosition>();
-        public DbSet<PayGrade> PayGrades => Set<PayGrade>();
-        public DbSet<Employee> Employees => Set<Employee>();
-        public DbSet<EmployeeEmergencyContact> EmployeeEmergencyContacts => Set<EmployeeEmergencyContact>();
-        public DbSet<LeaveRequest> LeaveRequests => Set<LeaveRequest>();
-        public DbSet<PayrollPeriod> PayrollPeriods => Set<PayrollPeriod>();
-        public DbSet<EmployeePayrollSummary> EmployeePayrollSummaries => Set<EmployeePayrollSummary>();
-        public DbSet<Holiday> Holidays => Set<Holiday>();
-        public DbSet<EmployeeLeaveBalance> EmployeeLeaveBalances => Set<EmployeeLeaveBalance>();
+        // ==========================
+//        DB SETS
+// ==========================
+public DbSet<JobPosition> JobPositions => Set<JobPosition>();
+public DbSet<PayGrade> PayGrades => Set<PayGrade>();
+public DbSet<Employee> Employees => Set<Employee>();
+public DbSet<EmployeeEmergencyContact> EmployeeEmergencyContacts => Set<EmployeeEmergencyContact>();
+public DbSet<LeaveRequest> LeaveRequests => Set<LeaveRequest>();
+public DbSet<PayrollPeriod> PayrollPeriods => Set<PayrollPeriod>();
+public DbSet<EmployeePayrollSummary> EmployeePayrollSummaries => Set<EmployeePayrollSummary>();
+public DbSet<Holiday> Holidays => Set<Holiday>();
+public DbSet<EmployeeLeaveBalance> EmployeeLeaveBalances => Set<EmployeeLeaveBalance>();
 
-        public DbSet<CalendarEvent> CalendarEvents => Set<CalendarEvent>();
-        public DbSet<SupportTicket> SupportTickets => Set<SupportTicket>();
-        public DbSet<SupportMessage> SupportMessages => Set<SupportMessage>();
+public DbSet<CalendarEvent> CalendarEvents => Set<CalendarEvent>();
+public DbSet<SupportTicket> SupportTickets => Set<SupportTicket>();
+public DbSet<SupportMessage> SupportMessages => Set<SupportMessage>();
 
-        public DbSet<LeavePolicy> LeavePolicies => Set<LeavePolicy>();
-        public DbSet<PayrollSettings> PayrollSettings => Set<PayrollSettings>();
-        public DbSet<EmployeeTimesheet> EmployeeTimesheets { get; set; }
+public DbSet<LeavePolicy> LeavePolicies => Set<LeavePolicy>();
+public DbSet<PayrollSettings> PayrollSettings => Set<PayrollSettings>();
+
+// 🔹 NEW
+public DbSet<TimesheetEntry> TimesheetEntries => Set<TimesheetEntry>();
+public DbSet<PayrollRun> PayrollRuns => Set<PayrollRun>();
+
 
 
         protected override void OnModelCreating(ModelBuilder b)
@@ -38,19 +45,24 @@ namespace NZFTC_EMS.Data
 
             // 1. CONFIGURE ALL ENTITIES FIRST
             ConfigureJobPosition(b);
-            ConfigurePayGrade(b);
-            ConfigureEmployee(b);
-            ConfigureEmployeeEmergencyContact(b);
-            ConfigureLeaveRequest(b);
-            ConfigurePayrollPeriod(b);
-            ConfigureEmployeePayrollSummary(b);
-            ConfigureHoliday(b);
-            ConfigureSupportTicket(b);
-            ConfigureSupportMessage(b);
-            ConfigureEmployeeLeaveBalance(b);
-            ConfigureCalendar(b);
-            ConfigureLeavePolicy(b);
-            ConfigurePayrollSettings(b);
+ConfigurePayGrade(b);
+
+ConfigureEmployeeEmergencyContact(b);
+ConfigureLeaveRequest(b);
+ConfigurePayrollPeriod(b);
+ConfigureHoliday(b);
+ConfigureSupportTicket(b);
+ConfigureSupportMessage(b);
+ConfigureEmployeeLeaveBalance(b);
+ConfigureCalendar(b);
+ConfigureLeavePolicy(b);
+ConfigurePayrollSettings(b);
+
+// NEW
+ConfigureTimesheetEntry(b);
+ConfigurePayrollRun(b);
+
+
 
 
             // 2. SEED DATA
@@ -72,6 +84,97 @@ namespace NZFTC_EMS.Data
         // ==========================================================
         //                    CONFIGURATION BLOCKS
         // ==========================================================
+private void ConfigurePayrollRun(ModelBuilder b)
+{
+    b.Entity<PayrollRun>(e =>
+    {
+        e.ToTable("payrollruns");
+
+        e.HasKey(x => x.PayrollRunId);
+
+        e.Property(x => x.PeriodStart).HasColumnType("date");
+        e.Property(x => x.PeriodEnd).HasColumnType("date");
+
+        e.Property(x => x.PayFrequency)
+            .HasConversion<int>();
+
+        e.Property(x => x.Status)
+            .HasConversion<int>();
+
+        e.Property(x => x.CreatedAt).HasColumnType("datetime(6)");
+        e.Property(x => x.ProcessedAt).HasColumnType("datetime(6)");
+        e.Property(x => x.PaidAt).HasColumnType("datetime(6)");
+    });
+}
+
+        private void ConfigureTimesheetEntry(ModelBuilder b)
+{
+    b.Entity<TimesheetEntry>(e =>
+    {
+        e.ToTable("timesheetentries");
+
+        e.HasKey(x => x.TimesheetEntryId);
+
+        e.Property(x => x.WorkDate).HasColumnType("date");
+        e.Property(x => x.TotalHours).HasPrecision(10, 2);
+
+        e.Property(x => x.Status)
+            .HasConversion<int>();
+
+        e.HasOne(x => x.Employee)
+            .WithMany()
+            .HasForeignKey(x => x.EmployeeId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        e.HasOne(x => x.PayrollRun)
+            .WithMany()
+            .HasForeignKey(x => x.PayrollRunId)
+            .OnDelete(DeleteBehavior.SetNull);
+    });
+}
+
+        private void ConfigureEmployeePayrollSummary(ModelBuilder b)
+{
+    b.Entity<EmployeePayrollSummary>(e =>
+    {
+        e.ToTable("employeepayrollsummaries");
+
+        e.HasKey(x => x.EmployeePayrollSummaryId);
+
+        e.HasOne(x => x.Employee)
+            .WithMany(e => e.PayrollSummaries)
+            .HasForeignKey(x => x.EmployeeId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        e.HasOne(x => x.PayrollPeriod)
+            .WithMany()
+            .HasForeignKey(x => x.PayrollPeriodId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        // 🔹 NEW: link to payroll run
+        e.HasOne(x => x.PayrollRun)
+            .WithMany(r => r.Payslips)
+            .HasForeignKey(x => x.PayrollRunId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        e.Property(x => x.PayRate).HasPrecision(12, 2);
+        e.Property(x => x.GrossPay).HasPrecision(14, 2);
+        e.Property(x => x.PAYE).HasPrecision(14, 2);
+        e.Property(x => x.KiwiSaverEmployee).HasPrecision(14, 2);
+        e.Property(x => x.KiwiSaverEmployer).HasPrecision(14, 2);
+        e.Property(x => x.ACCLevy).HasPrecision(14, 2);
+        e.Property(x => x.StudentLoan).HasPrecision(14, 2);
+        e.Property(x => x.Deductions).HasPrecision(14, 2);
+        e.Property(x => x.NetPay).HasPrecision(14, 2)
+            .HasComputedColumnSql("`GrossPay` - `Deductions`");
+
+        e.Property(x => x.Status)
+            .HasDefaultValue(PayrollSummaryStatus.Draft);
+
+        e.Property(x => x.RateType)
+            .HasConversion<int>();
+    });
+}
 
         private void ConfigureJobPosition(ModelBuilder b)
         {
@@ -225,39 +328,7 @@ namespace NZFTC_EMS.Data
         }
 
 
-        private void ConfigureEmployeePayrollSummary(ModelBuilder b)
-        {
-            b.Entity<EmployeePayrollSummary>(e =>
-            {
-                e.ToTable("employeepayrollsummaries");
-
-                e.HasKey(x => x.EmployeePayrollSummaryId);
-
-                e.Property(x => x.PayRate).HasPrecision(12, 2);
-                e.Property(x => x.GrossPay).HasPrecision(14, 2);
-                e.Property(x => x.PAYE).HasPrecision(14, 2);
-                e.Property(x => x.KiwiSaverEmployee).HasPrecision(14, 2);
-                e.Property(x => x.KiwiSaverEmployer).HasPrecision(14, 2);
-                e.Property(x => x.ACCLevy).HasPrecision(14, 2);
-                e.Property(x => x.StudentLoan).HasPrecision(14, 2);
-                e.Property(x => x.Deductions).HasPrecision(14, 2);
-
-                // Computed column
-                e.Property(x => x.NetPay)
-                    .HasPrecision(14, 2)
-                    .HasComputedColumnSql("(`GrossPay` - `Deductions`)", stored: true);
-
-                // Store enum as INT (no string conversion)
-                e.Property(x => x.Status)
-                    .HasDefaultValue(PayrollSummaryStatus.Draft);
-
-                // RateType also stored as INT
-                e.Property(x => x.RateType)
-                    .HasConversion<int>();
-
-            });
-        }
-
+       
         private void ConfigureHoliday(ModelBuilder b)
         {
             b.Entity<Holiday>(e =>

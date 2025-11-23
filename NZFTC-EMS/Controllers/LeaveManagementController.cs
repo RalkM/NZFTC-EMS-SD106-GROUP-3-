@@ -164,23 +164,21 @@ namespace NZFTC_EMS.Controllers
             return View("~/Views/website/admin/leave_request_details.cshtml", vm);
         }
 
-        public async Task<IActionResult> ApproveLeave(int id)
-        {
-            int adminId = GetEmployeeId();
-            await _leaveService.ApproveLeaveAsync(id, adminId, null);
-
-            TempData["Success"] = "Leave approved.";
-            return RedirectToAction("LeaveManagement");
-        }
-
-        public async Task<IActionResult> RejectLeave(int id, string comment)
-        {
-            int adminId = GetEmployeeId();
-            await _leaveService.RejectLeaveAsync(id, adminId, comment);
-
-            TempData["Success"] = "Leave rejected.";
-            return RedirectToAction("LeaveManagement");
-        }
+   public async Task<IActionResult> ApproveLeave(int id)
+{
+    int adminId = GetEmployeeId();
+    await _leaveService.ApproveLeaveAsync(id, adminId, null);
+    TempData["Success"] = "Leave approved.";
+    return RedirectToAction("LeaveManagement");
+}
+[HttpPost]
+public async Task<IActionResult> RejectLeave(int id, string comment)
+{
+    int adminId = GetEmployeeId();
+    await _leaveService.RejectLeaveAsync(id, adminId, comment);
+    TempData["Success"] = "Leave rejected.";
+    return RedirectToAction("LeaveManagement");
+}
 
         // ============================================================
         // ADMIN — POLICIES
@@ -215,12 +213,28 @@ namespace NZFTC_EMS.Controllers
         // ADMIN — MANUAL ACCRUAL
         // ============================================================
 
-        public async Task<IActionResult> RunAccrual()
-        {
-            await _leaveService.RunManualAccrualAsync();
-            TempData["Success"] = "Accrual run successfully.";
-            return RedirectToAction("LeaveManagement");
-        }
+       // ============================================================
+// ADMIN — MANUAL / MONTHLY ACCRUAL
+// ============================================================
+
+[HttpPost]
+[ValidateAntiForgeryToken]
+public async Task<IActionResult> RunAccrual()
+{
+    try
+    {
+        // This calls LeaveService.RunMonthlyAccrualAsync()
+        await _leaveService.RunManualAccrualAsync();
+        TempData["Success"] = "Monthly leave accrual run successfully.";
+    }
+    catch (Exception ex)
+    {
+        TempData["Error"] = ex.Message;
+    }
+
+    return RedirectToAction("LeaveManagement");
+}
+
 
         // ============================================================
         // HELPER
@@ -234,5 +248,7 @@ namespace NZFTC_EMS.Controllers
 
             return id.Value;
         }
+
+        
     }
 }

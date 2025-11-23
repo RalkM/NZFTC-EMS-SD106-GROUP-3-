@@ -1,135 +1,175 @@
-﻿@model NZFTC_EMS.ViewModels.Payroll.PayrollSummaryVM
+﻿@using NZFTC_EMS.Data.Entities
+@model PayrollRun
+
 @{
     Layout = "~/Views/Shared/_portal.cshtml";
+
+    string statusLabel;
+    string badgeClass;
+
+    switch (Model.Status)
+    {
+        case PayrollRunStatus.Paid:
+            statusLabel = "Paid";
+            badgeClass = "bg-success";
+            break;
+        case PayrollRunStatus.Finalizing:
+            statusLabel = "Finalizing";
+            badgeClass = "bg-info";
+            break;
+        case PayrollRunStatus.Open:
+            statusLabel = "Open";
+            badgeClass = "bg-secondary";
+            break;
+        default:
+            statusLabel = "Cancelled";
+            badgeClass = "bg-danger";
+            break;
+    }
 }
 
 <div class="page-container">
 
     <!-- HEADER -->
     <div class="header-row d-flex justify-content-between align-items-center mb-4">
-        <h2 class="page-title fw-bold">Payroll Details</h2>
-
-        <a href="javascript:history.back()" class="btn btn-secondary px-4">
-            Back
-        </a>
-    </div>
-
-    <!-- EMPLOYEE INFORMATION -->
-    <div class="card shadow-sm border-0 mb-4">
-
-        <div class="card-header text-white fw-semibold"
-             style="background-color:#1E4DB7; border-radius:6px 6px 0 0;">
-            Employee Information
+        <div>
+            <h2 class="page-title fw-bold mb-1">
+                Payroll Details
+            </h2>
+            <div class="text-muted">
+                Period:
+                <strong>@Model.PeriodStart:dd MMM yyyy – @Model.PeriodEnd:dd MMM yyyy</strong>
+                · Frequency:
+                <strong>@Model.PayFrequency</strong>
+            </div>
         </div>
 
-        <div class="card-body row g-3 p-4">
+        <div class="text-end">
+            <span class="badge @badgeClass px-3 py-2">@statusLabel</span>
 
-            <div class="col-md-4">
-                <label class="fw-semibold text-secondary small">Name</label>
-                <div class="fw-bold">@Model.EmployeeName</div>
-            </div>
-
-            <div class="col-md-4">
-                <label class="fw-semibold text-secondary small">Employee ID</label>
-                <div class="fw-bold">@Model.EmployeeId</div>
-            </div>
-
-            <div class="col-md-4">
-                <label class="fw-semibold text-secondary small">Pay Rate</label>
-                <div class="fw-bold">$@Model.PayRate.ToString("N2") (@Model.RateType)</div>
-            </div>
-
+            <a asp-controller="payroll_management"
+               asp-action="Index"
+               class="btn btn-outline-secondary ms-2">
+                Back
+            </a>
         </div>
     </div>
 
-    <!-- PAYROLL BREAKDOWN -->
+    <!-- ALERTS -->
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success">@TempData["Success"]</div>
+    }
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger">@TempData["Error"]</div>
+    }
+
+    <!-- SUMMARY CARD -->
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0 mb-3">
+                <div class="card-body">
+                    <div class="small text-muted mb-1">Created</div>
+                    <div>@Model.CreatedAt.ToLocalTime().ToString("dd MMM yyyy HH:mm")</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0 mb-3">
+                <div class="card-body">
+                    <div class="small text-muted mb-1">Processed</div>
+                    <div>@(Model.ProcessedAt.HasValue ? Model.ProcessedAt.Value.ToLocalTime().ToString("dd MMM yyyy HH:mm") : "—")</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0 mb-3">
+                <div class="card-body">
+                    <div class="small text-muted mb-1">Paid</div>
+                    <div>@(Model.PaidAt.HasValue ? Model.PaidAt.Value.ToLocalTime().ToString("dd MMM yyyy HH:mm") : "—")</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PAYSLIPS TABLE -->
     <div class="card shadow-sm border-0">
+        <div class="card-body">
 
-        <div class="card-header text-white fw-semibold"
-             style="background-color:#1E4DB7; border-radius:6px 6px 0 0;">
-            Payroll Breakdown
-        </div>
+            @if (Model.Payslips == null || !Model.Payslips.Any())
+            {
+                <p class="text-muted mb-0">No payslips generated for this run.</p>
+            }
+            else
+            {
+                var grossTotal = Model.Payslips.Sum(p => p.GrossPay);
+                var netTotal = Model.Payslips.Sum(p => p.NetPay);
 
-        <div class="card-body p-4">
-
-            <table class="table table-bordered align-middle styled-table">
-
-                <tbody>
-
-                    <tr>
-                        <th>Gross Pay</th>
-                        <td class="fw-bold text-primary">$@Model.GrossPay.ToString("N2")</td>
-                    </tr>
-
-                    <tr>
-                        <th>PAYE (Tax)</th>
-                        <td>$@Model.PAYE.ToString("N2")</td>
-                    </tr>
-
-                    <tr>
-                        <th>KiwiSaver (Employee)</th>
-                        <td>$@Model.KiwiSaverEmployee.ToString("N2")</td>
-                    </tr>
-
-                    <tr>
-                        <th>KiwiSaver (Employer)</th>
-                        <td>$@Model.KiwiSaverEmployer.ToString("N2")</td>
-                    </tr>
-
-                    <tr>
-                        <th>ACC Earners’ Levy</th>
-                        <td>$@Model.ACCLevy.ToString("N2")</td>
-                    </tr>
-
-                    <tr>
-                        <th>Student Loan</th>
-                        <td>$@Model.StudentLoan.ToString("N2")</td>
-                    </tr>
-
-                    <tr class="table-primary">
-                        <th>Net Pay</th>
-                        <td class="fw-bold text-success">$@Model.NetPay.ToString("N2")</td>
-                    </tr>
-
-                    <tr>
-                        <th>Status</th>
-                        <td>
-                            @if (Model.Status == "Draft")
+                <div class="table-responsive mb-3">
+                    <table class="table table-hover align-middle styled-table mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Employee</th>
+                                <th class="text-end">Hours</th>
+                                <th class="text-end">Rate</th>
+                                <th class="text-end">Gross</th>
+                                <th class="text-end">PAYE</th>
+                                <th class="text-end">Other Ded.</th>
+                                <th class="text-end">Net</th>
+                                <th class="text-center">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var slip in Model.Payslips)
                             {
-                                <span class="badge bg-warning text-dark px-3 py-2">Draft</span>
-                            }
-                            else if (Model.Status == "Finalized")
-                            {
-                                <span class="badge bg-primary px-3 py-2">Finalized</span>
-                            }
-                            else
-                            {
-                                <span class="badge bg-success px-3 py-2">Paid</span>
-                            }
-                        </td>
-                    </tr>
+                                var isPaid = slip.Status == PayrollSummaryStatus.Paid;
+                                var badge = isPaid ? "bg-success" : "bg-warning";
+                                var label = isPaid ? "Paid" : "Processing";
 
-                </tbody>
-            </table>
-
+                                <tr>
+                                    <td>
+                                        @if (slip.Employee != null)
+                                        {
+                                            @($"{slip.Employee.FirstName} {slip.Employee.LastName}")
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted">Employee @slip.EmployeeId</span>
+                                        }
+                                    </td>
+                                    <td class="text-end">@slip.TotalHours.ToString("0.##")</td>
+                                    <td class="text-end">@slip.PayRate.ToString("C")</td>
+                                    <td class="text-end">@slip.GrossPay.ToString("C")</td>
+                                    <td class="text-end">@slip.PAYE.ToString("C")</td>
+                                    <td class="text-end">@slip.Deductions.ToString("C")</td>
+                                    <td class="text-end fw-semibold">@slip.NetPay.ToString("C")</td>
+                                    <td class="text-center">
+                                        <span class="badge @badge px-3">@label</span>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                        <tfoot>
+                            <tr class="fw-semibold">
+                                <td colspan="3" class="text-end">Totals:</td>
+                                <td class="text-end">@grossTotal.ToString("C")</td>
+                                <td></td>
+                                <td></td>
+                                <td class="text-end">@netTotal.ToString("C")</td>
+                                <td></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            }
         </div>
     </div>
-
 </div>
 
 <style>
     .page-container {
         max-width: 1150px;
         margin: auto;
-    }
-
-    .styled-table th {
-        width: 250px;
-        background: #f8f9fa;
-        font-weight: 600;
-    }
-
-    .styled-table td {
-        background: #ffffff;
     }
 </style>

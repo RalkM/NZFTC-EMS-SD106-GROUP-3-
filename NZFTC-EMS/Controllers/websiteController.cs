@@ -98,12 +98,15 @@ namespace NZFTC_EMS.Controllers
                     decimal annualRemaining = latestBal?.AnnualRemaining ?? 0m;
                     decimal sickRemaining = latestBal?.SickRemaining ?? 0m;
 
-                    var summaries = emp.PayrollSummaries;
-                    decimal ytd = summaries.Sum(x => x.NetPay);
+                    var summaries = emp.PayrollSummaries ?? new List<EmployeePayrollSummary>();
 
-                    var latestSummary = summaries
-                        .OrderByDescending(p => p.PayrollPeriod.PeriodStart)
-                        .FirstOrDefault();
+decimal ytd = summaries.Sum(x => x.NetPay);
+
+// Use GeneratedAt instead of PayrollPeriod to avoid null navs
+var latestSummary = summaries
+    .OrderByDescending(p => p.GeneratedAt)
+    .FirstOrDefault();
+;
 
                     decimal annualSalary = latestSummary?.PayRate ?? 0m;
 

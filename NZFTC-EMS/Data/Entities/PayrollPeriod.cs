@@ -1,6 +1,5 @@
-// Data/Entities/PayrollPeriod.cs
-using System.ComponentModel.DataAnnotations;
-
+using System;
+using System.Collections.Generic;
 
 namespace NZFTC_EMS.Data.Entities
 {
@@ -8,16 +7,20 @@ namespace NZFTC_EMS.Data.Entities
     {
         public int PayrollPeriodId { get; set; }
 
-        [Required, MaxLength(50)]
-        public string PeriodCode { get; set; } = null!; // e.g. 2025-11-W2
+        // e.g. "2025-M11", "2025-FN13"
+        public string PeriodCode { get; set; } = string.Empty;
 
-        public DateTime PeriodStart { get; set; } // DATE
-        public DateTime PeriodEnd   { get; set; } // DATE
+        public DateTime PeriodStart { get; set; }
+        public DateTime PeriodEnd { get; set; }
 
-        public decimal? TotalAmount { get; set; } // DECIMAL(14,2)
+        // Monthly / fortnightly total (for summaries/reports)
+        public decimal TotalAmount { get; set; }
 
-        public bool Closed { get; set; } = false;
+        // Whether this period is closed for further changes
+        public bool Closed { get; set; }
 
-        public ICollection<EmployeePayrollSummary> Summaries { get; set; } = new List<EmployeePayrollSummary>();
+        // Optional navigation back to employee summaries
+        public ICollection<EmployeePayrollSummary> PayrollSummaries { get; set; }
+            = new List<EmployeePayrollSummary>();
     }
 }

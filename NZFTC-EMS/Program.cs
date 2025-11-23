@@ -22,10 +22,9 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 // ============================================================
 
 // Payroll
-builder.Services.AddScoped<PayrollService>();
-builder.Services.AddScoped<TaxService>();
-builder.Services.AddScoped<PayslipService>();
-builder.Services.AddScoped<PayrollReportService>();
+builder.Services.AddScoped<ITaxService, TaxService>();
+builder.Services.AddScoped<IPayrollService, PayrollService>();;
+
 
 // Leave
 builder.Services.AddScoped<LeaveService>();

@@ -4,252 +4,227 @@ using NZFTC_EMS.Data.Entities;
 
 namespace NZFTC_EMS.Services.Payroll
 {
-    public class PayrollService
+    public interface IPayrollService
+    {
+        Task<PayrollRun> CreateRunAsync(DateTime periodStart, DateTime periodEnd, PayFrequency frequency);
+        Task<PayrollRun> ComputeRunAsync(int payrollRunId);
+        Task<bool> MarkRunAsPaidAsync(int payrollRunId);
+    }
+
+    public class PayrollService : IPayrollService
     {
         private readonly AppDbContext _db;
-        private readonly TaxService _tax;
+        private readonly ITaxService _tax;
 
-        public PayrollService(AppDbContext db, TaxService tax)
+        public PayrollService(AppDbContext db, ITaxService tax)
         {
             _db = db;
             _tax = tax;
         }
 
-        // --------------------------------------------------------------
-        // GENERATE PAYROLL FOR A PERIOD
-        // --------------------------------------------------------------
-        public async Task GeneratePayrollAsync(int payrollPeriodId)
+        // 1) Create a new Thu–Wed run
+        public async Task<PayrollRun> CreateRunAsync(DateTime periodStart, DateTime periodEnd, PayFrequency frequency)
         {
-            var period = await _db.PayrollPeriods
-                .FirstAsync(x => x.PayrollPeriodId == payrollPeriodId);
+            var run = new PayrollRun
+            {
+                PeriodStart = periodStart.Date,
+                PeriodEnd   = periodEnd.Date,
+                PayFrequency = frequency,
+                Status = PayrollRunStatus.Open,
+                CreatedAt = DateTime.UtcNow
+            };
 
-            if (period.Closed)
-                throw new Exception("Payroll period is closed.");
+            _db.PayrollRuns.Add(run);
+            await _db.SaveChangesAsync();
 
+            return run;
+        }
+
+        // 2) Compute all payslips for the run
+       public async Task<PayrollRun> ComputeRunAsync(int payrollRunId)
+{
+    var run = await _db.PayrollRuns
+        .Include(r => r.Payslips)
+        .FirstOrDefaultAsync(r => r.PayrollRunId == payrollRunId);
+
+    if (run == null)
+        throw new ArgumentException("Payroll run not found.", nameof(payrollRunId));
+
+// Only block Cancelled runs; allow recompute for Open / Finalizing / Paid
+if (run.Status == PayrollRunStatus.Cancelled)
+    throw new InvalidOperationException("Cancelled payroll runs cannot be processed.");
+
+run.Status = PayrollRunStatus.Open;   // ensure a clean recompute
+
+
+
+            // If re-running, clear old payslips
+            if (run.Payslips.Any())
+            {
+                _db.EmployeePayrollSummaries.RemoveRange(run.Payslips);
+                run.Payslips.Clear();
+            }
+
+            // Employees on this pay frequency
             var employees = await _db.Employees
-                .Include(x => x.PayGrade)
-                .Where(x => x.PayGradeId != null)
+                .Include(e => e.PayGrade)
+                .Where(e => e.PayGradeId != null &&
+                            e.PayGrade != null &&
+                            e.PayFrequency == run.PayFrequency)
                 .ToListAsync();
 
             foreach (var emp in employees)
             {
-                var grade = emp.PayGrade!;
-                decimal grossWeekly = CalculateGrossWeekly(emp);
+                if (emp.PayGrade == null) continue;
 
-                decimal paye = _tax.CalculatePAYE(grossWeekly);
-                decimal acc = _tax.CalculateACC(grossWeekly);
-                decimal ksEmp = _tax.CalculateKiwiSaverEmployee(grossWeekly);
-                decimal ksEmployer = _tax.CalculateKiwiSaverEmployer(grossWeekly);
-                decimal sl = _tax.CalculateStudentLoan(grossWeekly);
+                // Approved timesheets for this block, not yet linked to a run
+                var timesheets = await _db.TimesheetEntries
+                    .Where(t => t.EmployeeId == emp.EmployeeId
+                                && t.WorkDate >= run.PeriodStart
+                                && t.WorkDate <= run.PeriodEnd
+                                && t.Status == TimesheetStatus.Approved
+                                && t.PayrollRunId == null)
+                    .ToListAsync();
 
-                decimal netPay = grossWeekly - paye - acc - ksEmp - sl;
+                decimal workedHours = timesheets.Sum(t => t.TotalHours);
 
-                // Save summary
-                var summary = await _db.EmployeePayrollSummaries
-                    .FirstOrDefaultAsync(x =>
-                        x.EmployeeId == emp.EmployeeId &&
-                        x.PayrollPeriodId == payrollPeriodId);
+                // Approved leave in this block
+                var leaves = await _db.LeaveRequests
+                    .Where(l => l.EmployeeId == emp.EmployeeId
+                                && l.Status == LeaveStatus.Approved
+                                && l.StartDate <= run.PeriodEnd
+                                && l.EndDate >= run.PeriodStart)
+                    .ToListAsync();
 
-                if (summary == null)
+                decimal annualHours = 0m;
+                decimal sickHours   = 0m;
+
+                foreach (var leave in leaves)
                 {
-                    summary = new EmployeePayrollSummary
-                    {
-                        EmployeeId = emp.EmployeeId,
-                        PayrollPeriodId = payrollPeriodId,
-                        PayRate = grade.BaseRate,
-                        GrossPay = grossWeekly,
-                        Deductions = paye + acc + ksEmp + sl,
-                    };
+                    var days = (decimal)(leave.EndDate - leave.StartDate).TotalDays + 1m;
+                    var hours = days * 8m; // 8 hours per day
 
-                    _db.EmployeePayrollSummaries.Add(summary);
+                    if (leave.LeaveType.Equals("Annual", StringComparison.OrdinalIgnoreCase))
+                    {
+                        annualHours += hours;
+                    }
+                    else if (leave.LeaveType.Equals("Sick", StringComparison.OrdinalIgnoreCase))
+                    {
+                        // already capped at 8h/day
+                        sickHours += hours;
+                    }
+                }
+
+                // Clamp to available leave balance
+                var balance = await _db.EmployeeLeaveBalances
+                    .FirstOrDefaultAsync(b => b.EmployeeId == emp.EmployeeId);
+
+                if (balance != null)
+                {
+                    var allowedAnnual = Math.Min(annualHours, balance.AnnualRemaining);
+                    var allowedSick   = Math.Min(sickHours, balance.SickRemaining);
+
+                    balance.AnnualUsed += allowedAnnual;
+                    balance.SickUsed   += allowedSick;
+                    balance.UpdatedAt   = DateTime.UtcNow;
+
+                    annualHours = allowedAnnual;
+                    sickHours   = allowedSick;
+                }
+
+                // If no leave available, it simply won’t be paid (your requirement)
+                var totalPaidHours = workedHours + annualHours + sickHours;
+
+                if (totalPaidHours <= 0)
+                    continue; // nothing to pay for this employee
+
+                var rate     = emp.PayGrade.BaseRate;
+                var rateType = emp.PayGrade.RateType;
+
+                decimal grossPay;
+
+                if (rateType == RateType.Hourly)
+                {
+                    grossPay = Math.Round(totalPaidHours * rate, 2);
                 }
                 else
                 {
-                    summary.PayRate = grade.BaseRate;
-                    summary.GrossPay = grossWeekly;
-                    summary.Deductions = paye + acc + ksEmp + sl;
+                    // Simple salary split by frequency
+                    grossPay = run.PayFrequency switch
+                    {
+                        PayFrequency.Weekly      => Math.Round(rate / 52m, 2),
+                        PayFrequency.Fortnightly => Math.Round(rate / 26m, 2),
+                        PayFrequency.Monthly     => Math.Round(rate / 12m, 2),
+                        _                        => rate
+                    };
                 }
 
-                await _db.SaveChangesAsync();
+                // Tax + deductions
+                var tax = _tax.CalculatePayPeriodTax(grossPay, run.PayFrequency);
+
+                var payslip = new EmployeePayrollSummary
+                {
+                    EmployeeId = emp.EmployeeId,
+                    PayrollRunId = run.PayrollRunId,
+
+                    PayRate = rate,
+                    RateType = rateType,
+
+                    GrossPay = grossPay,
+                    PAYE = tax.PAYE,
+                    KiwiSaverEmployee = tax.OtherDeductions,
+                    KiwiSaverEmployer = 0m,
+                    ACCLevy = 0m,
+                    StudentLoan = 0m,
+                    NetPay = tax.NetPay,
+
+                    Deductions = tax.PAYE + tax.OtherDeductions,
+                    TotalHours = totalPaidHours,
+
+                    Status = PayrollSummaryStatus.Finalized,
+                    GeneratedAt = DateTime.UtcNow
+                };
+
+                run.Payslips.Add(payslip);
+
+                // Mark timesheets as used in this run
+                foreach (var ts in timesheets)
+                {
+                    ts.PayrollRunId = run.PayrollRunId;
+                    ts.ApprovedAt ??= DateTime.UtcNow;
+                }
             }
+
+            run.Status = PayrollRunStatus.Finalizing;
+            run.ProcessedAt = DateTime.UtcNow;
+
+            await _db.SaveChangesAsync();
+            return run;
         }
 
-        // --------------------------------------------------------------
-        // CONVERT SALARY OR HOURLY → WEEKLY PAY
-        // --------------------------------------------------------------
-        private decimal CalculateGrossWeekly(Employee emp)
+        // 3) Mark as paid – updates run + each payslip
+        public async Task<bool> MarkRunAsPaidAsync(int payrollRunId)
         {
-            var grade = emp.PayGrade!;
-            if (grade.RateType == RateType.Salary)
+            var run = await _db.PayrollRuns
+                .Include(r => r.Payslips)
+                .FirstOrDefaultAsync(r => r.PayrollRunId == payrollRunId);
+
+            if (run == null) return false;
+
+            if (run.Status == PayrollRunStatus.Paid)
+                return true;
+
+            run.Status = PayrollRunStatus.Paid;
+            run.PaidAt = DateTime.UtcNow;
+
+            foreach (var slip in run.Payslips)
             {
-                // Salary is annual → convert to weekly
-                return Math.Round(grade.BaseRate / 52m, 2);
-            }
-            else
-            {
-                // Assume 40 hours per week
-                return Math.Round(grade.BaseRate * 40m, 2);
-            }
-        }
-
-        // --------------------------------------------------------------
-        // FINALIZE PAYROLL (LOCK)
-        // --------------------------------------------------------------
-        public async Task FinalizePayrollAsync(int payrollPeriodId)
-        {
-            var period = await _db.PayrollPeriods
-                .FirstAsync(x => x.PayrollPeriodId == payrollPeriodId);
-
-            period.Closed = true;
-
-            var summaries = await _db.EmployeePayrollSummaries
-                .Where(x => x.PayrollPeriodId == payrollPeriodId)
-                .ToListAsync();
-
-            foreach (var s in summaries)
-            {
-                s.Status = PayrollSummaryStatus.Finalized;
+                slip.Status = PayrollSummaryStatus.Paid;
+                slip.PaidAt = DateTime.UtcNow;
             }
 
             await _db.SaveChangesAsync();
+            return true;
         }
-
-        // --------------------------------------------------------------
-        // MARK PAYROLL AS PAID
-        // --------------------------------------------------------------
-        public async Task MarkPayrollPaidAsync(int payrollPeriodId)
-        {
-            var summaries = await _db.EmployeePayrollSummaries
-                .Where(x => x.PayrollPeriodId == payrollPeriodId)
-                .ToListAsync();
-
-            foreach (var s in summaries)
-            {
-                s.Status = PayrollSummaryStatus.Paid;
-            }
-
-            await _db.SaveChangesAsync();
-        }
-
-        // --------------------------------------------------------------
-// RECALCULATE ONE EMPLOYEE'S SUMMARY FROM HOURS
-// --------------------------------------------------------------
-public async Task RecalculateEmployeeSummaryAsync(int summaryId, decimal totalHours)
-{
-    var summary = await _db.EmployeePayrollSummaries
-        .Include(s => s.Employee)
-            .ThenInclude(e => e.PayGrade)
-        .FirstOrDefaultAsync(s => s.EmployeePayrollSummaryId == summaryId);
-
-    if (summary == null)
-        throw new Exception("Payroll summary not found.");
-
-    var emp   = summary.Employee;
-    var grade = emp.PayGrade ?? throw new Exception("Employee has no pay grade.");
-
-    // Store hours
-    summary.TotalHours = totalHours;
-
-    // Calculate gross weekly pay
-    decimal grossWeekly;
-    if (grade.RateType == RateType.Salary)
-    {
-        // annual salary -> weekly
-        grossWeekly = Math.Round(grade.BaseRate / 52m, 2);
-    }
-    else
-    {
-        // hourly -> hours x rate
-        grossWeekly = Math.Round(grade.BaseRate * totalHours, 2);
-    }
-
-    // NZ tax + deductions (weekly) using your TaxService
-    decimal paye       = _tax.CalculatePAYE(grossWeekly);
-    decimal acc        = _tax.CalculateACC(grossWeekly);
-    decimal ksEmp      = _tax.CalculateKiwiSaverEmployee(grossWeekly);
-    decimal ksEmployer = _tax.CalculateKiwiSaverEmployer(grossWeekly);
-    decimal sl         = _tax.CalculateStudentLoan(grossWeekly);
-
-    summary.PayRate           = grade.BaseRate;
-    summary.RateType          = grade.RateType;
-    summary.GrossPay          = grossWeekly;
-    summary.PAYE              = paye;
-    summary.KiwiSaverEmployee = ksEmp;
-    summary.KiwiSaverEmployer = ksEmployer;
-    summary.ACCLevy           = acc;
-    summary.StudentLoan       = sl;
-    summary.Deductions        = paye + acc + ksEmp + sl;
-
-    await _db.SaveChangesAsync();
-}
-
-
-        // --------------------------------------------------------------
-        // UPDATE HOURS FOR ONE EMPLOYEE & RECALCULATE PAYSLIP
-        // --------------------------------------------------------------
-        public async Task UpdateHoursAndRecalculateAsync(
-            int summaryId,
-            TimeSpan startTime,
-            TimeSpan endTime,
-            int breakMinutes)
-        {
-            var summary = await _db.EmployeePayrollSummaries
-                .Include(s => s.Employee)
-                    .ThenInclude(e => e.PayGrade)
-                .FirstOrDefaultAsync(s => s.EmployeePayrollSummaryId == summaryId);
-
-            if (summary == null)
-                throw new Exception("Payroll summary not found.");
-
-            var emp   = summary.Employee;
-            var grade = emp.PayGrade ?? throw new Exception("Employee has no pay grade.");
-
-            // 1) Calculate total hours using your helper
-            var hours = CalculateTotalHours(startTime, endTime, breakMinutes);
-
-            summary.StartTime    = startTime;
-            summary.EndTime      = endTime;
-            summary.BreakMinutes = breakMinutes;
-            summary.TotalHours   = hours;
-
-            // 2) Gross earnings
-            decimal grossWeekly;
-            if (grade.RateType == RateType.Salary)
-            {
-                // Salary is annual → weekly
-                grossWeekly = Math.Round(grade.BaseRate / 52m, 2);
-            }
-            else
-            {
-                // Hourly → hours x rate
-                grossWeekly = Math.Round(grade.BaseRate * hours, 2);
-            }
-
-            // 3) NZ-style tax/deductions using TaxService
-            decimal paye       = _tax.CalculatePAYE(grossWeekly);
-            decimal acc        = _tax.CalculateACC(grossWeekly);
-            decimal ksEmp      = _tax.CalculateKiwiSaverEmployee(grossWeekly);
-            decimal ksEmployer = _tax.CalculateKiwiSaverEmployer(grossWeekly);
-            decimal sl         = _tax.CalculateStudentLoan(grossWeekly);
-
-            // 4) Save back into summary
-            summary.PayRate    = grade.BaseRate;
-            summary.GrossPay   = grossWeekly;
-            summary.Deductions = paye + acc + ksEmp + sl;
-            // NetPay is computed in DB (you already have [DatabaseGenerated])
-
-            await _db.SaveChangesAsync();
-        }
-
-
-
-        public decimal CalculateTotalHours(TimeSpan start, TimeSpan end, int breakMinutes)
-{
-    var totalMinutes = (end - start).TotalMinutes - breakMinutes;
-    if (totalMinutes < 0) totalMinutes = 0; // safety
-
-    return (decimal)(totalMinutes / 60.0);
-}
-
     }
 }

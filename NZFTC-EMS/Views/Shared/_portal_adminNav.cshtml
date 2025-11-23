@@ -17,10 +17,16 @@
                 Leave Application
             </a>
 
-            
-            <a class="nav-link" asp-controller="PayrollManagement" asp-action="Payslips">
-                MyPayslip
+            <a class="nav-link" href="/employee_timesheets">
+               MyTimesheets
             </a>
+
+            <a class="nav-link"
+   asp-controller="employee_payroll"
+   asp-action="Payslips">
+    MyPayslip
+</a>
+
 
             
             <a class="nav-link" asp-controller="employee_management" asp-action="Index">Employee Management</a>
@@ -28,14 +34,34 @@
             <a class="nav-link" asp-controller="jobposition_management" asp-action="Index">Job Position Management</a>
 
             
-            <a class="nav-link" asp-controller="LeaveManagement" asp-action="LeaveManagement">
-                Leave Management
-            </a>
+    <a asp-controller="LeaveManagement"
+       asp-action="LeaveManagement"
+       class="nav-link">
+        <span class="nav-text">Leave Management</span>
+    </a>
+
+
+
+    <a asp-controller="LeaveManagement"
+       asp-action="LeaveReports"
+       class="nav-link">
+        <span class="nav-text">Leave Reports</span>
+    </a>
+
+
+
+    <a asp-controller="LeaveManagement"
+       asp-action="LeavePolicies"
+       class="nav-link">
+        <span class="nav-text">Leave Policies</span>
+    </a>
+
+
 
             
-            <a class="nav-link" asp-controller="PayrollManagement" asp-action="PayrollPeriods">
-    Payroll
-</a>
+               <a class="nav-link" href="/timesheet_management">Timesheets</a>
+                <a class="nav-link" href="/payroll_management">Payroll</a>
+
 
             <a class="nav-link" asp-controller="calendar" asp-action="UserCalendar">MyCalendar</a>
             <a class="nav-link" href="/support_management">Support Tickets</a>

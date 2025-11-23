@@ -1,87 +1,95 @@
 ﻿@using NZFTC_EMS.Data.Entities
-@model List<EmployeePayrollSummary>
-
+@model IEnumerable<EmployeePayrollSummary>
 
 @{
     Layout = "~/Views/Shared/_portal.cshtml";
 }
 
-
 <div class="page-container">
 
     <!-- HEADER -->
-    <div class="header-row d-flex justify-content-between align-items-center mb-4">
-        <h2 class="page-title fw-bold">My Payslips</h2>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold mb-0">My Payslips</h2>
     </div>
 
+    <!-- FLASH MESSAGES -->
     @if (TempData["Success"] != null)
     {
         <div class="alert alert-success">@TempData["Success"]</div>
     }
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger">@TempData["Error"]</div>
+    }
 
-    <!-- MAIN CARD -->
     <div class="card shadow-sm border-0">
+        <div class="card-body">
+            @if (Model == null || !Model.Any())
+            {
+                <p class="text-muted mb-0">No payslips generated yet.</p>
+            }
+            else
+            {
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle styled-table mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Pay Period</th>
+                                <th>Pay Frequency</th>
+                                <th class="text-end">Total Hours</th>
+                                <th class="text-end">Gross Pay</th>
+                                <th class="text-end">PAYE</th>
+                                <th class="text-end">Other Deductions</th>
+                                <th class="text-end">Net Pay</th>
+                                <th class="text-center">Status</th>
+                                <th>Generated</th>
+                                <th class="text-end">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var slip in Model)
+                            {
+                                var run      = slip.PayrollRun;
+                                var isPaid   = slip.Status == PayrollSummaryStatus.Paid;
+                                var badgeCls = isPaid ? "bg-success" : "bg-warning";
+                                var status   = isPaid ? "Paid" : "Processing";
 
-        <div class="card-header text-white fw-semibold"
-             style="background-color:#1E4DB7; border-radius:6px 6px 0 0;">
-            Available Payslips
+                                <tr>
+                                    <td>
+                                        @if (run != null)
+                                        {
+                                            @($"{run.PeriodStart:dd MMM yyyy} – {run.PeriodEnd:dd MMM yyyy}")
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted">N/A</span>
+                                        }
+                                    </td>
+                                    <td>@(run != null ? run.PayFrequency.ToString() : "-")</td>
+                                    <td class="text-end">@slip.TotalHours.ToString("0.##")</td>
+                                    <td class="text-end">@slip.GrossPay.ToString("C")</td>
+                                    <td class="text-end">@slip.PAYE.ToString("C")</td>
+                                    <td class="text-end">@slip.Deductions.ToString("C")</td>
+                                    <td class="text-end fw-semibold">@slip.NetPay.ToString("C")</td>
+                                    <td class="text-center">
+                                        <span class="badge @badgeCls px-3">@status</span>
+                                    </td>
+                                    <td>@slip.GeneratedAt.ToLocalTime().ToString("dd MMM yyyy HH:mm")</td>
+                                    <td class="text-end">
+                                        <a asp-controller="employee_payroll"
+                                           asp-action="Payslip"
+                                           asp-route-id="@slip.EmployeePayrollSummaryId"
+                                           class="btn btn-sm btn-outline-primary">
+                                            View
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
         </div>
-
-        <div class="table-responsive">
-            <table class="table table-hover align-middle styled-table mb-0">
-
-               <thead>
-    <tr>
-        <th>Period</th>
-        <th>Gross</th>
-        <th>Net</th>
-        <th>Status</th>
-        <th></th>
-    </tr>
-</thead>
-<tbody>
-@foreach (NZFTC_EMS.Data.Entities.EmployeePayrollSummary s in Model)
-{
-    <tr>
-        <td>@s.PayrollPeriod.PeriodCode</td>
-        <td>@s.GrossPay.ToString("C")</td>
-        <td>@s.NetPay.ToString("C")</td>
-       <!-- Status -->
-<td>
-    @if (s.Status == PayrollSummaryStatus.Finalized)
-    {
-        <span class="badge bg-success px-3 py-2">Paid</span>
-    }
-    else if (s.Status == PayrollSummaryStatus.Paid)
-    {
-        <span class="badge bg-primary px-3 py-2">Finalized</span>
-    }
-    else
-    {
-        <span class="badge bg-warning text-dark px-3 py-2">@s.Status</span>
-    }
-</td>
-
-        <td>
-            <a asp-action="PayslipDetails"
-               asp-route-id="@s.EmployeePayrollSummaryId">
-                View
-            </a>
-        </td>
-
-        <a href="/PayrollManagement/PayslipDetails/@s.EmployeePayrollSummaryId"
-   class="btn btn-primary btn-sm px-3">
-    View
-</a>
-
-    </tr>
-}
-</tbody>
-
-
-            </table>
-        </div>
-
     </div>
 </div>
 

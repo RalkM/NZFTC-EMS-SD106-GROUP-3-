@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace NZFTC_EMS.Migrations
 {
     /// <inheritdoc />
-    public partial class initialMigration : Migration
+    public partial class InitialMigrate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -113,12 +113,32 @@ namespace NZFTC_EMS.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     PeriodStart = table.Column<DateTime>(type: "date", nullable: false),
                     PeriodEnd = table.Column<DateTime>(type: "date", nullable: false),
-                    TotalAmount = table.Column<decimal>(type: "decimal(14,2)", precision: 14, scale: 2, nullable: true),
+                    TotalAmount = table.Column<decimal>(type: "decimal(14,2)", precision: 14, scale: 2, nullable: false),
                     Closed = table.Column<bool>(type: "tinyint(1)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_payrollperiods", x => x.PayrollPeriodId);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "payrollruns",
+                columns: table => new
+                {
+                    PayrollRunId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    PeriodStart = table.Column<DateTime>(type: "date", nullable: false),
+                    PeriodEnd = table.Column<DateTime>(type: "date", nullable: false),
+                    PayFrequency = table.Column<int>(type: "int", nullable: false),
+                    Status = table.Column<int>(type: "int", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    ProcessedAt = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    PaidAt = table.Column<DateTime>(type: "datetime(6)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_payrollruns", x => x.PayrollRunId);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -172,7 +192,7 @@ namespace NZFTC_EMS.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "employees",
+                name: "Employees",
                 columns: table => new
                 {
                     EmployeeId = table.Column<int>(type: "int", nullable: false)
@@ -196,25 +216,24 @@ namespace NZFTC_EMS.Migrations
                     PasswordSalt = table.Column<byte[]>(type: "longblob", nullable: true),
                     Department = table.Column<string>(type: "varchar(80)", maxLength: 80, nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    StartDate = table.Column<DateTime>(type: "date", nullable: false),
+                    PayFrequency = table.Column<byte>(type: "tinyint unsigned", nullable: true),
+                    StartDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     JobPositionId = table.Column<int>(type: "int", nullable: true),
                     PayGradeId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_employees", x => x.EmployeeId);
+                    table.PrimaryKey("PK_Employees", x => x.EmployeeId);
                     table.ForeignKey(
-                        name: "FK_employees_jobpositions_JobPositionId",
+                        name: "FK_Employees_jobpositions_JobPositionId",
                         column: x => x.JobPositionId,
                         principalTable: "jobpositions",
-                        principalColumn: "JobPositionId",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "JobPositionId");
                     table.ForeignKey(
-                        name: "FK_employees_paygrades_PayGradeId",
+                        name: "FK_Employees_paygrades_PayGradeId",
                         column: x => x.PayGradeId,
                         principalTable: "paygrades",
-                        principalColumn: "PayGradeId",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "PayGradeId");
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -238,9 +257,9 @@ namespace NZFTC_EMS.Migrations
                 {
                     table.PrimaryKey("PK_employeeemergencycontacts", x => x.EmergencyContactId);
                     table.ForeignKey(
-                        name: "FK_employeeemergencycontacts_employees_EmployeeId",
+                        name: "FK_employeeemergencycontacts_Employees_EmployeeId",
                         column: x => x.EmployeeId,
-                        principalTable: "employees",
+                        principalTable: "Employees",
                         principalColumn: "EmployeeId",
                         onDelete: ReferentialAction.Cascade);
                 })
@@ -264,88 +283,57 @@ namespace NZFTC_EMS.Migrations
                 {
                     table.PrimaryKey("PK_employeeleavebalances", x => x.EmployeeLeaveBalanceId);
                     table.ForeignKey(
-                        name: "FK_employeeleavebalances_employees_EmployeeId",
+                        name: "FK_employeeleavebalances_Employees_EmployeeId",
                         column: x => x.EmployeeId,
-                        principalTable: "employees",
+                        principalTable: "Employees",
                         principalColumn: "EmployeeId",
                         onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "employeepayrollsummaries",
+                name: "EmployeePayrollSummaries",
                 columns: table => new
                 {
                     EmployeePayrollSummaryId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    PayrollPeriodId = table.Column<int>(type: "int", nullable: false),
+                    PayrollPeriodId = table.Column<int>(type: "int", nullable: true),
+                    PayrollRunId = table.Column<int>(type: "int", nullable: true),
                     EmployeeId = table.Column<int>(type: "int", nullable: false),
-                    PayRate = table.Column<decimal>(type: "decimal(12,2)", precision: 12, scale: 2, nullable: false),
-                    RateType = table.Column<int>(type: "int", nullable: false),
+                    PayRate = table.Column<decimal>(type: "decimal(65,30)", nullable: false),
+                    RateType = table.Column<byte>(type: "tinyint unsigned", nullable: false),
+                    GrossPay = table.Column<decimal>(type: "decimal(65,30)", nullable: false),
+                    PAYE = table.Column<decimal>(type: "decimal(65,30)", nullable: false),
+                    KiwiSaverEmployee = table.Column<decimal>(type: "decimal(65,30)", nullable: false),
+                    KiwiSaverEmployer = table.Column<decimal>(type: "decimal(65,30)", nullable: false),
+                    ACCLevy = table.Column<decimal>(type: "decimal(65,30)", nullable: false),
+                    StudentLoan = table.Column<decimal>(type: "decimal(65,30)", nullable: false),
+                    Deductions = table.Column<decimal>(type: "decimal(65,30)", nullable: false),
                     TotalHours = table.Column<decimal>(type: "decimal(65,30)", nullable: false),
-                    GrossEarnings = table.Column<decimal>(type: "decimal(65,30)", nullable: false),
-                    GrossPay = table.Column<decimal>(type: "decimal(14,2)", precision: 14, scale: 2, nullable: false),
-                    PAYE = table.Column<decimal>(type: "decimal(14,2)", precision: 14, scale: 2, nullable: false),
-                    KiwiSaverEmployee = table.Column<decimal>(type: "decimal(14,2)", precision: 14, scale: 2, nullable: false),
-                    KiwiSaverEmployer = table.Column<decimal>(type: "decimal(14,2)", precision: 14, scale: 2, nullable: false),
-                    ACCLevy = table.Column<decimal>(type: "decimal(14,2)", precision: 14, scale: 2, nullable: false),
-                    StudentLoan = table.Column<decimal>(type: "decimal(14,2)", precision: 14, scale: 2, nullable: false),
-                    Deductions = table.Column<decimal>(type: "decimal(14,2)", precision: 14, scale: 2, nullable: false),
-                    NetPay = table.Column<decimal>(type: "decimal(14,2)", precision: 14, scale: 2, nullable: false, computedColumnSql: "(`GrossPay` - `Deductions`)", stored: true),
-                    Status = table.Column<byte>(type: "tinyint unsigned", nullable: false, defaultValue: (byte)0),
+                    NetPay = table.Column<decimal>(type: "decimal(65,30)", nullable: false),
+                    Status = table.Column<byte>(type: "tinyint unsigned", nullable: false),
                     GeneratedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    PayeTax = table.Column<decimal>(type: "decimal(65,30)", nullable: false),
-                    OtherDeductions = table.Column<decimal>(type: "decimal(65,30)", nullable: false),
                     PaidAt = table.Column<DateTime>(type: "datetime(6)", nullable: true)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.ComputedColumn)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_employeepayrollsummaries", x => x.EmployeePayrollSummaryId);
+                    table.PrimaryKey("PK_EmployeePayrollSummaries", x => x.EmployeePayrollSummaryId);
                     table.ForeignKey(
-                        name: "FK_employeepayrollsummaries_employees_EmployeeId",
+                        name: "FK_EmployeePayrollSummaries_Employees_EmployeeId",
                         column: x => x.EmployeeId,
-                        principalTable: "employees",
+                        principalTable: "Employees",
                         principalColumn: "EmployeeId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_employeepayrollsummaries_payrollperiods_PayrollPeriodId",
+                        name: "FK_EmployeePayrollSummaries_payrollperiods_PayrollPeriodId",
                         column: x => x.PayrollPeriodId,
                         principalTable: "payrollperiods",
-                        principalColumn: "PayrollPeriodId",
-                        onDelete: ReferentialAction.Cascade);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateTable(
-                name: "EmployeeTimesheets",
-                columns: table => new
-                {
-                    EmployeeTimesheetId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    PayrollPeriodId = table.Column<int>(type: "int", nullable: false),
-                    EmployeeId = table.Column<int>(type: "int", nullable: false),
-                    WorkDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    StartTime = table.Column<TimeSpan>(type: "time(6)", nullable: false),
-                    EndTime = table.Column<TimeSpan>(type: "time(6)", nullable: false),
-                    BreakMinutes = table.Column<int>(type: "int", nullable: false),
-                    TotalHours = table.Column<decimal>(type: "decimal(65,30)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_EmployeeTimesheets", x => x.EmployeeTimesheetId);
+                        principalColumn: "PayrollPeriodId");
                     table.ForeignKey(
-                        name: "FK_EmployeeTimesheets_employees_EmployeeId",
-                        column: x => x.EmployeeId,
-                        principalTable: "employees",
-                        principalColumn: "EmployeeId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_EmployeeTimesheets_payrollperiods_PayrollPeriodId",
-                        column: x => x.PayrollPeriodId,
-                        principalTable: "payrollperiods",
-                        principalColumn: "PayrollPeriodId",
-                        onDelete: ReferentialAction.Cascade);
+                        name: "FK_EmployeePayrollSummaries_payrollruns_PayrollRunId",
+                        column: x => x.PayrollRunId,
+                        principalTable: "payrollruns",
+                        principalColumn: "PayrollRunId");
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -372,14 +360,14 @@ namespace NZFTC_EMS.Migrations
                 {
                     table.PrimaryKey("PK_leaverequests", x => x.LeaveRequestId);
                     table.ForeignKey(
-                        name: "FK_leaverequests_employees_ApprovedByEmployeeId",
+                        name: "FK_leaverequests_Employees_ApprovedByEmployeeId",
                         column: x => x.ApprovedByEmployeeId,
-                        principalTable: "employees",
+                        principalTable: "Employees",
                         principalColumn: "EmployeeId");
                     table.ForeignKey(
-                        name: "FK_leaverequests_employees_EmployeeId",
+                        name: "FK_leaverequests_Employees_EmployeeId",
                         column: x => x.EmployeeId,
-                        principalTable: "employees",
+                        principalTable: "Employees",
                         principalColumn: "EmployeeId",
                         onDelete: ReferentialAction.Cascade);
                 })
@@ -406,10 +394,49 @@ namespace NZFTC_EMS.Migrations
                 {
                     table.PrimaryKey("PK_supporttickets", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_supporttickets_employees_EmployeeId",
+                        name: "FK_supporttickets_Employees_EmployeeId",
                         column: x => x.EmployeeId,
-                        principalTable: "employees",
+                        principalTable: "Employees",
                         principalColumn: "EmployeeId");
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "timesheetentries",
+                columns: table => new
+                {
+                    TimesheetEntryId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    EmployeeId = table.Column<int>(type: "int", nullable: false),
+                    WorkDate = table.Column<DateTime>(type: "date", nullable: false),
+                    StartTime = table.Column<TimeSpan>(type: "time(6)", nullable: false),
+                    BreakStartTime = table.Column<TimeSpan>(type: "time(6)", nullable: false),
+                    BreakEndTime = table.Column<TimeSpan>(type: "time(6)", nullable: false),
+                    FinishTime = table.Column<TimeSpan>(type: "time(6)", nullable: false),
+                    TotalHours = table.Column<decimal>(type: "decimal(10,2)", precision: 10, scale: 2, nullable: false),
+                    Status = table.Column<int>(type: "int", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    SubmittedAt = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    ApprovedAt = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    PayrollRunId = table.Column<int>(type: "int", nullable: true),
+                    AdminNote = table.Column<string>(type: "varchar(255)", maxLength: 255, nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_timesheetentries", x => x.TimesheetEntryId);
+                    table.ForeignKey(
+                        name: "FK_timesheetentries_Employees_EmployeeId",
+                        column: x => x.EmployeeId,
+                        principalTable: "Employees",
+                        principalColumn: "EmployeeId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_timesheetentries_payrollruns_PayrollRunId",
+                        column: x => x.PayrollRunId,
+                        principalTable: "payrollruns",
+                        principalColumn: "PayrollRunId",
+                        onDelete: ReferentialAction.SetNull);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -491,8 +518,8 @@ namespace NZFTC_EMS.Migrations
                 columns: new[] { "PayrollPeriodId", "Closed", "PeriodCode", "PeriodEnd", "PeriodStart", "TotalAmount" },
                 values: new object[,]
                 {
-                    { 1, false, "2025-M11", new DateTime(2025, 11, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2025, 11, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null },
-                    { 2, false, "2025-M12", new DateTime(2025, 12, 31, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2025, 12, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null },
+                    { 1, false, "2025-M11", new DateTime(2025, 11, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2025, 11, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 0m },
+                    { 2, false, "2025-M12", new DateTime(2025, 12, 31, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2025, 12, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 0m },
                     { 3, true, "2025-FN13", new DateTime(2025, 11, 14, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2025, 11, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 90000m }
                 });
 
@@ -542,14 +569,14 @@ namespace NZFTC_EMS.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "employees",
-                columns: new[] { "EmployeeId", "Address", "Birthday", "Department", "Email", "EmployeeCode", "FirstName", "Gender", "JobPositionId", "LastName", "PasswordHash", "PasswordSalt", "PayGradeId", "Phone", "StartDate" },
+                table: "Employees",
+                columns: new[] { "EmployeeId", "Address", "Birthday", "Department", "Email", "EmployeeCode", "FirstName", "Gender", "JobPositionId", "LastName", "PasswordHash", "PasswordSalt", "PayFrequency", "PayGradeId", "Phone", "StartDate" },
                 values: new object[,]
                 {
-                    { 1001, "N/A", new DateTime(1990, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "HR", "admin@nzftc.local", "NZFTC1001", "Temp", "Other", 11, "Admin", new byte[0], new byte[0], 8, null, new DateTime(2025, 11, 20, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 1002, "123 Finance Street", new DateTime(1995, 5, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "Finance", "emp@nzftc.local", "NZFTC1002", "TEMP", "Male", 4, "Emp", new byte[0], new byte[0], 7, null, new DateTime(2025, 11, 20, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 1003, "42 Eden Terrace", new DateTime(1997, 3, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), "IT", "sarah@nzftc.local", "NZFTC1003", "Sarah", "Female", 22, "Williams", new byte[0], new byte[0], 6, null, new DateTime(2025, 11, 10, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 1004, "19 Queen Street", new DateTime(1988, 9, 14, 0, 0, 0, 0, DateTimeKind.Unspecified), "Finance", "michael@nzftc.local", "NZFTC1004", "Michael", "Male", 3, "Brown", new byte[0], new byte[0], 8, null, new DateTime(2025, 10, 5, 0, 0, 0, 0, DateTimeKind.Unspecified) }
+                    { 1001, "N/A", new DateTime(1990, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "HR", "admin@nzftc.local", "NZFTC1001", "Temp", "Other", 11, "Admin", new byte[0], new byte[0], null, 8, null, new DateTime(2025, 11, 20, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 1002, "123 Finance Street", new DateTime(1995, 5, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "Finance", "emp@nzftc.local", "NZFTC1002", "TEMP", "Male", 4, "Emp", new byte[0], new byte[0], null, 7, null, new DateTime(2025, 11, 20, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 1003, "42 Eden Terrace", new DateTime(1997, 3, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), "IT", "sarah@nzftc.local", "NZFTC1003", "Sarah", "Female", 22, "Williams", new byte[0], new byte[0], null, 6, null, new DateTime(2025, 11, 10, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 1004, "19 Queen Street", new DateTime(1988, 9, 14, 0, 0, 0, 0, DateTimeKind.Unspecified), "Finance", "michael@nzftc.local", "NZFTC1004", "Michael", "Male", 3, "Brown", new byte[0], new byte[0], null, 8, null, new DateTime(2025, 10, 5, 0, 0, 0, 0, DateTimeKind.Unspecified) }
                 });
 
             migrationBuilder.InsertData(
@@ -597,46 +624,29 @@ namespace NZFTC_EMS.Migrations
                 column: "EmployeeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_employeepayrollsummaries_EmployeeId",
-                table: "employeepayrollsummaries",
+                name: "IX_EmployeePayrollSummaries_EmployeeId",
+                table: "EmployeePayrollSummaries",
                 column: "EmployeeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_employeepayrollsummaries_PayrollPeriodId",
-                table: "employeepayrollsummaries",
+                name: "IX_EmployeePayrollSummaries_PayrollPeriodId",
+                table: "EmployeePayrollSummaries",
                 column: "PayrollPeriodId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_employees_Email",
-                table: "employees",
-                column: "Email",
-                unique: true);
+                name: "IX_EmployeePayrollSummaries_PayrollRunId",
+                table: "EmployeePayrollSummaries",
+                column: "PayrollRunId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_employees_EmployeeCode",
-                table: "employees",
-                column: "EmployeeCode",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_employees_JobPositionId",
-                table: "employees",
+                name: "IX_Employees_JobPositionId",
+                table: "Employees",
                 column: "JobPositionId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_employees_PayGradeId",
-                table: "employees",
+                name: "IX_Employees_PayGradeId",
+                table: "Employees",
                 column: "PayGradeId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_EmployeeTimesheets_EmployeeId",
-                table: "EmployeeTimesheets",
-                column: "EmployeeId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_EmployeeTimesheets_PayrollPeriodId",
-                table: "EmployeeTimesheets",
-                column: "PayrollPeriodId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_holidays_HolidayDate",
@@ -691,6 +701,16 @@ namespace NZFTC_EMS.Migrations
                 name: "IX_supporttickets_EmployeeId",
                 table: "supporttickets",
                 column: "EmployeeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_timesheetentries_EmployeeId",
+                table: "timesheetentries",
+                column: "EmployeeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_timesheetentries_PayrollRunId",
+                table: "timesheetentries",
+                column: "PayrollRunId");
         }
 
         /// <inheritdoc />
@@ -706,10 +726,7 @@ namespace NZFTC_EMS.Migrations
                 name: "employeeleavebalances");
 
             migrationBuilder.DropTable(
-                name: "employeepayrollsummaries");
-
-            migrationBuilder.DropTable(
-                name: "EmployeeTimesheets");
+                name: "EmployeePayrollSummaries");
 
             migrationBuilder.DropTable(
                 name: "holidays");
@@ -727,13 +744,19 @@ namespace NZFTC_EMS.Migrations
                 name: "supportmessages");
 
             migrationBuilder.DropTable(
+                name: "timesheetentries");
+
+            migrationBuilder.DropTable(
                 name: "payrollperiods");
 
             migrationBuilder.DropTable(
                 name: "supporttickets");
 
             migrationBuilder.DropTable(
-                name: "employees");
+                name: "payrollruns");
+
+            migrationBuilder.DropTable(
+                name: "Employees");
 
             migrationBuilder.DropTable(
                 name: "jobpositions");

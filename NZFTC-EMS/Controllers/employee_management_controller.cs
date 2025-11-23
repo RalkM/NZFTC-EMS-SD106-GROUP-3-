@@ -101,10 +101,6 @@ public async Task<IActionResult> Details(int id)
         emp.Department ??= emp.JobPosition.Department;
         emp.Role       ??= emp.JobPosition.AccessRole;
     }
-    if (emp.PayGrade != null && string.IsNullOrEmpty(emp.PayFrequency))
-    {
-        emp.PayFrequency = emp.PayGrade.RateType.ToString();
-    }
 
     // primary emergency contact into helpers (if view uses them)
     var contact = emp.EmergencyContacts.FirstOrDefault();
@@ -451,15 +447,20 @@ public async Task<IActionResult> Create(Employee model)
                 .ToList();
 
             // Pay frequency options
-            var allFreqs = new[] { "Weekly", "Fortnightly", "Monthly" };
-            ViewBag.PayFrequencies = allFreqs
-                .Select(f => new SelectListItem
-                {
-                    Text = f,
-                    Value = f,
-                    Selected = (f == emp.PayFrequency)
-                })
-                .ToList();
+           // Pay frequency options (enum -> dropdown)
+var allFreqs = Enum.GetValues<PayFrequency>();
+
+var currentFreq = emp.PayFrequency;
+
+ViewBag.PayFrequencies = allFreqs
+    .Select(f => new SelectListItem
+    {
+        Text     = f.ToString(),
+        Value    = f.ToString(),
+        Selected = currentFreq.HasValue && currentFreq.Value == f
+    })
+    .ToList();
+
         }
 
         // ===========================

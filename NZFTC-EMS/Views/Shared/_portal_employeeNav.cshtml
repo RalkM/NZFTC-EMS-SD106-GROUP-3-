@@ -19,14 +19,29 @@
             </a>
 
             
-            <a class="nav-link" asp-controller="LeaveManagement" asp-action="ApplyLeave">
-                Leave Application
-            </a>
+            <a asp-controller="LeaveManagement"
+       asp-action="ApplyLeave"
+       class="nav-link">
+        <span class="nav-text">Leave Application</span>
+    </a>
+
+      <a asp-controller="LeaveManagement"
+       asp-action="LeaveHistory"
+       class="nav-link">
+        <span class="nav-text">Leave History</span>
+    </a>
 
             
-            <a class="nav-link" asp-controller="PayrollManagement" asp-action="Payslips">
-    My Payslips
+            <a class="nav-link" href="/employee_timesheets">
+               MyTimesheets
+            </a>
+
+          <a class="nav-link"
+   asp-controller="employee_payroll"
+   asp-action="Payslips">
+    MyPayslip
 </a>
+
 
             
             <a class="nav-link" asp-controller="calendar" asp-action="UserCalendar">

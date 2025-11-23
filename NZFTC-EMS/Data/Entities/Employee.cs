@@ -49,18 +49,16 @@ namespace NZFTC_EMS.Data.Entities
         [MaxLength(80)]
         public string? Department { get; set; }
 
-        // EMPLOYMENT / PAY
-        [NotMapped]                     // 🔹 not in DB
-        [MaxLength(120)]
-        public string? JobTitle { get; set; }
+ [NotMapped]                     // 🔹 not in DB
+[MaxLength(120)]
+public string? JobTitle { get; set; }
 
-        [NotMapped]                     // 🔹 not in DB
-        [MaxLength(50)]
-        public string? PayFrequency { get; set; }
+        // How often this employee is paid (stored in DB)
+// How often this employee is paid (Weekly / Fortnightly / Monthly)
+public PayFrequency? PayFrequency { get; set; }
 
-        // already NotMapped – keep as-is
-        [NotMapped]
-        public decimal? BasicPay => PayGrade?.BaseRate;
+[NotMapped]
+public decimal? BasicPay => PayGrade?.BaseRate;
 
         public DateTime StartDate { get; set; }
 

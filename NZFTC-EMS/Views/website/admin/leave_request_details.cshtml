@@ -10,9 +10,12 @@
     <div class="header-row d-flex justify-content-between align-items-center mb-4">
         <h2 class="page-title fw-bold">Leave Request Details</h2>
 
-        <a href="/leave_management/LeaveManagement" class="btn btn-secondary px-4">
-            Back
-        </a>
+       <a asp-controller="LeaveManagement"
+   asp-action="LeaveManagement"
+   class="btn btn-secondary px-4">
+    Back
+</a>
+
     </div>
 
     <!-- EMPLOYEE INFORMATION -->
@@ -120,10 +123,13 @@
     {
         <div class="d-flex gap-3">
 
-            <a href="/leave_management/ApproveLeave/@Model.LeaveRequestId"
-               class="btn btn-success px-4">
-                Approve
-            </a>
+           <a asp-controller="LeaveManagement"
+   asp-action="ApproveLeave"
+   asp-route-id="@Model.LeaveRequestId"
+   class="btn btn-success px-4">
+    Approve
+</a>
+
 
             <!-- Open Reject Modal -->
             <button class="btn btn-danger px-4"
@@ -143,7 +149,11 @@
     <div class="modal-dialog">
         <div class="modal-content border-0">
 
-            <form action="/leave_management/RejectLeave/@Model.LeaveRequestId" method="post">
+            <form asp-controller="LeaveManagement"
+      asp-action="RejectLeave"
+      asp-route-id="@Model.LeaveRequestId"
+      method="post">
+
 
                 <div class="modal-header text-white" style="background-color:#1E4DB7;">
                     <h5 class="modal-title">Reject Leave</h5>

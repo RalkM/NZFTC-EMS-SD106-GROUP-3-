@@ -8,13 +8,28 @@
 <div class="page-wrapper">
 
     <!-- PAGE HEADER -->
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2 class="page-title fw-bold mb-0">Leave Management</h2>
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="page-title fw-bold mb-0">Leave Management</h2>
 
+    <div class="d-flex gap-2">
         <a href="/LeaveManagement/LeavePolicies" class="btn btn-primary px-4">
             Policies
         </a>
+
+        <form asp-controller="LeaveManagement"
+              asp-action="RunAccrual"
+              method="post"
+              class="d-inline">
+            @Html.AntiForgeryToken()
+            <button type="submit"
+                    class="btn btn-outline-primary px-4"
+                    onclick="return confirm('Run monthly leave accrual for all employees?');">
+                Run Monthly Accrual
+            </button>
+        </form>
     </div>
+</div>
+
 
     <!-- ALERTS -->
     @if (TempData["Success"] != null)

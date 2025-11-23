@@ -1,166 +1,147 @@
-﻿@model NZFTC_EMS.ViewModels.Payroll.PayslipVM
+﻿@using NZFTC_EMS.Data.Entities
+@model EmployeePayrollSummary
+
 @{
     Layout = "~/Views/Shared/_portal.cshtml";
+
+    var emp = Model.Employee;
+    var run = Model.PayrollRun;
+
+    var employeeName = emp != null ? $"{emp.FirstName} {emp.LastName}" : $"Employee #{Model.EmployeeId}";
+    var employeeCode = emp?.EmployeeCode ?? "—";
+    var department   = emp?.Department ?? "—";
 }
 
-<div class="page-container">
+<div class="page-container py-4">
 
-    <!-- PAGE HEADER -->
-    <div class="header-row d-flex justify-content-between align-items-center mb-4">
-        <h2 class="page-title fw-bold">Payslip</h2>
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2 class="fw-bold mb-0">Payslip</h2>
 
-        <button class="btn btn-primary px-4" onclick="window.print()">
+        <button type="button"
+                class="btn btn-primary"
+                onclick="window.print()">
             Print Payslip
         </button>
     </div>
 
-    <!-- PAYSLIP CARD -->
-    <div class="card shadow-sm border-0 payslip-card" style="max-width:900px;margin:auto;">
-
-        <div class="card-header text-white fw-semibold"
-             style="background-color:#1E4DB7; border-radius:6px 6px 0 0;">
-            NZFTC Employee Payslip
+    <div class="card shadow-sm border-0 printable-card">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+            <div>
+                <div class="fw-semibold">NZFTC Employee Payslip</div>
+                @if (run != null)
+                {
+                    <small>@run.PeriodStart.ToString("dd MMM yyyy") – @run.PeriodEnd.ToString("dd MMM yyyy")</small>
+                }
+            </div>
+            <div class="d-flex align-items-center">
+                <!-- change path if your logo file is different -->
+                <img src="~/lib/Image-white.png" alt="NZFTC Logo" style="height:40px;" />
+            </div>
         </div>
 
-        <div class="card-body p-4">
+        <div class="card-body">
 
             <!-- EMPLOYEE INFO -->
-            <h5 class="fw-semibold mb-3 text-secondary">Employee Information</h5>
-
-            <table class="table table-bordered small-table mb-4">
-                <tbody>
-                    <tr>
-                        <th>Name</th>
-                        <td>@Model.EmployeeName</td>
-                    </tr>
-                    <tr>
-                        <th>Employee Code</th>
-                        <td>@Model.EmployeeCode</td>
-                    </tr>
-                    <tr>
-                        <th>Department</th>
-                        <td>@Model.Department</td>
-                    </tr>
-                </tbody>
-            </table>
+            <h5 class="fw-semibold mb-3">Employee Information</h5>
+            <div class="row g-3 mb-4">
+                <div class="col-md-4">
+                    <div class="detail-label">Name</div>
+                    <div class="detail-value">@employeeName</div>
+                </div>
+                <div class="col-md-4">
+                    <div class="detail-label">Employee Code</div>
+                    <div class="detail-value">@employeeCode</div>
+                </div>
+                <div class="col-md-4">
+                    <div class="detail-label">Department</div>
+                    <div class="detail-value">@department</div>
+                </div>
+            </div>
 
             <!-- PAY PERIOD -->
-            <h5 class="fw-semibold mb-3 text-secondary">Pay Period</h5>
-
-            <table class="table table-bordered small-table mb-4">
-                <tbody>
-                    <tr>
-                        <th>Period Code</th>
-                        <td>@Model.PeriodCode</td>
-                    </tr>
-                    <tr>
-                        <th>Start</th>
-                        <td>@Model.Start.ToShortDateString()</td>
-                    </tr>
-                    <tr>
-                        <th>End</th>
-                        <td>@Model.End.ToShortDateString()</td>
-                    </tr>
-                </tbody>
-            </table>
+            <h5 class="fw-semibold mb-3">Pay Period</h5>
+            <div class="row g-3 mb-4">
+                <div class="col-md-4">
+                    <div class="detail-label">Period Code</div>
+                    <div class="detail-value"> @if (run != null)
+        {
+            @($"{run.PeriodStart:dd MMM yyyy} – {run.PeriodEnd:dd MMM yyyy}")
+        }
+        else
+        {
+            @:—
+        }</div>
+                </div>
+                <div class="col-md-4">
+                    <div class="detail-label">Start</div>
+                    <div class="detail-value">@run?.PeriodStart.ToString("d")</div>
+                </div>
+                <div class="col-md-4">
+                    <div class="detail-label">End</div>
+                    <div class="detail-value">@run?.PeriodEnd.ToString("d")</div>
+                </div>
+            </div>
 
             <!-- PAY DETAILS -->
-            <h5 class="fw-semibold mb-3 text-secondary">Pay Details</h5>
+            <h5 class="fw-semibold mb-3">Pay Details</h5>
 
-            <table class="table table-bordered small-table">
-                <tbody>
-                    <tr>
-                        <th>Pay Rate</th>
-                        <td>$@Model.PayRate.ToString("N2") (@Model.RateType)</td>
-                    </tr>
+            <div class="table-responsive mb-3">
+                <table class="table table-bordered mb-0 payslip-table">
+                    <tbody>
+                        <tr>
+                            <th scope="row" style="width:35%;">Pay Rate</th>
+                            <td>
+                                @Model.PayRate.ToString("C")
+                                <span class="text-muted ms-1">(@Model.RateType)</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Total Hours</th>
+                            <td>@Model.TotalHours.ToString("0.##")</td>
+                        </tr>
+                        <tr>
+                            <th scope="row" class="text-primary">Gross Pay</th>
+                            <td class="fw-semibold text-primary">@Model.GrossPay.ToString("C")</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">PAYE (Tax)</th>
+                            <td>@Model.PAYE.ToString("C")</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Other Deductions</th>
+                            <td>@Model.Deductions.ToString("C")</td>
+                        </tr>
+                        <tr>
+                            <th scope="row" class="text-success">Net Pay</th>
+                            <td class="fw-bold text-success">@Model.NetPay.ToString("C")</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
 
-                    <tr>
-                        <th>Gross Pay</th>
-                        <td class="fw-bold text-primary">$@Model.GrossPay.ToString("N2")</td>
-                    </tr>
-
-                    <tr>
-                        <th>PAYE (Tax)</th>
-                        <td>$@Model.PAYE.ToString("N2")</td>
-                    </tr>
-
-                    <tr>
-                        <th>KiwiSaver (Employee)</th>
-                        <td>$@Model.KiwiSaverEmployee.ToString("N2")</td>
-                    </tr>
-
-                    <tr>
-                        <th>KiwiSaver (Employer)</th>
-                        <td>$@Model.KiwiSaverEmployer.ToString("N2")</td>
-                    </tr>
-
-                    <tr>
-                        <th>ACC Earners’ Levy</th>
-                        <td>$@Model.ACCLevy.ToString("N2")</td>
-                    </tr>
-
-                    <tr>
-                        <th>Student Loan</th>
-                        <td>$@Model.StudentLoan.ToString("N2")</td>
-                    </tr>
-
-                    <tr class="table-primary">
-                        <th>Net Pay</th>
-                        <td class="fw-bold text-success">$@Model.NetPay.ToString("N2")</td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <hr />
-
-            <p class="text-muted small mb-0">
-                Generated on @Model.GeneratedAt.ToString("f")
-            </p>
-
+            <small class="text-muted">
+                Generated on @Model.GeneratedAt.ToLocalTime().ToString("dddd, dd MMMM yyyy HH:mm")
+            </small>
         </div>
     </div>
-
 </div>
 
 <style>
     .page-container {
-        max-width: 1150px;
-        margin: auto;
+        max-width: 1100px;
+        margin: 0 auto;
     }
 
-    .small-table th {
-        width: 220px;
-        background: #f8f9fa;
+    .detail-label {
+        font-size: 0.8rem;
         font-weight: 600;
+        text-transform: uppercase;
+        color: #6c757d;
+        margin-bottom: 2px;
     }
 
-    .small-table td {
-        background: white;
+    .detail-value {
+        font-size: 0.95rem;
     }
 
-    /* PRINT MODE */
-    @@media print {
-        body *
-
-    {
-        visibility: hidden;
-    }
-
-    .payslip-card, .payslip-card * {
-        visibility: visible;
-    }
-
-    .payslip-card {
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 100%;
-        box-shadow: none !important;
-    }
-
-    button, .header-row {
-        display: none !important;
-    }
-
-    }
-</style>
+    .p

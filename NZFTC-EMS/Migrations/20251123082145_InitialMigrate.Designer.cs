@@ -12,8 +12,8 @@ using NZFTC_EMS.Data;
 namespace NZFTC_EMS.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20251122114811_AddPayrollHoursFields")]
-    partial class AddPayrollHoursFields
+    [Migration("20251123082145_InitialMigrate")]
+    partial class InitialMigrate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -131,6 +131,9 @@ namespace NZFTC_EMS.Migrations
                     b.Property<byte[]>("PasswordSalt")
                         .HasColumnType("longblob");
 
+                    b.Property<byte?>("PayFrequency")
+                        .HasColumnType("tinyint unsigned");
+
                     b.Property<int?>("PayGradeId")
                         .HasColumnType("int");
 
@@ -139,21 +142,15 @@ namespace NZFTC_EMS.Migrations
                         .HasColumnType("varchar(30)");
 
                     b.Property<DateTime>("StartDate")
-                        .HasColumnType("date");
+                        .HasColumnType("datetime(6)");
 
                     b.HasKey("EmployeeId");
-
-                    b.HasIndex("Email")
-                        .IsUnique();
-
-                    b.HasIndex("EmployeeCode")
-                        .IsUnique();
 
                     b.HasIndex("JobPositionId");
 
                     b.HasIndex("PayGradeId");
 
-                    b.ToTable("employees", (string)null);
+                    b.ToTable("Employees");
 
                     b.HasData(
                         new
@@ -370,83 +367,53 @@ namespace NZFTC_EMS.Migrations
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("EmployeePayrollSummaryId"));
 
                     b.Property<decimal>("ACCLevy")
-                        .HasPrecision(14, 2)
-                        .HasColumnType("decimal(14,2)");
-
-                    b.Property<int>("BreakMinutes")
-                        .HasColumnType("int");
+                        .HasColumnType("decimal(65,30)");
 
                     b.Property<decimal>("Deductions")
-                        .HasPrecision(14, 2)
-                        .HasColumnType("decimal(14,2)");
+                        .HasColumnType("decimal(65,30)");
 
                     b.Property<int>("EmployeeId")
                         .HasColumnType("int");
 
-                    b.Property<TimeSpan?>("EndTime")
-                        .HasColumnType("time(6)");
-
                     b.Property<DateTime>("GeneratedAt")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<decimal>("GrossEarnings")
+                    b.Property<decimal>("GrossPay")
                         .HasColumnType("decimal(65,30)");
 
-                    b.Property<decimal>("GrossPay")
-                        .HasPrecision(14, 2)
-                        .HasColumnType("decimal(14,2)");
-
                     b.Property<decimal>("KiwiSaverEmployee")
-                        .HasPrecision(14, 2)
-                        .HasColumnType("decimal(14,2)");
+                        .HasColumnType("decimal(65,30)");
 
                     b.Property<decimal>("KiwiSaverEmployer")
-                        .HasPrecision(14, 2)
-                        .HasColumnType("decimal(14,2)");
+                        .HasColumnType("decimal(65,30)");
 
                     b.Property<decimal>("NetPay")
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasPrecision(14, 2)
-                        .HasColumnType("decimal(14,2)")
-                        .HasComputedColumnSql("(`GrossPay` - `Deductions`)", true);
-
-                    b.Property<decimal>("OtherDeductions")
                         .HasColumnType("decimal(65,30)");
 
                     b.Property<decimal>("PAYE")
-                        .HasPrecision(14, 2)
-                        .HasColumnType("decimal(14,2)");
-
-                    b.Property<DateTime?>("PaidAt")
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("datetime(6)");
-
-                    MySqlPropertyBuilderExtensions.UseMySqlComputedColumn(b.Property<DateTime?>("PaidAt"));
-
-                    b.Property<decimal>("PayRate")
-                        .HasPrecision(12, 2)
-                        .HasColumnType("decimal(12,2)");
-
-                    b.Property<decimal>("PayeTax")
                         .HasColumnType("decimal(65,30)");
 
-                    b.Property<int>("PayrollPeriodId")
+                    b.Property<DateTime?>("PaidAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<decimal>("PayRate")
+                        .HasColumnType("decimal(65,30)");
+
+                    b.Property<int?>("PayrollPeriodId")
                         .HasColumnType("int");
 
-                    b.Property<int>("RateType")
+                    b.Property<int?>("PayrollRunId")
                         .HasColumnType("int");
 
-                    b.Property<TimeSpan?>("StartTime")
-                        .HasColumnType("time(6)");
+                    b.Property<byte>("RateType")
+                        .HasColumnType("tinyint unsigned");
 
                     b.Property<byte>("Status")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("tinyint unsigned")
-                        .HasDefaultValue((byte)0);
+                        .HasColumnType("tinyint unsigned");
 
                     b.Property<decimal>("StudentLoan")
-                        .HasPrecision(14, 2)
-                        .HasColumnType("decimal(14,2)");
+                        .HasColumnType("decimal(65,30)");
 
                     b.Property<decimal>("TotalHours")
                         .HasColumnType("decimal(65,30)");
@@ -457,45 +424,9 @@ namespace NZFTC_EMS.Migrations
 
                     b.HasIndex("PayrollPeriodId");
 
-                    b.ToTable("employeepayrollsummaries", (string)null);
-                });
+                    b.HasIndex("PayrollRunId");
 
-            modelBuilder.Entity("NZFTC_EMS.Data.Entities.EmployeeTimesheet", b =>
-                {
-                    b.Property<int>("EmployeeTimesheetId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("EmployeeTimesheetId"));
-
-                    b.Property<int>("BreakMinutes")
-                        .HasColumnType("int");
-
-                    b.Property<int>("EmployeeId")
-                        .HasColumnType("int");
-
-                    b.Property<TimeSpan>("EndTime")
-                        .HasColumnType("time(6)");
-
-                    b.Property<int>("PayrollPeriodId")
-                        .HasColumnType("int");
-
-                    b.Property<TimeSpan>("StartTime")
-                        .HasColumnType("time(6)");
-
-                    b.Property<decimal>("TotalHours")
-                        .HasColumnType("decimal(65,30)");
-
-                    b.Property<DateTime>("WorkDate")
-                        .HasColumnType("datetime(6)");
-
-                    b.HasKey("EmployeeTimesheetId");
-
-                    b.HasIndex("EmployeeId");
-
-                    b.HasIndex("PayrollPeriodId");
-
-                    b.ToTable("EmployeeTimesheets");
+                    b.ToTable("EmployeePayrollSummaries");
                 });
 
             modelBuilder.Entity("NZFTC_EMS.Data.Entities.Holiday", b =>
@@ -1217,7 +1148,7 @@ namespace NZFTC_EMS.Migrations
                     b.Property<DateTime>("PeriodStart")
                         .HasColumnType("date");
 
-                    b.Property<decimal?>("TotalAmount")
+                    b.Property<decimal>("TotalAmount")
                         .HasPrecision(14, 2)
                         .HasColumnType("decimal(14,2)");
 
@@ -1235,7 +1166,8 @@ namespace NZFTC_EMS.Migrations
                             Closed = false,
                             PeriodCode = "2025-M11",
                             PeriodEnd = new DateTime(2025, 11, 30, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            PeriodStart = new DateTime(2025, 11, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            PeriodStart = new DateTime(2025, 11, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            TotalAmount = 0m
                         },
                         new
                         {
@@ -1243,7 +1175,8 @@ namespace NZFTC_EMS.Migrations
                             Closed = false,
                             PeriodCode = "2025-M12",
                             PeriodEnd = new DateTime(2025, 12, 31, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            PeriodStart = new DateTime(2025, 12, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            PeriodStart = new DateTime(2025, 12, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            TotalAmount = 0m
                         },
                         new
                         {
@@ -1254,6 +1187,40 @@ namespace NZFTC_EMS.Migrations
                             PeriodStart = new DateTime(2025, 11, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             TotalAmount = 90000m
                         });
+                });
+
+            modelBuilder.Entity("NZFTC_EMS.Data.Entities.PayrollRun", b =>
+                {
+                    b.Property<int>("PayrollRunId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("PayrollRunId"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime?>("PaidAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<int>("PayFrequency")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("PeriodEnd")
+                        .HasColumnType("date");
+
+                    b.Property<DateTime>("PeriodStart")
+                        .HasColumnType("date");
+
+                    b.Property<DateTime?>("ProcessedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.HasKey("PayrollRunId");
+
+                    b.ToTable("payrollruns", (string)null);
                 });
 
             modelBuilder.Entity("NZFTC_EMS.Data.Entities.PayrollSettings", b =>
@@ -1421,17 +1388,73 @@ namespace NZFTC_EMS.Migrations
                         });
                 });
 
+            modelBuilder.Entity("NZFTC_EMS.Data.Entities.TimesheetEntry", b =>
+                {
+                    b.Property<int>("TimesheetEntryId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("TimesheetEntryId"));
+
+                    b.Property<string>("AdminNote")
+                        .HasMaxLength(255)
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<DateTime?>("ApprovedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<TimeSpan>("BreakEndTime")
+                        .HasColumnType("time(6)");
+
+                    b.Property<TimeSpan>("BreakStartTime")
+                        .HasColumnType("time(6)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<int>("EmployeeId")
+                        .HasColumnType("int");
+
+                    b.Property<TimeSpan>("FinishTime")
+                        .HasColumnType("time(6)");
+
+                    b.Property<int?>("PayrollRunId")
+                        .HasColumnType("int");
+
+                    b.Property<TimeSpan>("StartTime")
+                        .HasColumnType("time(6)");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("SubmittedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<decimal>("TotalHours")
+                        .HasPrecision(10, 2)
+                        .HasColumnType("decimal(10,2)");
+
+                    b.Property<DateTime>("WorkDate")
+                        .HasColumnType("date");
+
+                    b.HasKey("TimesheetEntryId");
+
+                    b.HasIndex("EmployeeId");
+
+                    b.HasIndex("PayrollRunId");
+
+                    b.ToTable("timesheetentries", (string)null);
+                });
+
             modelBuilder.Entity("NZFTC_EMS.Data.Entities.Employee", b =>
                 {
                     b.HasOne("NZFTC_EMS.Data.Entities.JobPosition", "JobPosition")
                         .WithMany()
-                        .HasForeignKey("JobPositionId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .HasForeignKey("JobPositionId");
 
                     b.HasOne("NZFTC_EMS.Data.Entities.PayGrade", "PayGrade")
                         .WithMany()
-                        .HasForeignKey("PayGradeId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .HasForeignKey("PayGradeId");
 
                     b.Navigation("JobPosition");
 
@@ -1469,33 +1492,18 @@ namespace NZFTC_EMS.Migrations
                         .IsRequired();
 
                     b.HasOne("NZFTC_EMS.Data.Entities.PayrollPeriod", "PayrollPeriod")
-                        .WithMany("Summaries")
-                        .HasForeignKey("PayrollPeriodId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithMany("PayrollSummaries")
+                        .HasForeignKey("PayrollPeriodId");
+
+                    b.HasOne("NZFTC_EMS.Data.Entities.PayrollRun", "PayrollRun")
+                        .WithMany("Payslips")
+                        .HasForeignKey("PayrollRunId");
 
                     b.Navigation("Employee");
 
                     b.Navigation("PayrollPeriod");
-                });
 
-            modelBuilder.Entity("NZFTC_EMS.Data.Entities.EmployeeTimesheet", b =>
-                {
-                    b.HasOne("NZFTC_EMS.Data.Entities.Employee", "Employee")
-                        .WithMany()
-                        .HasForeignKey("EmployeeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("NZFTC_EMS.Data.Entities.PayrollPeriod", "PayrollPeriod")
-                        .WithMany()
-                        .HasForeignKey("PayrollPeriodId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Employee");
-
-                    b.Navigation("PayrollPeriod");
+                    b.Navigation("PayrollRun");
                 });
 
             modelBuilder.Entity("NZFTC_EMS.Data.Entities.JobPosition", b =>
@@ -1547,6 +1555,24 @@ namespace NZFTC_EMS.Migrations
                     b.Navigation("Employee");
                 });
 
+            modelBuilder.Entity("NZFTC_EMS.Data.Entities.TimesheetEntry", b =>
+                {
+                    b.HasOne("NZFTC_EMS.Data.Entities.Employee", "Employee")
+                        .WithMany()
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("NZFTC_EMS.Data.Entities.PayrollRun", "PayrollRun")
+                        .WithMany()
+                        .HasForeignKey("PayrollRunId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.Navigation("Employee");
+
+                    b.Navigation("PayrollRun");
+                });
+
             modelBuilder.Entity("NZFTC_EMS.Data.Entities.Employee", b =>
                 {
                     b.Navigation("EmergencyContacts");
@@ -1565,7 +1591,12 @@ namespace NZFTC_EMS.Migrations
 
             modelBuilder.Entity("NZFTC_EMS.Data.Entities.PayrollPeriod", b =>
                 {
-                    b.Navigation("Summaries");
+                    b.Navigation("PayrollSummaries");
+                });
+
+            modelBuilder.Entity("NZFTC_EMS.Data.Entities.PayrollRun", b =>
+                {
+                    b.Navigation("Payslips");
                 });
 
             modelBuilder.Entity("NZFTC_EMS.Data.Entities.SupportTicket", b =>

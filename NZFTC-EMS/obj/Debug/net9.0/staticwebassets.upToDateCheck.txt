@@ -61,6 +61,7 @@ wwwroot\lib\bootstrap\dist\js\bootstrap.min.js.map
 wwwroot\lib\bootstrap\LICENSE
 wwwroot\lib\Image-white.png
 wwwroot\lib\Image.png
+wwwroot\lib\img\auth-bg.png
 wwwroot\lib\img\feature-employee-management-detail.png
 wwwroot\lib\img\feature-employee-management.png
 wwwroot\lib\img\feature-leave-tracking-detail.png

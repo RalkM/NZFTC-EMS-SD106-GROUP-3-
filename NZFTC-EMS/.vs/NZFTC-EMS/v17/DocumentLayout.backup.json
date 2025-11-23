@@ -3,6 +3,10 @@
   "WorkspaceRootPath": "C:\\SD106-EMS-Group5-\\NZFTC-EMS-SD106-GROUP-3-\\NZFTC-EMS\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{427B2A8B-8A94-4595-9501-A49D687916B0}|NZFTC-EMS.csproj|c:\\sd106-ems-group5-\\nzftc-ems-sd106-group-3-\\nzftc-ems\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{427B2A8B-8A94-4595-9501-A49D687916B0}|NZFTC-EMS.csproj|solutionrelative:appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{427B2A8B-8A94-4595-9501-A49D687916B0}|NZFTC-EMS.csproj|c:\\sd106-ems-group5-\\nzftc-ems-sd106-group-3-\\nzftc-ems\\wwwroot\\css\\authentication.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
       "RelativeMoniker": "D:0:0:{427B2A8B-8A94-4595-9501-A49D687916B0}|NZFTC-EMS.csproj|solutionrelative:wwwroot\\css\\authentication.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
     },
@@ -27,10 +31,6 @@
       "RelativeMoniker": "D:0:0:{427B2A8B-8A94-4595-9501-A49D687916B0}|NZFTC-EMS.csproj|solutionrelative:wwwroot\\css\\landing-page-stylesheet.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{427B2A8B-8A94-4595-9501-A49D687916B0}|NZFTC-EMS.csproj|c:\\sd106-ems-group5-\\nzftc-ems-sd106-group-3-\\nzftc-ems\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
-      "RelativeMoniker": "D:0:0:{427B2A8B-8A94-4595-9501-A49D687916B0}|NZFTC-EMS.csproj|solutionrelative:appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{427B2A8B-8A94-4595-9501-A49D687916B0}|NZFTC-EMS.csproj|c:\\sd106-ems-group5-\\nzftc-ems-sd106-group-3-\\nzftc-ems\\views\\website\\portal.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{427B2A8B-8A94-4595-9501-A49D687916B0}|NZFTC-EMS.csproj|solutionrelative:views\\website\\portal.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     }
@@ -42,7 +42,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 5,
           "Children": [
             {
               "$type": "Bookmark",
@@ -50,20 +50,20 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "authentication.css",
               "DocumentMoniker": "C:\\SD106-EMS-Group5-\\NZFTC-EMS-SD106-GROUP-3-\\NZFTC-EMS\\wwwroot\\css\\authentication.css",
               "RelativeDocumentMoniker": "wwwroot\\css\\authentication.css",
               "ToolTip": "C:\\SD106-EMS-Group5-\\NZFTC-EMS-SD106-GROUP-3-\\NZFTC-EMS\\wwwroot\\css\\authentication.css",
               "RelativeToolTip": "wwwroot\\css\\authentication.css",
-              "ViewState": "AgIAAIkAAAAAAAAAAAAswLgAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAkAAAAAAAAAAAAcwBsAAADEAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
               "WhenOpened": "2025-11-23T03:49:37.148Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "_auth.cshtml",
               "DocumentMoniker": "C:\\SD106-EMS-Group5-\\NZFTC-EMS-SD106-GROUP-3-\\NZFTC-EMS\\Views\\Shared\\_auth.cshtml",
               "RelativeDocumentMoniker": "Views\\Shared\\_auth.cshtml",
@@ -71,18 +71,17 @@
               "RelativeToolTip": "Views\\Shared\\_auth.cshtml",
               "ViewState": "AgIAAEsAAAAAAAAAAAAUwHgAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-11-23T03:26:27.254Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-23T03:26:27.254Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "login.cshtml",
               "DocumentMoniker": "C:\\SD106-EMS-Group5-\\NZFTC-EMS-SD106-GROUP-3-\\NZFTC-EMS\\Views\\Login\\login.cshtml",
               "RelativeDocumentMoniker": "Views\\Login\\login.cshtml",
               "ToolTip": "C:\\SD106-EMS-Group5-\\NZFTC-EMS-SD106-GROUP-3-\\NZFTC-EMS\\Views\\Login\\login.cshtml",
               "RelativeToolTip": "Views\\Login\\login.cshtml",
-              "ViewState": "AgIAACkAAAAAAAAAAAAUwFYAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAFYAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
               "WhenOpened": "2025-11-23T03:25:27.808Z",
               "EditorCaption": ""
@@ -97,12 +96,11 @@
               "RelativeToolTip": "Views\\website\\portal.cshtml",
               "ViewState": "AgIAAA8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-11-23T03:25:57.689Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-23T03:25:57.689Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 0,
               "Title": "appsettings.json",
               "DocumentMoniker": "C:\\SD106-EMS-Group5-\\NZFTC-EMS-SD106-GROUP-3-\\NZFTC-EMS\\appsettings.json",
               "RelativeDocumentMoniker": "appsettings.json",
@@ -115,7 +113,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 5,
               "Title": "Index.cshtml",
               "DocumentMoniker": "C:\\SD106-EMS-Group5-\\NZFTC-EMS-SD106-GROUP-3-\\NZFTC-EMS\\Views\\Shared\\Index.cshtml",
               "RelativeDocumentMoniker": "Views\\Shared\\Index.cshtml",
@@ -123,12 +121,11 @@
               "RelativeToolTip": "Views\\Shared\\Index.cshtml",
               "ViewState": "AgIAAEUAAAAAAAAAAAAAACkAAAAfAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-11-23T02:46:06.284Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-23T02:46:06.284Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 6,
               "Title": "landing-page-stylesheet.css",
               "DocumentMoniker": "C:\\SD106-EMS-Group5-\\NZFTC-EMS-SD106-GROUP-3-\\NZFTC-EMS\\wwwroot\\css\\landing-page-stylesheet.css",
               "RelativeDocumentMoniker": "wwwroot\\css\\landing-page-stylesheet.css",
@@ -136,12 +133,11 @@
               "RelativeToolTip": "wwwroot\\css\\landing-page-stylesheet.css",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
-              "WhenOpened": "2025-11-23T02:44:26.083Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-23T02:44:26.083Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 4,
               "Title": "Index.cshtml",
               "DocumentMoniker": "C:\\SD106-EMS-Group5-\\NZFTC-EMS-SD106-GROUP-3-\\NZFTC-EMS\\Views\\website\\Index.cshtml",
               "RelativeDocumentMoniker": "Views\\website\\Index.cshtml",
@@ -149,8 +145,7 @@
               "RelativeToolTip": "Views\\website\\Index.cshtml",
               "ViewState": "AgIAACcAAAAAAAAAAIAwwD8AAAA0AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-11-23T02:42:39.831Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-23T02:42:39.831Z"
             }
           ]
         }

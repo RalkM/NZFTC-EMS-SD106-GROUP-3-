@@ -25,7 +25,7 @@ body.auth-page {
     flex-direction: column;
     /* Layered EMS background:
        2 soft radial glows + your hero pattern */
-    background: radial-gradient(circle at 0% 0%, rgba(23, 113, 192, 0.18), transparent 55%), radial-gradient(circle at 100% 100%, rgba(0, 59, 115, 0.2), transparent 55%), url("/lib/img/hero-bg.png");
+    background: radial-gradient(circle at 0% 0%, rgba(23, 113, 192, 0.18), transparent 55%), radial-gradient(circle at 100% 100%, rgba(0, 59, 115, 0.2), transparent 55%), url("/lib/img/auth-bg.png");
     background-size: 520px 520px, 520px 520px, cover;
     background-position: top left, bottom right, center;
     background-repeat: no-repeat;

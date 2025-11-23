@@ -56,7 +56,7 @@
               "RelativeDocumentMoniker": "wwwroot\\css\\authentication.css",
               "ToolTip": "C:\\SD106-EMS-Group5-\\NZFTC-EMS-SD106-GROUP-3-\\NZFTC-EMS\\wwwroot\\css\\authentication.css",
               "RelativeToolTip": "wwwroot\\css\\authentication.css",
-              "ViewState": "AgIAAKYAAAAAAAAAAAAcwLgAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAkAAAAAAAAAAAAcwBsAAADEAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
               "WhenOpened": "2025-11-23T03:49:37.148Z",
               "EditorCaption": ""
@@ -71,8 +71,7 @@
               "RelativeToolTip": "Views\\Shared\\_auth.cshtml",
               "ViewState": "AgIAAEsAAAAAAAAAAAAUwHgAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-11-23T03:26:27.254Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-23T03:26:27.254Z"
             },
             {
               "$type": "Document",
@@ -82,7 +81,7 @@
               "RelativeDocumentMoniker": "Views\\Login\\login.cshtml",
               "ToolTip": "C:\\SD106-EMS-Group5-\\NZFTC-EMS-SD106-GROUP-3-\\NZFTC-EMS\\Views\\Login\\login.cshtml",
               "RelativeToolTip": "Views\\Login\\login.cshtml",
-              "ViewState": "AgIAACkAAAAAAAAAAAAUwFYAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAFYAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
               "WhenOpened": "2025-11-23T03:25:27.808Z",
               "EditorCaption": ""
@@ -97,8 +96,7 @@
               "RelativeToolTip": "Views\\website\\portal.cshtml",
               "ViewState": "AgIAAA8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-11-23T03:25:57.689Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-23T03:25:57.689Z"
             },
             {
               "$type": "Document",
@@ -108,7 +106,7 @@
               "RelativeDocumentMoniker": "appsettings.json",
               "ToolTip": "C:\\SD106-EMS-Group5-\\NZFTC-EMS-SD106-GROUP-3-\\NZFTC-EMS\\appsettings.json",
               "RelativeToolTip": "appsettings.json",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAABiAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
               "WhenOpened": "2025-11-23T03:19:19.269Z",
               "EditorCaption": ""
@@ -123,8 +121,7 @@
               "RelativeToolTip": "Views\\Shared\\Index.cshtml",
               "ViewState": "AgIAAEUAAAAAAAAAAAAAACkAAAAfAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-11-23T02:46:06.284Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-23T02:46:06.284Z"
             },
             {
               "$type": "Document",
@@ -136,8 +133,7 @@
               "RelativeToolTip": "wwwroot\\css\\landing-page-stylesheet.css",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
-              "WhenOpened": "2025-11-23T02:44:26.083Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-23T02:44:26.083Z"
             },
             {
               "$type": "Document",
@@ -149,8 +145,7 @@
               "RelativeToolTip": "Views\\website\\Index.cshtml",
               "ViewState": "AgIAACcAAAAAAAAAAIAwwD8AAAA0AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-11-23T02:42:39.831Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-23T02:42:39.831Z"
             }
           ]
         }

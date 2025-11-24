@@ -42,8 +42,8 @@ namespace NZFTC_EMS.Data.Entities
         public decimal TotalHours { get; set; }
 
         // Computed by MySQL
-        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
-        public decimal NetPay { get; set; }
+        // Net pay after all deductions
+public decimal NetPay { get; set; }
 
         // Status + timestamps
         public PayrollSummaryStatus Status { get; set; } = PayrollSummaryStatus.Draft;

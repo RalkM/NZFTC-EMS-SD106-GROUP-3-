@@ -24,95 +24,96 @@ namespace NZFTC_EMS.Controllers
         }
 
         // ===== helper: current employee =====
-        private async Task<Employee?> GetCurrentEmployeeAsync()
-        {
-            // Try session username first
-            var employeeName = HttpContext.Session.GetString("Username");
+  // ===== helper: current employee =====
+private async Task<Employee?> GetCurrentEmployeeAsync()
+{
+    // Get the logged-in employee id from session (set in WebsiteController.Login)
+    int? employeeId = HttpContext.Session.GetInt32("EmployeeId");
+    if (employeeId == null)
+        return null; // not logged in
 
-            if (!string.IsNullOrWhiteSpace(employeeName))
-            {
-                var parts = employeeName.Split(' ', 2, StringSplitOptions.RemoveEmptyEntries);
-                var first = parts.Length > 0 ? parts[0] : employeeName;
-                var last = parts.Length > 1 ? parts[1] : "";
-
-                var empByName = await _context.Employees
-                    .FirstOrDefaultAsync(e => e.FirstName == first && e.LastName == last);
-
-                if (empByName != null)
-                    return empByName;
-            }
-
-            // Dev fallback: first employee in table
-            return await _context.Employees
-                .OrderBy(e => e.EmployeeId)
-                .FirstOrDefaultAsync();
-        }
+    // Load that specific employee (include related data if you need it)
+    return await _context.Employees
+        .Include(e => e.PayGrade)       // uncomment if you need pay info here
+        .Include(e => e.LeaveBalances)  // etc, optional
+        .FirstOrDefaultAsync(e => e.EmployeeId == employeeId.Value);
+}
 
         // ===== VIEW PROFILE =====
         [HttpGet("profile")]
-        public async Task<IActionResult> Profile()
-        {
-            ViewData["Layout"] = "~/Views/Shared/_portal.cshtml";
+public async Task<IActionResult> Profile()
+{
+    ViewData["Layout"] = "~/Views/Shared/_portal.cshtml";
 
-            var emp = await GetCurrentEmployeeAsync();
-            if (emp == null)
-                return Content("Employee not found.");
+    var emp = await GetCurrentEmployeeAsync();
+    if (emp == null)
+        return RedirectToAction("Authentication", "Website"); // or "Login"
 
             var emergency = await _context.EmployeeEmergencyContacts
                 .FirstOrDefaultAsync(ec => ec.EmployeeId == emp.EmployeeId);
 
-            // Job title same logic as admin side
-            string jobTitle = emp.JobTitle ?? "";
-            if (string.IsNullOrEmpty(jobTitle) && emp.JobPositionId.HasValue)
-            {
-                var jp = await _context.JobPositions
-                    .FirstOrDefaultAsync(j => j.JobPositionId == emp.JobPositionId.Value);
-                if (jp != null)
-                    jobTitle = jp.Name;
-            }
+           // Job title same logic as admin side
+string jobTitle = emp.JobTitle ?? "";
+if (string.IsNullOrEmpty(jobTitle) && emp.JobPositionId.HasValue)
+{
+    var jp = await _context.JobPositions
+        .FirstOrDefaultAsync(j => j.JobPositionId == emp.JobPositionId.Value);
+    if (jp != null)
+        jobTitle = jp.Name;
+}
 
-            // Pay fields – left empty for now (you can wire to paygrade/payroll later)
-            string payFrequency = "";
-            string earningsRate = "";
+// 🔹 Pay fields – wired to stored data
+string payFrequency = emp.PayFrequency.ToString();
+string earningsRate = "";
 
-            var vm = new EmployeeProfileVm
-            {
-                EmployeeId = emp.EmployeeId,
-                FullName = $"{emp.FirstName} {emp.LastName}",
+if (emp.PayGrade != null)
+{
+    var rate = emp.PayGrade.BaseRate;
+    earningsRate = rate.ToString("C");
+}
+else
+{
+    earningsRate = "Not set";
+}
 
-                Birthday = emp.Birthday,
-                Gender = emp.Gender ?? "",
+var vm = new EmployeeProfileVm
+{
+    EmployeeId = emp.EmployeeId,
+    FullName   = $"{emp.FirstName} {emp.LastName}",
 
-                Email = emp.Email ?? "",
-                Phone = emp.Phone ?? "",
-                Address = emp.Address ?? "",
+    Birthday   = emp.Birthday,
+    Gender     = emp.Gender ?? "",
 
-                Department = emp.Department ?? "",
-                JobTitle = jobTitle,
-                StartDate = emp.StartDate,
-                PayFrequency = payFrequency,
-                EarningsRate = earningsRate,
+    Email      = emp.Email ?? "",
+    Phone      = emp.Phone ?? "",
+    Address    = emp.Address ?? "",
 
-                EmergencyName = emergency?.FullName ?? "",
-                EmergencyRelationship = emergency?.Relationship ?? "",
-                EmergencyPhone = emergency?.Phone ?? "",
-                EmergencyEmail = emergency?.Email ?? "",
+    Department   = emp.Department ?? "",
+    JobTitle     = jobTitle,
+    StartDate    = emp.StartDate,
+    PayFrequency = payFrequency,
+    EarningsRate = earningsRate,
 
-                ProfileImageUrl = $"/uploads/employees/{emp.EmployeeId}.jpg"
-            };
+    EmergencyName         = emergency?.FullName ?? "",
+    EmergencyRelationship = emergency?.Relationship ?? "",
+    EmergencyPhone        = emergency?.Phone ?? "",
+    EmergencyEmail        = emergency?.Email ?? "",
+
+    ProfileImageUrl = $"/uploads/employees/{emp.EmployeeId}.jpg"
+};
 
             return View("~/Views/website/employee/profile.cshtml", vm);
         }
 
         // ===== EDIT PROFILE (GET) =====
         [HttpGet("edit")]
-        public async Task<IActionResult> Edit()
-        {
-            ViewData["Layout"] = "~/Views/Shared/_portal.cshtml";
+public async Task<IActionResult> Edit()
+{
+    ViewData["Layout"] = "~/Views/Shared/_portal.cshtml";
 
-            var emp = await GetCurrentEmployeeAsync();
-            if (emp == null)
-                return Content("Employee not found.");
+    var emp = await GetCurrentEmployeeAsync();
+    if (emp == null)
+        return RedirectToAction("Authentication", "Website");
 
             var emergency = await _context.EmployeeEmergencyContacts
                 .FirstOrDefaultAsync(ec => ec.EmployeeId == emp.EmployeeId);

@@ -9,9 +9,7 @@ namespace NZFTC_EMS.Data.Entities
     // How often an employee is paid
     public enum PayFrequency : byte
     {
-        Weekly      = 0,
-        Fortnightly = 1,
-        Monthly     = 2
+        Weekly      = 0
     }
 
     // Status of a single payslip
@@ -47,7 +45,12 @@ namespace NZFTC_EMS.Data.Entities
         Other  = 2
     }
 
-
-
-
+     public enum CalendarEventType
+    {
+        PublicHoliday = 0,
+        Meeting = 1,
+        AnnualLeave = 2,
+        Other = 3,
+         Leave = 4
+    }
 }

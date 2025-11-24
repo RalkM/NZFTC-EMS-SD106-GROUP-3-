@@ -30,108 +30,114 @@ namespace NZFTC_EMS.Controllers
         // ============================================================
         // PORTAL (Admin or Employee)
         // ============================================================
-        public async Task<IActionResult> Portal()
-        {
-            int? employeeId = HttpContext.Session.GetInt32("EmployeeId");
-            if (employeeId == null)
-                return RedirectToAction("Authentication");
+       public async Task<IActionResult> Portal()
+{
+    int? employeeId = HttpContext.Session.GetInt32("EmployeeId");
+    if (employeeId == null)
+        return RedirectToAction("Authentication");
 
-            string role = HttpContext.Session.GetString("Role") ?? "Employee";
-            string fullName = HttpContext.Session.GetString("FullName") ?? "Employee";
+    string role     = HttpContext.Session.GetString("Role")     ?? "Employee";
+    string fullName = HttpContext.Session.GetString("FullName") ?? "Employee";
 
-            ViewData["Layout"] = "~/Views/Shared/_portal.cshtml";
+    ViewData["Layout"] = "~/Views/Shared/_portal.cshtml";
 
-            var adminVm = new AdminDashboardVm();
-            var employeeVm = new EmployeeDashboardVm();
+    var adminVm    = new AdminDashboardVm();
+    var employeeVm = new EmployeeDashboardVm();
 
-            // =====================================================================
-            // ADMIN VIEW
-            // =====================================================================
-            if (role.Equals("Admin", StringComparison.OrdinalIgnoreCase) ||
-                role.Equals("HR", StringComparison.OrdinalIgnoreCase))
-            {
-                var today = DateTime.Today;
+    bool isAdmin = role.Equals("Admin", StringComparison.OrdinalIgnoreCase)
+                || role.Equals("HR",    StringComparison.OrdinalIgnoreCase);
 
-                adminVm.TotalEmployees = await _context.Employees.CountAsync();
+    // =====================================================================
+    // 1) ADMIN DASHBOARD METRICS (only if Admin / HR)
+    // =====================================================================
+    if (isAdmin)
+    {
+        var today = DateTime.Today;
 
-                adminVm.ActiveLeave = await _context.LeaveRequests.CountAsync(l =>
-                    l.Status == LeaveStatus.Approved &&
-                    l.StartDate <= today &&
-                    l.EndDate >= today);
+        adminVm.TotalEmployees = await _context.Employees.CountAsync();
 
-                adminVm.PendingLeave = await _context.LeaveRequests
-                    .CountAsync(l => l.Status == LeaveStatus.Pending);
+        adminVm.ActiveLeave = await _context.LeaveRequests.CountAsync(l =>
+            l.Status == LeaveStatus.Approved &&
+            l.StartDate <= today &&
+            l.EndDate   >= today);
 
-                adminVm.OpenGrievances = await _context.SupportTickets
-                    .CountAsync(t => t.Status == SupportStatus.Open ||
-                                     t.Status == SupportStatus.InProgress);
+        adminVm.PendingLeave = await _context.LeaveRequests
+            .CountAsync(l => l.Status == LeaveStatus.Pending);
 
-                adminVm.PendingLeaveRequests = adminVm.PendingLeave;
+        adminVm.OpenGrievances = await _context.SupportTickets
+            .CountAsync(t => t.Status == SupportStatus.Open ||
+                             t.Status == SupportStatus.InProgress);
 
-                adminVm.PendingSupportTickets = await _context.SupportTickets
-                    .CountAsync(t => t.Status == SupportStatus.Open);
+        adminVm.PendingLeaveRequests = adminVm.PendingLeave;
 
-                ViewBag.GrievancesInProgress = await _context.SupportTickets
-                    .CountAsync(t => t.Status == SupportStatus.InProgress);
+        adminVm.PendingSupportTickets = await _context.SupportTickets
+            .CountAsync(t => t.Status == SupportStatus.Open);
 
-                ViewBag.GrievancesResolvedLast30Days = await _context.SupportTickets
-                    .CountAsync(t => t.Status == SupportStatus.Resolved &&
-                                     t.UpdatedAt >= DateTime.UtcNow.AddDays(-30));
-            }
-            // =====================================================================
-            // EMPLOYEE VIEW
-            // =====================================================================
-            else
-            {
-                var emp = await _context.Employees
-                    .Include(e => e.LeaveBalances)
-                    .Include(e => e.PayrollSummaries)
-                        .ThenInclude(ps => ps.PayrollPeriod)
-                    .FirstOrDefaultAsync(e => e.EmployeeId == employeeId.Value);
+        ViewBag.GrievancesInProgress = await _context.SupportTickets
+            .CountAsync(t => t.Status == SupportStatus.InProgress);
 
-                if (emp != null)
-                {
-                    var latestBal = emp.LeaveBalances
-                        .OrderByDescending(b => b.UpdatedAt)
-                        .FirstOrDefault();
+        ViewBag.GrievancesResolvedLast30Days = await _context.SupportTickets
+            .CountAsync(t => t.Status == SupportStatus.Resolved &&
+                             t.UpdatedAt >= DateTime.UtcNow.AddDays(-30));
+    }
 
-                    decimal annualRemaining = latestBal?.AnnualRemaining ?? 0m;
-                    decimal sickRemaining = latestBal?.SickRemaining ?? 0m;
+    // =====================================================================
+    // 2) EMPLOYEE DASHBOARD METRICS (for the logged-in user, ANY role)
+    // =====================================================================
+    var emp = await _context.Employees
+        .Include(e => e.LeaveBalances)
+        .Include(e => e.PayrollSummaries)
+            .ThenInclude(ps => ps.PayrollPeriod)
+        .FirstOrDefaultAsync(e => e.EmployeeId == employeeId.Value);
 
-                    var summaries = emp.PayrollSummaries ?? new List<EmployeePayrollSummary>();
+    if (emp != null)
+    {
+        // latest leave balance
+        var latestBal = emp.LeaveBalances
+            .OrderByDescending(b => b.UpdatedAt)
+            .FirstOrDefault();
 
-decimal ytd = summaries.Sum(x => x.NetPay);
+        decimal annualRemaining = latestBal?.AnnualRemaining ?? 0m;
+        decimal sickRemaining   = latestBal?.SickRemaining   ?? 0m;
 
-// Use GeneratedAt instead of PayrollPeriod to avoid null navs
-var latestSummary = summaries
-    .OrderByDescending(p => p.GeneratedAt)
-    .FirstOrDefault();
-;
+        // payroll summaries
+        var summaries = emp.PayrollSummaries ?? new List<EmployeePayrollSummary>();
 
-                    decimal annualSalary = latestSummary?.PayRate ?? 0m;
+        decimal ytd = summaries.Sum(x => x.NetPay);
 
-                    employeeVm.AnnualSalary = annualSalary;
-                    employeeVm.YtdEarnings = ytd;
-                    employeeVm.AnnualLeaveHours = (double)annualRemaining;
-                    employeeVm.SickLeaveHours = (double)sickRemaining;
-                    employeeVm.FullName = emp.FullName;
-                    employeeVm.Birthday = emp.Birthday ?? DateTime.MinValue;
-                    employeeVm.Gender = emp.Gender ?? "Not specified";
+        // latest payslip by GeneratedAt (safest)
+        var latestSummary = summaries
+            .OrderByDescending(p => p.GeneratedAt)
+            .FirstOrDefault();
 
-                    ViewBag.EmployeeOpenTicketsCount = await _context.SupportTickets
-                        .CountAsync(t => t.EmployeeId == emp.EmployeeId &&
-                                         (t.Status == SupportStatus.Open ||
-                                          t.Status == SupportStatus.InProgress));
-                }
-            }
+        decimal annualSalary = latestSummary?.PayRate ?? 0m;
 
-            ViewBag.Role = role;
-            ViewBag.FullName = fullName;
-            ViewBag.AdminVm = adminVm;
-            ViewBag.EmployeeVm = employeeVm;
+        // fill VM
+        employeeVm.AnnualSalary     = annualSalary;
+        employeeVm.YtdEarnings      = ytd;
+        employeeVm.AnnualLeaveHours = (double)annualRemaining;
+        employeeVm.SickLeaveHours   = (double)sickRemaining;
+        employeeVm.FullName         = $"{emp.FirstName} {emp.LastName}";
+        employeeVm.Birthday         = emp.Birthday ?? DateTime.MinValue;
+        employeeVm.Gender           = emp.Gender ?? "Not specified";
 
-            return View("~/Views/website/portal.cshtml");
-        }
+        // my open tickets
+        ViewBag.EmployeeOpenTicketsCount = await _context.SupportTickets
+            .CountAsync(t => t.EmployeeId == emp.EmployeeId &&
+                             (t.Status == SupportStatus.Open ||
+                              t.Status == SupportStatus.InProgress));
+    }
+
+    ViewBag.Role       = role;
+    ViewBag.FullName   = fullName;
+    ViewBag.AdminVm    = adminVm;
+    ViewBag.EmployeeVm = employeeVm;
+
+    return View("~/Views/website/portal.cshtml");
+}
+
+
+
 
         // ============================================================
         // PASSWORD HASHING

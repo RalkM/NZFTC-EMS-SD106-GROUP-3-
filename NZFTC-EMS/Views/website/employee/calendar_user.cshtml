@@ -174,7 +174,7 @@
 
         <div class="d-flex justify-content-between align-items-center mb-3">
             <a asp-controller="calendar"
-               asp-action="UserCalendar"
+               asp-action="EmployeeCreateTodo"
                asp-route-month="@prevMonth"
                asp-route-year="@prevYear"
                class="btn btn-outline-secondary btn-sm">
@@ -234,9 +234,14 @@
                                         if (isToday) tdClasses += " calendar-today";
 
                                         var eventsForDay = Model.Events
-                                        .Where(e => e.Start.Date == date.Date)
-                                        .OrderBy(e => e.EventType)
-                                        .ToList();
+    // Show the event on every day between Start and End (inclusive)
+    .Where(e => e.Start.Date <= date.Date && e.End.Date >= date.Date)
+    .OrderBy(e => e.EventType)
+    .ThenBy(e => e.Start)
+    .ToList();
+
+    
+
 
                                         var holidaysForDay = Model.Holidays
                                         .Where(h => h.HolidayDate.Date == date.Date)
@@ -256,12 +261,13 @@
                                                 {
                                                     var badgeClass = "badge-other";
 
-                                                    if (ev.EventType == CalendarEventType.PublicHoliday)
-                                                        badgeClass = "badge-public";
-                                                    else if (ev.EventType == CalendarEventType.Meeting)
-                                                        badgeClass = "badge-meeting";
-                                                    else if (ev.EventType == CalendarEventType.AnnualLeave)
-                                                        badgeClass = "badge-leave";
+                                                    @if (ev.EventType == CalendarEventType.PublicHoliday)
+    badgeClass = "badge-holiday";
+else if (ev.EventType == CalendarEventType.Meeting)
+    badgeClass = "badge-meeting";
+else if (ev.EventType == CalendarEventType.AnnualLeave)
+    badgeClass = "badge-leave";
+
 
                                                     var displayTitle = ev.IsTodo
                                                     ? $"To-Do: {ev.Title}"
@@ -269,13 +275,13 @@
 
                                                     if (ev.IsTodo)
                                                     {
-                                                        <a asp-controller="calendar"
-                                                           asp-action="EmployeeEditTodo"
-                                                           asp-route-id="@ev.Id"
-                                                           class="badge calendar-event d-block mb-1 text-truncate @badgeClass text-decoration-none"
-                                                           title="@($"{displayTitle} | {ev.Start:HH\\:mm}-{ev.End:HH\\:mm}")">
-                                                            @displayTitle
-                                                        </a>
+                                                       <a asp-controller="calendar"
+   asp-action="AdminEdit"
+   asp-route-id="@ev.Id"
+   class="badge calendar-event @badgeClass d-block mb-1 text-truncate text-decoration-none"
+   title="@($"{ev.Title} | {ev.Start:HH\\:mm}-{ev.End:HH\\:mm}")">
+    @ev.Title
+</a>
                                                     }
                                                     else
                                                     {

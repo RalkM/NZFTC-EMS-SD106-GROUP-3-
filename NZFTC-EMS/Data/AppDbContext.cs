@@ -66,18 +66,23 @@ ConfigurePayrollRun(b);
 
 
             // 2. SEED DATA
-            SeedPayGrades(b);
-            SeedJobPositions(b);
-            SeedHolidays(b);
-            SeedPayrollPeriods(b);
-            SeedEmployees(b);
-            SeedEmployeeContacts(b);
-            SeedLeaveBalances(b);
-            SeedSupportTickets(b);
-            SeedSupportMessages(b);
-            SeedCalendarEvents(b);
-            SeedLeavePolicies(b);
-            SeedPayrollSettings(b);
+SeedPayGrades(b);
+SeedJobPositions(b);
+SeedHolidays(b);
+SeedPayrollPeriods(b);
+SeedEmployees(b);
+SeedEmployeeContacts(b);
+SeedLeaveBalances(b);
+SeedSupportTickets(b);
+SeedSupportMessages(b);
+SeedCalendarEvents(b);
+SeedLeavePolicies(b);
+SeedPayrollSettings(b);
+
+// 🔹 NEW
+SeedPayrollRuns(b);
+SeedEmployeePayrollSummaries(b);
+
 
         }
 
@@ -106,6 +111,94 @@ private void ConfigurePayrollRun(ModelBuilder b)
         e.Property(x => x.PaidAt).HasColumnType("datetime(6)");
     });
 }
+
+private void SeedEmployeePayrollSummaries(ModelBuilder b)
+{
+    b.Entity<EmployeePayrollSummary>().HasData(
+        // Weekly run for Temp Admin (EmployeeId = 1001)
+        new EmployeePayrollSummary
+        {
+            EmployeePayrollSummaryId = 1,
+            EmployeeId      = 1001,   // Temp Admin from SeedEmployees
+            PayrollPeriodId = 1,      // existing period (2025-M11)
+            PayrollRunId    = 1,      // weekly run above
+
+            PayRate   = 50.00m,
+            RateType  = RateType.Hourly,
+            TotalHours= 40m,
+            GrossPay  = 2000m,
+
+            PAYE              = 200m,
+            KiwiSaverEmployee = 45m,
+            KiwiSaverEmployer = 45m,
+            ACCLevy           = 15m,
+            StudentLoan       = 0m,
+            Deductions        = 260m,     // 200 + 45 + 15
+
+            Status      = PayrollSummaryStatus.Paid,
+            GeneratedAt = new DateTime(2025, 11, 13),
+            NetPay = 1740m
+        },
+
+        // Monthly run for another seeded employee (e.g. 1003)
+        new EmployeePayrollSummary
+        {
+            EmployeePayrollSummaryId = 2,
+            EmployeeId      = 1001,   // Sarah / another seeded employee
+            PayrollPeriodId = 1,      // 2025-M11
+            PayrollRunId    = 2,      // monthly run above
+
+            PayRate   = 50.00m,
+            RateType  = RateType.Hourly,
+            TotalHours= 40m,
+            GrossPay  = 2000m,
+
+             PAYE              = 200m,
+            KiwiSaverEmployee = 45m,
+            KiwiSaverEmployer = 45m,
+            ACCLevy           = 15m,
+            StudentLoan       = 0m,
+            Deductions        = 260m,     // 200 + 45 + 15
+
+            Status      = PayrollSummaryStatus.Paid,
+            GeneratedAt = new DateTime(2025, 11, 20),
+            NetPay = 1740m
+        }
+    );
+}
+
+
+private void SeedPayrollRuns(ModelBuilder b)
+{
+    b.Entity<PayrollRun>().HasData(
+        // Example: a past weekly run
+        new PayrollRun
+        {
+            PayrollRunId = 1,
+            PeriodStart  = new DateTime(2025, 11, 6), // Thu
+            PeriodEnd    = new DateTime(2025, 11, 12), // Wed
+            PayFrequency = PayFrequency.Weekly,
+            Status       = PayrollRunStatus.Paid,
+            CreatedAt    = new DateTime(2025, 11, 20),
+            ProcessedAt  = new DateTime(2025, 11, 20),
+            PaidAt       = new DateTime(2025, 11, 20)
+        },
+
+        // Example: a monthly run
+        new PayrollRun
+        {
+            PayrollRunId = 2,
+            PeriodStart  = new DateTime(2025, 11, 13),
+            PeriodEnd    = new DateTime(2025, 11, 19),
+            PayFrequency = PayFrequency.Weekly,
+            Status       = PayrollRunStatus.Finalizing,
+            CreatedAt    = new DateTime(2025, 11, 30),
+            ProcessedAt  = null,
+            PaidAt       = null
+        }
+    );
+}
+
 
         private void ConfigureTimesheetEntry(ModelBuilder b)
 {
@@ -562,7 +655,8 @@ private void ConfigurePayrollRun(ModelBuilder b)
                     Gender = "Other",
                     Address = "N/A",
                     PasswordHash = new byte[0],  // You can replace with real hash
-                    PasswordSalt = new byte[0]
+                    PasswordSalt = new byte[0],
+                    PayFrequency = PayFrequency.Weekly
                 },
                 new Employee
                 {
@@ -579,7 +673,8 @@ private void ConfigurePayrollRun(ModelBuilder b)
                     Gender = "Female",
                     Address = "42 Eden Terrace",
                     PasswordHash = new byte[0],
-                    PasswordSalt = new byte[0]
+                    PasswordSalt = new byte[0],
+                    PayFrequency = PayFrequency.Weekly
                 },
                 new Employee
                 {
@@ -596,7 +691,8 @@ private void ConfigurePayrollRun(ModelBuilder b)
                     Gender = "Male",
                     Address = "19 Queen Street",
                     PasswordHash = new byte[0],
-                    PasswordSalt = new byte[0]
+                    PasswordSalt = new byte[0],
+                    PayFrequency = PayFrequency.Weekly
                 },
                 // ===== SAMPLE EMPLOYEE #1 =====
                 new Employee
@@ -614,7 +710,8 @@ private void ConfigurePayrollRun(ModelBuilder b)
                     Gender = "Male",
                     Address = "123 Finance Street",
                     PasswordHash = new byte[0],
-                    PasswordSalt = new byte[0]
+                    PasswordSalt = new byte[0],
+                    PayFrequency = PayFrequency.Weekly
                 }
             );
         }
@@ -750,43 +847,6 @@ private void ConfigurePayrollRun(ModelBuilder b)
 
                     CustomLeaveTypesJson = "[]",
                     UpdatedAt = new DateTime(2025, 1, 1)
-                }
-            );
-        }
-        private void SeedEmployeePayrollSummaries(ModelBuilder b)
-        {
-            b.Entity<EmployeePayrollSummary>().HasData(
-                new EmployeePayrollSummary
-                {
-                    EmployeePayrollSummaryId = 1,
-                    EmployeeId = 1001,
-                    PayrollPeriodId = 1,
-                    PayRate = 28.00m,
-                    RateType = RateType.Hourly,
-                    GrossPay = 5000m,
-                    Deductions = 900m,
-                    PAYE = 700m,
-                    KiwiSaverEmployee = 150m,
-                    KiwiSaverEmployer = 150m,
-                    ACCLevy = 50m,
-                    StudentLoan = 50m,
-                    Status = PayrollSummaryStatus.Finalized
-                },
-                new EmployeePayrollSummary
-                {
-                    EmployeePayrollSummaryId = 2,
-                    EmployeeId = 1002,
-                    PayrollPeriodId = 1,
-                    PayRate = 32.00m,
-                    RateType = RateType.Hourly,
-                    GrossPay = 6000m,
-                    Deductions = 1000m,
-                    PAYE = 750m,
-                    KiwiSaverEmployee = 180m,
-                    KiwiSaverEmployer = 180m,
-                    ACCLevy = 60m,
-                    StudentLoan = 30m,
-                    Status = PayrollSummaryStatus.Paid
                 }
             );
         }

@@ -24,8 +24,6 @@ namespace NZFTC_EMS.Services.Payroll
             decimal rate = frequency switch
             {
                 PayFrequency.Weekly      => 0.20m, // 20%
-                PayFrequency.Fortnightly => 0.20m,
-                PayFrequency.Monthly     => 0.22m,
                 _ => 0.20m
             };
 

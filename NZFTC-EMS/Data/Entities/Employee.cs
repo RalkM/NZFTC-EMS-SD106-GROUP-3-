@@ -55,7 +55,8 @@ public string? JobTitle { get; set; }
 
         // How often this employee is paid (stored in DB)
 // How often this employee is paid (Weekly / Fortnightly / Monthly)
-public PayFrequency? PayFrequency { get; set; }
+public PayFrequency PayFrequency { get; set; } = PayFrequency.Weekly;
+
 
 [NotMapped]
 public decimal? BasicPay => PayGrade?.BaseRate;

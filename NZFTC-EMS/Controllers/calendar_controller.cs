@@ -36,15 +36,15 @@ namespace NZFTC_EMS.Controllers
             int targetMonth = month ?? today.Month;
             int targetYear = year ?? today.Year;
 
-            IQueryable<CalendarEvent> query = _context.CalendarEvents;
+           IQueryable<CalendarEvent> query = _context.CalendarEvents;
 
-            if (!isAdmin)
-            {
-                var username = CurrentUsername;
-                query = query.Where(e =>
-                    e.OwnerUsername == null ||
-                    (username != null && e.OwnerUsername == username));
-            }
+if (!isAdmin)
+{
+    var username = CurrentUsername;
+    query = query.Where(e =>
+        e.OwnerUsername == null ||
+        (username != null && e.OwnerUsername == username));
+}
 
             query = query.Where(e =>
                 e.Start.Month == targetMonth &&

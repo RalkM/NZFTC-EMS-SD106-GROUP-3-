@@ -97,18 +97,13 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         }
 
-        // Auto-select Pay Frequency based on RateType
-        if (payFreqSelect && job.rateType) {
-            let freq = '';
-            if (job.rateType === 'Hourly') {
-                freq = 'Weekly';      // tweak if you want different mapping
-            } else if (job.rateType === 'Salary') {
-                freq = 'Monthly';
-            }
+       if (payFreqSelect) {
+    payFreqSelect.value = 'Weekly';
+    // prevent user from changing it
+    payFreqSelect.addEventListener('change', function () {
+        this.value = 'Weekly';
+    });
+}
 
-            if (freq) {
-                payFreqSelect.value = freq;
-            }
-        }
     }
 });

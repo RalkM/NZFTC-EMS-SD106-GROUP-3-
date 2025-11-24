@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NZFTC_EMS.Data;
 
@@ -11,9 +12,11 @@ using NZFTC_EMS.Data;
 namespace NZFTC_EMS.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251124094707_seed")]
+    partial class seed
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -435,13 +438,13 @@ namespace NZFTC_EMS.Migrations
                             ACCLevy = 15m,
                             Deductions = 260m,
                             EmployeeId = 1001,
-                            GeneratedAt = new DateTime(2025, 11, 13, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            GrossPay = 2000m,
+                            GeneratedAt = new DateTime(2025, 11, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            GrossPay = 1120m,
                             KiwiSaverEmployee = 45m,
                             KiwiSaverEmployer = 45m,
-                            NetPay = 1740m,
+                            NetPay = 0m,
                             PAYE = 200m,
-                            PayRate = 50.00m,
+                            PayRate = 28.00m,
                             PayrollPeriodId = 1,
                             PayrollRunId = 1,
                             RateType = (byte)0,
@@ -452,22 +455,22 @@ namespace NZFTC_EMS.Migrations
                         new
                         {
                             EmployeePayrollSummaryId = 2,
-                            ACCLevy = 15m,
-                            Deductions = 260m,
-                            EmployeeId = 1001,
-                            GeneratedAt = new DateTime(2025, 11, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            GrossPay = 2000m,
-                            KiwiSaverEmployee = 45m,
-                            KiwiSaverEmployer = 45m,
-                            NetPay = 1740m,
-                            PAYE = 200m,
-                            PayRate = 50.00m,
+                            ACCLevy = 60m,
+                            Deductions = 1160m,
+                            EmployeeId = 1003,
+                            GeneratedAt = new DateTime(2025, 11, 30, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            GrossPay = 5120m,
+                            KiwiSaverEmployee = 150m,
+                            KiwiSaverEmployer = 150m,
+                            NetPay = 0m,
+                            PAYE = 950m,
+                            PayRate = 32.00m,
                             PayrollPeriodId = 1,
                             PayrollRunId = 2,
                             RateType = (byte)0,
-                            Status = (byte)2,
+                            Status = (byte)1,
                             StudentLoan = 0m,
-                            TotalHours = 40m
+                            TotalHours = 160m
                         });
                 });
 
@@ -1271,8 +1274,8 @@ namespace NZFTC_EMS.Migrations
                             CreatedAt = new DateTime(2025, 11, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             PaidAt = new DateTime(2025, 11, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             PayFrequency = 0,
-                            PeriodEnd = new DateTime(2025, 11, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            PeriodStart = new DateTime(2025, 11, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            PeriodEnd = new DateTime(2025, 11, 19, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            PeriodStart = new DateTime(2025, 11, 13, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ProcessedAt = new DateTime(2025, 11, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Status = 2
                         },
@@ -1281,8 +1284,8 @@ namespace NZFTC_EMS.Migrations
                             PayrollRunId = 2,
                             CreatedAt = new DateTime(2025, 11, 30, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             PayFrequency = 0,
-                            PeriodEnd = new DateTime(2025, 11, 19, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            PeriodStart = new DateTime(2025, 11, 13, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            PeriodEnd = new DateTime(2025, 11, 30, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            PeriodStart = new DateTime(2025, 11, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Status = 1
                         });
                 });

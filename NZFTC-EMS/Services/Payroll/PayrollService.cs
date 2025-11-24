@@ -153,8 +153,6 @@ run.Status = PayrollRunStatus.Open;   // ensure a clean recompute
                     grossPay = run.PayFrequency switch
                     {
                         PayFrequency.Weekly      => Math.Round(rate / 52m, 2),
-                        PayFrequency.Fortnightly => Math.Round(rate / 26m, 2),
-                        PayFrequency.Monthly     => Math.Round(rate / 12m, 2),
                         _                        => rate
                     };
                 }
@@ -162,28 +160,25 @@ run.Status = PayrollRunStatus.Open;   // ensure a clean recompute
                 // Tax + deductions
                 var tax = _tax.CalculatePayPeriodTax(grossPay, run.PayFrequency);
 
-                var payslip = new EmployeePayrollSummary
-                {
-                    EmployeeId = emp.EmployeeId,
-                    PayrollRunId = run.PayrollRunId,
+               var payslip = new EmployeePayrollSummary
+{
+    EmployeeId = emp.EmployeeId,
+    PayrollRunId = run.PayrollRunId,
+    PayRate = rate,
+    RateType = rateType,
+    GrossPay = grossPay,
+    PAYE = tax.PAYE,
+    KiwiSaverEmployee = tax.OtherDeductions,
+    KiwiSaverEmployer = 0m,
+    ACCLevy = 0m,
+    StudentLoan = 0m,
+    NetPay = tax.NetPay,              // ✅ this is good
+    Deductions = tax.PAYE + tax.OtherDeductions,
+    TotalHours = totalPaidHours,
+    Status = PayrollSummaryStatus.Finalized,
+    GeneratedAt = DateTime.UtcNow
+};
 
-                    PayRate = rate,
-                    RateType = rateType,
-
-                    GrossPay = grossPay,
-                    PAYE = tax.PAYE,
-                    KiwiSaverEmployee = tax.OtherDeductions,
-                    KiwiSaverEmployer = 0m,
-                    ACCLevy = 0m,
-                    StudentLoan = 0m,
-                    NetPay = tax.NetPay,
-
-                    Deductions = tax.PAYE + tax.OtherDeductions,
-                    TotalHours = totalPaidHours,
-
-                    Status = PayrollSummaryStatus.Finalized,
-                    GeneratedAt = DateTime.UtcNow
-                };
 
                 run.Payslips.Add(payslip);
 

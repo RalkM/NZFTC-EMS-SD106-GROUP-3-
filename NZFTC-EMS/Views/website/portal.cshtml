@@ -17,6 +17,7 @@
     int employeeOpenTickets         = ViewBag.EmployeeOpenTicketsCount    is int eot ? eot : 0;
 }
 
+
     <link rel="stylesheet" href="~/css/dashboard.css" asp-append-version="true" />
 
 <main class="portal-main">
@@ -38,6 +39,30 @@
                 </div>
 
             <!-- KPI STRIP -->
+
+            <section class="dash-kpis">
+                <article class="kpi-card">
+                    <span class="kpi-label">Annual Salary</span>
+                    <span class="kpi-value">@emp.AnnualSalary.ToString("N2")</span>
+                    <span class="kpi-meta">Based on your latest pay rate</span>
+                </article>
+                <article class="kpi-card">
+                    <span class="kpi-label">YTD Total Earnings</span>
+                    <span class="kpi-value">@emp.YtdEarnings.ToString("N2")</span>
+                    <span class="kpi-meta">Since the start of the tax year</span>
+                </article>
+                <article class="kpi-card">
+                    <span class="kpi-label">Annual Leave</span>
+                    <span class="kpi-value">@emp.AnnualLeaveHours.ToString("0.0") hrs</span>
+                    <span class="kpi-meta">Remaining balance</span>
+                </article>
+                <article class="kpi-card">
+                    <span class="kpi-label">Sick Leave</span>
+                    <span class="kpi-value">@emp.SickLeaveHours.ToString("0.0") hrs</span>
+                    <span class="kpi-meta">Remaining balance</span>
+                </article>
+            </section>
+
             <section class="dash-kpis">
                 <article class="kpi-card">
                     <span class="kpi-label">Total Employees</span>
@@ -63,10 +88,11 @@
 
             <!-- QUICK ACTIONS -->
             <section class="dash-quick-actions">
-                <a asp-controller="Employees" asp-action="Create" class="chip-btn">+ Add employee</a>
-                <a asp-controller="LeaveManagement" asp-action="Index" class="chip-btn">Review approvals</a>
-                <a asp-controller="PayrollManagement" asp-action="Index" class="chip-btn">Run payroll</a>
-            </section>
+    <a asp-controller="employee_management" asp-action="Create" class="chip-btn">+ Add employee</a>
+    <a asp-controller="LeaveManagement" asp-action="Index" class="chip-btn">View leave queue</a>
+    <a asp-controller="payroll_management" asp-action="Index" class="chip-btn">Run payroll</a>
+</section>
+
 
             <!-- MIDDLE BAND: 2 COLUMNS -->
             <section class="dash-grid dash-grid-2">
@@ -76,7 +102,7 @@
                         <div class="dash-card-header">
                             <h2>Employee Summary</h2>
                             <div class="dash-actions">
-                                <a asp-controller="Employees" asp-action="Index" class="btn-secondary">View all</a>
+                               <a asp-controller="employee_management" asp-action="Index" class="btn-secondary">View all</a>
                             </div>
                         </div>
                         <ul class="dash-list">
@@ -85,8 +111,9 @@
                             <li><strong>@admin.PendingLeave</strong> leave requests awaiting approval</li>
                         </ul>
                     </article>
+                    <br />
 
-                    <article class="dash-card dash-card-primary">
+                    <article class="dash-card">
                         <div class="dash-card-header">
                             <h2>Items Awaiting Your Review</h2>
                             <div class="dash-pill-group">
@@ -94,12 +121,14 @@
                                 <button class="pill">Support (@admin.PendingSupportTickets)</button>
                             </div>
                         </div>
+
                         <div class="dash-table">
                             <div class="dash-table-row">
                                 <span>Leave requests</span>
                                 <span class="dash-tag warning">Pending: @admin.PendingLeaveRequests</span>
                                 <span class="dash-table-meta">check Leave Management</span>
                             </div>
+
                             <div class="dash-table-row">
                                 <span>Support tickets</span>
                                 <span class="dash-tag info">Open: @admin.PendingSupportTickets</span>
@@ -110,6 +139,7 @@
                             <a asp-controller="LeaveManagement" asp-action="Index" class="btn-light">Review all approvals</a>
                         </div>
                     </article>
+                    <br />
                 </div>
 
                 <!-- Payroll & Grievances -->
@@ -127,6 +157,7 @@
                             </div>
                         </div>
                     </article>
+                    <br />
 
                     <article class="dash-card">
                         <div class="dash-card-header">
@@ -145,6 +176,7 @@
                             Use the Support Tickets page to follow up on open cases and close resolved grievances.
                         </p>
                     </article>
+                    <br />
                 </div>
             </section>
 
@@ -221,9 +253,9 @@
 
             <!-- QUICK ACTIONS -->
             <section class="dash-quick-actions">
-                <a asp-controller="LeaveApplication" asp-action="Create" class="chip-btn">+ Apply for leave</a>
-                <a asp-controller="MyPayslip" asp-action="Index" class="chip-btn">View latest payslip</a>
-                <a asp-controller="Support_Client" asp-action="Index" class="chip-btn">Submit support ticket</a>
+                <a asp-controller="LeaveManagement" asp-action="ApplyLeave" class="chip-btn">+ Apply for leave</a>
+<a asp-controller="employee_payroll" asp-action="Payslips" class="chip-btn">View latest payslip</a>
+<a asp-controller="portal" asp-action="Support" class="chip-btn">Submit support ticket</a>
             </section>
 
             <!-- MIDDLE BAND -->
@@ -232,7 +264,9 @@
                     <article class="dash-card">
                         <div class="dash-card-header">
                             <h2>My Profile</h2>
-                            <a asp-controller="MyProfile" asp-action="Index" class="btn-secondary">View full profile</a>
+                            <a asp-controller="employee_profile" asp-action="Profile" class="btn-secondary">View full profile</a>
+
+
                         </div>
                         <div class="profile-summary">
                             <div class="avatar-circle">@emp.FullName.First()</div>
@@ -245,7 +279,7 @@
                             </div>
                         </div>
                         <div class="dash-card-footer">
-                            <a asp-controller="MyProfile" asp-action="Edit" class="btn-primary">Edit profile</a>
+                            <a asp-controller="employee_profile" asp-action="Edit" class="btn-primary">Edit profile</a>
                         </div>
                     </article>
                 </div>
@@ -254,7 +288,7 @@
                     <article class="dash-card">
                         <div class="dash-card-header">
                             <h2>Leave Requests</h2>
-                            <a asp-controller="LeaveApplication" asp-action="Index" class="btn-secondary">View all</a>
+                            <a asp-controller="LeaveManagement" asp-action="LeaveHistory" class="btn-secondary">View all</a>
                         </div>
                         <div class="dash-pill-group">
                             <button class="pill active">Upcoming</button>
@@ -277,7 +311,7 @@
                 <article class="dash-card">
                     <div class="dash-card-header">
                         <h2>Recent Payslips</h2>
-                        <a asp-controller="MyPayslip" asp-action="Index" class="btn-secondary">View history</a>
+                        <a asp-controller="employee_payroll" asp-action="Payslips" class="btn-secondary">View history</a>
                     </div>
                     <div class="dash-table">
                         <div class="dash-table-row">
@@ -289,7 +323,7 @@
                 <article class="dash-card">
                     <div class="dash-card-header">
                         <h2>Support / Grievances</h2>
-                        <a asp-controller="Support_Client" asp-action="Index" class="btn-secondary">View all tickets</a>
+                        <a asp-controller="portal" asp-action="Support" class="btn-secondary">View all tickets</a>
                     </div>
                     <p class="dash-note">
                         You have <strong>@employeeOpenTickets</strong> open support ticket@(employeeOpenTickets == 1 ? "" : "s").
@@ -300,7 +334,7 @@
                         </div>
                     </div>
                     <div class="dash-card-footer">
-                        <a asp-controller="Support_Client" asp-action="Index" class="btn-primary">Submit new ticket</a>
+                        <a asp-controller="portal" asp-action="Support" class="btn-primary">Submit new ticket</a>
                     </div>
                 </article>
 

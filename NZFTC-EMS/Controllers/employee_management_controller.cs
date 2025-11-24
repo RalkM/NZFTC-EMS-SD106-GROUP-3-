@@ -159,6 +159,8 @@ public async Task<IActionResult> Create(Employee model)
         );
     }
 
+    model.PayFrequency = PayFrequency.Weekly;
+
     await ApplyJobPositionLogicAsync(model);
 
     // optional primary emergency contact
@@ -262,7 +264,7 @@ public async Task<IActionResult> Create(Employee model)
             // JOB DETAILS (NotMapped helpers + stored StartDate)
             existingEmployee.Department   = model.Department;
             existingEmployee.JobTitle     = model.JobTitle;
-            existingEmployee.PayFrequency = model.PayFrequency;
+            existingEmployee.PayFrequency = PayFrequency.Weekly;
             existingEmployee.StartDate    = model.StartDate;
 
             // EMERGENCY CONTACT -> related table
@@ -446,20 +448,17 @@ public async Task<IActionResult> Create(Employee model)
                 })
                 .ToList();
 
-            // Pay frequency options
-           // Pay frequency options (enum -> dropdown)
-var allFreqs = Enum.GetValues<PayFrequency>();
+// 🔹 Lock pay frequency to WEEKLY only
 
-var currentFreq = emp.PayFrequency;
-
-ViewBag.PayFrequencies = allFreqs
-    .Select(f => new SelectListItem
+ViewBag.PayFrequencies = new List<SelectListItem>
+{
+    new SelectListItem
     {
-        Text     = f.ToString(),
-        Value    = f.ToString(),
-        Selected = currentFreq.HasValue && currentFreq.Value == f
-    })
-    .ToList();
+        Text     = "Weekly",
+        Value    = PayFrequency.Weekly.ToString(),
+        Selected = true
+    }
+};
 
         }
 

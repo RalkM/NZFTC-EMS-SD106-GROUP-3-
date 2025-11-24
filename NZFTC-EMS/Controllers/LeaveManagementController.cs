@@ -1,9 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;          // <- add this
 using Microsoft.EntityFrameworkCore;
 using NZFTC_EMS.Data;
+using NZFTC_EMS.Data.Entities;            // <- add this
 using NZFTC_EMS.Models.ViewModels.Leave;
 using NZFTC_EMS.Services.Leave;
 using NZFTC_EMS.ViewModels;
+
 
 namespace NZFTC_EMS.Controllers
 {
@@ -94,22 +97,52 @@ namespace NZFTC_EMS.Controllers
             return View("~/Views/website/employee/leave_history.cshtml", data);
         }
 
-        public async Task<IActionResult> CancelLeave(int id)
+       public async Task<IActionResult> CancelLeave(int id)
+{
+    int employeeId = GetEmployeeId();
+
+    try
+    {
+        await _leaveService.CancelLeaveAsync(id, employeeId);
+
+        // Remove any calendar event we created for this leave
+        var req = await _db.LeaveRequests
+            .Include(x => x.Employee)
+            .FirstOrDefaultAsync(x => x.LeaveRequestId == id &&
+                                      x.EmployeeId == employeeId);
+
+        if (req != null)
         {
-            int employeeId = GetEmployeeId();
+            // IMPORTANT: this must match what you use as "Username" in session.
+            // Here I'm using EmployeeCode – if your login uses email instead,
+            // change this to req.Employee.Email.
+            var username = req.Employee.EmployeeCode;
 
-            try
-            {
-                await _leaveService.CancelLeaveAsync(id, employeeId);
-                TempData["Success"] = "Leave request cancelled.";
-            }
-            catch (Exception ex)
-            {
-                TempData["Error"] = ex.Message;
-            }
+            var events = await _db.CalendarEvents
+    .Where(e =>
+        e.OwnerUsername == username &&
+        e.EventType == CalendarEventType.AnnualLeave &&
+        e.Start == req.StartDate &&
+        e.End == req.EndDate)
+    .ToListAsync();
 
-            return RedirectToAction("LeaveHistory");
+            if (events.Any())
+            {
+                _db.CalendarEvents.RemoveRange(events);
+                await _db.SaveChangesAsync();
+            }
         }
+
+        TempData["Success"] = "Leave request cancelled.";
+    }
+    catch (Exception ex)
+    {
+        TempData["Error"] = ex.Message;
+    }
+
+    return RedirectToAction("LeaveHistory");
+}
+
 
         // ============================================================
         // ADMIN PAGES
@@ -164,13 +197,72 @@ namespace NZFTC_EMS.Controllers
             return View("~/Views/website/admin/leave_request_details.cshtml", vm);
         }
 
-   public async Task<IActionResult> ApproveLeave(int id)
+public async Task<IActionResult> ApproveLeave(int id)
 {
     int adminId = GetEmployeeId();
+
+    // 1. Approve the leave with your existing logic
     await _leaveService.ApproveLeaveAsync(id, adminId, null);
+
+    // 2. Load the request + employee so we can build a calendar event
+    var req = await _db.LeaveRequests
+        .Include(x => x.Employee)
+        .FirstOrDefaultAsync(x => x.LeaveRequestId == id);
+
+    // We avoid referencing the LeaveStatus enum directly so no extra using is needed
+    if (req != null && req.Status.ToString() == "Approved")
+    {
+        // IMPORTANT: must match what calendar uses as CurrentUsername
+        // Here I'm using EmployeeCode – if your session stores something else
+        // in "Username", change this to that field (e.g. req.Employee.Email).
+        var username = req.Employee.EmployeeCode;
+
+        // Avoid duplicate events if re-approved
+        var alreadyExists = await _db.CalendarEvents.AnyAsync(e =>
+            e.OwnerUsername == username &&
+            e.Start == req.StartDate &&
+            e.End == req.EndDate);
+
+        if (!alreadyExists)
+        {
+            // Start of first day
+            var start = req.StartDate.Date;
+
+            // End of last day, inclusive (23:59:59)
+            var end = req.EndDate.Date
+                .AddDays(1)
+                .AddSeconds(-1);
+
+            var ev = new CalendarEvent
+{
+    // Show both leave type + employee name
+    Title = $"{req.LeaveType} - {req.Employee.FirstName} {req.Employee.LastName}",
+    Description = req.Reason,
+
+    // All-day range from first day to last day
+    Start = req.StartDate.Date,
+    End   = req.EndDate.Date
+                .AddDays(1)
+                .AddSeconds(-1),
+
+    OwnerUsername  = username,   // so ONLY this employee + admins see it
+    IsTodo         = false,
+    IsPublicHoliday = false,
+
+    // IMPORTANT: use AnnualLeave so it picks up the yellow style
+    EventType = CalendarEventType.AnnualLeave
+};
+
+            _db.CalendarEvents.Add(ev);
+            await _db.SaveChangesAsync();
+        }
+    }
+
     TempData["Success"] = "Leave approved.";
     return RedirectToAction("LeaveManagement");
 }
+
+
 [HttpPost]
 public async Task<IActionResult> RejectLeave(int id, string comment)
 {

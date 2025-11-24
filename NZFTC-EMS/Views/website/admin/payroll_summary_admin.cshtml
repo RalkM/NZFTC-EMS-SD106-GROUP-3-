@@ -14,19 +14,7 @@
   <form asp-controller="payroll_management"
       asp-action="create_weekly" method="post" class="d-inline">
     @Html.AntiForgeryToken()
-    <button class="btn btn-primary">Generate Latest Weekly Payroll</button>
-</form>
-
-<form asp-controller="payroll_management"
-      asp-action="create_fortnightly" method="post" class="d-inline ms-2">
-    @Html.AntiForgeryToken()
-    <button class="btn btn-outline-primary">Generate Latest Fortnightly Payroll</button>
-</form>
-
-<form asp-controller="payroll_management"
-      asp-action="create_monthly" method="post" class="d-inline ms-2">
-    @Html.AntiForgeryToken()
-    <button class="btn btn-outline-primary">Generate Latest Monthly Payroll</button>
+    <button class="btn btn-primary">Run Payroll</button>
 </form>
 
        

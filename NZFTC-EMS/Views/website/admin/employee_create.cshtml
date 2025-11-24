@@ -84,12 +84,7 @@
 
     <div class="col-md-4">
         <label asp-for="PayFrequency" class="form-label">Pay Frequency</label>
-        <select asp-for="PayFrequency"
-                id="PayFrequency"
-                class="form-select"
-                asp-items="ViewBag.PayFrequencies">
-            <option value="" selected disabled>-- Select frequency --</option>
-        </select>
+        <input asp-for="PayFrequency" id="PayFrequency" class="form-control" readonly> 
         <span asp-validation-for="PayFrequency" class="text-danger"></span>
     </div>
 

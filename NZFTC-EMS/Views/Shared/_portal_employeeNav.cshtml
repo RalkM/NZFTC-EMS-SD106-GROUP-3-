@@ -1,69 +1,125 @@
-﻿<link rel="stylesheet" href="~/css/nav_employee.css" asp-append-version="true" />
+﻿@using System
 
-<nav class="container-fluid">
+@functions {
+    // Same helper as before
+    public string IsActiveNav(string controller = null, string action = null, string pathStartsWith = null)
+    {
+        var routeData = ViewContext.RouteData;
+        var currentController = routeData.Values["controller"]?.ToString();
+        var currentAction = routeData.Values["action"]?.ToString();
+        var currentPath = Context.Request.Path.Value ?? string.Empty;
 
-    <div class="container">
-        <!-- Logo -->
-        <a class="navbar-brand" asp-controller="Website" asp-action="Portal">
-            <img src="~/lib/Image-white.png" alt="NZFTC-EMS" asp-append-version="true" />
+        bool match = false;
+
+        if (!string.IsNullOrEmpty(controller) && !string.IsNullOrEmpty(action))
+        {
+            match |= string.Equals(currentController, controller, StringComparison.OrdinalIgnoreCase)
+                  && string.Equals(currentAction, action, StringComparison.OrdinalIgnoreCase);
+        }
+        else if (!string.IsNullOrEmpty(controller))
+        {
+            match |= string.Equals(currentController, controller, StringComparison.OrdinalIgnoreCase);
+        }
+
+        if (!string.IsNullOrEmpty(pathStartsWith))
+        {
+            match |= currentPath.StartsWith(pathStartsWith, StringComparison.OrdinalIgnoreCase);
+        }
+
+        return match ? "active" : string.Empty;
+    }
+}
+
+<nav class="container-fluid portal-sidebar">
+    <div class="container sidebar-inner">
+
+        <!-- Brand (full logo on desktop, icon on tablet/mobile via CSS) -->
+        <a class="navbar-brand sidebar-brand portal-logo"
+           asp-controller="Website" asp-action="Portal">
+            <img src="~/lib/Image-white.png"
+                 alt="NZFTC Employee Management System"
+                 class="logo-full"
+                 asp-append-version="true" />
+
+            <img src="~/lib/img/logo-icon.png"
+                 alt="NZFTC EMS"
+                 class="logo-icon"
+                 asp-append-version="true" />
         </a>
 
+        <!-- Main navigation -->
         <div class="navLinks">
 
-            <a class="nav-link active" asp-controller="Website" asp-action="Portal">
-                Dashboard
+            <!-- Dashboard -->
+            <a class="nav-link @IsActiveNav("Website", "Portal")"
+               asp-controller="Website" asp-action="Portal">
+                <i class="fa-solid fa-gauge sidebar-icon"></i>
+                <span>Dashboard</span>
             </a>
 
-            <a class="nav-link" asp-controller="Employee_Profile" asp-action="Profile">
-                MyProfile
+            <!-- MyProfile (also check path that starts with /Employee_Profile) -->
+            <a class="nav-link @IsActiveNav("Employee_Profile", "Profile", "/Employee_Profile")"
+               asp-controller="Employee_Profile" asp-action="Profile">
+                <i class="fa-regular fa-id-card sidebar-icon"></i>
+                <span>MyProfile</span>
             </a>
 
-            
-            <a asp-controller="LeaveManagement"
-       asp-action="ApplyLeave"
-       class="nav-link">
-        <span class="nav-text">Leave Application</span>
-    </a>
-
-      <a asp-controller="LeaveManagement"
-       asp-action="LeaveHistory"
-       class="nav-link">
-        <span class="nav-text">Leave History</span>
-    </a>
-
-            
-            <a class="nav-link" href="/employee_timesheets">
-               MyTimesheets
+            <!-- Leave Application -->
+            <a class="nav-link @IsActiveNav("LeaveManagement", "ApplyLeave", "/LeaveManagement/ApplyLeave")"
+               asp-controller="LeaveManagement" asp-action="ApplyLeave">
+                <i class="fa-regular fa-calendar-plus sidebar-icon"></i>
+                <span>Leave Application</span>
             </a>
 
-          <a class="nav-link"
-   asp-controller="employee_payroll"
-   asp-action="Payslips">
-    MyPayslip
-</a>
-
-
-            
-            <a class="nav-link" asp-controller="calendar" asp-action="UserCalendar">
-                MyCalendar
+            <!-- Leave History -->
+            <a class="nav-link @IsActiveNav("LeaveManagement", "LeaveHistory", "/LeaveManagement/LeaveHistory")"
+               asp-controller="LeaveManagement" asp-action="LeaveHistory">
+                <i class="fa-solid fa-clock-rotate-left sidebar-icon"></i>
+                <span>Leave History</span>
             </a>
 
-            <a class="nav-link" asp-controller="Support_Client" asp-action="Index">
-                Support
+            <!-- MyTimesheets (path-based route already working) -->
+            <a class="nav-link @IsActiveNav(pathStartsWith: "/employee_timesheets")"
+               href="/employee_timesheets">
+                <i class="fa-regular fa-clock sidebar-icon"></i>
+                <span>MyTimesheets</span>
+            </a>
+
+            <!-- MyPayslip (controller+action + path prefix) -->
+            <a class="nav-link @IsActiveNav("employee_payroll", "Payslips", "/employee_payroll")"
+               asp-controller="employee_payroll" asp-action="Payslips">
+                <i class="fa-solid fa-file-invoice-dollar sidebar-icon"></i>
+                <span>MyPayslip</span>
+            </a>
+
+            <!-- MyCalendar (controller+action + path prefix) -->
+            <a class="nav-link @IsActiveNav("calendar", "UserCalendar", "/calendar")"
+               asp-controller="calendar" asp-action="UserCalendar">
+                <i class="fa-regular fa-calendar sidebar-icon"></i>
+                <span>MyCalendar</span>
+            </a>
+
+            <!-- Support -->
+            <a class="nav-link @IsActiveNav("Support_Client", "Index", "/Support_Client")"
+               asp-controller="Support_Client" asp-action="Index">
+                <i class="fa-regular fa-life-ring sidebar-icon"></i>
+                <span>Support</span>
             </a>
 
         </div>
 
+        <!-- Bottom utilities -->
         <div class="utilities">
-
-            <a class="nav-link logout" asp-controller="Website" asp-action="Logout" title="Sign out">
-                <i class="fa fa-sign-out" aria-hidden="true"></i>
-            </a>
-
-            <a class="nav-link gear" asp-controller="Portal" asp-action="Settings" title="Settings">
+            <a class="nav-link icon-btn"
+               asp-controller="Portal" asp-action="Settings"
+               title="Settings">
                 <i class="fa-solid fa-gear" aria-hidden="true"></i>
             </a>
-
+            <a class="nav-link icon-btn"
+               asp-controller="Website" asp-action="Logout"
+               title="Sign out">
+                <i class="fa-solid fa-right-from-bracket" aria-hidden="true"></i>
+            </a>
         </div>
     </div>
 </nav>

@@ -1,80 +1,171 @@
-﻿<nav class="container-fluid">
+﻿@{
+    // 1) Where are we now?
+    var currentController = (ViewContext.RouteData.Values["controller"]?.ToString() ?? "").ToLowerInvariant();
+    var currentAction = (ViewContext.RouteData.Values["action"]?.ToString() ?? "").ToLowerInvariant();
+    var currentPath = (Context.Request.Path.HasValue ? Context.Request.Path.Value : "").ToLowerInvariant();
 
-    <div class="container">
+    // Match by controller/action (for normal MVC routes)
+    Func<string, string, bool> isActive = (controller, action) =>
+    {
+        controller = (controller ?? "").ToLowerInvariant();
+        action = (action ?? "").ToLowerInvariant();
 
-            <a class="navbar-brand" asp-controller="Website" asp-action="Portal">
-                <img src="~/lib/Image-white.png" alt="NZFTC-EMS" asp-append-version="true" />
-            </a>
-        
+        if (currentController != controller)
+            return false;
 
+        // if no action specified, match by controller only
+        if (string.IsNullOrEmpty(action))
+            return true;
+
+        return currentAction == action;
+    };
+
+    // Match by URL path fragment (for links using href="/something")
+    Func<string, bool> isPathActive = (segment) =>
+    {
+        segment = (segment ?? "").ToLowerInvariant();
+        return !string.IsNullOrEmpty(segment) && currentPath.StartsWith(segment);
+    };
+}
+
+<nav class="container-fluid portal-sidebar">
+    <div class="container sidebar-inner">
+
+        <!-- Brand -->
+        <a class="navbar-brand sidebar-brand portal-logo" asp-controller="Website" asp-action="Portal">
+            <!-- Full logo (desktop) -->
+            <img src="~/lib/Image-white.png"
+                 alt="NZFTC Employee Management System"
+                 class="logo-full"
+                 asp-append-version="true" />
+
+            <!-- Icon-only logo (tablet + mobile) -->
+            <img src="~/lib/img/logo-icon.png"
+                 alt="NZFTC EMS"
+                 class="logo-icon"
+                 asp-append-version="true" />
+        </a>
+
+        <!-- Main navigation -->
         <div class="navLinks">
-
-            <a class="nav-link active" asp-controller="Website" asp-action="Portal">Dashboard</a>
-            <a class="nav-link" asp-controller="Employee_Profile" asp-action="Profile">MyProfile</a>
-
-            
-            <a class="nav-link" asp-controller="LeaveManagement" asp-action="ApplyLeave">
-                Leave Application
+            <!-- Dashboard -->
+            <a class="nav-link @(isActive("Website", "Portal") || isPathActive("/website/portal") ? "active" : "")"
+               asp-controller="Website" asp-action="Portal">
+                <i class="fa-solid fa-gauge sidebar-icon"></i>
+                <span>Dashboard</span>
             </a>
 
-            <a class="nav-link" href="/employee_timesheets">
-               MyTimesheets
+            <!-- MyProfile -->
+            <a class="nav-link @(isActive("Employee_Profile", "Profile") || isPathActive("/employee_profile") ? "active" : "")"
+               asp-controller="Employee_Profile" asp-action="Profile">
+                <i class="fa-regular fa-id-card sidebar-icon"></i>
+                <span>MyProfile</span>
             </a>
 
-            <a class="nav-link"
-   asp-controller="employee_payroll"
-   asp-action="Payslips">
-    MyPayslip
-</a>
+            <!-- Leave Application -->
+            <a class="nav-link @(isActive("LeaveManagement", "ApplyLeave") || isPathActive("/leavemanagement/applyleave") ? "active" : "")"
+               asp-controller="LeaveManagement" asp-action="ApplyLeave">
+                <i class="fa-regular fa-calendar-plus sidebar-icon"></i>
+                <span>Leave Application</span>
+            </a>
 
+            <!-- MyTimesheets -->
+            <a class="nav-link @(isPathActive("/employee_timesheets") ? "active" : "")"
+               href="/employee_timesheets">
+                <i class="fa-regular fa-clock sidebar-icon"></i>
+                <span>MyTimesheets</span>
+            </a>
 
-            
-            <a class="nav-link" asp-controller="employee_management" asp-action="Index">Employee Management</a>
-            <a class="nav-link" asp-controller="paygrade_management" asp-action="Index">Pay Grades</a>
-            <a class="nav-link" asp-controller="jobposition_management" asp-action="Index">Job Position Management</a>
+            <!-- MyPayslip -->
+            <a class="nav-link @(isActive("employee_payroll", "Payslips") || isPathActive("/employee_payroll") ? "active" : "")"
+               asp-controller="employee_payroll" asp-action="Payslips">
+                <i class="fa-solid fa-file-invoice-dollar sidebar-icon"></i>
+                <span>MyPayslip</span>
+            </a>
 
-            
-    <a asp-controller="LeaveManagement"
-       asp-action="LeaveManagement"
-       class="nav-link">
-        <span class="nav-text">Leave Management</span>
-    </a>
+            <!-- Employee Management -->
+            <a class="nav-link @(isActive("employee_management", "Index") || isPathActive("/employee_management") ? "active" : "")"
+               asp-controller="employee_management" asp-action="Index">
+                <i class="fa-solid fa-users sidebar-icon"></i>
+                <span>Employee Management</span>
+            </a>
 
+            <!-- Pay Grades -->
+            <a class="nav-link @(isActive("paygrade_management", "Index") || isPathActive("/paygrade_management") ? "active" : "")"
+               asp-controller="paygrade_management" asp-action="Index">
+                <i class="fa-solid fa-sack-dollar sidebar-icon"></i>
+                <span>Pay Grades</span>
+            </a>
 
+            <!-- Job Position Management -->
+            <a class="nav-link @(isActive("jobposition_management", "Index") || isPathActive("/jobposition_management") ? "active" : "")"
+               asp-controller="jobposition_management" asp-action="Index">
+                <i class="fa-solid fa-briefcase sidebar-icon"></i>
+                <span>Job Position Management</span>
+            </a>
 
-    <a asp-controller="LeaveManagement"
-       asp-action="LeaveReports"
-       class="nav-link">
-        <span class="nav-text">Leave Reports</span>
-    </a>
+            <!-- Leave Management -->
+            <a class="nav-link @(isActive("LeaveManagement", "LeaveManagement") || isPathActive("/leavemanagement/leavemanagement") ? "active" : "")"
+               asp-controller="LeaveManagement" asp-action="LeaveManagement">
+                <i class="fa-solid fa-calendar-check sidebar-icon"></i>
+                <span>Leave Management</span>
+            </a>
 
+            <!-- Leave Reports -->
+            <a class="nav-link @(isActive("LeaveManagement", "LeaveReports") || isPathActive("/leavemanagement/leavereports") ? "active" : "")"
+               asp-controller="LeaveManagement" asp-action="LeaveReports">
+                <i class="fa-solid fa-chart-line sidebar-icon"></i>
+                <span>Leave Reports</span>
+            </a>
 
+            <!-- Leave Policies -->
+            <a class="nav-link @(isActive("LeaveManagement", "LeavePolicies") || isPathActive("/leavemanagement/leavepolicies") ? "active" : "")"
+               asp-controller="LeaveManagement" asp-action="LeavePolicies">
+                <i class="fa-solid fa-file-contract sidebar-icon"></i>
+                <span>Leave Policies</span>
+            </a>
 
-    <a asp-controller="LeaveManagement"
-       asp-action="LeavePolicies"
-       class="nav-link">
-        <span class="nav-text">Leave Policies</span>
-    </a>
+            <!-- Timesheets (admin) -->
+            <a class="nav-link @(isPathActive("/timesheet_management") ? "active" : "")"
+               href="/timesheet_management">
+                <i class="fa-regular fa-calendar-days sidebar-icon"></i>
+                <span>Timesheets</span>
+            </a>
 
+            <!-- Payroll (admin) -->
+            <a class="nav-link @(isPathActive("/payroll_management") ? "active" : "")"
+               href="/payroll_management">
+                <i class="fa-solid fa-calculator sidebar-icon"></i>
+                <span>Payroll</span>
+            </a>
 
+            <!-- MyCalendar -->
+            <a class="nav-link @(isActive("calendar", "UserCalendar") || isPathActive("/calendar/usercalendar") ? "active" : "")"
+               asp-controller="calendar" asp-action="UserCalendar">
+                <i class="fa-regular fa-calendar sidebar-icon"></i>
+                <span>MyCalendar</span>
+            </a>
 
-            
-               <a class="nav-link" href="/timesheet_management">Timesheets</a>
-                <a class="nav-link" href="/payroll_management">Payroll</a>
-
-
-            <a class="nav-link" asp-controller="calendar" asp-action="UserCalendar">MyCalendar</a>
-            <a class="nav-link" href="/support_management">Support Tickets</a>
-
+            <!-- Support Tickets -->
+            <a class="nav-link @(isPathActive("/support_management") ? "active" : "")"
+               href="/support_management">
+                <i class="fa-regular fa-life-ring sidebar-icon"></i>
+                <span>Support Tickets</span>
+            </a>
         </div>
 
+        <!-- Bottom utilities -->
         <div class="utilities">
-            <a class="nav-link logout" asp-controller="Website" asp-action="Logout" title="Sign out">
-                <i class="fa fa-sign-out" aria-hidden="true"></i>
-            </a>
-            <a class="nav-link gear" asp-controller="Portal" asp-action="Settings" title="Settings">
+            <a class="nav-link icon-btn @(isActive("Portal", "Settings") || isPathActive("/portal/settings") ? "active" : "")"
+               asp-controller="Portal" asp-action="Settings" title="Settings">
                 <i class="fa-solid fa-gear" aria-hidden="true"></i>
+            </a>
+            <a class="nav-link icon-btn"
+               asp-controller="Website" asp-action="Logout" title="Sign out">
+                <i class="fa-solid fa-right-from-bracket" aria-hidden="true"></i>
             </a>
         </div>
     </div>
 </nav>
+
+

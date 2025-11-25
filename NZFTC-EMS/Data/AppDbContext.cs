@@ -23,9 +23,13 @@ namespace NZFTC_EMS.Data
         public DbSet<CalendarEvent> CalendarEvents => Set<CalendarEvent>();
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
         // Support module
         public DbSet<SupportTicket> SupportTickets => Set<SupportTicket>();
         public DbSet<SupportMessage> SupportMessages => Set<SupportMessage>();
+=======
+public DbSet<Announcement> Announcements { get; set; } = default!;
+>>>>>>> Stashed changes
 =======
 public DbSet<Announcement> Announcements { get; set; } = default!;
 >>>>>>> Stashed changes
@@ -264,6 +268,9 @@ SeedPayrollSettings(b);
 SeedPayrollRuns(b);
 SeedEmployeePayrollSummaries(b);
 SeedAnnouncements(b);
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 
 

@@ -1,9 +1,12 @@
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 ﻿@{
     ViewData["Title"] = "Portal";
     var role = Context.Session.GetString("Role");
     var fullName = Context.Session.GetString("FullName") ?? "Employee";
 =======
+=======
+>>>>>>> Stashed changes
 ﻿@using NZFTC_EMS.Data.Entities
 @using NZFTC_EMS.Models.ViewModels
 
@@ -35,6 +38,9 @@ var recentEmployeeTicket = ViewBag.RecentEmployeeTicket;
     var empLeaveHistory = ViewBag.EmpLeaveHistory   as IEnumerable<dynamic> ?? Enumerable.Empty<dynamic>();
     string empLatestTicketSummary = ViewBag.EmpLatestTicketSummary as string;
     string empLatestTicketUpdated = ViewBag.EmpLatestTicketUpdated as string;
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 }
 
@@ -533,5 +539,9 @@ else
         </section>
     }
 
+<<<<<<< Updated upstream
+</main>
+>>>>>>> Stashed changes
+=======
 </main>
 >>>>>>> Stashed changes

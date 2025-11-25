@@ -474,6 +474,7 @@ ViewBag.EmpRecentPayslips = last3Payslips;
 
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
             // ✅ SUCCESS → set session
             HttpContext.Session.SetInt32("UserId", employee.EmployeeId);
             HttpContext.Session.SetString("UserEmail", employee.Email);
@@ -483,6 +484,8 @@ ViewBag.EmpRecentPayslips = last3Payslips;
             HttpContext.Session.SetString("Role",
                 employee.JobPosition?.AccessRole ?? "Employee");
 =======
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
             // SUCCESS → set unified session
@@ -496,6 +499,9 @@ HttpContext.Session.SetString("Role", employee.JobPosition?.AccessRole ?? "Emplo
 HttpContext.Session.SetString("Username", employee.EmployeeCode);
 ;
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes

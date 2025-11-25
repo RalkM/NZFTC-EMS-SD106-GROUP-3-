@@ -11,7 +11,11 @@ namespace NZFTC_EMS.Migrations
     /// <inheritdoc />
 <<<<<<<< Updated upstream:NZFTC-EMS/Migrations/20251120090723_InitialBuild.cs
 <<<<<<<< Updated upstream:NZFTC-EMS/Migrations/20251120090723_InitialBuild.cs
+<<<<<<<< Updated upstream:NZFTC-EMS/Migrations/20251120090723_InitialBuild.cs
     public partial class InitialBuild : Migration
+========
+    public partial class Announcement : Migration
+>>>>>>>> Stashed changes:NZFTC-EMS/Migrations/20251125090239_Announcement.cs
 ========
     public partial class Announcement : Migration
 >>>>>>>> Stashed changes:NZFTC-EMS/Migrations/20251125090239_Announcement.cs
@@ -28,8 +32,11 @@ namespace NZFTC_EMS.Migrations
             migrationBuilder.CreateTable(
 <<<<<<<< Updated upstream:NZFTC-EMS/Migrations/20251120090723_InitialBuild.cs
 <<<<<<<< Updated upstream:NZFTC-EMS/Migrations/20251120090723_InitialBuild.cs
+<<<<<<<< Updated upstream:NZFTC-EMS/Migrations/20251120090723_InitialBuild.cs
                 name: "CalendarEvents",
 ========
+========
+>>>>>>>> Stashed changes:NZFTC-EMS/Migrations/20251125090239_Announcement.cs
 ========
 >>>>>>>> Stashed changes:NZFTC-EMS/Migrations/20251125090239_Announcement.cs
                 name: "Announcements",
@@ -548,6 +555,15 @@ namespace NZFTC_EMS.Migrations
                 });
 
             migrationBuilder.InsertData(
+                table: "EmployeePayrollSummaries",
+                columns: new[] { "EmployeePayrollSummaryId", "ACCLevy", "Deductions", "EmployeeId", "GeneratedAt", "GrossPay", "KiwiSaverEmployee", "KiwiSaverEmployer", "NetPay", "PAYE", "PaidAt", "PayRate", "PayrollPeriodId", "PayrollRunId", "RateType", "Status", "StudentLoan", "TotalHours" },
+                values: new object[,]
+                {
+                    { 1, 15m, 260m, 1001, new DateTime(2025, 11, 13, 0, 0, 0, 0, DateTimeKind.Unspecified), 2000m, 45m, 45m, 1740m, 200m, null, 50.00m, 1, 1, (byte)0, (byte)2, 0m, 40m },
+                    { 2, 15m, 260m, 1001, new DateTime(2025, 11, 20, 0, 0, 0, 0, DateTimeKind.Unspecified), 2000m, 45m, 45m, 1740m, 200m, null, 50.00m, 1, 2, (byte)0, (byte)2, 0m, 40m }
+                });
+
+            migrationBuilder.InsertData(
                 table: "employeeemergencycontacts",
                 columns: new[] { "EmergencyContactId", "Email", "EmployeeId", "FullName", "Phone", "Relationship" },
                 values: new object[,]
@@ -693,8 +709,11 @@ namespace NZFTC_EMS.Migrations
             migrationBuilder.DropTable(
 <<<<<<<< Updated upstream:NZFTC-EMS/Migrations/20251120090723_InitialBuild.cs
 <<<<<<<< Updated upstream:NZFTC-EMS/Migrations/20251120090723_InitialBuild.cs
+<<<<<<<< Updated upstream:NZFTC-EMS/Migrations/20251120090723_InitialBuild.cs
                 name: "CalendarEvents");
 ========
+========
+>>>>>>>> Stashed changes:NZFTC-EMS/Migrations/20251125090239_Announcement.cs
 ========
 >>>>>>>> Stashed changes:NZFTC-EMS/Migrations/20251125090239_Announcement.cs
                 name: "Announcements");

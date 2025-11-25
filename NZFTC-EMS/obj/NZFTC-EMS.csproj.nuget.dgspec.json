@@ -3,6 +3,7 @@
   "restore": {
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 <<<<<<< HEAD
     "C:\\SD106-EMS-Group5-\\NZFTC-EMS-SD106-GROUP-3-\\NZFTC-EMS\\NZFTC-EMS.csproj": {}
   },
@@ -54,6 +55,19 @@
         "packagesPath": "C:\\Users\\aries\\.nuget\\packages\\",
         "outputPath": "D:\\xampp\\htdocs\\NZFTC-EMS-SD106-GROUP-3-\\NZFTC-EMS\\obj\\",
 >>>>>>> Stashed changes
+=======
+    "D:\\xampp\\htdocs\\NZFTC-EMS-SD106-GROUP-3-\\NZFTC-EMS\\NZFTC-EMS.csproj": {}
+  },
+  "projects": {
+    "D:\\xampp\\htdocs\\NZFTC-EMS-SD106-GROUP-3-\\NZFTC-EMS\\NZFTC-EMS.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "D:\\xampp\\htdocs\\NZFTC-EMS-SD106-GROUP-3-\\NZFTC-EMS\\NZFTC-EMS.csproj",
+        "projectName": "NZFTC-EMS",
+        "projectPath": "D:\\xampp\\htdocs\\NZFTC-EMS-SD106-GROUP-3-\\NZFTC-EMS\\NZFTC-EMS.csproj",
+        "packagesPath": "C:\\Users\\aries\\.nuget\\packages\\",
+        "outputPath": "D:\\xampp\\htdocs\\NZFTC-EMS-SD106-GROUP-3-\\NZFTC-EMS\\obj\\",
+>>>>>>> Stashed changes
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -61,11 +75,15 @@
         "configFilePaths": [
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 <<<<<<< HEAD
           "C:\\Users\\rr_ob\\AppData\\Roaming\\NuGet\\NuGet.Config",
 =======
           "C:\\Users\\denis\\AppData\\Roaming\\NuGet\\NuGet.Config",
 >>>>>>> 12a2da7a0f1d6e59acf2c3deed664e7d6fc61a22
+=======
+          "C:\\Users\\aries\\AppData\\Roaming\\NuGet\\NuGet.Config",
+>>>>>>> Stashed changes
 =======
           "C:\\Users\\aries\\AppData\\Roaming\\NuGet\\NuGet.Config",
 >>>>>>> Stashed changes
@@ -179,6 +197,7 @@
               "privateAssets": "all"
             }
           },
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< HEAD
@@ -608,6 +627,9 @@
             "System.Xml.XPath.XDocument": "(, 5.0.32767]"
           }
 >>>>>>> 12a2da7a0f1d6e59acf2c3deed664e7d6fc61a22
+=======
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.300/PortableRuntimeIdentifierGraph.json"
+>>>>>>> Stashed changes
 =======
           "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.300/PortableRuntimeIdentifierGraph.json"
 >>>>>>> Stashed changes

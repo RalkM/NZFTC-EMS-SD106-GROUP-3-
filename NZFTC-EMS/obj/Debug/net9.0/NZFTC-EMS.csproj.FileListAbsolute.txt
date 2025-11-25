@@ -353,6 +353,7 @@ D:\xampp\htdocs\NZFTC-EMS-SD106-GROUP-3-\NZFTC-EMS\obj\Debug\net9.0\NZFTC-EMS.ge
 D:\xampp\htdocs\NZFTC-EMS-SD106-GROUP-3-\NZFTC-EMS\obj\Debug\net9.0\ref\NZFTC-EMS.dll
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 D:\xampp\htdocs\NZFTC-EMS-SD106-GROUP-3-\NZFTC-EMS\obj\Debug\net9.0\staticwebassets.upToDateCheck.txt
 <<<<<<< HEAD
 C:\SD106-EMS-Group5-\NZFTC-EMS-SD106-GROUP-3-\NZFTC-EMS\bin\Debug\net9.0\appsettings.Development.json
@@ -1033,6 +1034,11 @@ C:\Users\denis\Source\Repos\NZFTC-EMS-SD106-GROUP-3-\NZFTC-EMS\obj\Debug\net9.0\
 C:\Users\denis\Source\Repos\NZFTC-EMS-SD106-GROUP-3-\NZFTC-EMS\obj\Debug\net9.0\NZFTC-EMS.genruntimeconfig.cache
 C:\Users\denis\Source\Repos\NZFTC-EMS-SD106-GROUP-3-\NZFTC-EMS\obj\Debug\net9.0\ref\NZFTC-EMS.dll
 >>>>>>> 12a2da7a0f1d6e59acf2c3deed664e7d6fc61a22
+=======
+D:\xampp\htdocs\NZFTC-EMS-SD106-GROUP-3-\NZFTC-EMS\obj\Debug\net9.0\compressed\drz6992ag3-a8opp1ikmo.gz
+D:\xampp\htdocs\NZFTC-EMS-SD106-GROUP-3-\NZFTC-EMS\obj\Debug\net9.0\staticwebassets.upToDateCheck.txt
+D:\xampp\htdocs\NZFTC-EMS-SD106-GROUP-3-\NZFTC-EMS\obj\Debug\net9.0\compressed\0mbgjxaobu-fltvrytx2d.gz
+>>>>>>> Stashed changes
 =======
 D:\xampp\htdocs\NZFTC-EMS-SD106-GROUP-3-\NZFTC-EMS\obj\Debug\net9.0\compressed\drz6992ag3-a8opp1ikmo.gz
 D:\xampp\htdocs\NZFTC-EMS-SD106-GROUP-3-\NZFTC-EMS\obj\Debug\net9.0\staticwebassets.upToDateCheck.txt

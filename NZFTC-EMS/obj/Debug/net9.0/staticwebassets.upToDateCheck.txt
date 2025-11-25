@@ -2,7 +2,10 @@ wwwroot\1-e8f22afd.ico
 wwwroot\css\authentication.css
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
 wwwroot\css\calendar.css
@@ -77,6 +80,7 @@ wwwroot\lib\jquery\dist\jquery.slim.js
 wwwroot\lib\jquery\dist\jquery.slim.min.js
 wwwroot\lib\jquery\dist\jquery.slim.min.map
 wwwroot\lib\jquery\LICENSE.txt
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< HEAD
@@ -219,6 +223,8 @@ C:\Users\denis\Source\Repos\NZFTC-EMS-SD106-GROUP-3-\NZFTC-EMS\wwwroot\1-e8f22af
 =======
 =======
 >>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
 wwwroot\uploads\employees\1001.jpg
 wwwroot\uploads\employees\1002.jpg
 wwwroot\uploads\employees\8.jpg
@@ -301,6 +307,9 @@ D:\xampp\htdocs\NZFTC-EMS-SD106-GROUP-3-\NZFTC-EMS\wwwroot\lib\jquery\LICENSE.tx
 D:\xampp\htdocs\NZFTC-EMS-SD106-GROUP-3-\NZFTC-EMS\wwwroot\css\payslip_details.css
 D:\xampp\htdocs\NZFTC-EMS-SD106-GROUP-3-\NZFTC-EMS\wwwroot\css\calendar.css
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes

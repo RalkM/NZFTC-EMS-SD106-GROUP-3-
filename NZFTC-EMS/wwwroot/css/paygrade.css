@@ -1,0 +1,198 @@
+﻿/* =========================================================
+   PAY GRADE MANAGEMENT – THEME ALIGNMENT
+   Matches Employee Management & Leave UI
+   ========================================================= */
+
+:root {
+    --ems-primary: #0077B6;
+    --ems-primary-soft: #00B4D8;
+    --ems-accent: #FFD60A;
+    --ems-text-main: #1f2933;
+    --ems-text-muted: #6c757d;
+    --ems-border-subtle: #e1e5ee;
+    --ems-surface: #ffffff;
+    --ems-radius-sm: 10px;
+    --ems-radius-md: 14px;
+    --ems-shadow-soft: 0 4px 16px rgba(15, 23, 42, 0.06);
+    --ems-transition-fast: 160ms ease-out;
+}
+
+/* =========================================================
+   PAGE + TITLES
+   ========================================================= */
+
+.page-container {
+    max-width: 1320px;
+    margin: 0 auto;
+    padding-top: 24px;
+}
+
+.page-title {
+    font-family: "Poppins", system-ui, -apple-system, "Segoe UI", sans-serif;
+    font-size: 26px;
+}
+
+/* =========================================================
+   CARDS (Wrapper around forms + tables)
+   ========================================================= */
+
+.card {
+    border: 1px solid var(--ems-border-subtle);
+    border-radius: var(--ems-radius-md);
+    background: var(--ems-surface);
+    box-shadow: var(--ems-shadow-soft);
+}
+
+.card-body {
+    padding: 1.5rem;
+}
+
+/* =========================================================
+   BUTTONS — SAME SYSTEM AS EMPLOYEE MANAGEMENT
+   ========================================================= */
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--ems-primary), var(--ems-primary-soft));
+    border: none;
+    border-radius: var(--ems-radius-sm);
+    padding: 8px 20px;
+    box-shadow: 0 6px 16px rgba(0, 119, 182, 0.35);
+    transition: var(--ems-transition-fast);
+    font-weight: 500;
+    font-size: 14px;
+}
+
+    .btn-primary:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 10px 24px rgba(0, 119, 182, 0.45);
+    }
+
+.btn-secondary {
+    background: #f4f6fb;
+    border: 1px solid #cfd6e2;
+    border-radius: var(--ems-radius-sm);
+    padding: 8px 20px;
+    font-size: 14px;
+}
+
+    .btn-secondary:hover {
+        border-color: var(--ems-primary);
+    }
+
+.btn-outline-primary {
+    border: 1px solid var(--ems-primary);
+    background: transparent;
+    color: var(--ems-primary);
+    border-radius: var(--ems-radius-sm);
+    font-size: 13px;
+    padding: 6px 16px;
+}
+
+    .btn-outline-primary:hover {
+        background: #e8f4ff;
+    }
+
+.btn-outline-danger {
+    border: 1px solid #d9534f;
+    color: #d9534f;
+    background: transparent;
+    border-radius: var(--ems-radius-sm);
+    padding: 6px 16px;
+}
+
+    .btn-outline-danger:hover {
+        background: #fdeaea;
+    }
+
+.btn-danger {
+    border-radius: var(--ems-radius-sm);
+    padding: 8px 20px;
+    font-size: 14px;
+}
+
+/* =========================================================
+   TABLES — MATCH EMPLOYEE MANAGEMENT
+   ========================================================= */
+
+.styled-table {
+    font-size: 14px;
+}
+
+    .styled-table thead.table-light {
+        background: #f5f7fb;
+        border-bottom: 1px solid var(--ems-border-subtle);
+    }
+
+    .styled-table tbody tr:hover {
+        background: #f7f9ff;
+    }
+
+    .styled-table tbody tr:nth-child(even) {
+        background: #fafbff;
+    }
+
+        .styled-table tbody tr:nth-child(even):hover {
+            background: #eef4ff;
+        }
+
+.table .btn-sm {
+    border-radius: 999px;
+    padding: 4px 14px;
+    font-size: 12px;
+}
+
+/* =========================================================
+   FORM ELEMENTS
+   ========================================================= */
+
+.form-control,
+.form-select {
+    border-radius: var(--ems-radius-sm);
+    border: 1px solid #d5dde9;
+    padding: 8px 12px;
+    font-size: 14px;
+}
+
+    .form-control:focus,
+    .form-select:focus {
+        border-color: var(--ems-primary);
+        box-shadow: 0 0 0 3px rgba(0, 119, 182, 0.15);
+    }
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 768px) {
+    .page-container {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+
+    .page-title {
+        font-size: 22px;
+    }
+
+    .card-body {
+        padding: 1rem;
+    }
+}
+
+/* Cancel Button – Light / Grey with Clear Hover */
+.btn-cancel {
+    background: #f1f3f5; /* soft grey */
+    border: 1px solid #d0d5dd;
+    color: #444;
+    border-radius: 10px;
+    padding: 10px 22px;
+    font-size: 14px;
+    transition: all 0.2s ease;
+}
+
+    .btn-cancel:hover {
+        background: #ffffff; /* turns white on hover */
+        color: #1f2937; /* dark charcoal text */
+        border-color: #b8bcc5;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    }
+

@@ -1,0 +1,301 @@
+﻿/* ==========================================================
+   NZFTC EMS Timesheet Module – Theme-Aligned Styles
+   Matches Dashboard, Profile, Leave Pages
+   ========================================================== */
+
+:root {
+    --ems-bg: #f5f6fa;
+    --ems-surface: #ffffff;
+    --ems-surface-soft: #f8fafc;
+    --ems-primary: #0077B6;
+    --ems-primary-soft: #00B4D8;
+    --ems-text-main: #1f2933;
+    --ems-text-muted: #6c757d;
+    --ems-border-subtle: #e1e5ee;
+    --ems-radius-sm: 10px;
+    --ems-radius-md: 14px;
+    --ems-shadow-soft: 0 4px 16px rgba(15,23,42,0.06);
+    --ems-transition-fast: 160ms ease-out;
+}
+
+/* ============================ 
+   Page Container 
+============================ */
+
+.page-container {
+    max-width: 1320px;
+    margin: 0 auto 40px;
+    padding-top: 24px;
+    color: var(--ems-text-main);
+}
+
+    .page-container h2 {
+        font-family: "Poppins", system-ui, sans-serif;
+        font-size: 26px;
+        margin: 0;
+    }
+
+/* ============================
+   Card Styling
+============================ */
+
+.card {
+    border-radius: var(--ems-radius-md);
+    border: 1px solid var(--ems-border-subtle);
+    box-shadow: var(--ems-shadow-soft);
+    background: var(--ems-surface);
+}
+
+.card-body {
+    padding: 1.25rem 1.5rem;
+}
+
+/* ============================
+   Form Controls (filters)
+============================ */
+
+.form-control,
+.form-select {
+    border-radius: var(--ems-radius-sm);
+    border: 1px solid #d5dde9;
+    font-size: 14px;
+    padding: 8px 12px;
+}
+
+    .form-control:focus,
+    .form-select:focus {
+        border-color: var(--ems-primary);
+        box-shadow: 0 0 0 3px rgba(0, 119, 182, 0.15);
+    }
+
+/* Filter button */
+.btn-outline-primary {
+    border-radius: var(--ems-radius-sm);
+    font-size: 14px;
+    padding: 8px 20px;
+    color: var(--ems-primary);
+    border-color: var(--ems-primary);
+    background: #ffffff;
+}
+
+    .btn-outline-primary:hover {
+        background: #f3f7ff;
+        box-shadow: 0 4px 12px rgba(0,119,182,0.20);
+    }
+
+/* ============================
+   Approve / Reject small buttons
+============================ */
+
+.btn-sm {
+    border-radius: var(--ems-radius-pill);
+    font-size: 12px;
+    padding: 4px 12px !important;
+}
+
+    .btn-sm.btn-success {
+        background: #198754;
+        border: none;
+    }
+
+    .btn-sm.btn-outline-danger {
+        border-radius: var(--ems-radius-pill);
+        font-size: 12px;
+        padding: 4px 12px;
+    }
+
+.form-control-sm {
+    border-radius: var(--ems-radius-sm);
+}
+
+/* ============================
+   TABLE
+============================ */
+
+.styled-table {
+    font-size: 14px;
+}
+
+    .styled-table thead.table-light {
+        background: #f5f7fb;
+        border-bottom: 1px solid var(--ems-border-subtle);
+    }
+
+    .styled-table th {
+        font-weight: 600;
+        white-space: nowrap;
+        color: var(--ems-text-main);
+    }
+
+    .styled-table tbody tr:hover {
+        background: #f7f9ff;
+    }
+
+    /* Zebra striping */
+    .styled-table tbody tr:nth-child(even) {
+        background: #fafbff;
+    }
+
+        .styled-table tbody tr:nth-child(even):hover {
+            background: #f1f5ff;
+        }
+
+/* Status badges */
+.badge {
+    border-radius: 999px;
+    padding: 4px 10px;
+    font-size: 11px;
+}
+
+/* ============================
+   Responsive
+============================ */
+
+@media (max-width: 768px) {
+    .page-container {
+        padding-left: 1.25rem;
+        padding-right: 1.25rem;
+    }
+
+        .page-container h2 {
+            font-size: 22px;
+        }
+
+    .card-body {
+        padding: 1rem 1.1rem;
+    }
+}
+
+/* =========================================================
+   NZFTC EMS Timesheet Styling (Employee)
+   Matches dashboard, profile, leave, admin pages
+   ========================================================= */
+
+/* Page wrapper */
+.page-container {
+    max-width: 1250px;
+    margin: 0 auto;
+    padding-bottom: 40px;
+}
+
+/* Card look (matches dashboard & leave pages) */
+.card {
+    border-radius: 14px !important;
+    border: 1px solid #e1e5ee !important;
+    background: #ffffff !important;
+    box-shadow: 0 4px 16px rgba(15, 23, 42, 0.06) !important;
+}
+
+/* Section titles */
+h5.fw-semibold {
+    font-family: "Poppins", sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: #1f2933;
+    letter-spacing: 0.02em;
+}
+
+/* Table headers */
+.styled-table thead th {
+    background: #f8f9fc !important;
+    border-bottom: 1px solid #e5e7eb !important;
+    font-weight: 600;
+    font-size: 14px;
+    color: #4b5563;
+}
+
+/* Table cells */
+.styled-table td {
+    background: #ffffff !important;
+    font-size: 14px;
+    color: #374151;
+}
+
+/* Timesheet badges */
+.badge {
+    border-radius: 999px !important;
+    padding: 6px 12px !important;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+/* Filter form spacing */
+.card-body form .form-label {
+    font-weight: 500;
+    color: #374151;
+}
+
+.card-body form input.form-control {
+    border-radius: 10px;
+    border: 1px solid #cfd6e2;
+}
+
+/* Primary button (Save, Apply Filter) */
+.btn-primary {
+    border-radius: 10px;
+    background: linear-gradient(135deg, #0077B6, #00B4D8);
+    border: none;
+    color: #fff;
+    font-weight: 500;
+    box-shadow: 0 5px 12px rgba(0, 119, 182, 0.35);
+}
+
+    .btn-primary:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 9px 20px rgba(0, 119, 182, 0.45);
+    }
+
+/* Outline button */
+.btn-outline-primary {
+    border-radius: 10px;
+    border: 1px solid #0077B6;
+    color: #0077B6;
+}
+
+    .btn-outline-primary:hover {
+        background: rgba(0, 119, 182, 0.08);
+    }
+
+/* Reset link */
+.btn-link {
+    font-size: 14px;
+    text-decoration: underline;
+    color: #0077B6;
+}
+
+    .btn-link:hover {
+        color: #005a87;
+    }
+
+/* Inputs inside entry row */
+form.row.g-3 .form-control {
+    border-radius: 10px;
+    border: 1px solid #cfd6e2;
+}
+
+form.row.g-3 .form-label {
+    font-weight: 500;
+    color: #374151;
+}
+
+/* “No entries” text */
+.text-muted {
+    color: #6b7280 !important;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .page-container {
+        padding: 0 12px;
+    }
+
+    .card-body form .col-md-4,
+    .card-body form .col-md-3,
+    .card-body form .col-md-2 {
+        width: 100%;
+    }
+
+    .btn-primary, .btn-outline-primary {
+        width: 100%;
+    }
+}

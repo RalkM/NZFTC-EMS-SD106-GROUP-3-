@@ -1,21 +1,229 @@
-    /* Make the main details card stand out more */
-    .profile-main-card {
-        border: 1px solid #d9d9d9 !important;
-        border-radius: 12px !important;
-        box-shadow: 0 4px 18px rgba(0,0,0,0.08) !important;
-        background: #ffffff !important;
+/* =========================================================
+   NZFTC EMS – My Profile page
+   Follows the light dashboard theme
+   ========================================================= */
+
+/* Theme tokens (mirroring dashboard) */
+:root {
+    --ems-bg: #f5f6fa;
+    --ems-surface: #ffffff;
+    --ems-surface-soft: #f8fafc;
+    --ems-primary: #0077B6;
+    --ems-primary-soft: #00B4D8;
+    --ems-text-main: #1f2933;
+    --ems-text-muted: #6c757d;
+    --ems-border-subtle: #e1e5ee;
+    --ems-radius-sm: 10px;
+    --ems-radius-md: 14px;
+    --ems-radius-pill: 999px;
+    --ems-shadow-soft: 0 4px 16px rgba(15, 23, 42, 0.06);
+    --ems-transition-fast: 160ms ease-out;
+}
+
+/* Overall page spacing (inside page-content) */
+.container-fluid.mt-5 {
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+    /* Page title */
+    .container-fluid.mt-5 h2.fw-bold {
+        font-family: "Poppins", system-ui, -apple-system, "Segoe UI", sans-serif;
+        font-size: 26px;
+        letter-spacing: 0.03em;
+        color: var(--ems-text-main);
     }
 
-    /* Section headers inside the card */
-    .profile-section-title {
-        font-size: 1.1rem;
-        font-weight: 600;
-        margin-bottom: 8px;
+    /* Top-right Edit button – match dashboard primary button */
+    .container-fluid.mt-5 .btn.btn-primary {
+        border-radius: var(--ems-radius-sm);
+        border: none;
+        padding: 6px 18px;
+        font-size: 13px;
+        font-weight: 500;
+        background: linear-gradient(135deg, var(--ems-primary), var(--ems-primary-soft));
+        box-shadow: 0 6px 16px rgba(0, 119, 182, 0.35);
+        transition: background var(--ems-transition-fast), box-shadow var(--ems-transition-fast), transform var(--ems-transition-fast);
     }
 
-    /* Light divider under section titles */
-    .profile-divider {
-        border-top: 1px solid #e5e5e5;
+        .container-fluid.mt-5 .btn.btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 10px 24px rgba(0, 119, 182, 0.45);
+        }
+
+    /* Upload photo button – light outline style */
+    .container-fluid.mt-5 .btn.btn-outline-primary.btn-sm {
+        border-radius: var(--ems-radius-pill);
+        border-width: 1px;
+        font-size: 12px;
+        padding: 4px 14px;
+        color: var(--ems-primary);
+        border-color: var(--ems-primary);
+        background-color: #ffffff;
+        transition: background var(--ems-transition-fast), color var(--ems-transition-fast), box-shadow var(--ems-transition-fast);
+    }
+
+        .container-fluid.mt-5 .btn.btn-outline-primary.btn-sm:hover {
+            background-color: #f3f7ff;
+            box-shadow: 0 4px 12px rgba(0, 119, 182, 0.25);
+        }
+
+/* Profile photo circle */
+.rounded-circle.border.mb-3.overflow-hidden {
+    border-width: 2px !important;
+    border-color: var(--ems-border-subtle) !important;
+    box-shadow: 0 6px 18px rgba(15, 23, 42, 0.10);
+}
+
+/* Name + job title under photo */
+.container-fluid.mt-5 .text-center h5.fw-bold {
+    font-family: "Poppins", system-ui, sans-serif;
+    font-size: 18px;
+    margin-bottom: 2px;
+    color: var(--ems-text-main);
+}
+
+.container-fluid.mt-5 .text-center .text-muted {
+    font-size: 13px;
+    color: var(--ems-text-muted) !important;
+}
+
+/* Main details card */
+.profile-main-card {
+    border: 1px solid var(--ems-border-subtle) !important;
+    border-radius: 18px !important;
+    box-shadow: var(--ems-shadow-soft) !important;
+    background: var(--ems-surface) !important;
+}
+
+    /* Inner padding */
+    .profile-main-card .card-body {
+        background: radial-gradient(circle at top left, rgba(0, 180, 216, 0.05) 0%, #ffffff 55%);
+    }
+
+    /* Section headings inside the card */
+    .profile-main-card h5.fw-bold {
+        font-family: "Poppins", system-ui, sans-serif;
+        font-size: 15px;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: var(--ems-text-main);
+        margin-bottom: 0.5rem;
+    }
+
+    /* Divider under headings */
+    .profile-main-card hr.mt-0 {
+        border: 0;
+        border-top: 1px solid var(--ems-border-subtle);
+        opacity: 1;
         margin-top: 0.25rem;
         margin-bottom: 1rem;
+    }
+
+    /* Definition lists (labels + values) */
+    .profile-main-card dl.row {
+        font-size: 14px;
+        color: var(--ems-text-main);
+    }
+
+    .profile-main-card dt {
+        font-weight: 600;
+        color: var(--ems-text-muted);
+    }
+
+    .profile-main-card dd {
+        margin-bottom: 0.4rem;
+    }
+
+/* Slightly tighter grid on smaller screens */
+@media (max-width: 768px) {
+    .container-fluid.mt-5 {
+        padding-left: 1.25rem;
+        padding-right: 1.25rem;
+    }
+
+        .container-fluid.mt-5 h2.fw-bold {
+            font-size: 22px;
+        }
+
+    .profile-main-card .card-body {
+        padding: 1.25rem;
+    }
+}
+
+
+/* =========================================================
+   EDIT PROFILE PAGE — same theme as MyProfile
+   ========================================================= */
+
+.profile-edit-card {
+    border: 1px solid var(--ems-border-subtle) !important;
+    border-radius: var(--ems-radius-md) !important;
+    background: var(--ems-surface) !important;
+    box-shadow: var(--ems-shadow-soft) !important;
+    padding: 24px;
+}
+
+/* Section titles */
+.section-title {
+    font-family: "Poppins", system-ui, sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--ems-text-main);
+    margin-bottom: 6px;
+}
+
+/* Divider under titles */
+.section-divider {
+    border-top: 1px solid var(--ems-border-subtle);
+    opacity: 1;
+    margin-top: 0.2rem;
+    margin-bottom: 1rem;
+}
+
+/* Form inputs */
+.profile-edit-card .form-control {
+    border-radius: var(--ems-radius-sm);
+    border: 1px solid #d5dde9;
+    padding: 8px 12px;
+    font-size: 14px;
+    transition: border-color var(--ems-transition-fast), box-shadow var(--ems-transition-fast);
+}
+
+    .profile-edit-card .form-control:focus {
+        border-color: var(--ems-primary);
+        box-shadow: 0 0 0 3px rgba(0, 119, 182, 0.15);
+    }
+
+/* Buttons */
+.profile-edit-card .btn-primary {
+    background: linear-gradient(135deg, var(--ems-primary), var(--ems-primary-soft));
+    color: #ffffff;
+    border-radius: var(--ems-radius-sm);
+    padding: 8px 20px;
+    border: none;
+    font-size: 14px;
+    box-shadow: 0 6px 16px rgba(0, 119, 182, 0.35);
+}
+
+    .profile-edit-card .btn-primary:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 10px 24px rgba(0, 119, 182, 0.45);
+    }
+
+.profile-edit-card .btn-outline-secondary {
+    padding: 8px 20px;
+    border-radius: var(--ems-radius-sm);
+    font-size: 14px;
+    border: 1px solid #cfd6e2;
+    color: var(--ems-text-soft);
+    background: #ffffff;
+}
+
+    .profile-edit-card .btn-outline-secondary:hover {
+        background: #f2f4f8;
+        border-color: var(--ems-primary);
     }

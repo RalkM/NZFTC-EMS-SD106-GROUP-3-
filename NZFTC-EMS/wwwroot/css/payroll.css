@@ -1,0 +1,214 @@
+﻿/* =========================================================
+   NZFTC EMS – Payroll + Payslip Styling
+   Matches dashboard / leave / timesheets theme
+   ========================================================= */
+
+/* ---------- Shared layout wrapper ---------- */
+.page-container {
+    max-width: 1250px;
+    margin: 0 auto 40px;
+}
+
+    /* Header + titles */
+    .header-row .page-title,
+    .page-container h2.fw-bold {
+        font-family: "Poppins", system-ui, -apple-system, "Segoe UI", sans-serif;
+        letter-spacing: 0.02em;
+    }
+
+/* ---------- Cards ---------- */
+
+.card {
+    border-radius: 14px !important;
+    border: 1px solid #e1e5ee !important;
+    background: #ffffff !important;
+    box-shadow: 0 4px 16px rgba(15, 23, 42, 0.06) !important;
+}
+
+.card-header {
+    border-radius: 14px 14px 0 0 !important;
+}
+
+    /* Dark blue header strips on some cards */
+    .card-header.text-white {
+        background: #1E4DB7 !important;
+    }
+
+/* Small summary text */
+.card .small.text-muted {
+    font-size: 12px;
+}
+
+/* ---------- Tables ---------- */
+
+.styled-table thead th,
+.table.styled-table thead th {
+    background: #f8f9fc !important;
+    border-bottom: 1px solid #e5e7eb !important;
+    font-weight: 600;
+    font-size: 14px;
+    color: #4b5563;
+}
+
+.styled-table tbody td,
+.table.styled-table tbody td {
+    background: #ffffff !important;
+    font-size: 14px;
+    color: #374151;
+}
+
+.styled-table tfoot td {
+    background: #f9fafb !important;
+}
+
+/* ---------- Badges ---------- */
+
+.badge {
+    border-radius: 999px !important;
+    padding: 6px 12px !important;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+/* ---------- Buttons (reuse dashboard style) ---------- */
+
+.btn-primary {
+    border-radius: 10px;
+    background: linear-gradient(135deg, #0077B6, #00B4D8);
+    border: none;
+    color: #ffffff;
+    font-weight: 500;
+    box-shadow: 0 5px 14px rgba(0, 119, 182, 0.35);
+    transition: 160ms ease-out;
+}
+
+    .btn-primary:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 9px 22px rgba(0, 119, 182, 0.45);
+    }
+
+.btn-outline-primary {
+    border-radius: 10px;
+    border: 1px solid #0077B6;
+    color: #0077B6;
+    font-weight: 500;
+}
+
+    .btn-outline-primary:hover {
+        background: rgba(0, 119, 182, 0.08);
+    }
+
+.btn-outline-secondary {
+    border-radius: 10px;
+}
+
+    /* History button (My Payslips) */
+    .btn-outline-secondary.d-flex.align-items-center i {
+        font-size: 14px;
+    }
+
+/* ---------- Forms (Payroll Settings) ---------- */
+
+.form-label.fw-semibold {
+    font-weight: 600;
+    color: #374151;
+}
+
+.form-control-lg {
+    padding: 12px;
+    font-size: 1rem;
+    border-radius: 10px;
+    border: 1px solid #cfd6e2;
+}
+
+.input-group-text {
+    border-radius: 10px;
+}
+
+/* Validation text */
+.text-danger {
+    font-size: 13px;
+}
+
+/* ---------- Payroll Settings / summary containers ---------- */
+
+.page-container .card .h4,
+.page-container .card .fw-bold {
+    font-family: "Poppins", system-ui, sans-serif;
+}
+
+/* ---------- Employee My Payslips tables ---------- */
+
+.table.payslip-list thead th {
+    background: #f8f9fc;
+}
+
+/* reuse .styled-table styles for those tables too */
+.table.payslip-list td {
+    background: #ffffff;
+}
+
+/* ---------- Printable Payslip Details ---------- */
+
+.printable-card {
+    border-radius: 16px !important;
+    overflow: hidden;
+}
+
+    /* Blue header to match portal logo */
+    .printable-card .card-header {
+        background: linear-gradient(135deg, #0077B6, #00B4D8) !important;
+        border-radius: 16px 16px 0 0 !important;
+    }
+
+/* Employee info labels + values */
+.detail-label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: #6c757d;
+    margin-bottom: 2px;
+}
+
+.detail-value {
+    font-size: 0.95rem;
+    color: #111827;
+}
+
+/* Payslip inner table */
+.payslip-table th {
+    background: #f8f9fc;
+    font-weight: 600;
+    width: 35%;
+}
+
+.payslip-table td {
+    background: #ffffff;
+}
+
+/* Net / gross highlight colours already set via text-primary/text-success */
+
+/* ---------- Utility text colours ---------- */
+
+.text-muted {
+    color: #6b7280 !important;
+}
+
+/* ---------- Responsive tweaks ---------- */
+
+@media (max-width: 768px) {
+    .page-container {
+        padding: 0 12px 32px;
+    }
+
+        .header-row,
+        .page-container .d-flex.justify-content-between {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+    .card .row > [class^="col-md-"] {
+        margin-bottom: 0.5rem;
+    }
+}

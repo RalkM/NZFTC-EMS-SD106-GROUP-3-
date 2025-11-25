@@ -1,0 +1,262 @@
+﻿/* =========================================================
+   NZFTC EMS – Support / Helpdesk Theme
+   Aligns with Employee Management / Leave / Payroll
+   ========================================================= */
+
+:root {
+    --ems-bg: #f5f6fa;
+    --ems-surface: #ffffff;
+    --ems-surface-soft: #f8fafc;
+    --ems-primary: #0077B6;
+    --ems-primary-soft: #00B4D8;
+    --ems-accent: #FFD60A;
+    --ems-text-main: #1f2933;
+    --ems-text-muted: #6c757d;
+    --ems-border-subtle: #e1e5ee;
+    --ems-radius-sm: 10px;
+    --ems-radius-md: 14px;
+    --ems-radius-lg: 18px;
+    --ems-radius-pill: 999px;
+    --ems-shadow-soft: 0 4px 16px rgba(15, 23, 42, 0.06);
+    --ems-transition-fast: 160ms ease-out;
+}
+
+/* =========================================================
+   Layout + page title
+   ========================================================= */
+
+.page-container {
+    max-width: 1320px;
+    margin: 0 auto 40px;
+    padding-top: 24px;
+    color: var(--ems-text-main);
+}
+
+.page-title {
+    font-family: "Poppins", system-ui, -apple-system, "Segoe UI", sans-serif;
+    font-size: 26px;
+    letter-spacing: 0.03em;
+    text-transform: none;
+}
+
+.header-row {
+    gap: 12px;
+}
+
+/* =========================================================
+   Cards (filters, forms, preview, ticket lists)
+   ========================================================= */
+
+.card {
+    border-radius: var(--ems-radius-md);
+    border: 1px solid var(--ems-border-subtle);
+    box-shadow: var(--ems-shadow-soft);
+    background: var(--ems-surface);
+}
+
+.card-body {
+    padding: 1.25rem 1.5rem;
+}
+
+.card-header {
+    background: linear-gradient(135deg, var(--ems-primary), var(--ems-primary-soft)) !important;
+    border-radius: var(--ems-radius-md) var(--ems-radius-md) 0 0 !important;
+    border-bottom: none;
+    font-family: "Poppins", system-ui, sans-serif;
+    font-size: 14px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+/* Slightly tighter padding for the filter area on admin page */
+.support-filter-card .card-body {
+    padding: 1rem 1.25rem;
+}
+
+/* Left tickets table + right preview card layout already handled in markup */
+
+/* =========================================================
+   Tables (ticket lists)
+   ========================================================= */
+
+.styled-table {
+    font-size: 14px;
+}
+
+    .styled-table thead.table-light,
+    .support-table thead {
+        background: #f5f7fb;
+        border-bottom: 1px solid var(--ems-border-subtle);
+    }
+
+    .styled-table th,
+    .support-table th {
+        font-weight: 600;
+        color: var(--ems-text-main);
+        white-space: nowrap;
+    }
+
+.support-table tbody tr:hover {
+    background: #f7f9ff;
+}
+
+.support-table tbody tr:nth-child(even) {
+    background: #fafbff;
+}
+
+    .support-table tbody tr:nth-child(even):hover {
+        background: #f1f5ff;
+    }
+
+/* Actions (small buttons if any later) */
+.table .btn-sm {
+    border-radius: var(--ems-radius-pill);
+    font-size: 12px;
+    padding: 4px 12px;
+}
+
+/* =========================================================
+   Forms – inputs / selects / textareas
+   ========================================================= */
+
+.form-control,
+.form-select,
+textarea.form-control {
+    border-radius: var(--ems-radius-sm);
+    border: 1px solid #d5dde9;
+    font-size: 14px;
+    padding: 8px 12px;
+    transition: border-color var(--ems-transition-fast), box-shadow var(--ems-transition-fast);
+}
+
+    .form-control:focus,
+    .form-select:focus,
+    textarea.form-control:focus {
+        border-color: var(--ems-primary);
+        box-shadow: 0 0 0 3px rgba(0, 119, 182, 0.15);
+    }
+
+.form-label {
+    font-size: 14px;
+}
+
+/* Create ticket admin form background */
+.support-create-panel {
+    background: var(--ems-surface-soft);
+    border-radius: var(--ems-radius-md);
+    border: 1px solid var(--ems-border-subtle);
+}
+
+/* Support / Helpdesk employee create card spacing */
+.support-create-card .card-body {
+    padding: 1.25rem 1.5rem;
+}
+
+/* =========================================================
+   Buttons – match employee / leave / payroll
+   ========================================================= */
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--ems-primary), var(--ems-primary-soft));
+    border: none;
+    border-radius: var(--ems-radius-sm);
+    font-size: 14px;
+    font-weight: 500;
+    padding: 8px 18px;
+    box-shadow: 0 6px 16px rgba(0, 119, 182, 0.35);
+    transition: background var(--ems-transition-fast), box-shadow var(--ems-transition-fast), transform var(--ems-transition-fast);
+    color: #ffffff;
+}
+
+    .btn-primary:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 10px 24px rgba(0, 119, 182, 0.45);
+    }
+
+/* Outline primary – Filter / Reset / small actions */
+.btn-outline-primary {
+    border-radius: var(--ems-radius-sm);
+    font-size: 14px;
+    padding: 8px 18px;
+    border-color: var(--ems-primary);
+    color: var(--ems-primary);
+    background: #ffffff;
+    transition: background var(--ems-transition-fast), color var(--ems-transition-fast), box-shadow var(--ems-transition-fast);
+}
+
+    .btn-outline-primary:hover {
+        background: #f3f7ff;
+        color: var(--ems-primary);
+        box-shadow: 0 4px 12px rgba(0, 119, 182, 0.25);
+    }
+
+/* Neutral secondary – Back / Cancel */
+.btn-secondary {
+    border-radius: var(--ems-radius-sm);
+    font-size: 14px;
+    padding: 8px 18px;
+    border: 1px solid #cfd6e2;
+    background: #f4f6fb;
+    color: var(--ems-text-main);
+}
+
+    .btn-secondary:hover {
+        background: #e8edf8;
+        border-color: var(--ems-primary);
+    }
+
+/* Small buttons in preview actions (Investigating / Close / Send reply) */
+.btn.btn-sm {
+    border-radius: var(--ems-radius-sm);
+    font-size: 12px;
+    padding: 4px 12px;
+}
+
+/* =========================================================
+   Badges – status / priority chips
+   ========================================================= */
+
+.badge {
+    border-radius: var(--ems-radius-pill) !important;
+    padding: 4px 10px !important;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+/* You already use text-bg-* utilities via StatusBadgeClass/PriorityBadgeClass */
+
+/* =========================================================
+   Preview panel (admin) + details panel (employee)
+   ========================================================= */
+
+#ticket-preview-card,
+#detail-card {
+    /* already .card; just ensure full-height feel on desktop */
+    height: 100%;
+}
+
+#pv-thread,
+#dt-thread {
+    background: #f9fafb;
+}
+
+/* =========================================================
+   Responsive tweaks
+   ========================================================= */
+
+@media (max-width: 768px) {
+    .page-container {
+        padding-inline: 1.25rem;
+    }
+
+    .page-title {
+        font-size: 22px;
+    }
+
+    .header-row,
+    .page-container .d-flex.justify-content-between {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+}

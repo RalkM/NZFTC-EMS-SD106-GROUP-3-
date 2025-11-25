@@ -6,63 +6,92 @@
     ViewData["Title"] = "Edit Job Position";
 }
 
-<h2>Edit Job Position</h2>
+<link rel="stylesheet" href="~/css/jobposition.css" asp-append-version="true" />
 
-<form asp-controller="jobposition_management"
-      asp-action="Edit"
-      asp-route-id="@Model.JobPositionId"
-      method="post">
-    @Html.AntiForgeryToken()
-    <input type="hidden" asp-for="JobPositionId" />
+<div class="page-container">
 
-    <!-- same fields as create -->
-    <div class="mb-3">
-        <label asp-for="Department" class="form-label"></label>
-        <input asp-for="Department" class="form-control" />
-        <span asp-validation-for="Department" class="text-danger"></span>
+    <!-- Header -->
+    <div class="header-row d-flex justify-content-between align-items-center mb-3">
+        <h2 class="page-title fw-bold mb-1">Edit Job Position</h2>
     </div>
 
-    <div class="mb-3">
-        <label asp-for="Name" class="form-label">Job Title</label>
-        <input asp-for="Name" class="form-control" />
-        <span asp-validation-for="Name" class="text-danger"></span>
-    </div>
+    <form asp-controller="jobposition_management"
+          asp-action="Edit"
+          asp-route-id="@Model.JobPositionId"
+          method="post">
+        @Html.AntiForgeryToken()
 
-    <div class="mb-3">
-        <label asp-for="Description" class="form-label"></label>
-        <textarea asp-for="Description" class="form-control" rows="2"></textarea>
-        <span asp-validation-for="Description" class="text-danger"></span>
-    </div>
+        <input type="hidden" asp-for="JobPositionId" />
 
-    <div class="mb-3">
-        <label class="form-label">Pay Grade</label>
-        <select asp-for="PayGradeId"
-                class="form-select"
-                asp-items="ViewBag.PayGrades">
-            <option value="">-- None --</option>
-        </select>
-        <span asp-validation-for="PayGradeId" class="text-danger"></span>
-    </div>
+        <!-- Card Wrapper -->
+        <div class="card shadow-sm border-0 mb-4">
+            <div class="card-body">
 
-    <div class="mb-3">
-        <label class="form-label">Access Role</label>
-        <select asp-for="AccessRole"
-                class="form-select"
-                asp-items="ViewBag.AccessRoles">
-        </select>
-        <span asp-validation-for="AccessRole" class="text-danger"></span>
-    </div>
+                <!-- Department -->
+                <div class="mb-3">
+                    <label asp-for="Department" class="form-label fw-semibold"></label>
+                    <input asp-for="Department" class="form-control" />
+                    <span asp-validation-for="Department" class="text-danger"></span>
+                </div>
 
-    <div class="form-check mb-3">
-        <input asp-for="IsActive" class="form-check-input" />
-        <label asp-for="IsActive" class="form-check-label"></label>
-    </div>
+                <!-- Job Title -->
+                <div class="mb-3">
+                    <label asp-for="Name" class="form-label fw-semibold">Job Title</label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
 
-    <button type="submit" class="btn btn-primary">Save</button>
-    <a asp-controller="jobposition_management"
-       asp-action="Index"
-       class="btn btn-secondary ms-2">Cancel</a>
-</form>
+                <!-- Description -->
+                <div class="mb-3">
+                    <label asp-for="Description" class="form-label fw-semibold"></label>
+                    <textarea asp-for="Description" class="form-control" rows="2"></textarea>
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+
+                <!-- Pay Grade -->
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Pay Grade</label>
+                    <select asp-for="PayGradeId"
+                            class="form-select"
+                            asp-items="ViewBag.PayGrades">
+                        <option value="">-- None --</option>
+                    </select>
+                    <span asp-validation-for="PayGradeId" class="text-danger"></span>
+                </div>
+
+                <!-- Access Role -->
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Access Role</label>
+                    <select asp-for="AccessRole"
+                            class="form-select"
+                            asp-items="ViewBag.AccessRoles">
+                    </select>
+                    <span asp-validation-for="AccessRole" class="text-danger"></span>
+                </div>
+
+                <!-- Active -->
+                <div class="form-check mb-3">
+                    <input asp-for="IsActive" class="form-check-input" />
+                    <label asp-for="IsActive" class="form-check-label"></label>
+                </div>
+
+                <!-- Buttons -->
+                <div class="mt-4 d-flex gap-2">
+                    <button type="submit" class="btn btn-primary px-4">Save</button>
+
+                    <a asp-controller="jobposition_management"
+                       asp-action="Index"
+                       class="btn btn-secondary px-4">
+                        Cancel
+                    </a>
+                </div>
+
+            </div>
+        </div>
+
+    </form>
+
+</div>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

@@ -1,4 +1,4 @@
-@using NZFTC_EMS.Data.Entities
+@using NZFTC_EMS.Data.Entities 
 @model IEnumerable<PayGrade>
 
 @{
@@ -6,70 +6,83 @@
     ViewData["Title"] = "Pay Grade Management";
 }
 
-<h2 class="mb-3">Pay Grade Management</h2>
+<link rel="stylesheet" href="~/css/employee.css" asp-append-version="true" />
 
-<div class="d-flex justify-content-between align-items-center mb-3">
-    <div>
-        @if (TempData["msg"] != null)
-        {
-            <div class="alert alert-info mb-0">@TempData["msg"]</div>
-        }
+<div class="page-container">
+
+    <!-- PAGE HEADER -->
+    <div class="header-row d-flex justify-content-between align-items-center mb-4">
+        <h2 class="page-title fw-bold mb-0">Pay Grade Management</h2>
+
+        <a asp-controller="paygrade_management"
+           asp-action="Create"
+           class="btn btn-primary">
+            + Add Pay Grade
+        </a>
     </div>
-    <a asp-controller="paygrade_management"
-       asp-action="Create"
-       class="btn btn-success">
-        + Add Pay Grade
-    </a>
-</div>
 
-<table class="table table-striped table-bordered align-middle">
-    <thead class="table-light">
-        <tr>
-            <th>Id</th>
-            <th>Name</th>
-            <th>Description</th>
-            <th>Base Rate</th>
-            <th>Rate Type</th>
-            <th>Active</th>
-            <th style="width: 160px;">Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-    @if (Model != null && Model.Any())
+    <!-- MESSAGE -->
+    @if (TempData["msg"] != null)
     {
-        foreach (var pg in Model)
-        {
-            <tr>
-                <td>@pg.PayGradeId</td>
-                <td>@pg.Name</td>
-                <td>@pg.Description</td>
-                <td>@pg.BaseRate.ToString("C2")</td>
-                <td>@pg.RateType</td>
-                <td>@(pg.IsActive ? "Yes" : "No")</td>
-                <td>
-                    <a asp-controller="paygrade_management"
-                       asp-action="Edit"
-                       asp-route-id="@pg.PayGradeId"
-                       class="btn btn-sm btn-primary me-1">
-                        Edit
-                    </a>
-                    <a asp-controller="paygrade_management"
-                       asp-action="Delete"
-                       asp-route-id="@pg.PayGradeId"
-                       class="btn btn-sm btn-danger">
-                        Delete
-                    </a>
-                </td>
-            </tr>
-        }
+        <div class="alert alert-info mb-4">
+            @TempData["msg"]
+        </div>
     }
-    else
-    {
-        <tr>
-            <td colspan="6" class="text-center text-muted">
-                No pay grades defined yet.
-            </td>
-        </tr>
-    }
-    </tbody>
-</table>
+
+    <!-- TABLE CARD -->
+    <div class="card shadow-sm border-0">
+        <div class="card-body">
+            @if (Model == null || !Model.Any())
+            {
+                <p class="text-muted mb-0">No pay grades defined yet.</p>
+            }
+            else
+            {
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle styled-table mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Id</th>
+                                <th>Name</th>
+                                <th>Description</th>
+                                <th class="text-end">Base Rate</th>
+                                <th>Rate Type</th>
+                                <th>Active</th>
+                                <th class="text-end" style="width: 160px;">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var pg in Model)
+                            {
+                                <tr>
+                                    <td>@pg.PayGradeId</td>
+                                    <td>@pg.Name</td>
+                                    <td>@pg.Description</td>
+                                    <td class="text-end">@pg.BaseRate.ToString("C2")</td>
+                                    <td>@pg.RateType</td>
+                                    <td>@(pg.IsActive ? "Yes" : "No")</td>
+                                    <td class="text-end">
+                                        <div class="d-inline-flex gap-2">
+                                            <a asp-controller="paygrade_management"
+                                               asp-action="Edit"
+                                               asp-route-id="@pg.PayGradeId"
+                                               class="btn btn-sm btn-outline-primary">
+                                                Edit
+                                            </a>
+                                            <a asp-controller="paygrade_management"
+                                               asp-action="Delete"
+                                               asp-route-id="@pg.PayGradeId"
+                                               class="btn btn-sm btn-outline-danger">
+                                                Delete
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+        </div>
+    </div>
+</div>

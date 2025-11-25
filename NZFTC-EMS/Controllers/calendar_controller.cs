@@ -19,7 +19,13 @@ namespace NZFTC_EMS.Controllers
 
         // ---------- helpers ----------
         private bool IsAdmin() => HttpContext.Session.GetString("Role") == "Admin";
-        private string? CurrentUsername => HttpContext.Session.GetString("Username");
+
+        // 🔹 FIX: be tolerant to different session keys
+        private string? CurrentUsername =>
+            HttpContext.Session.GetString("Username")
+            ?? HttpContext.Session.GetString("UserName")
+            ?? HttpContext.Session.GetString("UserEmail")
+            ?? HttpContext.Session.GetString("Email");
 
         // ===========================================
         // MAIN PAGE (admin + employee) /calendar[/UserCalendar]
@@ -36,15 +42,15 @@ namespace NZFTC_EMS.Controllers
             int targetMonth = month ?? today.Month;
             int targetYear = year ?? today.Year;
 
-           IQueryable<CalendarEvent> query = _context.CalendarEvents;
+            IQueryable<CalendarEvent> query = _context.CalendarEvents;
 
-if (!isAdmin)
-{
-    var username = CurrentUsername;
-    query = query.Where(e =>
-        e.OwnerUsername == null ||
-        (username != null && e.OwnerUsername == username));
-}
+            if (!isAdmin)
+            {
+                var username = CurrentUsername;
+                query = query.Where(e =>
+                    e.OwnerUsername == null ||
+                    (username != null && e.OwnerUsername == username));
+            }
 
             query = query.Where(e =>
                 e.Start.Month == targetMonth &&
@@ -401,7 +407,6 @@ if (!isAdmin)
 
             return RedirectToAction(nameof(UserCalendar), new { month, year });
         }
-
 
         // quick DB test
         [HttpGet("TestDb")]

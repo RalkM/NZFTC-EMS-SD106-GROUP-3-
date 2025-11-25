@@ -1,0 +1,276 @@
+﻿/* =========================================================
+   NZFTC EMS – Calendar Theme
+   Blended dashboard + employee + leave styles
+   ========================================================= */
+
+/* Shared design tokens (same as other modules) */
+:root {
+    --ems-bg: #f5f6fa;
+    --ems-surface: #ffffff;
+    --ems-surface-soft: #f8fafc;
+    --ems-primary: #0077B6;
+    --ems-primary-soft: #00B4D8;
+    --ems-accent: #FFD60A;
+    --ems-text-main: #1f2933;
+    --ems-text-muted: #6c757d;
+    --ems-border-subtle: #e1e5ee;
+    --ems-radius-sm: 10px;
+    --ems-radius-md: 14px;
+    --ems-radius-lg: 18px;
+    --ems-radius-pill: 999px;
+    --ems-shadow-soft: 0 4px 16px rgba(15, 23, 42, 0.06);
+    --ems-transition-fast: 160ms ease-out;
+}
+
+/* =========================================================
+   Page wrapper + header (align with dashboard/employee)
+   ========================================================= */
+
+.page-container {
+    max-width: 1320px;
+    margin: 0 auto 40px;
+    padding-top: 24px;
+    color: var(--ems-text-main);
+}
+
+.header-row {
+    gap: 12px;
+}
+
+.page-title {
+    font-family: "Poppins", system-ui, -apple-system, "Segoe UI", sans-serif;
+    font-size: 26px;
+    letter-spacing: 0.03em;
+}
+
+/* =========================================================
+   Calendar card + layout
+   ========================================================= */
+
+.calendar-card {
+    border-radius: var(--ems-radius-md);
+    border: 1px solid var(--ems-border-subtle);
+    background: var(--ems-surface);
+    box-shadow: var(--ems-shadow-soft);
+}
+
+.calendar-header-title {
+    font-family: "Poppins", system-ui, -apple-system, "Segoe UI", sans-serif;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-size: 16px;
+    color: var(--ems-text-main);
+}
+
+/* =========================================================
+   Buttons (reuse EMS gradient theme)
+   ========================================================= */
+
+/* Main primary (Prev/Next, Add Event) */
+.btn-primary {
+    background: linear-gradient(135deg, var(--ems-primary), var(--ems-primary-soft));
+    border: none;
+    border-radius: var(--ems-radius-sm);
+    font-size: 14px;
+    font-weight: 500;
+    padding: 8px 18px;
+    box-shadow: 0 6px 16px rgba(0, 119, 182, 0.35);
+    transition: background var(--ems-transition-fast), box-shadow var(--ems-transition-fast), transform var(--ems-transition-fast);
+    color: #ffffff;
+}
+
+    .btn-primary:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 10px 24px rgba(0, 119, 182, 0.45);
+    }
+
+/* Outline buttons (Prev / Next) */
+.btn-outline-primary {
+    border-radius: var(--ems-radius-sm);
+    border: 1px solid var(--ems-primary);
+    color: var(--ems-primary);
+    font-size: 13px;
+    font-weight: 500;
+    padding: 6px 16px;
+    background: #ffffff;
+    transition: background var(--ems-transition-fast), color var(--ems-transition-fast), box-shadow var(--ems-transition-fast);
+}
+
+    .btn-outline-primary:hover {
+        background: #f3f7ff;
+        box-shadow: 0 4px 12px rgba(0, 119, 182, 0.25);
+    }
+
+/* =========================================================
+   Table / grid styling
+   ========================================================= */
+
+.styled-table {
+    font-size: 14px;
+}
+
+    .styled-table thead.table-light {
+        background: #f5f7fb;
+        border-bottom: 1px solid var(--ems-border-subtle);
+    }
+
+    .styled-table th {
+        font-weight: 600;
+        color: var(--ems-text-main);
+        white-space: nowrap;
+    }
+
+/* =========================================================
+   Calendar cells
+   ========================================================= */
+
+.calendar-day,
+.calendar-empty {
+    position: relative;
+    padding: 0.4rem;
+    height: 110px;
+    vertical-align: top;
+    background-color: #ffffff;
+    transition: background-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.calendar-empty {
+    background-color: #f8fafc;
+}
+
+.calendar-day:hover {
+    background-color: #f7f9ff;
+    box-shadow: inset 0 0 0 1px #d0d7ff;
+}
+
+/* weekend shading */
+.calendar-weekend {
+    background-color: #fafbff;
+}
+
+/* today highlight */
+.calendar-today {
+    box-shadow: inset 0 0 0 2px #6aa7ff;
+    background-color: #e7f1ff;
+}
+
+/* day number badge (top-right) */
+.day-number {
+    position: absolute;
+    top: 6px;
+    right: 8px;
+    font-weight: 600;
+    font-size: 0.85rem;
+    border-radius: var(--ems-radius-pill);
+    padding: 2px 8px;
+    cursor: pointer;
+    transition: background-color var(--ems-transition-fast), color var(--ems-transition-fast), box-shadow var(--ems-transition-fast);
+    color: var(--ems-text-main);
+    background: rgba(248, 250, 252, 0.9);
+}
+
+.calendar-day:hover .day-number {
+    background: linear-gradient(135deg, var(--ems-primary), var(--ems-primary-soft));
+    color: #ffffff;
+    box-shadow: 0 4px 10px rgba(0, 119, 182, 0.35);
+}
+
+/* today badge override */
+.calendar-today .day-number {
+    background: var(--ems-primary-soft);
+    color: #ffffff;
+}
+
+/* container for event chips inside each cell */
+.calendar-events {
+    margin-top: 1.6rem;
+}
+
+/* =========================================================
+   Event badges / legend
+   ========================================================= */
+
+.calendar-event {
+    font-size: 0.7rem;
+    border-radius: var(--ems-radius-pill) !important;
+    padding: 4px 8px !important;
+}
+
+/* types */
+.badge-holiday {
+    background: #20c997;
+    color: #ffffff;
+}
+
+.badge-meeting {
+    background: #0077B6;
+    color: #ffffff;
+}
+
+.badge-leave {
+    background: #ffb100;
+    color: #212529;
+}
+
+.badge-other {
+    background: #6c757d;
+    color: #ffffff;
+}
+
+/* legend “today” */
+.badge-today {
+    border-radius: var(--ems-radius-pill);
+    background: #e7f1ff;
+    color: #1d4ed8;
+    border: 1px solid #6aa7ff;
+    font-size: 0.7rem;
+    padding: 4px 10px;
+}
+
+/* =========================================================
+   Alerts + misc
+   ========================================================= */
+
+.alert {
+    border-radius: var(--ems-radius-sm);
+}
+
+/* =========================================================
+   Responsive tweaks
+   ========================================================= */
+
+@media (max-width: 768px) {
+    .page-container {
+        padding-inline: 1.25rem;
+    }
+
+    .header-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+
+    .page-title {
+        font-size: 22px;
+    }
+
+    .calendar-day,
+    .calendar-empty {
+        height: 80px;
+        padding: 0.25rem;
+    }
+
+    .day-number {
+        font-size: 0.75rem;
+        padding: 2px 6px;
+    }
+
+    .calendar-header-title {
+        font-size: 14px;
+    }
+
+    .styled-table thead th {
+        font-size: 0.7rem;
+        padding: 0.25rem;
+    }
+}

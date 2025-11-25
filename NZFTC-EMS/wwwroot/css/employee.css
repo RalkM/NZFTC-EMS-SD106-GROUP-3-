@@ -1,0 +1,348 @@
+﻿/* =========================================================
+   NZFTC EMS – Employee Management Theme
+   Aligns with dashboard / profile / leave styles
+   ========================================================= */
+
+:root {
+    --ems-bg: #f5f6fa;
+    --ems-surface: #ffffff;
+    --ems-surface-soft: #f8fafc;
+    --ems-primary: #0077B6;
+    --ems-primary-soft: #00B4D8;
+    --ems-accent: #FFD60A;
+    --ems-text-main: #1f2933;
+    --ems-text-muted: #6c757d;
+    --ems-border-subtle: #e1e5ee;
+    --ems-radius-sm: 10px;
+    --ems-radius-md: 14px;
+    --ems-radius-lg: 18px;
+    --ems-radius-pill: 999px;
+    --ems-shadow-soft: 0 4px 16px rgba(15, 23, 42, 0.06);
+    --ems-transition-fast: 160ms ease-out;
+}
+
+/* =========================================================
+   Layout + page title
+   ========================================================= */
+
+.page-container {
+    max-width: 1320px;
+    margin: 0 auto 40px;
+    padding-top: 24px;
+    color: var(--ems-text-main);
+}
+
+.page-title {
+    font-family: "Poppins", system-ui, -apple-system, "Segoe UI", sans-serif;
+    font-size: 26px;
+    letter-spacing: 0.03em;
+}
+
+.header-row {
+    gap: 12px;
+}
+
+/* =========================================================
+   Cards
+   ========================================================= */
+
+.card {
+    border-radius: var(--ems-radius-md);
+    border: 1px solid var(--ems-border-subtle);
+    box-shadow: var(--ems-shadow-soft);
+    background: var(--ems-surface);
+}
+
+.card-body {
+    padding: 1.25rem 1.5rem;
+}
+
+.card-header {
+    background: linear-gradient(135deg, var(--ems-primary), var(--ems-primary-soft)) !important;
+    border-radius: var(--ems-radius-md) var(--ems-radius-md) 0 0 !important;
+    border-bottom: none;
+    font-family: "Poppins", system-ui, sans-serif;
+    font-size: 14px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+/* index: filter bar wrapper */
+.filter-card .card-body {
+    padding: 1rem 1.25rem;
+}
+
+/* create/edit: form wrapper */
+.form-section-title {
+    font-size: 15px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 4px;
+}
+
+.form-section {
+    padding: 1.25rem 1.5rem;
+    border-radius: var(--ems-radius-md);
+    border: 1px solid var(--ems-border-subtle);
+    background: var(--ems-surface-soft);
+    margin-bottom: 1.25rem;
+}
+
+/* details view dl styles */
+.details-card dl {
+    margin-bottom: 0;
+}
+
+.details-card dt {
+    font-weight: 600;
+    color: var(--ems-text-muted);
+    font-size: 0.9rem;
+}
+
+.details-card dd {
+    margin-bottom: 0.5rem;
+    font-size: 0.95rem;
+}
+
+/* delete warning */
+.danger-card {
+    border-left: 4px solid #dc3545;
+}
+
+/* =========================================================
+   Tables
+   ========================================================= */
+
+.styled-table {
+    font-size: 14px;
+}
+
+    .styled-table thead.table-light {
+        background: #f5f7fb;
+        border-bottom: 1px solid var(--ems-border-subtle);
+    }
+
+    .styled-table th {
+        font-weight: 600;
+        color: var(--ems-text-main);
+        white-space: nowrap;
+    }
+
+    .styled-table tbody tr:hover {
+        background: #f7f9ff;
+    }
+
+    /* index table zebra */
+    .styled-table tbody tr:nth-child(even) {
+        background: #fafbff;
+    }
+
+        .styled-table tbody tr:nth-child(even):hover {
+            background: #f1f5ff;
+        }
+
+/* actions column buttons */
+.table .btn-sm {
+    border-radius: var(--ems-radius-pill);
+    font-size: 12px;
+    padding: 4px 12px;
+}
+
+/* =========================================================
+   Forms
+   ========================================================= */
+
+.form-control,
+.form-select {
+    border-radius: var(--ems-radius-sm);
+    border: 1px solid #d5dde9;
+    font-size: 14px;
+    padding: 8px 12px;
+    transition: border-color var(--ems-transition-fast), box-shadow var(--ems-transition-fast);
+}
+
+    .form-control:focus,
+    .form-select:focus {
+        border-color: var(--ems-primary);
+        box-shadow: 0 0 0 3px rgba(0, 119, 182, 0.15);
+    }
+
+/* =========================================================
+   Buttons – reuse theme
+   ========================================================= */
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--ems-primary), var(--ems-primary-soft));
+    border: none;
+    border-radius: var(--ems-radius-sm);
+    font-size: 14px;
+    font-weight: 500;
+    padding: 8px 18px;
+    box-shadow: 0 6px 16px rgba(0, 119, 182, 0.35);
+    transition: background var(--ems-transition-fast), box-shadow var(--ems-transition-fast), transform var(--ems-transition-fast);
+}
+
+    .btn-primary:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 10px 24px rgba(0, 119, 182, 0.45);
+    }
+
+.btn-success,
+.btn-danger,
+.btn-secondary {
+    border-radius: var(--ems-radius-sm);
+    font-size: 14px;
+    padding: 8px 16px;
+}
+
+.btn-secondary {
+    border: 1px solid #cfd6e2;
+    background: #f4f6fb;
+    color: var(--ems-text-main);
+}
+
+    .btn-secondary:hover {
+        background: #e8edf8;
+        border-color: var(--ems-primary);
+    }
+
+/* Add Employee button on index */
+.btn-add-employee {
+    border-radius: var(--ems-radius-pill);
+    padding-inline: 20px;
+}
+
+/* =========================================================
+   Responsive
+   ========================================================= */
+
+@media (max-width: 768px) {
+    .page-container {
+        padding-inline: 1.25rem;
+    }
+
+    .page-title {
+        font-size: 22px;
+    }
+
+    .header-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+
+    .form-section {
+        padding: 1rem 1.1rem;
+    }
+}
+
+/* ================================
+   Global Button Theme for Employee Module
+   ================================ */
+
+/* Main Add Button */
+.ems-btn-primary {
+    background: linear-gradient(135deg, #0077B6, #00B4D8);
+    border: none;
+    padding: 10px 22px;
+    border-radius: 10px;
+    color: #fff;
+    font-weight: 600;
+    box-shadow: 0 6px 16px rgba(0, 119, 182, 0.35);
+    transition: 0.2s ease;
+}
+
+    .ems-btn-primary:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 12px 26px rgba(0, 119, 182, 0.45);
+    }
+
+/* Outline Buttons */
+.ems-outline-info,
+.ems-outline-warning,
+.ems-outline-danger {
+    border-radius: 10px;
+    padding: 4px 14px;
+    font-size: 13px;
+    font-weight: 500;
+    background: white;
+    transition: 0.2s ease;
+}
+
+/* Outline Colors */
+.ems-outline-info {
+    border: 1px solid #00B4D8;
+    color: #0077B6;
+}
+
+    .ems-outline-info:hover {
+        background: #f0fbff;
+    }
+
+/* Edit */
+.ems-outline-warning {
+    border: 1px solid #FFD60A;
+    color: #BD9B00;
+}
+
+    .ems-outline-warning:hover {
+        background: #fffbea;
+    }
+
+/* Delete */
+.ems-outline-danger {
+    border: 1px solid #d9534f;
+    color: #c9302c;
+}
+
+    .ems-outline-danger:hover {
+        background: #fff5f5;
+    }
+
+/* ============================
+   Delete / confirm button pair
+   ============================ */
+
+.delete-actions {
+    margin-top: 1.25rem;
+    display: inline-flex;
+    gap: 10px;
+}
+
+/* Primary destructive action – red, matches pill buttons elsewhere */
+.btn.ems-btn-danger {
+    border-radius: var(--ems-radius-sm);
+    padding: 8px 20px;
+    font-size: 14px;
+    font-weight: 500;
+    border: none;
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+    color: #ffffff;
+    box-shadow: 0 6px 16px rgba(220, 38, 38, 0.35);
+    transition: background var(--ems-transition-fast), box-shadow var(--ems-transition-fast), transform var(--ems-transition-fast);
+}
+
+    .btn.ems-btn-danger:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 10px 24px rgba(220, 38, 38, 0.45);
+    }
+
+/* Neutral secondary action – outline style to match theme */
+.btn.ems-btn-secondary {
+    border-radius: var(--ems-radius-sm);
+    padding: 8px 20px;
+    font-size: 14px;
+    font-weight: 500;
+    border: 1px solid #d5dde9;
+    background: #ffffff;
+    color: var(--ems-text-main);
+    transition: background var(--ems-transition-fast), color var(--ems-transition-fast), box-shadow var(--ems-transition-fast), border-color var(--ems-transition-fast);
+}
+
+    .btn.ems-btn-secondary:hover {
+        background: #f4f6fb;
+        border-color: var(--ems-primary);
+        box-shadow: 0 4px 12px rgba(15, 23, 42, 0.12);
+    }
+

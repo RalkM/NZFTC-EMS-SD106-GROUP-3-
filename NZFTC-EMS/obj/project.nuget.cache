@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "e1U4rUUgc6E=",
+  "dgSpecHash": "8kbOOWgw/eE=",
   "success": true,
-  "projectFilePath": "C:\\Users\\Dhona\\OneDrive\\Documents\\GitHub\\NZFTC-EMS-SD106-GROUP-3-\\NZFTC-EMS\\NZFTC-EMS.csproj",
+  "projectFilePath": "C:\\SD106-EmployeeSystem\\NZFTC-EMS-SD106-GROUP-3-\\NZFTC-EMS\\NZFTC-EMS.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Dhona\\.nuget\\packages\\azure.core\\1.38.0\\azure.core.1.38.0.nupkg.sha512",
     "C:\\Users\\Dhona\\.nuget\\packages\\azure.identity\\1.11.4\\azure.identity.1.11.4.nupkg.sha512",

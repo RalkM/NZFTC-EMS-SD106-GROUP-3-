@@ -6,35 +6,56 @@
     ViewData["Title"] = "Delete Pay Grade";
 }
 
-<h2>Delete Pay Grade</h2>
+<link rel="stylesheet" href="~/css/employee.css" asp-append-version="true" />
 
-<div class="alert alert-warning">
-    Are you sure you want to delete pay grade <strong>@Model.Name</strong>?
+<div class="page-container">
+
+    <div class="d-flex justify-content-between align-items-center mb-3 admin-header-row">
+        <h2 class="page-title fw-bold mb-0">Delete Pay Grade</h2>
+
+        <a asp-controller="paygrade_management"
+           asp-action="Index"
+           class="btn btn-outline-secondary">
+           <- Back
+        </a>
+    </div>
+
+    <div class="card admin-form-card shadow-sm border-0 mb-3">
+        <div class="card-body">
+
+            <div class="alert alert-warning">
+                Are you sure you want to delete pay grade <strong>@Model.Name</strong>?
+            </div>
+
+            <dl class="row mb-0">
+                <dt class="col-sm-3">Base Rate</dt>
+                <dd class="col-sm-9">@Model.BaseRate.ToString("C2")</dd>
+
+                <dt class="col-sm-3">Rate Type</dt>
+                <dd class="col-sm-9">@Model.RateType</dd>
+
+                <dt class="col-sm-3">Active</dt>
+                <dd class="col-sm-9">@(Model.IsActive ? "Yes" : "No")</dd>
+            </dl>
+
+        </div>
+    </div>
+
+    <form asp-controller="paygrade_management"
+          asp-action="DeleteConfirmed"
+          asp-route-id="@Model.PayGradeId"
+          method="post">
+        @Html.AntiForgeryToken()
+
+        <button type="submit" class="btn ems-btn-danger">
+            Yes, delete
+        </button>
+        <a asp-controller="paygrade_management"
+           asp-action="Index"
+           class="btn btn-outline-secondary">
+            Cancel
+        </a>
+    </form>
+
 </div>
 
-<dl class="row">
-    <dt class="col-sm-3">Base Rate</dt>
-    <dd class="col-sm-9">@Model.BaseRate.ToString("C2")</dd>
-
-    <dt class="col-sm-3">Rate Type</dt>
-    <dd class="col-sm-9">@Model.RateType</dd>
-
-    <dt class="col-sm-3">Active</dt>
-    <dd class="col-sm-9">@(Model.IsActive ? "Yes" : "No")</dd>
-</dl>
-
-<form asp-controller="paygrade_management"
-      asp-action="DeleteConfirmed"
-      asp-route-id="@Model.PayGradeId"
-      method="post">
-    @Html.AntiForgeryToken()
-
-    <a asp-controller="paygrade_management"
-       asp-action="Index"
-       class="btn btn-secondary me-2">
-        Cancel
-    </a>
-    <button type="submit" class="btn btn-danger">
-        Delete
-    </button>
-</form>

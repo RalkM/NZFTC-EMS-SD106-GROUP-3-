@@ -6,47 +6,69 @@
     ViewData["Title"] = "Delete Job Position";
 }
 
-<h2>Delete Job Position</h2>
+<link rel="stylesheet" href="~/css/jobposition.css" asp-append-version="true" />
 
-<div class="alert alert-warning">
-    Are you sure you want to delete the job position
-    <strong>@Model.Name</strong>
-    in department <strong>@Model.Department</strong>?
+<div class="page-container">
+
+    <!-- Header -->
+    <div class="header-row d-flex justify-content-between align-items-center mb-3">
+        <h2 class="page-title fw-bold mb-1">Delete Job Position</h2>
+    </div>
+
+    <!-- Warning + details card -->
+    <div class="card danger-card mb-3">
+        <div class="card-body">
+
+            <div class="alert alert-warning mb-3">
+                Are you sure you want to delete the job position
+                <strong>@Model.Name</strong>
+                in department <strong>@Model.Department</strong>?
+            </div>
+
+            <div class="details-card">
+                <dl class="row">
+                    <dt class="col-sm-3">Department</dt>
+                    <dd class="col-sm-9">@Model.Department</dd>
+
+                    <dt class="col-sm-3">Job Title</dt>
+                    <dd class="col-sm-9">@Model.Name</dd>
+
+                    <dt class="col-sm-3">Pay Grade</dt>
+                    <dd class="col-sm-9">@Model.PayGrade?.Name</dd>
+
+                    <dt class="col-sm-3">Access Role</dt>
+                    <dd class="col-sm-9">@Model.AccessRole</dd>
+
+                    <dt class="col-sm-3">Active</dt>
+                    <dd class="col-sm-9">@(Model.IsActive ? "Yes" : "No")</dd>
+
+                    <dt class="col-sm-3">Description</dt>
+                    <dd class="col-sm-9">@Model.Description</dd>
+                </dl>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Actions -->
+    <form asp-controller="jobposition_management"
+          asp-action="DeleteConfirmed"
+          asp-route-id="@Model.JobPositionId"
+          method="post">
+        @Html.AntiForgeryToken()
+
+        <div class="delete-actions">
+            <button type="submit" class="btn ems-btn-danger">
+                Delete
+            </button>
+
+            <a asp-controller="jobposition_management"
+               asp-action="Index"
+               class="btn ems-btn-secondary">
+                Cancel
+            </a>
+        </div>
+    </form>
+
 </div>
 
-<dl class="row">
-    <dt class="col-sm-3">Department</dt>
-    <dd class="col-sm-9">@Model.Department</dd>
-
-    <dt class="col-sm-3">Job Title</dt>
-    <dd class="col-sm-9">@Model.Name</dd>
-
-    <dt class="col-sm-3">Pay Grade</dt>
-    <dd class="col-sm-9">@Model.PayGrade?.Name</dd>
-
-    <dt class="col-sm-3">Access Role</dt>
-    <dd class="col-sm-9">@Model.AccessRole</dd>
-
-    <dt class="col-sm-3">Active</dt>
-    <dd class="col-sm-9">@(Model.IsActive ? "Yes" : "No")</dd>
-
-    <dt class="col-sm-3">Description</dt>
-    <dd class="col-sm-9">@Model.Description</dd>
-</dl>
-
-<form asp-controller="jobposition_management"
-      asp-action="DeleteConfirmed"
-      asp-route-id="@Model.JobPositionId"
-      method="post">
-    @Html.AntiForgeryToken()
-
-    <a asp-controller="jobposition_management"
-       asp-action="Index"
-       class="btn btn-secondary me-2">
-        Cancel
-    </a>
-
-    <button type="submit" class="btn btn-danger">
-        Delete
-    </button>
-</form>

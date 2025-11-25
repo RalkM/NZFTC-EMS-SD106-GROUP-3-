@@ -1,0 +1,342 @@
+﻿/* =========================================================
+   NZFTC EMS – Leave module theme
+   Matches dashboard + profile styling
+   ========================================================= */
+
+:root {
+    --ems-bg: #f5f6fa;
+    --ems-surface: #ffffff;
+    --ems-surface-soft: #f8fafc;
+    --ems-primary: #0077B6;
+    --ems-primary-soft: #00B4D8;
+    --ems-accent: #FFD60A;
+    --ems-text-main: #1f2933;
+    --ems-text-muted: #6c757d;
+    --ems-border-subtle: #e1e5ee;
+    --ems-radius-sm: 10px;
+    --ems-radius-md: 14px;
+    --ems-radius-lg: 18px;
+    --ems-radius-pill: 999px;
+    --ems-shadow-soft: 0 4px 16px rgba(15, 23, 42, 0.06);
+    --ems-transition-fast: 160ms ease-out;
+}
+
+/* =========================================================
+   Page wrapper + titles (works for page-container + page-wrapper)
+   ========================================================= */
+
+.page-container,
+.page-wrapper {
+    max-width: 1320px;
+    margin: 0 auto 40px;
+    padding-top: 24px;
+    color: var(--ems-text-main);
+}
+
+.page-title {
+    font-family: "Poppins", system-ui, -apple-system, "Segoe UI", sans-serif;
+    font-size: 26px;
+    letter-spacing: 0.03em;
+    text-transform: none;
+}
+
+/* little helper row already used in your views */
+.header-row,
+.page-wrapper > .d-flex {
+    gap: 12px;
+}
+
+/* =========================================================
+   Cards (forms, tables, info blocks)
+   ========================================================= */
+
+.card {
+    border-radius: var(--ems-radius-md);
+    border: 1px solid var(--ems-border-subtle);
+    box-shadow: var(--ems-shadow-soft);
+    background: var(--ems-surface);
+}
+
+/* Top headers for all leave cards */
+.page-container .card-header,
+.page-wrapper .card-header {
+    background: linear-gradient(135deg, var(--ems-primary), var(--ems-primary-soft)) !important;
+    border-radius: var(--ems-radius-md) var(--ems-radius-md) 0 0 !important;
+    border-bottom: none;
+    font-family: "Poppins", system-ui, sans-serif;
+    font-size: 14px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+/* Card body padding */
+.card-body {
+    padding: 1.25rem 1.5rem;
+}
+
+/* Apply-for-leave main card can look a bit larger */
+.apply-leave-card .card-body {
+    padding-top: 1.5rem;
+    padding-bottom: 1.75rem;
+}
+
+/* =========================================================
+   Buttons (re-use dashboard look) – MORE SPECIFIC THAN BOOTSTRAP
+   ========================================================= */
+
+/* Primary CTA – Submit Application, etc. */
+.page-container .btn-primary,
+.page-wrapper .btn-primary,
+.apply-leave-card .btn-primary,
+.page-container button.btn.btn-primary,
+.page-wrapper button.btn.btn-primary {
+    background: linear-gradient(135deg, var(--ems-primary), var(--ems-primary-soft)) !important;
+    border: none !important;
+    border-radius: var(--ems-radius-sm) !important;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 8px 20px;
+    box-shadow: 0 6px 16px rgba(0, 119, 182, 0.35);
+    transition: background var(--ems-transition-fast), box-shadow var(--ems-transition-fast), transform var(--ems-transition-fast), border-color var(--ems-transition-fast);
+    color: #ffffff !important;
+}
+
+    .page-container .btn-primary:hover,
+    .page-wrapper .btn-primary:hover,
+    .apply-leave-card .btn-primary:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 10px 24px rgba(0, 119, 182, 0.45);
+    }
+
+/* Outline primary – e.g. small links/buttons */
+.page-container .btn-outline-primary,
+.page-wrapper .btn-outline-primary {
+    border-radius: var(--ems-radius-sm) !important;
+    font-size: 14px;
+    padding: 8px 20px;
+    border-color: var(--ems-primary) !important;
+    color: var(--ems-primary) !important;
+    background: #ffffff !important;
+    transition: background var(--ems-transition-fast), color var(--ems-transition-fast), box-shadow var(--ems-transition-fast);
+}
+
+    .page-container .btn-outline-primary:hover,
+    .page-wrapper .btn-outline-primary:hover {
+        background: #f3f7ff !important;
+        color: var(--ems-primary) !important;
+        box-shadow: 0 4px 12px rgba(0, 119, 182, 0.25);
+    }
+
+/* Neutral secondary – your Cancel buttons */
+.page-container .btn-secondary,
+.page-wrapper .btn-secondary {
+    border-radius: var(--ems-radius-sm) !important;
+    font-size: 14px;
+    padding: 8px 18px;
+    border: 1px solid #cfd6e2 !important;
+    background: #f4f6fb !important;
+    color: var(--ems-text-main) !important;
+}
+
+    .page-container .btn-secondary:hover,
+    .page-wrapper .btn-secondary:hover {
+        background: #e8edf8 !important;
+        border-color: var(--ems-primary) !important;
+    }
+
+/* Danger / success in leave tables & modals */
+.page-container .btn-danger,
+.page-container .btn-success,
+.page-wrapper .btn-danger,
+.page-wrapper .btn-success {
+    border-radius: var(--ems-radius-sm) !important;
+    font-size: 14px;
+    padding: 6px 18px;
+}
+
+/* Small action buttons in tables */
+.table .btn-sm {
+    border-radius: 999px !important;
+    font-size: 12px;
+    padding: 4px 14px;
+}
+
+/* =========================================================
+   Form controls (Apply Leave + Leave Policies + Reject modal)
+   ========================================================= */
+
+.form-control,
+.form-select,
+textarea.form-control {
+    border-radius: var(--ems-radius-sm);
+    border: 1px solid #d5dde9;
+    font-size: 14px;
+    padding: 8px 12px;
+    transition: border-color var(--ems-transition-fast), box-shadow var(--ems-transition-fast);
+}
+
+    .form-control:focus,
+    .form-select:focus,
+    textarea.form-control:focus {
+        border-color: var(--ems-primary);
+        box-shadow: 0 0 0 3px rgba(0, 119, 182, 0.15);
+    }
+
+/* radio / checkbox labels spacing */
+.form-check-label {
+    font-size: 14px;
+}
+
+/* Leave balances strip in Apply-for-Leave */
+.leave-balance-panel {
+    background: #f8fafc;
+    border-radius: var(--ems-radius-sm);
+    border: 1px solid #edf1f9;
+    padding: 10px 14px;
+    font-size: 14px;
+}
+
+/* =========================================================
+   Tables – history, admin list, reports
+   ========================================================= */
+
+.styled-table {
+    font-size: 14px;
+}
+
+    .styled-table thead.table-light {
+        background: #f5f7fb;
+        border-bottom: 1px solid var(--ems-border-subtle);
+    }
+
+    .styled-table th {
+        font-weight: 600;
+        color: var(--ems-text-main);
+        white-space: nowrap;
+    }
+
+    .styled-table tbody tr:hover {
+        background: #f7f9ff;
+    }
+
+    /* Zebra rows for readability */
+    .styled-table tbody tr:nth-child(even) {
+        background: #fafbff;
+    }
+
+        /* Keep striped highlight on hover */
+        .styled-table tbody tr:nth-child(even):hover {
+            background: #f1f5ff;
+        }
+
+/* Status badges already use Bootstrap colors; just soften radius */
+.badge {
+    border-radius: 999px;
+    padding: 4px 10px;
+    font-size: 11px;
+}
+
+/* =========================================================
+   Modals – Reject Leave
+   ========================================================= */
+
+.modal-content {
+    border-radius: var(--ems-radius-md);
+    box-shadow: 0 18px 40px rgba(15, 23, 42, 0.30);
+}
+
+.modal-header {
+    border-bottom: 1px solid var(--ems-border-subtle);
+}
+
+    .modal-header.text-white {
+        background: linear-gradient(135deg, var(--ems-primary), var(--ems-primary-soft)) !important;
+        border-radius: var(--ems-radius-md) var(--ems-radius-md) 0 0 !important;
+    }
+
+.modal-footer {
+    border-top: 1px solid var(--ems-border-subtle);
+}
+
+/* =========================================================
+   Responsive tweaks
+   ========================================================= */
+
+@media (max-width: 768px) {
+    .page-container,
+    .page-wrapper {
+        padding-left: 1.25rem;
+        padding-right: 1.25rem;
+    }
+
+    .page-title {
+        font-size: 22px;
+    }
+
+    .card-body {
+        padding: 1rem 1.1rem;
+    }
+
+    .header-row,
+    .page-wrapper > .d-flex {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+
+/* =========================================================
+   APPLY LEAVE – SPECIFIC FIXES
+   Ensures buttons follow dashboard theme
+   ========================================================= */
+
+/* Make Submit always use EMS gradient style */
+.apply-leave-card .btn-primary,
+.page-container .btn-primary,
+.page-container button.btn-primary {
+    background: linear-gradient(135deg, var(--ems-primary), var(--ems-primary-soft)) !important;
+    border: none !important;
+    border-radius: var(--ems-radius-sm) !important;
+    color: #ffffff !important;
+    font-weight: 500;
+    font-size: 14px;
+    padding: 8px 22px !important;
+    box-shadow: 0 6px 16px rgba(0, 119, 182, 0.35);
+    transition: 160ms ease-out;
+}
+
+    .apply-leave-card .btn-primary:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 10px 24px rgba(0, 119, 182, 0.45);
+    }
+
+/* Cancel button – neutral styled */
+.apply-leave-card .btn-secondary,
+.page-container .btn-secondary {
+    background: #f4f6fb !important;
+    color: var(--ems-text-main) !important;
+    border: 1px solid #cfd6e2 !important;
+    border-radius: var(--ems-radius-sm) !important;
+    padding: 8px 22px !important;
+    font-size: 14px;
+}
+
+    .apply-leave-card .btn-secondary:hover {
+        background: #e8edf8 !important;
+        border-color: var(--ems-primary) !important;
+    }
+
+/* Ensure date, text, textarea match profile/dashboard style */
+.apply-leave-card .form-control,
+.apply-leave-card textarea.form-control,
+.apply-leave-card input[type=date] {
+    border-radius: var(--ems-radius-sm);
+    border: 1px solid #d5dde9;
+    padding: 8px 12px;
+    font-size: 14px;
+}
+
+    .apply-leave-card .form-control:focus {
+        border-color: var(--ems-primary);
+        box-shadow: 0 0 0 3px rgba(0, 120, 186, 0.15);
+    }
+

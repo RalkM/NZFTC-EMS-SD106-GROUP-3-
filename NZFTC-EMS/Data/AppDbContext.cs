@@ -26,9 +26,13 @@ namespace NZFTC_EMS.Data
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
         // Support module
         public DbSet<SupportTicket> SupportTickets => Set<SupportTicket>();
         public DbSet<SupportMessage> SupportMessages => Set<SupportMessage>();
+=======
+public DbSet<Announcement> Announcements { get; set; } = default!;
+>>>>>>> Stashed changes
 =======
 public DbSet<Announcement> Announcements { get; set; } = default!;
 >>>>>>> Stashed changes
@@ -279,6 +283,9 @@ SeedAnnouncements(b);
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes

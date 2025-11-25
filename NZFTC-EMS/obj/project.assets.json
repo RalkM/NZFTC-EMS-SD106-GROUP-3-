@@ -6072,6 +6072,7 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 <<<<<<< HEAD
     "C:\\Users\\rr_ob\\.nuget\\packages\\": {},
 =======
@@ -6089,11 +6090,15 @@
 =======
     "C:\\Users\\aries\\.nuget\\packages\\": {},
 >>>>>>> Stashed changes
+=======
+    "C:\\Users\\aries\\.nuget\\packages\\": {},
+>>>>>>> Stashed changes
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
@@ -6139,6 +6144,13 @@
       "packagesPath": "C:\\Users\\aries\\.nuget\\packages\\",
       "outputPath": "D:\\xampp\\htdocs\\NZFTC-EMS-SD106-GROUP-3-\\NZFTC-EMS\\obj\\",
 >>>>>>> Stashed changes
+=======
+      "projectUniqueName": "D:\\xampp\\htdocs\\NZFTC-EMS-SD106-GROUP-3-\\NZFTC-EMS\\NZFTC-EMS.csproj",
+      "projectName": "NZFTC-EMS",
+      "projectPath": "D:\\xampp\\htdocs\\NZFTC-EMS-SD106-GROUP-3-\\NZFTC-EMS\\NZFTC-EMS.csproj",
+      "packagesPath": "C:\\Users\\aries\\.nuget\\packages\\",
+      "outputPath": "D:\\xampp\\htdocs\\NZFTC-EMS-SD106-GROUP-3-\\NZFTC-EMS\\obj\\",
+>>>>>>> Stashed changes
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -6148,11 +6160,15 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 <<<<<<< HEAD
         "C:\\Users\\rr_ob\\AppData\\Roaming\\NuGet\\NuGet.Config",
 =======
         "C:\\Users\\denis\\AppData\\Roaming\\NuGet\\NuGet.Config",
 >>>>>>> 12a2da7a0f1d6e59acf2c3deed664e7d6fc61a22
+=======
+        "C:\\Users\\aries\\AppData\\Roaming\\NuGet\\NuGet.Config",
+>>>>>>> Stashed changes
 =======
         "C:\\Users\\aries\\AppData\\Roaming\\NuGet\\NuGet.Config",
 >>>>>>> Stashed changes
@@ -6272,6 +6288,7 @@
             "privateAssets": "all"
           }
         },
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
@@ -6703,6 +6720,9 @@
           "System.Xml.XPath.XDocument": "(, 5.0.32767]"
         }
 >>>>>>> 12a2da7a0f1d6e59acf2c3deed664e7d6fc61a22
+=======
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.300/PortableRuntimeIdentifierGraph.json"
+>>>>>>> Stashed changes
 =======
         "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.300/PortableRuntimeIdentifierGraph.json"
 >>>>>>> Stashed changes

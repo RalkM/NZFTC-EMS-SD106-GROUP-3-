@@ -1,0 +1,65 @@
+ .page-container {
+        max-width: 1100px;
+        margin: 0 auto;
+    }
+
+    .detail-label {
+        font-size: 0.8rem;
+        font-weight: 600;
+        text-transform: uppercase;
+    }
+
+    .detail-value {
+        font-size: 0.95rem;
+    }
+
+    .payslip-table th {
+        background-color: #f8f9fa;
+        font-weight: 600;
+    }
+
+    .printable-card {
+        background: #ffffff;
+    }
+
+    /* 🔽 PRINT-ONLY STYLES */
+    @media print {
+        body {
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+            background: #ffffff !important;
+        }
+
+        /* Hide everything by default */
+        body * {
+            visibility: hidden;
+        }
+
+        /* Show only the payslip area */
+        .page-container,
+        .printable-card,
+        .printable-card * {
+            visibility: visible;
+        }
+
+        .page-container {
+            max-width: 100% !important;
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+
+        .printable-card {
+            box-shadow: none !important;
+            border: none !important;
+            border-radius: 0 !important;
+
+            /* A4 is ~210mm wide – use a bit less and center */
+            width: 180mm;
+            margin: 20mm auto 0 auto;  /* top margin + centered horizontally */
+        }
+
+        /* Hide the toolbar (title + print button) on paper */
+        .payslip-toolbar {
+            display: none !important;
+        }
+    }

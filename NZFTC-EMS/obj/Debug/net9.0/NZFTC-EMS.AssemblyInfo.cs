@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("NZFTC-EMS")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+8ded961602b0f6ca4ba9beda763a77da5b6f25ec")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+673156e11ad593f81c63e866705cf0ea57d7f177")]
 [assembly: System.Reflection.AssemblyProductAttribute("NZFTC-EMS")]
 [assembly: System.Reflection.AssemblyTitleAttribute("NZFTC-EMS")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

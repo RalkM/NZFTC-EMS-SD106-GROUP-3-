@@ -1,0 +1,130 @@
+﻿@using NZFTC_EMS.Data.Entities
+@model EmployeePayrollSummary
+
+@{
+    Layout = "~/Views/Shared/_portal.cshtml";
+        ViewData["Title"] = "Payslip Details";
+
+    var emp = Model.Employee;
+    var run = Model.PayrollRun;
+
+    var employeeName = emp != null ? $"{emp.FirstName} {emp.LastName}" : $"Employee #{Model.EmployeeId}";
+    var employeeCode = emp?.EmployeeCode ?? "—";
+    var department   = emp?.Department ?? "—";
+}
+
+<link rel="stylesheet" href="~/css/payslip_details.css" asp-append-version="true" />
+
+<div class="page-container py-4">
+
+<div class="d-flex justify-content-between align-items-center mb-3 payslip-toolbar">
+    <h2 class="fw-bold mb-0">Payslip</h2>
+
+    <button type="button"
+            class="btn btn-primary"
+            onclick="window.print()">
+        Print Payslip
+    </button>
+</div>
+
+    <div class="card shadow-sm border-0 printable-card">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+            <div>
+                <div class="fw-semibold">NZFTC Employee Payslip</div>
+                @if (run != null)
+                {
+                    <small>@run.PeriodStart.ToString("dd MMM yyyy") – @run.PeriodEnd.ToString("dd MMM yyyy")</small>
+                }
+            </div>
+            <div class="d-flex align-items-center">
+                <!-- change path if your logo file is different -->
+                <img src="~/lib/Image-white.png" alt="NZFTC Logo" style="height:40px;" />
+            </div>
+        </div>
+
+        <div class="card-body">
+
+            <!-- EMPLOYEE INFO -->
+            <h5 class="fw-semibold mb-3">Employee Information</h5>
+            <div class="row g-3 mb-4">
+                <div class="col-md-4">
+                    <div class="detail-label">Name</div>
+                    <div class="detail-value">@employeeName</div>
+                </div>
+                <div class="col-md-4">
+                    <div class="detail-label">Employee Code</div>
+                    <div class="detail-value">@employeeCode</div>
+                </div>
+                <div class="col-md-4">
+                    <div class="detail-label">Department</div>
+                    <div class="detail-value">@department</div>
+                </div>
+            </div>
+
+            <!-- PAY PERIOD -->
+            <h5 class="fw-semibold mb-3">Pay Period</h5>
+            <div class="row g-3 mb-4">
+                <div class="col-md-4">
+                    <div class="detail-label">Period Code</div>
+                    <div class="detail-value"> @if (run != null)
+        {
+            @($"{run.PeriodStart:dd MMM yyyy} – {run.PeriodEnd:dd MMM yyyy}")
+        }
+        else
+        {
+            @:—
+        }</div>
+                </div>
+                <div class="col-md-4">
+                    <div class="detail-label">Start</div>
+                    <div class="detail-value">@run?.PeriodStart.ToString("d")</div>
+                </div>
+                <div class="col-md-4">
+                    <div class="detail-label">End</div>
+                    <div class="detail-value">@run?.PeriodEnd.ToString("d")</div>
+                </div>
+            </div>
+
+            <!-- PAY DETAILS -->
+            <h5 class="fw-semibold mb-3">Pay Details</h5>
+
+            <div class="table-responsive mb-3">
+                <table class="table table-bordered mb-0 payslip-table">
+                    <tbody>
+                        <tr>
+                            <th scope="row" style="width:35%;">Pay Rate</th>
+                            <td>
+                                @Model.PayRate.ToString("C")
+                                <span class="text-muted ms-1">(@Model.RateType)</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Total Hours</th>
+                            <td>@Model.TotalHours.ToString("0.##")</td>
+                        </tr>
+                        <tr>
+                            <th scope="row" class="text-primary">Gross Pay</th>
+                            <td class="fw-semibold text-primary">@Model.GrossPay.ToString("C")</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">PAYE (Tax)</th>
+                            <td>@Model.PAYE.ToString("C")</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Other Deductions</th>
+                            <td>@Model.Deductions.ToString("C")</td>
+                        </tr>
+                        <tr>
+                            <th scope="row" class="text-success">Net Pay</th>
+                            <td class="fw-bold text-success">@Model.NetPay.ToString("C")</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <small class="text-muted">
+                Generated on @Model.GeneratedAt.ToLocalTime().ToString("dddd, dd MMMM yyyy HH:mm")
+            </small>
+        </div>
+    </div>
+</div>

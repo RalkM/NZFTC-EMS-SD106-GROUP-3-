@@ -1,0 +1,145 @@
+﻿@using NZFTC_EMS.Data.Entities
+@model IEnumerable<PayrollRun>
+
+@{
+    Layout = "~/Views/Shared/_portal.cshtml";
+        ViewData["Title"] = "Payroll Summary";
+}
+
+<div class="page-container">
+
+    <!-- PAGE HEAD -->
+    <div class="header-row d-flex justify-content-between align-items-center mb-4">
+        <h2 class="page-title fw-bold">Payroll Summary</h2>
+
+  <form asp-controller="payroll_management"
+      asp-action="create_weekly" method="post" class="d-inline">
+    @Html.AntiForgeryToken()
+    <button class="btn btn-primary">Run Payroll</button>
+</form>
+
+       
+    </div>
+
+    <!-- ALERTS -->
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success">@TempData["Success"]</div>
+    }
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger">@TempData["Error"]</div>
+    }
+
+    <div class="card shadow-sm border-0">
+        <div class="card-body">
+
+            @if (!Model.Any())
+            {
+                <p class="text-muted mb-0">No payroll runs yet.</p>
+            }
+            else
+            {
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle styled-table mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Pay Period</th>
+                                <th>Frequency</th>
+                                <th>Employees</th>
+                                <th class="text-end">Total Gross</th>
+                                <th class="text-end">Total Net</th>
+                                <th>Status</th>
+                                <th>Created</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var run in Model)
+                            {
+                                var payslips = run.Payslips ?? new List<EmployeePayrollSummary>();
+                                var employeeCount = payslips.Count;
+                                var grossTotal = payslips.Sum(p => p.GrossPay);
+                                var netTotal = payslips.Sum(p => p.NetPay);
+
+                                string statusLabel;
+                                string badgeClass;
+
+                                switch (run.Status)
+                                {
+                                    case PayrollRunStatus.Paid:
+                                        statusLabel = "Paid";
+                                        badgeClass = "bg-success";
+                                        break;
+                                    case PayrollRunStatus.Finalizing:
+                                        statusLabel = "Finalizing";
+                                        badgeClass = "bg-info";
+                                        break;
+                                    case PayrollRunStatus.Open:
+                                        statusLabel = "Open";
+                                        badgeClass = "bg-secondary";
+                                        break;
+                                    default:
+                                        statusLabel = "Cancelled";
+                                        badgeClass = "bg-danger";
+                                        break;
+                                }
+
+                                <tr>
+                                    <td>
+                                        @run.PeriodStart.ToString("dd MMM yyyy") – @run.PeriodEnd.ToString("dd MMM yyyy")
+                                    </td>
+                                    <td>@run.PayFrequency</td>
+                                    <td>@employeeCount</td>
+                                    <td class="text-end">@grossTotal.ToString("C")</td>
+                                    <td class="text-end">@netTotal.ToString("C")</td>
+                                    <td>
+                                        <span class="badge @badgeClass px-3">@statusLabel</span>
+                                    </td>
+                                    <td>@run.CreatedAt.ToLocalTime().ToString("dd MMM yyyy HH:mm")</td>
+                                    <td class="text-end">
+                                        <a asp-controller="payroll_management"
+                                           asp-action="Details"
+                                           asp-route-id="@run.PayrollRunId"
+                                           class="btn btn-sm btn-outline-primary">
+                                            Details
+                                        </a>
+
+                                        <form asp-controller="payroll_management"
+                                              asp-action="mark_paid"
+                                              asp-route-id="@run.PayrollRunId"
+                                              method="post"
+                                              class="d-inline">
+                                            @Html.AntiForgeryToken()
+                                            <button type="submit"
+                                                    class="btn btn-sm btn-success ms-1"
+                                                    @(run.Status == PayrollRunStatus.Paid ? "disabled" : null)>
+                                                Mark as Paid
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<style>
+    .page-container {
+        max-width: 1150px;
+        margin: auto;
+    }
+
+    .styled-table th {
+        background: #f8f9fa;
+        font-weight: 600;
+    }
+
+    .styled-table td {
+        background: #ffffff;
+    }
+</style>

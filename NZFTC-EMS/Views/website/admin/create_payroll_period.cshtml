@@ -1,0 +1,75 @@
+﻿@model NZFTC_EMS.Models.ViewModels.Payroll.PayrollPeriodVM
+@{
+    Layout = "~/Views/Shared/_portal.cshtml";
+        ViewData["Title"] = "Create Payroll";
+}
+
+<div class="page-container">
+
+    <!-- PAGE HEADER -->
+    <div class="header-row d-flex justify-content-between align-items-center mb-4">
+        <h2 class="page-title fw-bold">Create Payroll Period</h2>
+
+        <a href="/payroll_management/PayrollPeriods" class="btn btn-secondary px-4">
+            Back
+        </a>
+    </div>
+
+    <!-- CARD -->
+    <div class="card shadow-sm border-0">
+
+        <div class="card-header text-white fw-semibold"
+             style="background-color:#1E4DB7; border-radius:6px 6px 0 0;">
+            New Payroll Period
+        </div>
+
+        <div class="card-body p-4">
+
+            <form method="post">
+
+                <!-- Period Code -->
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Period Code</label>
+                    <input asp-for="PeriodCode"
+                           class="form-control"
+                           placeholder="e.g. 2025-W03"
+                           required />
+                </div>
+
+                <!-- Dates -->
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label fw-semibold">Start Date</label>
+                        <input asp-for="PeriodStart"
+                               type="date"
+                               class="form-control"
+                               required />
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label fw-semibold">End Date</label>
+                        <input asp-for="PeriodEnd"
+                               type="date"
+                               class="form-control"
+                               required />
+                    </div>
+                </div>
+
+                <!-- Buttons -->
+                <div class="mt-3 d-flex gap-2">
+                    <button type="submit" class="btn btn-primary px-4">
+                        Create Period
+                    </button>
+
+                    <a href="/payroll_management/PayrollPeriods"
+                       class="btn btn-secondary px-4">
+                        Cancel
+                    </a>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+
+</div>

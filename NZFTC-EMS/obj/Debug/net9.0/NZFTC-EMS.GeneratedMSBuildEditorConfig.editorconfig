@@ -17,177 +17,237 @@ build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = NZFTC_EMS
 build_property.RootNamespace = NZFTC_EMS
-build_property.ProjectDir = C:\SD106-EMS-Group5-\NZFTC-EMS-SD106-GROUP-3-\NZFTC-EMS\
+build_property.ProjectDir = D:\xampp\htdocs\NZFTC-EMS-SD106-GROUP-3-\NZFTC-EMS\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.RazorLangVersion = 9.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = C:\SD106-EMS-Group5-\NZFTC-EMS-SD106-GROUP-3-\NZFTC-EMS
+build_property.MSBuildProjectDirectory = D:\xampp\htdocs\NZFTC-EMS-SD106-GROUP-3-\NZFTC-EMS
 build_property._RazorSourceGeneratorDebug = 
 build_property.EffectiveAnalysisLevelStyle = 9.0
 build_property.EnableCodeStyleSeverity = 
 
-[C:/SD106-EMS-Group5-/NZFTC-EMS-SD106-GROUP-3-/NZFTC-EMS/Views/Login/login.cshtml]
+[D:/xampp/htdocs/NZFTC-EMS-SD106-GROUP-3-/NZFTC-EMS/Views/Login/login.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTG9naW5cbG9naW4uY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/SD106-EMS-Group5-/NZFTC-EMS-SD106-GROUP-3-/NZFTC-EMS/Views/Shared/AccessDenied.cshtml]
+[D:/xampp/htdocs/NZFTC-EMS-SD106-GROUP-3-/NZFTC-EMS/Views/Shared/AccessDenied.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEFjY2Vzc0RlbmllZC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/SD106-EMS-Group5-/NZFTC-EMS-SD106-GROUP-3-/NZFTC-EMS/Views/Shared/Index.cshtml]
+[D:/xampp/htdocs/NZFTC-EMS-SD106-GROUP-3-/NZFTC-EMS/Views/Shared/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/SD106-EMS-Group5-/NZFTC-EMS-SD106-GROUP-3-/NZFTC-EMS/Views/Shared/_auth.cshtml]
+[D:/xampp/htdocs/NZFTC-EMS-SD106-GROUP-3-/NZFTC-EMS/Views/Shared/_auth.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9hdXRoLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/SD106-EMS-Group5-/NZFTC-EMS-SD106-GROUP-3-/NZFTC-EMS/Views/Shared/_index.cshtml]
+[D:/xampp/htdocs/NZFTC-EMS-SD106-GROUP-3-/NZFTC-EMS/Views/Shared/_index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9pbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/SD106-EMS-Group5-/NZFTC-EMS-SD106-GROUP-3-/NZFTC-EMS/Views/Shared/_portal.cshtml]
+[D:/xampp/htdocs/NZFTC-EMS-SD106-GROUP-3-/NZFTC-EMS/Views/Shared/_portal.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9wb3J0YWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/SD106-EMS-Group5-/NZFTC-EMS-SD106-GROUP-3-/NZFTC-EMS/Views/Shared/_portal_adminNav.cshtml]
+[D:/xampp/htdocs/NZFTC-EMS-SD106-GROUP-3-/NZFTC-EMS/Views/Shared/_portal_adminNav.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9wb3J0YWxfYWRtaW5OYXYuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/SD106-EMS-Group5-/NZFTC-EMS-SD106-GROUP-3-/NZFTC-EMS/Views/Shared/_portal_employeeNav.cshtml]
+[D:/xampp/htdocs/NZFTC-EMS-SD106-GROUP-3-/NZFTC-EMS/Views/Shared/_portal_employeeNav.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9wb3J0YWxfZW1wbG95ZWVOYXYuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/SD106-EMS-Group5-/NZFTC-EMS-SD106-GROUP-3-/NZFTC-EMS/Views/Shared/_ValidationScriptsPartial.cshtml]
+[D:/xampp/htdocs/NZFTC-EMS-SD106-GROUP-3-/NZFTC-EMS/Views/Shared/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/SD106-EMS-Group5-/NZFTC-EMS-SD106-GROUP-3-/NZFTC-EMS/Views/website/admin/calendar_create.cshtml]
+[D:/xampp/htdocs/NZFTC-EMS-SD106-GROUP-3-/NZFTC-EMS/Views/website/admin/calendar_create.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3Ncd2Vic2l0ZVxhZG1pblxjYWxlbmRhcl9jcmVhdGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/SD106-EMS-Group5-/NZFTC-EMS-SD106-GROUP-3-/NZFTC-EMS/Views/website/admin/calendar_edit.cshtml]
+[D:/xampp/htdocs/NZFTC-EMS-SD106-GROUP-3-/NZFTC-EMS/Views/website/admin/calendar_edit.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3Ncd2Vic2l0ZVxhZG1pblxjYWxlbmRhcl9lZGl0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/SD106-EMS-Group5-/NZFTC-EMS-SD106-GROUP-3-/NZFTC-EMS/Views/website/admin/calendar_user.cshtml]
+[D:/xampp/htdocs/NZFTC-EMS-SD106-GROUP-3-/NZFTC-EMS/Views/website/admin/calendar_user.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3Ncd2Vic2l0ZVxhZG1pblxjYWxlbmRhcl91c2VyLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/SD106-EMS-Group5-/NZFTC-EMS-SD106-GROUP-3-/NZFTC-EMS/Views/website/admin/employee_create.cshtml]
+[D:/xampp/htdocs/NZFTC-EMS-SD106-GROUP-3-/NZFTC-EMS/Views/website/admin/create_payroll_period.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3Ncd2Vic2l0ZVxhZG1pblxjcmVhdGVfcGF5cm9sbF9wZXJpb2QuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/xampp/htdocs/NZFTC-EMS-SD106-GROUP-3-/NZFTC-EMS/Views/website/admin/employee_create.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3Ncd2Vic2l0ZVxhZG1pblxlbXBsb3llZV9jcmVhdGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/SD106-EMS-Group5-/NZFTC-EMS-SD106-GROUP-3-/NZFTC-EMS/Views/website/admin/employee_delete.cshtml]
+[D:/xampp/htdocs/NZFTC-EMS-SD106-GROUP-3-/NZFTC-EMS/Views/website/admin/employee_delete.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3Ncd2Vic2l0ZVxhZG1pblxlbXBsb3llZV9kZWxldGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/SD106-EMS-Group5-/NZFTC-EMS-SD106-GROUP-3-/NZFTC-EMS/Views/website/admin/employee_details.cshtml]
+[D:/xampp/htdocs/NZFTC-EMS-SD106-GROUP-3-/NZFTC-EMS/Views/website/admin/employee_details.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3Ncd2Vic2l0ZVxhZG1pblxlbXBsb3llZV9kZXRhaWxzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/SD106-EMS-Group5-/NZFTC-EMS-SD106-GROUP-3-/NZFTC-EMS/Views/website/admin/employee_edit.cshtml]
+[D:/xampp/htdocs/NZFTC-EMS-SD106-GROUP-3-/NZFTC-EMS/Views/website/admin/employee_edit.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3Ncd2Vic2l0ZVxhZG1pblxlbXBsb3llZV9lZGl0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/SD106-EMS-Group5-/NZFTC-EMS-SD106-GROUP-3-/NZFTC-EMS/Views/website/admin/employee_management.cshtml]
+[D:/xampp/htdocs/NZFTC-EMS-SD106-GROUP-3-/NZFTC-EMS/Views/website/admin/employee_management.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3Ncd2Vic2l0ZVxhZG1pblxlbXBsb3llZV9tYW5hZ2VtZW50LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/SD106-EMS-Group5-/NZFTC-EMS-SD106-GROUP-3-/NZFTC-EMS/Views/website/admin/jobposition_create.cshtml]
+[D:/xampp/htdocs/NZFTC-EMS-SD106-GROUP-3-/NZFTC-EMS/Views/website/admin/jobposition_create.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3Ncd2Vic2l0ZVxhZG1pblxqb2Jwb3NpdGlvbl9jcmVhdGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/SD106-EMS-Group5-/NZFTC-EMS-SD106-GROUP-3-/NZFTC-EMS/Views/website/admin/jobposition_delete.cshtml]
+[D:/xampp/htdocs/NZFTC-EMS-SD106-GROUP-3-/NZFTC-EMS/Views/website/admin/jobposition_delete.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3Ncd2Vic2l0ZVxhZG1pblxqb2Jwb3NpdGlvbl9kZWxldGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/SD106-EMS-Group5-/NZFTC-EMS-SD106-GROUP-3-/NZFTC-EMS/Views/website/admin/jobposition_edit.cshtml]
+[D:/xampp/htdocs/NZFTC-EMS-SD106-GROUP-3-/NZFTC-EMS/Views/website/admin/jobposition_edit.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3Ncd2Vic2l0ZVxhZG1pblxqb2Jwb3NpdGlvbl9lZGl0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/SD106-EMS-Group5-/NZFTC-EMS-SD106-GROUP-3-/NZFTC-EMS/Views/website/admin/jobposition_management.cshtml]
+[D:/xampp/htdocs/NZFTC-EMS-SD106-GROUP-3-/NZFTC-EMS/Views/website/admin/jobposition_management.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3Ncd2Vic2l0ZVxhZG1pblxqb2Jwb3NpdGlvbl9tYW5hZ2VtZW50LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/SD106-EMS-Group5-/NZFTC-EMS-SD106-GROUP-3-/NZFTC-EMS/Views/website/admin/leave_management.cshtml]
+[D:/xampp/htdocs/NZFTC-EMS-SD106-GROUP-3-/NZFTC-EMS/Views/website/admin/leave_management.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3Ncd2Vic2l0ZVxhZG1pblxsZWF2ZV9tYW5hZ2VtZW50LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/SD106-EMS-Group5-/NZFTC-EMS-SD106-GROUP-3-/NZFTC-EMS/Views/website/admin/paygrade_create.cshtml]
+[D:/xampp/htdocs/NZFTC-EMS-SD106-GROUP-3-/NZFTC-EMS/Views/website/admin/leave_policies.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3Ncd2Vic2l0ZVxhZG1pblxsZWF2ZV9wb2xpY2llcy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/xampp/htdocs/NZFTC-EMS-SD106-GROUP-3-/NZFTC-EMS/Views/website/admin/leave_reports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3Ncd2Vic2l0ZVxhZG1pblxsZWF2ZV9yZXBvcnRzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/xampp/htdocs/NZFTC-EMS-SD106-GROUP-3-/NZFTC-EMS/Views/website/admin/leave_request_details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3Ncd2Vic2l0ZVxhZG1pblxsZWF2ZV9yZXF1ZXN0X2RldGFpbHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/xampp/htdocs/NZFTC-EMS-SD106-GROUP-3-/NZFTC-EMS/Views/website/admin/paygrade_create.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3Ncd2Vic2l0ZVxhZG1pblxwYXlncmFkZV9jcmVhdGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/SD106-EMS-Group5-/NZFTC-EMS-SD106-GROUP-3-/NZFTC-EMS/Views/website/admin/paygrade_delete.cshtml]
+[D:/xampp/htdocs/NZFTC-EMS-SD106-GROUP-3-/NZFTC-EMS/Views/website/admin/paygrade_delete.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3Ncd2Vic2l0ZVxhZG1pblxwYXlncmFkZV9kZWxldGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/SD106-EMS-Group5-/NZFTC-EMS-SD106-GROUP-3-/NZFTC-EMS/Views/website/admin/paygrade_edit.cshtml]
+[D:/xampp/htdocs/NZFTC-EMS-SD106-GROUP-3-/NZFTC-EMS/Views/website/admin/paygrade_edit.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3Ncd2Vic2l0ZVxhZG1pblxwYXlncmFkZV9lZGl0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/SD106-EMS-Group5-/NZFTC-EMS-SD106-GROUP-3-/NZFTC-EMS/Views/website/admin/paygrade_management.cshtml]
+[D:/xampp/htdocs/NZFTC-EMS-SD106-GROUP-3-/NZFTC-EMS/Views/website/admin/paygrade_management.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3Ncd2Vic2l0ZVxhZG1pblxwYXlncmFkZV9tYW5hZ2VtZW50LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/SD106-EMS-Group5-/NZFTC-EMS-SD106-GROUP-3-/NZFTC-EMS/Views/website/admin/payroll_management.cshtml]
+[D:/xampp/htdocs/NZFTC-EMS-SD106-GROUP-3-/NZFTC-EMS/Views/website/admin/payroll_details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3Ncd2Vic2l0ZVxhZG1pblxwYXlyb2xsX2RldGFpbHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/xampp/htdocs/NZFTC-EMS-SD106-GROUP-3-/NZFTC-EMS/Views/website/admin/payroll_management.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3Ncd2Vic2l0ZVxhZG1pblxwYXlyb2xsX21hbmFnZW1lbnQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/SD106-EMS-Group5-/NZFTC-EMS-SD106-GROUP-3-/NZFTC-EMS/Views/website/admin/support_management.cshtml]
+[D:/xampp/htdocs/NZFTC-EMS-SD106-GROUP-3-/NZFTC-EMS/Views/website/admin/payroll_periods.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3Ncd2Vic2l0ZVxhZG1pblxwYXlyb2xsX3BlcmlvZHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/xampp/htdocs/NZFTC-EMS-SD106-GROUP-3-/NZFTC-EMS/Views/website/admin/payroll_reports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3Ncd2Vic2l0ZVxhZG1pblxwYXlyb2xsX3JlcG9ydHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/xampp/htdocs/NZFTC-EMS-SD106-GROUP-3-/NZFTC-EMS/Views/website/admin/payroll_settings.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3Ncd2Vic2l0ZVxhZG1pblxwYXlyb2xsX3NldHRpbmdzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/xampp/htdocs/NZFTC-EMS-SD106-GROUP-3-/NZFTC-EMS/Views/website/admin/payroll_summary_admin.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3Ncd2Vic2l0ZVxhZG1pblxwYXlyb2xsX3N1bW1hcnlfYWRtaW4uY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/xampp/htdocs/NZFTC-EMS-SD106-GROUP-3-/NZFTC-EMS/Views/website/admin/support_management.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3Ncd2Vic2l0ZVxhZG1pblxzdXBwb3J0X21hbmFnZW1lbnQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/SD106-EMS-Group5-/NZFTC-EMS-SD106-GROUP-3-/NZFTC-EMS/Views/website/employee/calendar_todo_create.cshtml]
+[D:/xampp/htdocs/NZFTC-EMS-SD106-GROUP-3-/NZFTC-EMS/Views/website/admin/timesheets.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3Ncd2Vic2l0ZVxhZG1pblx0aW1lc2hlZXRzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/xampp/htdocs/NZFTC-EMS-SD106-GROUP-3-/NZFTC-EMS/Views/website/employee/apply_leave.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3Ncd2Vic2l0ZVxlbXBsb3llZVxhcHBseV9sZWF2ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/xampp/htdocs/NZFTC-EMS-SD106-GROUP-3-/NZFTC-EMS/Views/website/employee/calendar_todo_create.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3Ncd2Vic2l0ZVxlbXBsb3llZVxjYWxlbmRhcl90b2RvX2NyZWF0ZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/SD106-EMS-Group5-/NZFTC-EMS-SD106-GROUP-3-/NZFTC-EMS/Views/website/employee/calendar_todo_edit.cshtml]
+[D:/xampp/htdocs/NZFTC-EMS-SD106-GROUP-3-/NZFTC-EMS/Views/website/employee/calendar_todo_edit.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3Ncd2Vic2l0ZVxlbXBsb3llZVxjYWxlbmRhcl90b2RvX2VkaXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/SD106-EMS-Group5-/NZFTC-EMS-SD106-GROUP-3-/NZFTC-EMS/Views/website/employee/calendar_user.cshtml]
+[D:/xampp/htdocs/NZFTC-EMS-SD106-GROUP-3-/NZFTC-EMS/Views/website/employee/calendar_user.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3Ncd2Vic2l0ZVxlbXBsb3llZVxjYWxlbmRhcl91c2VyLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/SD106-EMS-Group5-/NZFTC-EMS-SD106-GROUP-3-/NZFTC-EMS/Views/website/employee/leave_form.cshtml]
+[D:/xampp/htdocs/NZFTC-EMS-SD106-GROUP-3-/NZFTC-EMS/Views/website/employee/leave_form.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3Ncd2Vic2l0ZVxlbXBsb3llZVxsZWF2ZV9mb3JtLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/SD106-EMS-Group5-/NZFTC-EMS-SD106-GROUP-3-/NZFTC-EMS/Views/website/employee/leave_request_form.cshtml]
+[D:/xampp/htdocs/NZFTC-EMS-SD106-GROUP-3-/NZFTC-EMS/Views/website/employee/leave_history.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3Ncd2Vic2l0ZVxlbXBsb3llZVxsZWF2ZV9oaXN0b3J5LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/xampp/htdocs/NZFTC-EMS-SD106-GROUP-3-/NZFTC-EMS/Views/website/employee/leave_request_form.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3Ncd2Vic2l0ZVxlbXBsb3llZVxsZWF2ZV9yZXF1ZXN0X2Zvcm0uY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/SD106-EMS-Group5-/NZFTC-EMS-SD106-GROUP-3-/NZFTC-EMS/Views/website/employee/payslip.cshtml]
+[D:/xampp/htdocs/NZFTC-EMS-SD106-GROUP-3-/NZFTC-EMS/Views/website/employee/payslip.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3Ncd2Vic2l0ZVxlbXBsb3llZVxwYXlzbGlwLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/SD106-EMS-Group5-/NZFTC-EMS-SD106-GROUP-3-/NZFTC-EMS/Views/website/employee/profile.cshtml]
+[D:/xampp/htdocs/NZFTC-EMS-SD106-GROUP-3-/NZFTC-EMS/Views/website/employee/payslips.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3Ncd2Vic2l0ZVxlbXBsb3llZVxwYXlzbGlwcy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/xampp/htdocs/NZFTC-EMS-SD106-GROUP-3-/NZFTC-EMS/Views/website/employee/payslip_details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3Ncd2Vic2l0ZVxlbXBsb3llZVxwYXlzbGlwX2RldGFpbHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/xampp/htdocs/NZFTC-EMS-SD106-GROUP-3-/NZFTC-EMS/Views/website/employee/profile.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3Ncd2Vic2l0ZVxlbXBsb3llZVxwcm9maWxlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/SD106-EMS-Group5-/NZFTC-EMS-SD106-GROUP-3-/NZFTC-EMS/Views/website/employee/profile_edit.cshtml]
+[D:/xampp/htdocs/NZFTC-EMS-SD106-GROUP-3-/NZFTC-EMS/Views/website/employee/profile_edit.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3Ncd2Vic2l0ZVxlbXBsb3llZVxwcm9maWxlX2VkaXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/SD106-EMS-Group5-/NZFTC-EMS-SD106-GROUP-3-/NZFTC-EMS/Views/website/employee/support_form.cshtml]
+[D:/xampp/htdocs/NZFTC-EMS-SD106-GROUP-3-/NZFTC-EMS/Views/website/employee/support_form.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3Ncd2Vic2l0ZVxlbXBsb3llZVxzdXBwb3J0X2Zvcm0uY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/SD106-EMS-Group5-/NZFTC-EMS-SD106-GROUP-3-/NZFTC-EMS/Views/website/Index.cshtml]
+[D:/xampp/htdocs/NZFTC-EMS-SD106-GROUP-3-/NZFTC-EMS/Views/website/employee/timesheets.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3Ncd2Vic2l0ZVxlbXBsb3llZVx0aW1lc2hlZXRzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/xampp/htdocs/NZFTC-EMS-SD106-GROUP-3-/NZFTC-EMS/Views/website/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3Ncd2Vic2l0ZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/SD106-EMS-Group5-/NZFTC-EMS-SD106-GROUP-3-/NZFTC-EMS/Views/website/portal.cshtml]
+[D:/xampp/htdocs/NZFTC-EMS-SD106-GROUP-3-/NZFTC-EMS/Views/website/portal.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3Ncd2Vic2l0ZVxwb3J0YWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/SD106-EMS-Group5-/NZFTC-EMS-SD106-GROUP-3-/NZFTC-EMS/Views/_ViewImports.cshtml]
+[D:/xampp/htdocs/NZFTC-EMS-SD106-GROUP-3-/NZFTC-EMS/Views/_ViewImports.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/SD106-EMS-Group5-/NZFTC-EMS-SD106-GROUP-3-/NZFTC-EMS/Views/_ViewStart.cshtml]
+[D:/xampp/htdocs/NZFTC-EMS-SD106-GROUP-3-/NZFTC-EMS/Views/_ViewStart.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 

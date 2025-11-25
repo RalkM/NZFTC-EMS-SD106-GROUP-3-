@@ -22,9 +22,13 @@ namespace NZFTC_EMS.Data
         // Calendar module
         public DbSet<CalendarEvent> CalendarEvents => Set<CalendarEvent>();
 
+<<<<<<< Updated upstream
         // Support module
         public DbSet<SupportTicket> SupportTickets => Set<SupportTicket>();
         public DbSet<SupportMessage> SupportMessages => Set<SupportMessage>();
+=======
+public DbSet<Announcement> Announcements { get; set; } = default!;
+>>>>>>> Stashed changes
 
 
         protected override void OnModelCreating(ModelBuilder b)
@@ -101,6 +105,7 @@ namespace NZFTC_EMS.Data
 
 
 
+<<<<<<< Updated upstream
             // ======================
             //   PAYROLL PERIOD SEED
             // ======================
@@ -239,12 +244,236 @@ namespace NZFTC_EMS.Data
                     OwnerUsername = "System"
                 }
             );
+=======
+
+            // 2. SEED DATA
+SeedPayGrades(b);
+SeedJobPositions(b);
+SeedHolidays(b);
+SeedPayrollPeriods(b);
+SeedEmployees(b);
+SeedEmployeeContacts(b);
+SeedLeaveBalances(b);
+SeedSupportTickets(b);
+SeedSupportMessages(b);
+SeedCalendarEvents(b);
+SeedLeavePolicies(b);
+SeedPayrollSettings(b);
+
+// 🔹 NEW
+SeedPayrollRuns(b);
+SeedEmployeePayrollSummaries(b);
+SeedAnnouncements(b);
+>>>>>>> Stashed changes
 
 
 
+<<<<<<< Updated upstream
             // ======================
             //   JOB POSITION (SQL ACCURATE)
             // ======================
+=======
+        // ==========================================================
+        //                    CONFIGURATION BLOCKS
+        // ==========================================================
+
+        private void SeedAnnouncements(ModelBuilder b)
+{
+    b.Entity<Announcement>().HasData(
+        new Announcement
+        {
+            Id    = 1,
+            Title = "Welcome to NZFTC EMS",
+            Body  = "Remember to complete your profile and update emergency contacts.",
+
+            // HasData needs a constant, not DateTime.UtcNow
+            CreatedAt = new DateTime(2025, 01, 01, 0, 0, 0, DateTimeKind.Utc),
+            IsActive  = true
+        });
+}
+private void ConfigurePayrollRun(ModelBuilder b)
+{
+    b.Entity<PayrollRun>(e =>
+    {
+        e.ToTable("payrollruns");
+
+        e.HasKey(x => x.PayrollRunId);
+
+        e.Property(x => x.PeriodStart).HasColumnType("date");
+        e.Property(x => x.PeriodEnd).HasColumnType("date");
+
+        e.Property(x => x.PayFrequency)
+            .HasConversion<int>();
+
+        e.Property(x => x.Status)
+            .HasConversion<int>();
+
+        e.Property(x => x.CreatedAt).HasColumnType("datetime(6)");
+        e.Property(x => x.ProcessedAt).HasColumnType("datetime(6)");
+        e.Property(x => x.PaidAt).HasColumnType("datetime(6)");
+    });
+}
+
+private void SeedEmployeePayrollSummaries(ModelBuilder b)
+{
+    b.Entity<EmployeePayrollSummary>().HasData(
+        // Weekly run for Temp Admin (EmployeeId = 1001)
+        new EmployeePayrollSummary
+        {
+            EmployeePayrollSummaryId = 1,
+            EmployeeId      = 1001,   // Temp Admin from SeedEmployees
+            PayrollPeriodId = 1,      // existing period (2025-M11)
+            PayrollRunId    = 1,      // weekly run above
+
+            PayRate   = 50.00m,
+            RateType  = RateType.Hourly,
+            TotalHours= 40m,
+            GrossPay  = 2000m,
+
+            PAYE              = 200m,
+            KiwiSaverEmployee = 45m,
+            KiwiSaverEmployer = 45m,
+            ACCLevy           = 15m,
+            StudentLoan       = 0m,
+            Deductions        = 260m,     // 200 + 45 + 15
+
+            Status      = PayrollSummaryStatus.Paid,
+            GeneratedAt = new DateTime(2025, 11, 13),
+            NetPay = 1740m
+        },
+
+        // Monthly run for another seeded employee (e.g. 1003)
+        new EmployeePayrollSummary
+        {
+            EmployeePayrollSummaryId = 2,
+            EmployeeId      = 1001,   // Sarah / another seeded employee
+            PayrollPeriodId = 1,      // 2025-M11
+            PayrollRunId    = 2,      // monthly run above
+
+            PayRate   = 50.00m,
+            RateType  = RateType.Hourly,
+            TotalHours= 40m,
+            GrossPay  = 2000m,
+
+             PAYE              = 200m,
+            KiwiSaverEmployee = 45m,
+            KiwiSaverEmployer = 45m,
+            ACCLevy           = 15m,
+            StudentLoan       = 0m,
+            Deductions        = 260m,     // 200 + 45 + 15
+
+            Status      = PayrollSummaryStatus.Paid,
+            GeneratedAt = new DateTime(2025, 11, 20),
+            NetPay = 1740m
+        }
+    );
+}
+
+
+private void SeedPayrollRuns(ModelBuilder b)
+{
+    b.Entity<PayrollRun>().HasData(
+        // Example: a past weekly run
+        new PayrollRun
+        {
+            PayrollRunId = 1,
+            PeriodStart  = new DateTime(2025, 11, 6), // Thu
+            PeriodEnd    = new DateTime(2025, 11, 12), // Wed
+            PayFrequency = PayFrequency.Weekly,
+            Status       = PayrollRunStatus.Paid,
+            CreatedAt    = new DateTime(2025, 11, 20),
+            ProcessedAt  = new DateTime(2025, 11, 20),
+            PaidAt       = new DateTime(2025, 11, 20)
+        },
+
+        // Example: a monthly run
+        new PayrollRun
+        {
+            PayrollRunId = 2,
+            PeriodStart  = new DateTime(2025, 11, 13),
+            PeriodEnd    = new DateTime(2025, 11, 19),
+            PayFrequency = PayFrequency.Weekly,
+            Status       = PayrollRunStatus.Finalizing,
+            CreatedAt    = new DateTime(2025, 11, 30),
+            ProcessedAt  = null,
+            PaidAt       = null
+        }
+    );
+}
+
+
+        private void ConfigureTimesheetEntry(ModelBuilder b)
+{
+    b.Entity<TimesheetEntry>(e =>
+    {
+        e.ToTable("timesheetentries");
+
+        e.HasKey(x => x.TimesheetEntryId);
+
+        e.Property(x => x.WorkDate).HasColumnType("date");
+        e.Property(x => x.TotalHours).HasPrecision(10, 2);
+
+        e.Property(x => x.Status)
+            .HasConversion<int>();
+
+        e.HasOne(x => x.Employee)
+            .WithMany()
+            .HasForeignKey(x => x.EmployeeId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        e.HasOne(x => x.PayrollRun)
+            .WithMany()
+            .HasForeignKey(x => x.PayrollRunId)
+            .OnDelete(DeleteBehavior.SetNull);
+    });
+}
+
+        private void ConfigureEmployeePayrollSummary(ModelBuilder b)
+{
+    b.Entity<EmployeePayrollSummary>(e =>
+    {
+        e.ToTable("employeepayrollsummaries");
+
+        e.HasKey(x => x.EmployeePayrollSummaryId);
+
+        e.HasOne(x => x.Employee)
+            .WithMany(e => e.PayrollSummaries)
+            .HasForeignKey(x => x.EmployeeId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        e.HasOne(x => x.PayrollPeriod)
+            .WithMany()
+            .HasForeignKey(x => x.PayrollPeriodId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        // 🔹 NEW: link to payroll run
+        e.HasOne(x => x.PayrollRun)
+            .WithMany(r => r.Payslips)
+            .HasForeignKey(x => x.PayrollRunId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        e.Property(x => x.PayRate).HasPrecision(12, 2);
+        e.Property(x => x.GrossPay).HasPrecision(14, 2);
+        e.Property(x => x.PAYE).HasPrecision(14, 2);
+        e.Property(x => x.KiwiSaverEmployee).HasPrecision(14, 2);
+        e.Property(x => x.KiwiSaverEmployer).HasPrecision(14, 2);
+        e.Property(x => x.ACCLevy).HasPrecision(14, 2);
+        e.Property(x => x.StudentLoan).HasPrecision(14, 2);
+        e.Property(x => x.Deductions).HasPrecision(14, 2);
+        e.Property(x => x.NetPay).HasPrecision(14, 2)
+            .HasComputedColumnSql("`GrossPay` - `Deductions`");
+
+        e.Property(x => x.Status)
+            .HasDefaultValue(PayrollSummaryStatus.Draft);
+
+        e.Property(x => x.RateType)
+            .HasConversion<int>();
+    });
+}
+
+        private void ConfigureJobPosition(ModelBuilder b)
+        {
+>>>>>>> Stashed changes
             b.Entity<JobPosition>(e =>
             {
                 e.ToTable("jobpositions");

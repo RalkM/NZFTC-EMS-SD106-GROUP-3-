@@ -1,0 +1,89 @@
+﻿@using NZFTC_EMS.Data.Entities
+@model IEnumerable<PayrollRun>
+
+@{
+    Layout = "~/Views/Shared/_portal.cshtml";
+        ViewData["Title"] = "Payrol Periods";
+}
+
+<div class="page-container">
+
+    <div class="header-row d-flex justify-content-between align-items-center mb-4">
+        <h2 class="page-title fw-bold">Payroll Periods</h2>
+    </div>
+
+    <div class="card shadow-sm border-0">
+        <div class="card-body">
+            @if (!Model.Any())
+            {
+                <p class="text-muted mb-0">No payroll periods.</p>
+            }
+            else
+            {
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle styled-table mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Pay Period</th>
+                                <th>Frequency</th>
+                                <th>Status</th>
+                                <th>Employees</th>
+                                <th class="text-end">Total Gross</th>
+                                <th class="text-end">Total Net</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var run in Model)
+                            {
+                                var slips = run.Payslips ?? new List<EmployeePayrollSummary>();
+                                var gross = slips.Sum(x => x.GrossPay);
+                                var net = slips.Sum(x => x.NetPay);
+
+                                string statusLabel;
+                                string badgeClass;
+
+                                switch (run.Status)
+                                {
+                                    case PayrollRunStatus.Paid:
+                                        statusLabel = "Paid";
+                                        badgeClass = "bg-success";
+                                        break;
+                                    case PayrollRunStatus.Finalizing:
+                                        statusLabel = "Finalizing";
+                                        badgeClass = "bg-info";
+                                        break;
+                                    case PayrollRunStatus.Open:
+                                        statusLabel = "Open";
+                                        badgeClass = "bg-secondary";
+                                        break;
+                                    default:
+                                        statusLabel = "Cancelled";
+                                        badgeClass = "bg-danger";
+                                        break;
+                                }
+
+                                <tr>
+                                    <td>@run.PeriodStart:dd MMM yyyy – @run.PeriodEnd:dd MMM yyyy</td>
+                                    <td>@run.PayFrequency</td>
+                                    <td><span class="badge @badgeClass px-3">@statusLabel</span></td>
+                                    <td>@slips.Count</td>
+                                    <td class="text-end">@gross.ToString("C")</td>
+                                    <td class="text-end">@net.ToString("C")</td>
+                                    <td class="text-end">
+                                        <a asp-controller="payroll_management"
+                                           asp-action="Details"
+                                           asp-route-id="@run.PayrollRunId"
+                                           class="btn btn-sm btn-outline-primary">
+                                            View
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+        </div>
+    </div>
+</div>

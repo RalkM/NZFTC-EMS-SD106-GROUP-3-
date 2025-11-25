@@ -1,0 +1,118 @@
+﻿@using NZFTC_EMS.Data.Entities
+@model PayrollSettings
+
+@{
+    Layout = "~/Views/Shared/_portal.cshtml";
+        ViewData["Title"] = "Payroll Settings";
+}
+
+<div class="page-container">
+
+    <!-- PAGE HEADER -->
+    <div class="header-row d-flex justify-content-between align-items-center mb-4">
+        <h2 class="page-title fw-bold">Payroll Settings</h2>
+    </div>
+
+    <!-- SUCCESS MESSAGE -->
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success">@TempData["Success"]</div>
+    }
+
+    <div class="card shadow-sm border-0">
+        <div class="card-body">
+
+            <form asp-controller="payroll_management"
+                  asp-action="Settings"
+                  method="post">
+                @Html.AntiForgeryToken()
+
+                @* Keep ID so EF can update the same row *@
+                <input asp-for="PayrollSettingsId" type="hidden" />
+                <input asp-for="UpdatedAt" type="hidden" />
+
+                <div class="row g-4">
+
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">
+                            KiwiSaver Employee %
+                        </label>
+                        <div class="input-group">
+                            <input asp-for="KiwiSaverEmployeePercent"
+                                   type="number" min="0" step="0.5"
+                                   class="form-control form-control-lg" />
+                            <span class="input-group-text">%</span>
+                        </div>
+                        <span asp-validation-for="KiwiSaverEmployeePercent" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">
+                            KiwiSaver Employer %
+                        </label>
+                        <div class="input-group">
+                            <input asp-for="KiwiSaverEmployerPercent"
+                                   type="number" min="0" step="0.5"
+                                   class="form-control form-control-lg" />
+                            <span class="input-group-text">%</span>
+                        </div>
+                        <span asp-validation-for="KiwiSaverEmployerPercent" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">
+                            ACC Levy %
+                        </label>
+                        <div class="input-group">
+                            <input asp-for="ACCLevyPercent"
+                                   type="number" min="0" step="0.001"
+                                   class="form-control form-control-lg" />
+                            <span class="input-group-text">%</span>
+                        </div>
+                        <span asp-validation-for="ACCLevyPercent" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">
+                            Overtime Multiplier
+                        </label>
+                        <input asp-for="OvertimeMultiplier"
+                               type="number" min="1" step="0.1"
+                               class="form-control form-control-lg" />
+                        <span asp-validation-for="OvertimeMultiplier" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <!-- SAVE BUTTON -->
+                <div class="text-end mt-4">
+                    <button type="submit" class="btn btn-primary px-4 py-2">
+                        Save Settings
+                    </button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}
+
+
+<style>
+    .page-container {
+        max-width: 1150px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .card {
+        border-radius: 12px;
+    }
+
+    .form-control-lg {
+        padding: 12px;
+        font-size: 1rem;
+    }
+</style>

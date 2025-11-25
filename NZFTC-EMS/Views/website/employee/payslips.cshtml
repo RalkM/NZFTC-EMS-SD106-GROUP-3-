@@ -1,0 +1,209 @@
+﻿@using NZFTC_EMS.Data.Entities
+@model IEnumerable<EmployeePayrollSummary>
+
+@{
+    Layout = "~/Views/Shared/_portal.cshtml";
+        ViewData["Title"] = "Payslips";
+
+    // Order once so we can split latest vs history
+    var ordered  = (Model ?? Enumerable.Empty<EmployeePayrollSummary>())
+        .OrderByDescending(s => s.GeneratedAt)
+        .ToList();
+
+    var latest   = ordered.FirstOrDefault();
+    var history  = ordered.Skip(1).ToList();
+}
+
+<div class="page-container">
+
+    <!-- HEADER -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="fw-bold mb-0">My Payslips</h2>
+
+    <!-- Always show History button -->
+    <button type="button"
+            class="btn btn-outline-secondary d-flex align-items-center"
+            data-bs-toggle="modal"
+            data-bs-target="#payslipHistoryModal">
+        <i class="fa fa-clock me-2"></i>
+        History
+    </button>
+</div>
+
+
+    <!-- FLASH MESSAGES -->
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success">@TempData["Success"]</div>
+    }
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger">@TempData["Error"]</div>
+    }
+
+    <div class="card shadow-sm border-0">
+        <div class="card-body">
+
+            @if (latest == null)
+            {
+                <div class="alert alert-info mb-0">
+                    No payslips generated yet.
+                </div>
+            }
+            else
+            {
+                <h5 class="mb-3">Current Payslip</h5>
+
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle styled-table mb-0">
+                        <thead>
+                            <tr>
+                                <th>Pay Period</th>
+                                <th>Frequency</th>
+                                <th class="text-end">Total Hours</th>
+                                <th class="text-end">Gross Pay</th>
+                                <th class="text-end">PAYE</th>
+                                <th class="text-end">Other Deductions</th>
+                                <th class="text-end">Net Pay</th>
+                                <th class="text-center">Status</th>
+                                <th>Generated</th>
+                                <th class="text-end">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                var run      = latest.PayrollRun;
+                                var isPaid   = latest.Status == PayrollSummaryStatus.Paid;
+                                var badgeCls = isPaid ? "bg-success" : "bg-warning";
+                                var status   = isPaid ? "Paid" : "Processing";
+                            }
+                            <tr>
+                                <td>
+                                    @if (run != null)
+                                    {
+                                        @($"{run.PeriodStart:dd MMM yyyy} – {run.PeriodEnd:dd MMM yyyy}")
+                                    }
+                                    else
+                                    {
+                                        <span class="text-muted">N/A</span>
+                                    }
+                                </td>
+                                <td>@(run != null ? run.PayFrequency.ToString() : "-")</td>
+                                <td class="text-end">@latest.TotalHours.ToString("0.##")</td>
+                                <td class="text-end">@latest.GrossPay.ToString("C")</td>
+                                <td class="text-end">@latest.PAYE.ToString("C")</td>
+                                <td class="text-end">@latest.Deductions.ToString("C")</td>
+                                <td class="text-end fw-semibold">@latest.NetPay.ToString("C")</td>
+                                <td class="text-center">
+                                    <span class="badge @badgeCls px-3">@status</span>
+                                </td>
+                                <td>@latest.GeneratedAt.ToLocalTime().ToString("dd MMM yyyy HH:mm")</td>
+                                <td class="text-end">
+                                    <a asp-controller="employee_payroll"
+                                       asp-action="Payslip"
+                                       asp-route-id="@latest.EmployeePayrollSummaryId"
+                                       class="btn btn-sm btn-outline-primary">
+                                        View
+                                    </a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<!-- HISTORY MODAL -->
+@if (history.Any())
+{
+    <div class="modal fade" id="payslipHistoryModal" tabindex="-1" aria-labelledby="payslipHistoryLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="payslipHistoryLabel">Payslip History</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle styled-table mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Pay Period</th>
+                                    <th>Frequency</th>
+                                    <th class="text-end">Total Hours</th>
+                                    <th class="text-end">Gross Pay</th>
+                                    <th class="text-end">PAYE</th>
+                                    <th class="text-end">Other Deductions</th>
+                                    <th class="text-end">Net Pay</th>
+                                    <th class="text-center">Status</th>
+                                    <th>Generated</th>
+                                    <th class="text-end">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var slip in history)
+                                {
+                                    var run      = slip.PayrollRun;
+                                    var isPaid   = slip.Status == PayrollSummaryStatus.Paid;
+                                    var badgeCls = isPaid ? "bg-success" : "bg-warning";
+                                    var status   = isPaid ? "Paid" : "Processing";
+
+                                    <tr>
+                                        <td>
+                                            @if (run != null)
+                                            {
+                                                @($"{run.PeriodStart:dd MMM yyyy} – {run.PeriodEnd:dd MMM yyyy}")
+                                            }
+                                            else
+                                            {
+                                                <span class="text-muted">N/A</span>
+                                            }
+                                        </td>
+                                        <td>@(run != null ? run.PayFrequency.ToString() : "-")</td>
+                                        <td class="text-end">@slip.TotalHours.ToString("0.##")</td>
+                                        <td class="text-end">@slip.GrossPay.ToString("C")</td>
+                                        <td class="text-end">@slip.PAYE.ToString("C")</td>
+                                        <td class="text-end">@slip.Deductions.ToString("C")</td>
+                                        <td class="text-end fw-semibold">@slip.NetPay.ToString("C")</td>
+                                        <td class="text-center">
+                                            <span class="badge @badgeCls px-3">@status</span>
+                                        </td>
+                                        <td>@slip.GeneratedAt.ToLocalTime().ToString("dd MMM yyyy HH:mm")</td>
+                                        <td class="text-end">
+                                            <a asp-controller="employee_payroll"
+                                               asp-action="Payslip"
+                                               asp-route-id="@slip.EmployeePayrollSummaryId"
+                                               class="btn btn-sm btn-outline-primary">
+                                                View
+                                            </a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<style>
+    .page-container {
+        max-width: 1150px;
+        margin: auto;
+    }
+
+    .styled-table th {
+        background: #f8f9fa;
+        font-weight: 600;
+    }
+
+    .styled-table td {
+        background: #ffffff;
+    }
+</style>

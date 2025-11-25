@@ -38,6 +38,7 @@ namespace NZFTC_EMS.Controllers
 
             IQueryable<CalendarEvent> query = _context.CalendarEvents;
 
+<<<<<<< Updated upstream
             if (!isAdmin)
             {
                 var username = CurrentUsername;
@@ -45,6 +46,15 @@ namespace NZFTC_EMS.Controllers
                     e.OwnerUsername == null ||
                     (username != null && e.OwnerUsername == username));
             }
+=======
+if (!isAdmin)
+{
+    var username = CurrentUsername;
+    query = query.Where(e =>
+        e.OwnerUsername == null ||                
+        (username != null && e.OwnerUsername == username)); 
+}
+>>>>>>> Stashed changes
 
             query = query.Where(e =>
                 e.Start.Month == targetMonth &&
@@ -241,33 +251,36 @@ namespace NZFTC_EMS.Controllers
         // EMPLOYEE – CREATE TO-DO
         // GET /calendar/EmployeeCreateTodo
         // ===========================================
-        [HttpGet("EmployeeCreateTodo")]
-        public IActionResult EmployeeCreateTodo(DateTime? date)
-        {
-            if (IsAdmin())
-                return Forbid();
+      // EMPLOYEE – CREATE TO-DO
+// GET /calendar/EmployeeCreateTodo
+[HttpGet("EmployeeCreateTodo")]
+public IActionResult EmployeeCreateTodo(DateTime? date)
+{
+    if (IsAdmin())
+        return Forbid();
 
-            var username = CurrentUsername;
-            if (string.IsNullOrWhiteSpace(username))
-                return Unauthorized();
+    var username = CurrentUsername;
+    if (string.IsNullOrWhiteSpace(username))
+        return Unauthorized();
 
-            ViewData["Layout"] = "~/Views/Shared/_portal.cshtml";
+    ViewData["Layout"] = "~/Views/Shared/_portal.cshtml";
 
-            var start = date ?? DateTime.Today;
-            var model = new CalendarEvent
-            {
-                Start = start,
-                End = start.AddHours(1),
-                EventType = CalendarEventType.Other
-            };
+    var start = date ?? DateTime.Today;
+    var model = new CalendarEvent
+    {
+        Start = start,
+        End = start.AddHours(1),
+        EventType = CalendarEventType.Other
+    };
 
-            return View("~/Views/website/employee/calendar_todo_create.cshtml", model);
-        }
+    return View("~/Views/website/employee/calendar_todo_create.cshtml", model);
+}
+
 
         // POST /calendar/EmployeeCreateTodo
         [HttpPost("EmployeeCreateTodo")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EmployeeCreateTodo(CalendarEvent model)
+        public async Task<IActionResult>EmployeeCreateTodo(CalendarEvent model)
         {
             if (IsAdmin())
                 return Forbid();
@@ -288,10 +301,10 @@ namespace NZFTC_EMS.Controllers
                 return View("~/Views/website/employee/calendar_todo_create.cshtml", model);
             }
 
-            model.OwnerUsername = username;
-            model.IsTodo = true;
+           model.OwnerUsername   = username;           // only this user
+            model.IsTodo          = true;
             model.IsPublicHoliday = false;
-            model.EventType = CalendarEventType.Other;
+            model.EventType       = CalendarEventType.Other; // or Todo
 
             _context.CalendarEvents.Add(model);
             await _context.SaveChangesAsync();

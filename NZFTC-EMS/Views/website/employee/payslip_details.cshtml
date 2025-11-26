@@ -1,32 +1,49 @@
-﻿@using NZFTC_EMS.Data.Entities
-@model EmployeePayrollSummary
+﻿@model NZFTC_EMS.Data.Entities.EmployeePayrollSummary
 
 @{
+    ViewData["Title"] = "Employee Payslip";
     Layout = "~/Views/Shared/_portal.cshtml";
-
-    var emp = Model.Employee;
+        var emp = Model.Employee;
     var run = Model.PayrollRun;
 
     var employeeName = emp != null ? $"{emp.FirstName} {emp.LastName}" : $"Employee #{Model.EmployeeId}";
     var employeeCode = emp?.EmployeeCode ?? "—";
     var department   = emp?.Department ?? "—";
+
+    var periodCode = Model.PayrollPeriod != null
+        ? Model.PayrollPeriod.PeriodCode
+        : (run != null ? $"{run.PeriodStart:yyyy}-W{System.Globalization.ISOWeek.GetWeekOfYear(run.PeriodStart):00}" : "—");
+
+    var periodStart = run?.PeriodStart ?? Model.PayrollPeriod?.PeriodStart;
+    var periodEnd   = run?.PeriodEnd   ?? Model.PayrollPeriod?.PeriodEnd;
 }
 
-<link rel="stylesheet" href="~/css/payroll.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/payroll.css" asp-append-version="true" />
 
-<div class="page-container py-4">
 
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <h2 class="fw-bold mb-0">Payslip</h2>
+<div class="page-container payslip-wrapper">
+
+    <!-- Top actions – BACK + PRINT (not printed) -->
+    <div class="d-flex justify-content-between align-items-center mb-3 print-hide">
+        <a asp-action="Payslips"
+           asp-controller="employee_payroll"
+           class="btn btn-outline-secondary">
+            <i class="bi bi-chevron-left me-1"></i> Back to My Payslips
+        </a>
 
         <button type="button"
                 class="btn btn-primary"
                 onclick="window.print()">
-            Print Payslip
+            <i class="bi bi-printer me-1"></i> Print payslip
         </button>
     </div>
 
-    <div class="card shadow-sm border-0 printable-card">
+    <!-- THIS CARD SHOULD CONTAIN EXACTLY THE PAYSPLIP YOU SHOWED -->
+    <div class="card payslip-card">
+
+        <!-- keep your existing header + body here -->
+        @* Example skeleton – replace with your current HTML *@
+        <div class="card shadow-sm border-0 printable-card">
         <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
             <div>
                 <div class="fw-semibold">NZFTC Employee Payslip</div>

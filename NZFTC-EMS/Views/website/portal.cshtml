@@ -1,4 +1,5 @@
-﻿@using NZFTC_EMS.Models.ViewModels
+﻿@using NZFTC_EMS.Data.Entities
+@using NZFTC_EMS.Models.ViewModels
 
 @{
     ViewData["Title"] = "Portal";
@@ -9,12 +10,23 @@
     var admin = ViewBag.AdminVm    as AdminDashboardVm    ?? new AdminDashboardVm();
     var emp   = ViewBag.EmployeeVm as EmployeeDashboardVm ?? new EmployeeDashboardVm();
 
+    var recent        = ViewBag.RecentItems   as List<string>       ?? new List<string>();
+    var upcoming      = ViewBag.Upcoming      as List<string>       ?? new List<string>();
+    var announcements = ViewBag.Announcements as List<Announcement> ?? new List<Announcement>();
+
     bool isAdmin = role.Equals("Admin", StringComparison.OrdinalIgnoreCase)
                 || role.Equals("HR",    StringComparison.OrdinalIgnoreCase);
 
-    int grievancesInProgress        = ViewBag.GrievancesInProgress        is int gip ? gip : 0;
-    int grievancesResolvedLast30    = ViewBag.GrievancesResolvedLast30Days is int gr ? gr : 0;
-    int employeeOpenTickets         = ViewBag.EmployeeOpenTicketsCount    is int eot ? eot : 0;
+    int grievancesInProgress   = ViewBag.GrievancesInProgress       is int gip ? gip : 0;
+    int grievancesClosedLast30 = ViewBag.GrievancesCLosedLast30Days is int gr ? gr : 0;
+    int employeeOpenTickets    = ViewBag.EmployeeOpenTicketsCount   is int eot ? eot : 0;
+
+    var empPayslips     = ViewBag.EmpRecentPayslips as IEnumerable<dynamic> ?? Enumerable.Empty<dynamic>();
+    var empUpcoming     = ViewBag.EmpUpcomingLeave  as IEnumerable<dynamic> ?? Enumerable.Empty<dynamic>();
+    var empLeaveHistory = ViewBag.EmpLeaveHistory   as IEnumerable<dynamic> ?? Enumerable.Empty<dynamic>();
+
+    string empLatestTicketSummary = ViewBag.EmpLatestTicketSummary as string;
+    string empLatestTicketUpdated = ViewBag.EmpLatestTicketUpdated as string;
 }
 
 
@@ -91,12 +103,15 @@
     <a asp-controller="employee_management" asp-action="Create" class="chip-btn">+ Add employee</a>
     <a asp-controller="LeaveManagement" asp-action="Index" class="chip-btn">View leave queue</a>
     <a asp-controller="payroll_management" asp-action="Index" class="chip-btn">Run payroll</a>
-</section>
+                <a asp-controller="LeaveManagement" asp-action="ApplyLeave" class="chip-btn">+ Apply for leave</a>
+<a asp-controller="employee_payroll" asp-action="Payslips" class="chip-btn">View latest payslip</a>
+<a asp-controller="portal" asp-action="Support" class="chip-btn">Submit support ticket</a>
+            </section>
 
 
             <!-- MIDDLE BAND: 2 COLUMNS -->
             <section class="dash-grid dash-grid-2">
-                <!-- People & Approvals -->
+                <!-- People & Approvals --> <!-- Employee Summary -->
                 <div class="dash-column">
                     <article class="dash-card">
                         <div class="dash-card-header">
@@ -112,13 +127,13 @@
                         </ul>
                     </article>
                     <br />
-
+                    <!-- Items Awaiting Your Review -->
                     <article class="dash-card">
                         <div class="dash-card-header">
                             <h2>Items Awaiting Your Review</h2>
                             <div class="dash-pill-group">
-                                <button class="pill active">Leave (@admin.PendingLeaveRequests)</button>
-                                <button class="pill">Support (@admin.PendingSupportTickets)</button>
+                                <a asp-controller="LeaveManagement" asp-action="Index" class="pill">Leave (@admin.PendingLeaveRequests)</a>
+                                <a asp-controller="support_management" asp-action="Index" class="pill">Support (@admin.PendingSupportTickets)</a>
                             </div>
                         </div>
 
@@ -135,9 +150,6 @@
                                 <span class="dash-table-meta">check Support Tickets</span>
                             </div>
                         </div>
-                        <div class="dash-card-footer">
-                            <a asp-controller="LeaveManagement" asp-action="Index" class="btn-light">Review all approvals</a>
-                        </div>
                     </article>
                     <br />
                 </div>
@@ -145,18 +157,22 @@
                 <!-- Payroll & Grievances -->
                 <div class="dash-column">
                     <article class="dash-card">
-                        <div class="dash-card-header">
-                            <h2>Payroll Overview</h2>
-                            <a asp-controller="PayrollManagement" asp-action="Index" class="btn-secondary">View payroll</a>
+                    <div class="dash-card-header">
+                        <h2>Payroll Overview</h2>
+                        <a asp-controller="payroll_management" asp-action="Index" class="btn-secondary">View payroll</a>
+                    </div>
+                    <div class="dash-mini-chart">
+                        <div class="chart-placeholder">
+                            [ Sparkline – last 6 periods ]
                         </div>
-                        <div class="dash-mini-chart">
-                            <div class="chart-placeholder">[ Sparkline – last 6 periods ]</div>
-                            <div class="chart-meta">
-                                <p><strong>Next run:</strong> soon</p>
-                                <p><strong>Latest totals</strong> available in Payroll Management.</p>
-                            </div>
+                        <div class="chart-meta">
+                        <p><strong>Next run:</strong> @admin.NextPayrollRunLabel</p>
+                         <p><strong>Latest totals:</strong> @admin.LatestTotalsLabel</p>
+
                         </div>
-                    </article>
+                    </div>
+                </article>
+
                     <br />
 
                     <article class="dash-card">
@@ -169,7 +185,7 @@
                             <ul class="dash-legend">
                                 <li><span class="legend-dot dot-open"></span>Open / in progress: @admin.OpenGrievances</li>
                                 <li><span class="legend-dot dot-progress"></span>In progress: @grievancesInProgress</li>
-                                <li><span class="legend-dot dot-resolved"></span>Resolved (30d): @grievancesResolvedLast30</li>
+                                <li><span class="legend-dot dot-resolved"></span>Resolved (30d): @grievancesClosedLast30</li>
                             </ul>
                         </div>
                         <p class="dash-note">
@@ -180,20 +196,30 @@
                 </div>
             </section>
 
-            <!-- BOTTOM BAND -->
+           <!-- BOTTOM BAND: recent / upcoming / announcements -->
             <section class="dash-grid dash-grid-3">
                 <article class="dash-card">
                     <div class="dash-card-header">
                         <h2>Recent Activity</h2>
                     </div>
                     <ul class="timeline">
-                        <li>
-                            <span class="timeline-dot"></span>
-                            <div>
-                                <p>HR &amp; payroll events will appear here.</p>
-                                <span class="timeline-meta">Coming soon</span>
-                            </div>
-                        </li>
+                        @if (recent.Any())
+                        {
+                            foreach (var item in recent)
+                            {
+                                <li>
+                                    <span class="timeline-dot"></span>
+                                    <div><p>@item</p></div>
+                                </li>
+                            }
+                        }
+                        else
+                        {
+                            <li>
+                                <span class="timeline-dot"></span>
+                                <div><p>No recent HR or payroll activity.</p></div>
+                            </li>
+                        }
                     </ul>
                 </article>
 
@@ -202,7 +228,17 @@
                         <h2>Upcoming Dates</h2>
                     </div>
                     <ul class="dash-list">
-                        <li>Use MyCalendar to add key HR / payroll events.</li>
+                        @if (upcoming.Any())
+                        {
+                            foreach (var item in upcoming)
+                            {
+                                <li>@item</li>
+                            }
+                        }
+                        else
+                        {
+                            <li>No upcoming events in the next 30 days.</li>
+                        }
                     </ul>
                 </article>
 
@@ -211,7 +247,23 @@
                         <h2>Announcements</h2>
                     </div>
                     <ul class="dash-list">
-                        <li>You can use this space for quick company-wide notes.</li>
+                        @if (announcements.Any())
+                        {
+                            foreach (var a in announcements)
+                            {
+                                <li>
+                                    <strong>@a.Title</strong><br />
+                                    <span class="timeline-meta">
+                                        @a.CreatedAt.ToString("dd MMM yyyy")
+                                    </span><br />
+                                    @a.Body
+                                </li>
+                            }
+                        }
+                        else
+                        {
+                            <li>No announcements yet.</li>
+                        }
                     </ul>
                 </article>
             </section>
@@ -241,12 +293,12 @@
                 </article>
                 <article class="kpi-card">
                     <span class="kpi-label">Annual Leave</span>
-                    <span class="kpi-value">@emp.AnnualLeaveHours.ToString("0.0") hrs</span>
+                    <span class="kpi-value">@emp.AnnualLeaveHours.ToString("0.0") Days</span>
                     <span class="kpi-meta">Remaining balance</span>
                 </article>
                 <article class="kpi-card">
                     <span class="kpi-label">Sick Leave</span>
-                    <span class="kpi-value">@emp.SickLeaveHours.ToString("0.0") hrs</span>
+                    <span class="kpi-value">@emp.SickLeaveHours.ToString("0.0") Days</span>
                     <span class="kpi-meta">Remaining balance</span>
                 </article>
             </section>
@@ -254,26 +306,29 @@
             <!-- QUICK ACTIONS -->
             <section class="dash-quick-actions">
                 <a asp-controller="LeaveManagement" asp-action="ApplyLeave" class="chip-btn">+ Apply for leave</a>
-<a asp-controller="employee_payroll" asp-action="Payslips" class="chip-btn">View latest payslip</a>
-<a asp-controller="portal" asp-action="Support" class="chip-btn">Submit support ticket</a>
+                <a asp-controller="employee_payroll" asp-action="Payslips" class="chip-btn">View latest payslip</a>
+                <a asp-controller="Support" asp-action="Index" class="chip-btn">Submit support ticket</a>
             </section>
+
 
             <!-- MIDDLE BAND -->
             <section class="dash-grid dash-grid-2">
                 <div class="dash-column">
-                    <article class="dash-card">
+                   <article class="dash-card">
                         <div class="dash-card-header">
                             <h2>My Profile</h2>
-                            <a asp-controller="employee_profile" asp-action="Profile" class="btn-secondary">View full profile</a>
-
-
+                            <a asp-controller="employee_profile" asp-action="profile" class="btn-secondary">View full profile</a>
                         </div>
-                        <div class="profile-summary">
-                            <div class="avatar-circle">@emp.FullName.First()</div>
-                            <div class="profile-info">
-                                <p class="profile-name">@emp.FullName</p>
-                                <p class="profile-meta">
-                                    Birthday: @(emp.Birthday == DateTime.MinValue ? "N/A" : emp.Birthday.ToString("dd MMM yyyy"))<br />
+                        <div class="dash-card-body">
+                            <div class="dash-avatar large">
+                                <div class="avatar-circle">@emp.FullName.FirstOrDefault()</div>
+                            </div>
+                            <div class="dash-profile-info">
+                                <h3>@emp.FullName</h3>
+                                <p>
+                                    Birthday: @(emp.Birthday == DateTime.MinValue
+                                        ? "Not set"
+                                        : emp.Birthday.ToString("dd MMM yyyy"))<br />
                                     Gender: @emp.Gender
                                 </p>
                             </div>
@@ -285,60 +340,118 @@
                 </div>
 
                 <div class="dash-column">
-                    <article class="dash-card">
-                        <div class="dash-card-header">
-                            <h2>Leave Requests</h2>
-                            <a asp-controller="LeaveManagement" asp-action="LeaveHistory" class="btn-secondary">View all</a>
-                        </div>
-                        <div class="dash-pill-group">
-                            <button class="pill active">Upcoming</button>
-                            <button class="pill">History</button>
-                        </div>
-                        <div class="dash-table">
-                            <div class="dash-table-row">
-                                <span>Your upcoming leave requests will appear here.</span>
+                   <article class="dash-card">
+                    <div class="dash-card-header">
+                        <h2>Leave Requests</h2>
+                        <a asp-controller="LeaveManagement" asp-action="LeaveHistory" class="btn-secondary active">History</a>
+                    </div>
+
+                    <div class="dash-tabs">
+                        <div class="dash-tabs-body">
+                            <div id="emp-leave-upcoming" class="dash-tab-pane active">
+                                @if (empUpcoming.Any())
+                                {
+                                    <ul class="dash-list">
+                                        @foreach (var l in empUpcoming)
+                                        {
+                                            <li>
+                                                <strong>@(((DateTime)l.From).ToString("dd MMM"))–@(((DateTime)l.To).ToString("dd MMM"))</strong>
+                                                <span class="d-block small">Status: @l.Status</span>
+                                            </li>
+                                        }
+                                    </ul>
+                                }
+                                else
+                                {
+                                    <p class="text-muted small">You have no upcoming approved leave.</p>
+                                }
+                            </div>
+
+                            <div id="emp-leave-history" class="dash-tab-pane">
+                                @if (empLeaveHistory.Any())
+                                {
+                                    <ul class="dash-list">
+                                        @foreach (var l in empLeaveHistory)
+                                        {
+                                            <li>
+                                                <strong>@(((DateTime)l.From).ToString("dd MMM"))–@(((DateTime)l.To).ToString("dd MMM"))</strong>
+                                                <span class="d-block small">Status: @l.Status</span>
+                                            </li>
+                                        }
+                                    </ul>
+                                }
+                                else
+                                {
+                                    <p class="text-muted small">No past leave records yet.</p>
+                                }
                             </div>
                         </div>
-                        <div class="dash-card-footer">
-                            <a asp-controller="LeaveApplication" asp-action="Create" class="btn-primary">+ New leave</a>
-                        </div>
-                    </article>
+                    </div>
+                </article>
                 </div>
             </section>
 
-            <!-- BOTTOM BAND -->
+            <!-- BOTTOM BAND: payslips + support -->
             <section class="dash-grid dash-grid-2">
                 <article class="dash-card">
                     <div class="dash-card-header">
                         <h2>Recent Payslips</h2>
                         <a asp-controller="employee_payroll" asp-action="Payslips" class="btn-secondary">View history</a>
                     </div>
-                    <div class="dash-table">
-                        <div class="dash-table-row">
-                            <span>Your last 3 payslips will show here.</span>
-                        </div>
+                    <div class="dash-card-body">
+                        @if (empPayslips.Any())
+                        {
+                            <ul class="dash-list mt-2">
+                                @foreach (var p in empPayslips)
+                                {
+                                    var period = ((DateTime)p.GeneratedAt).ToString("dd MMM yyyy");
+
+                                    <li>
+                                        <strong>@period</strong>
+                                        <span class="d-block small">
+                                            Net pay: @((decimal)p.NetPay).ToString("0.00")
+                                        </span>
+                                    </li>
+                                }
+                            </ul>
+                        }
+                        else
+                        {
+                            <p class="text-muted small">Your last 3 payslips will show here once payroll is run.</p>
+                        }
                     </div>
                 </article>
 
                 <article class="dash-card">
                     <div class="dash-card-header">
                         <h2>Support / Grievances</h2>
-                        <a asp-controller="portal" asp-action="Support" class="btn-secondary">View all tickets</a>
+                        <a asp-controller="Support" asp-action="Index" class="btn-secondary">View all tickets</a>
                     </div>
-                    <p class="dash-note">
-                        You have <strong>@employeeOpenTickets</strong> open support ticket@(employeeOpenTickets == 1 ? "" : "s").
-                    </p>
-                    <div class="dash-table">
-                        <div class="dash-table-row">
-                            <span>Your most recent ticket details will appear here.</span>
-                        </div>
+                    <div class="dash-card-body">
+                        <p>You have @employeeOpenTickets open support ticket@(employeeOpenTickets == 1 ? "" : "s").</p>
+
+                        @if (!string.IsNullOrWhiteSpace(empLatestTicketSummary))
+                        {
+                            <p class="mt-2">
+                                <strong>Latest ticket:</strong><br />
+                                @empLatestTicketSummary<br />
+                                <span class="small text-muted">Updated @empLatestTicketUpdated</span>
+                            </p>
+                        }
+                        else
+                        {
+                            <p class="text-muted small mt-2">You haven’t submitted any support tickets yet.</p>
+                        }
                     </div>
                     <div class="dash-card-footer">
-                        <a asp-controller="portal" asp-action="Support" class="btn-primary">Submit new ticket</a>
+                        <a asp-controller="Support" asp-action="Index" class="btn-primary">Submit new ticket</a>
                     </div>
                 </article>
+            </section>
 
-                 <article class="dash-card">
+            <!-- INFO BAND -->
+            <section class="dash-grid dash-grid-2">
+                <article class="dash-card">
                     <div class="dash-card-header">
                         <h2>Upcoming Dates</h2>
                     </div>
@@ -352,7 +465,23 @@
                         <h2>Announcements</h2>
                     </div>
                     <ul class="dash-list">
-                        <li>You can use this space for quick company-wide notes.</li>
+                        @if (announcements.Any())
+                        {
+                            @foreach (var a in announcements)
+                            {
+                                <li>
+                                    <strong>@a.Title</strong><br />
+                                    <span class="timeline-meta">
+                                        @a.CreatedAt.ToString("dd MMM yyyy")
+                                    </span><br />
+                                    @a.Body
+                                </li>
+                            }
+                        }
+                        else
+                        {
+                            <li>You can use this space for quick company-wide notes.</li>
+                        }
                     </ul>
                 </article>
             </section>

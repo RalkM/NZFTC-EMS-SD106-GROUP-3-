@@ -35,6 +35,7 @@ public DbSet<PayrollSettings> PayrollSettings => Set<PayrollSettings>();
 public DbSet<TimesheetEntry> TimesheetEntries => Set<TimesheetEntry>();
 public DbSet<PayrollRun> PayrollRuns => Set<PayrollRun>();
 
+public DbSet<Announcement> Announcements { get; set; } = default!;
 
 
         protected override void OnModelCreating(ModelBuilder b)

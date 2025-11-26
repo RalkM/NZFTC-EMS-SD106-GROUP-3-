@@ -80,6 +80,8 @@ public decimal? BasicPay => PayGrade?.BaseRate;
         [MaxLength(150)]
         public string? EmergencyContactEmail { get; set; }
 
+        [Column(TypeName = "LONGBLOB")]   // or "MEDIUMBLOB" if you prefer
+        public byte[]? PhotoBytes { get; set; }
         // PHOTO
         // PHOTO – no column in employees table
         [NotMapped]

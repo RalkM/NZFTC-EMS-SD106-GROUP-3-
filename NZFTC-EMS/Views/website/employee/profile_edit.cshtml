@@ -41,27 +41,30 @@
                 <hr class="section-divider" />
 
                 <div class="mb-3">
-                    <label asp-for="Email" class="form-label">Email</label>
-                    <input asp-for="Email" class="form-control" />
-                    <span asp-validation-for="Email" class="text-danger"></span>
+                   <label asp-for="Email" class="form-label">Email</label>
+        <input asp-for="Email" class="form-control" />
+        <span asp-validation-for="Email" class="text-danger"></span>
                 </div>
 
                 <div class="mb-3">
-                    <label asp-for="Phone" class="form-label">Phone</label>
-                    <input asp-for="Phone" class="form-control" />
-                    <span asp-validation-for="Phone" class="text-danger"></span>
+                      <label asp-for="Phone" class="form-label">Phone</label>
+        <input asp-for="Phone" class="form-control" />
+        <span asp-validation-for="Phone" class="text-danger"></span>
                 </div>
 
                 <div class="mb-3">
                     <label asp-for="Address" class="form-label">Address</label>
-                    <textarea asp-for="Address" class="form-control" rows="2"></textarea>
+                    <input asp-for="Address" class="form-control"  rows="2"/>
                     <span asp-validation-for="Address" class="text-danger"></span>
                 </div>
 
                 <div class="mb-3">
                     <label asp-for="ProfilePhoto" class="form-label">Profile Photo</label>
-                    <input asp-for="ProfilePhoto" type="file" class="form-control" />
-                    <small class="text-muted">Upload a JPEG image. It will replace your current photo.</small>
+        <input asp-for="ProfilePhoto"
+               type="file"
+               class="form-control"
+               accept="image/*" />
+        <span asp-validation-for="ProfilePhoto" class="text-danger"></span>
                 </div>
 
             </div>
@@ -74,35 +77,42 @@
 
                 <div class="mb-3">
                     <label asp-for="EmergencyName" class="form-label">Name</label>
-                    <input asp-for="EmergencyName" class="form-control" />
+        <input asp-for="EmergencyName" class="form-control" />
+        <span asp-validation-for="EmergencyName" class="text-danger"></span>
                 </div>
 
                 <div class="mb-3">
-                    <label asp-for="EmergencyRelationship" class="form-label">Relationship</label>
-                    <input asp-for="EmergencyRelationship" class="form-control" />
+                     <label asp-for="EmergencyRelationship" class="form-label">Relationship</label>
+        <input asp-for="EmergencyRelationship" class="form-control" />
+        <span asp-validation-for="EmergencyRelationship" class="text-danger"></span>
                 </div>
 
                 <div class="mb-3">
-                    <label asp-for="EmergencyPhone" class="form-label">Phone</label>
-                    <input asp-for="EmergencyPhone" class="form-control" />
+                      <label asp-for="EmergencyPhone" class="form-label">Phone</label>
+        <input asp-for="EmergencyPhone" class="form-control" />
+        <span asp-validation-for="EmergencyPhone" class="text-danger"></span>
                 </div>
 
                 <div class="mb-3">
                     <label asp-for="EmergencyEmail" class="form-label">Email</label>
-                    <input asp-for="EmergencyEmail" class="form-control" />
+        <input asp-for="EmergencyEmail" class="form-control" />
+        <span asp-validation-for="EmergencyEmail" class="text-danger"></span>
                 </div>
 
             </div>
         </div>
 
         <div class="mt-4 d-flex gap-2">
-            <button type="submit" class="btn btn-primary px-4">Save</button>
+            <button type="submit" class="btn btn-primary px-4">
+            Save changes
+        </button>
+
 
             <a asp-controller="employee_profile"
-               asp-action="Profile"
-               class="btn btn-outline-secondary px-4">
-                Cancel
-            </a>
+           asp-action="Profile"
+           class="btn btn-outline-secondary px-4">
+            Cancel
+        </a>
         </div>
     </form>
 </div>

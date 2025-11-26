@@ -1,6 +1,5 @@
 wwwroot\1-e8f22afd.ico
 wwwroot\css\authentication.css
-wwwroot\css\calendar.css
 wwwroot\css\dashboard.css
 wwwroot\css\employee.css
 wwwroot\css\jobposition.css
@@ -98,6 +97,9 @@ wwwroot\lib\jquery\dist\jquery.slim.js
 wwwroot\lib\jquery\dist\jquery.slim.min.js
 wwwroot\lib\jquery\dist\jquery.slim.min.map
 wwwroot\lib\jquery\LICENSE.txt
+wwwroot\css\calendar.css
+wwwroot\uploads\employees\1001.jpg
+wwwroot\uploads\employees\1002.jpg
 D:\xampp\htdocs\NZFTC-EMS-SD106-GROUP-3-\NZFTC-EMS\wwwroot\lib\jquery\LICENSE.txt
 D:\xampp\htdocs\NZFTC-EMS-SD106-GROUP-3-\NZFTC-EMS\wwwroot\lib\jquery\dist\jquery.slim.min.map
 D:\xampp\htdocs\NZFTC-EMS-SD106-GROUP-3-\NZFTC-EMS\wwwroot\lib\jquery\dist\jquery.slim.min.js

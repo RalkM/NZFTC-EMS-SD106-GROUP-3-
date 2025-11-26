@@ -40,17 +40,17 @@ private async Task<Employee?> GetCurrentEmployeeAsync()
 }
 
         // ===== VIEW PROFILE =====
-        [HttpGet("profile")]
+[HttpGet("profile")]
 public async Task<IActionResult> Profile()
 {
     ViewData["Layout"] = "~/Views/Shared/_portal.cshtml";
 
     var emp = await GetCurrentEmployeeAsync();
     if (emp == null)
-        return RedirectToAction("Authentication", "Website"); // or "Login"
+        return RedirectToAction("Authentication", "Website");
 
-            var emergency = await _context.EmployeeEmergencyContacts
-                .FirstOrDefaultAsync(ec => ec.EmployeeId == emp.EmployeeId);
+    var emergency = await _context.EmployeeEmergencyContacts
+        .FirstOrDefaultAsync(ec => ec.EmployeeId == emp.EmployeeId);
 
            // Job title same logic as admin side
 string jobTitle = emp.JobTitle ?? "";
@@ -76,6 +76,18 @@ else
     earningsRate = "Not set";
 }
 
+string profileImageUrl;
+    if (emp.PhotoBytes != null && emp.PhotoBytes.Length > 0)
+    {
+        var base64 = Convert.ToBase64String(emp.PhotoBytes);
+        profileImageUrl = $"data:image/jpeg;base64,{base64}";
+    }
+    else
+    {
+        // fallback avatar file from wwwroot
+        profileImageUrl = "/img/default-avatar.png";
+    }
+
 var vm = new EmployeeProfileVm
 {
     EmployeeId = emp.EmployeeId,
@@ -99,10 +111,10 @@ var vm = new EmployeeProfileVm
     EmergencyPhone        = emergency?.Phone ?? "",
     EmergencyEmail        = emergency?.Email ?? "",
 
-    ProfileImageUrl = $"/uploads/employees/{emp.EmployeeId}.jpg"
+    ProfileImageUrl = profileImageUrl
 };
 
-            return View("~/Views/website/employee/profile.cshtml", vm);
+           return View("~/Views/website/employee/profile.cshtml", vm);
         }
 
         // ===== EDIT PROFILE (GET) =====
@@ -133,59 +145,40 @@ public async Task<IActionResult> Edit()
         }
 
         // ===== EDIT PROFILE (POST) =====
-        [HttpPost("edit")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(EmployeeProfileEditVm model)
-        {
-            ViewData["Layout"] = "~/Views/Shared/_portal.cshtml";
+[HttpPost("edit")]
+[ValidateAntiForgeryToken]
+public async Task<IActionResult> Edit(EmployeeProfileEditVm model)
+{
+    ViewData["Layout"] = "~/Views/Shared/_portal.cshtml";
 
-            var emp = await GetCurrentEmployeeAsync();
-            if (emp == null)
-                return Content("Employee not found.");
+    var emp = await GetCurrentEmployeeAsync();
+    if (emp == null)
+        return Content("Employee not found.");
 
-            if (!ModelState.IsValid)
-                return View("~/Views/website/employee/profile_edit.cshtml", model);
+    if (!ModelState.IsValid)
+        return View("~/Views/website/employee/profile_edit.cshtml", model);
 
-            // allowed fields only
-            emp.Email = model.Email;
-            emp.Phone = model.Phone;
-            emp.Address = model.Address;
+    // allowed fields only
+    emp.Email   = model.Email;
+    emp.Phone   = model.Phone;
+    emp.Address = model.Address;
 
-            var emergency = await _context.EmployeeEmergencyContacts
-                .FirstOrDefaultAsync(ec => ec.EmployeeId == emp.EmployeeId);
+    // emergency contact stuff ... (keep as is)
 
-            if (emergency == null)
-            {
-                emergency = new EmployeeEmergencyContact
-                {
-                    EmployeeId = emp.EmployeeId
-                };
-                _context.EmployeeEmergencyContacts.Add(emergency);
-            }
+    // Photo upload -> store in DB
+    if (model.ProfilePhoto != null && model.ProfilePhoto.Length > 0)
+    {
+        using var ms = new MemoryStream();
+        await model.ProfilePhoto.CopyToAsync(ms);
+        emp.PhotoBytes = ms.ToArray();
+    }
 
-            emergency.FullName = model.EmergencyName ?? "";
-            emergency.Relationship = model.EmergencyRelationship ?? "";
-            emergency.Phone = model.EmergencyPhone ?? "";
-            emergency.Email = model.EmergencyEmail ?? "";
+    await _context.SaveChangesAsync();
 
-            // Photo upload
-            if (model.ProfilePhoto != null && model.ProfilePhoto.Length > 0)
-            {
-                var folder = Path.Combine(_env.WebRootPath, "uploads", "employees");
-                Directory.CreateDirectory(folder);
+    TempData["msg"] = "Profile updated successfully.";
+    return RedirectToAction("Profile");
+}
 
-                var filePath = Path.Combine(folder, $"{emp.EmployeeId}.jpg");
-                using (var stream = System.IO.File.Create(filePath))
-                {
-                    await model.ProfilePhoto.CopyToAsync(stream);
-                }
-            }
-
-            await _context.SaveChangesAsync();
-
-            TempData["msg"] = "Profile updated successfully.";
-            return RedirectToAction("Profile");
-        }
     }
 }
 

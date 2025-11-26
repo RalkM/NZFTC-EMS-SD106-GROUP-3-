@@ -9,12 +9,31 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace NZFTC_EMS.Migrations
 {
     /// <inheritdoc />
-    public partial class fix : Migration
+    public partial class Seed_Timesheets_Leave_Grievances : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AlterDatabase()
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "Announcements",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Title = table.Column<string>(type: "varchar(200)", maxLength: 200, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Body = table.Column<string>(type: "varchar(2000)", maxLength: 2000, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    CreatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    IsActive = table.Column<bool>(type: "tinyint(1)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Announcements", x => x.Id);
+                })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
@@ -338,6 +357,34 @@ namespace NZFTC_EMS.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
+                name: "Grievances",
+                columns: table => new
+                {
+                    GrievanceId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    EmployeeId = table.Column<int>(type: "int", nullable: false),
+                    Subject = table.Column<string>(type: "varchar(200)", maxLength: 200, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    SubmittedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    EmployeeMessage = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    AdminResponse = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Status = table.Column<byte>(type: "tinyint unsigned", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Grievances", x => x.GrievanceId);
+                    table.ForeignKey(
+                        name: "FK_Grievances_Employees_EmployeeId",
+                        column: x => x.EmployeeId,
+                        principalTable: "Employees",
+                        principalColumn: "EmployeeId",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
                 name: "leaverequests",
                 columns: table => new
                 {
@@ -524,6 +571,15 @@ namespace NZFTC_EMS.Migrations
                 });
 
             migrationBuilder.InsertData(
+                table: "payrollruns",
+                columns: new[] { "PayrollRunId", "CreatedAt", "PaidAt", "PayFrequency", "PeriodEnd", "PeriodStart", "ProcessedAt", "Status" },
+                values: new object[,]
+                {
+                    { 1, new DateTime(2025, 11, 20, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2025, 11, 20, 0, 0, 0, 0, DateTimeKind.Unspecified), 0, new DateTime(2025, 11, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2025, 11, 6, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2025, 11, 20, 0, 0, 0, 0, DateTimeKind.Unspecified), 2 },
+                    { 2, new DateTime(2025, 11, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), null, 0, new DateTime(2025, 11, 19, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2025, 11, 13, 0, 0, 0, 0, DateTimeKind.Unspecified), null, 1 }
+                });
+
+            migrationBuilder.InsertData(
                 table: "payrollsettings",
                 columns: new[] { "PayrollSettingsId", "ACCLevyPercent", "EnableStudentLoan", "KiwiSaverEmployeePercent", "KiwiSaverEmployerPercent", "OvertimeMultiplier", "RegularHoursPerWeek", "UpdatedAt" },
                 values: new object[] { 1, 1.53m, true, 3.0m, 3.0m, 1.5m, 40, new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) });
@@ -580,6 +636,25 @@ namespace NZFTC_EMS.Migrations
                 });
 
             migrationBuilder.InsertData(
+                table: "EmployeePayrollSummaries",
+                columns: new[] { "EmployeePayrollSummaryId", "ACCLevy", "Deductions", "EmployeeId", "GeneratedAt", "GrossPay", "KiwiSaverEmployee", "KiwiSaverEmployer", "NetPay", "PAYE", "PaidAt", "PayRate", "PayrollPeriodId", "PayrollRunId", "RateType", "Status", "StudentLoan", "TotalHours" },
+                values: new object[,]
+                {
+                    { 1, 15m, 260m, 1001, new DateTime(2025, 11, 13, 0, 0, 0, 0, DateTimeKind.Unspecified), 2000m, 45m, 45m, 1740m, 200m, null, 50.00m, 1, 1, (byte)0, (byte)2, 0m, 40m },
+                    { 2, 15m, 260m, 1001, new DateTime(2025, 11, 20, 0, 0, 0, 0, DateTimeKind.Unspecified), 2000m, 45m, 45m, 1740m, 200m, null, 50.00m, 1, 2, (byte)0, (byte)2, 0m, 40m }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Grievances",
+                columns: new[] { "GrievanceId", "AdminResponse", "EmployeeId", "EmployeeMessage", "Status", "Subject", "SubmittedAt" },
+                values: new object[,]
+                {
+                    { 1, null, 1002, "My roster has been changed without notice and clashes with study.", (byte)0, "Roster concerns", new DateTime(2025, 11, 19, 9, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 2, "IT has been notified and will replace your workstation this week.", 1003, "My workstation keeps freezing and affects my productivity.", (byte)1, "Equipment not working", new DateTime(2025, 11, 18, 15, 30, 0, 0, DateTimeKind.Unspecified) },
+                    { 3, "We have recalculated and processed an adjustment in your next pay.", 1004, "I believe my overtime for October was underpaid.", (byte)3, "Payroll discrepancy – October", new DateTime(2025, 11, 10, 14, 0, 0, 0, DateTimeKind.Unspecified) }
+                });
+
+            migrationBuilder.InsertData(
                 table: "employeeemergencycontacts",
                 columns: new[] { "EmergencyContactId", "Email", "EmployeeId", "FullName", "Phone", "Relationship" },
                 values: new object[,]
@@ -600,9 +675,35 @@ namespace NZFTC_EMS.Migrations
                 });
 
             migrationBuilder.InsertData(
+                table: "leaverequests",
+                columns: new[] { "LeaveRequestId", "ApprovedAt", "ApprovedByEmployeeId", "EmployeeId", "EndDate", "LeaveType", "Reason", "RequestedAt", "StartDate" },
+                values: new object[] { 1, null, null, 1002, new DateTime(2025, 11, 27, 0, 0, 0, 0, DateTimeKind.Unspecified), "Annual", "Family event", new DateTime(2025, 11, 20, 10, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2025, 11, 25, 0, 0, 0, 0, DateTimeKind.Unspecified) });
+
+            migrationBuilder.InsertData(
+                table: "leaverequests",
+                columns: new[] { "LeaveRequestId", "ApprovedAt", "ApprovedByEmployeeId", "EmployeeId", "EndDate", "LeaveType", "Reason", "RequestedAt", "StartDate", "Status" },
+                values: new object[,]
+                {
+                    { 2, new DateTime(2025, 11, 17, 14, 0, 0, 0, DateTimeKind.Unspecified), 1001, 1003, new DateTime(2025, 11, 19, 0, 0, 0, 0, DateTimeKind.Unspecified), "Sick", "Flu", new DateTime(2025, 11, 17, 9, 30, 0, 0, DateTimeKind.Unspecified), new DateTime(2025, 11, 18, 0, 0, 0, 0, DateTimeKind.Unspecified), "Approved" },
+                    { 3, new DateTime(2025, 11, 23, 16, 0, 0, 0, DateTimeKind.Unspecified), 1001, 1004, new DateTime(2025, 12, 4, 0, 0, 0, 0, DateTimeKind.Unspecified), "Annual", "Overlaps with year-end close", new DateTime(2025, 11, 22, 11, 15, 0, 0, DateTimeKind.Unspecified), new DateTime(2025, 12, 2, 0, 0, 0, 0, DateTimeKind.Unspecified), "Rejected" }
+                });
+
+            migrationBuilder.InsertData(
                 table: "supporttickets",
                 columns: new[] { "Id", "AssignedToId", "CreatedAt", "EmployeeId", "Message", "Priority", "Status", "Subject", "UpdatedAt" },
                 values: new object[] { 1, 1001, new DateTime(2025, 11, 20, 0, 0, 0, 0, DateTimeKind.Unspecified), 1002, "This is the initial seeded support ticket.", 0, 0, "Welcome to Support", null });
+
+            migrationBuilder.InsertData(
+                table: "timesheetentries",
+                columns: new[] { "TimesheetEntryId", "AdminNote", "ApprovedAt", "BreakEndTime", "BreakStartTime", "CreatedAt", "EmployeeId", "FinishTime", "PayrollRunId", "StartTime", "Status", "SubmittedAt", "TotalHours", "WorkDate" },
+                values: new object[,]
+                {
+                    { 1, "Approved – standard day.", new DateTime(2025, 11, 8, 9, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 12, 30, 0, 0), new TimeSpan(0, 12, 0, 0, 0), new DateTime(2025, 11, 7, 8, 30, 0, 0, DateTimeKind.Unspecified), 1001, new TimeSpan(0, 17, 0, 0, 0), 1, new TimeSpan(0, 9, 0, 0, 0), 2, new DateTime(2025, 11, 7, 17, 5, 0, 0, DateTimeKind.Unspecified), 7.5m, new DateTime(2025, 11, 7, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 2, null, null, new TimeSpan(0, 13, 0, 0, 0), new TimeSpan(0, 12, 30, 0, 0), new DateTime(2025, 11, 11, 8, 0, 0, 0, DateTimeKind.Unspecified), 1002, new TimeSpan(0, 17, 0, 0, 0), null, new TimeSpan(0, 8, 30, 0, 0), 1, new DateTime(2025, 11, 11, 17, 10, 0, 0, DateTimeKind.Unspecified), 8.0m, new DateTime(2025, 11, 11, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 3, null, null, new TimeSpan(0, 13, 0, 0, 0), new TimeSpan(0, 12, 30, 0, 0), new DateTime(2025, 11, 12, 8, 45, 0, 0, DateTimeKind.Unspecified), 1002, new TimeSpan(0, 18, 0, 0, 0), null, new TimeSpan(0, 9, 0, 0, 0), 0, null, 8.5m, new DateTime(2025, 11, 12, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 4, "Approved – includes 0.5h overtime.", new DateTime(2025, 11, 11, 9, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 13, 30, 0, 0), new TimeSpan(0, 13, 0, 0, 0), new DateTime(2025, 11, 10, 8, 40, 0, 0, DateTimeKind.Unspecified), 1003, new TimeSpan(0, 18, 0, 0, 0), 1, new TimeSpan(0, 9, 0, 0, 0), 2, new DateTime(2025, 11, 10, 18, 5, 0, 0, DateTimeKind.Unspecified), 8.5m, new DateTime(2025, 11, 10, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 5, "Rejected – incorrect break time; please resubmit.", new DateTime(2025, 11, 10, 10, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 14, 30, 0, 0), new TimeSpan(0, 14, 0, 0, 0), new DateTime(2025, 11, 9, 9, 30, 0, 0, DateTimeKind.Unspecified), 1004, new TimeSpan(0, 19, 0, 0, 0), null, new TimeSpan(0, 10, 0, 0, 0), 3, new DateTime(2025, 11, 9, 19, 10, 0, 0, DateTimeKind.Unspecified), 8.5m, new DateTime(2025, 11, 9, 0, 0, 0, 0, DateTimeKind.Unspecified) }
+                });
 
             migrationBuilder.InsertData(
                 table: "supportmessages",
@@ -647,6 +748,11 @@ namespace NZFTC_EMS.Migrations
                 name: "IX_Employees_PayGradeId",
                 table: "Employees",
                 column: "PayGradeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Grievances_EmployeeId",
+                table: "Grievances",
+                column: "EmployeeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_holidays_HolidayDate",
@@ -717,6 +823,9 @@ namespace NZFTC_EMS.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "Announcements");
+
+            migrationBuilder.DropTable(
                 name: "calendarevents");
 
             migrationBuilder.DropTable(
@@ -727,6 +836,9 @@ namespace NZFTC_EMS.Migrations
 
             migrationBuilder.DropTable(
                 name: "EmployeePayrollSummaries");
+
+            migrationBuilder.DropTable(
+                name: "Grievances");
 
             migrationBuilder.DropTable(
                 name: "holidays");

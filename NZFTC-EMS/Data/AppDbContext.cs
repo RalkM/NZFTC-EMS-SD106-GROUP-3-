@@ -11,9 +11,6 @@ namespace NZFTC_EMS.Data
         // ==========================
         //        DB SETS
         // ==========================
-        // ==========================
-//        DB SETS
-// ==========================
 public DbSet<JobPosition> JobPositions => Set<JobPosition>();
 public DbSet<PayGrade> PayGrades => Set<PayGrade>();
 public DbSet<Employee> Employees => Set<Employee>();
@@ -37,59 +34,363 @@ public DbSet<PayrollRun> PayrollRuns => Set<PayrollRun>();
 
 public DbSet<Announcement> Announcements { get; set; } = default!;
 
+public DbSet<Grievance> Grievances => Set<Grievance>();
+public SupportPriority Priority { get; set; }
+
+
+
 
         protected override void OnModelCreating(ModelBuilder b)
+{
+    base.OnModelCreating(b);
 
-        
-        {
-            base.OnModelCreating(b);
+    // 1. CONFIGURE ALL ENTITIES FIRST
+    ConfigureJobPosition(b);
+    ConfigurePayGrade(b);
 
-            // 1. CONFIGURE ALL ENTITIES FIRST
-            ConfigureJobPosition(b);
-ConfigurePayGrade(b);
+    ConfigureEmployee(b);                 // ✅ ADD THIS
+    ConfigureEmployeeEmergencyContact(b);
+    ConfigureLeaveRequest(b);
+    ConfigurePayrollPeriod(b);
+    ConfigureHoliday(b);
+    ConfigureSupportTicket(b);
+    ConfigureSupportMessage(b);
+    ConfigureEmployeeLeaveBalance(b);
+    ConfigureCalendar(b);
+    ConfigureLeavePolicy(b);
+    ConfigurePayrollSettings(b);
 
-ConfigureEmployeeEmergencyContact(b);
-ConfigureLeaveRequest(b);
-ConfigurePayrollPeriod(b);
-ConfigureHoliday(b);
-ConfigureSupportTicket(b);
-ConfigureSupportMessage(b);
-ConfigureEmployeeLeaveBalance(b);
-ConfigureCalendar(b);
-ConfigureLeavePolicy(b);
-ConfigurePayrollSettings(b);
+    // NEW
+    ConfigureTimesheetEntry(b);
+    ConfigurePayrollRun(b);
+    ConfigureEmployeePayrollSummary(b);   // ✅ ADD THIS
 
-// NEW
-ConfigureTimesheetEntry(b);
-ConfigurePayrollRun(b);
+    // 2. SEED DATA
+    SeedPayGrades(b);
+    SeedJobPositions(b);
+    SeedHolidays(b);
+    SeedPayrollPeriods(b);
+    SeedEmployees(b);
+    SeedEmployeeContacts(b);
+    SeedLeaveBalances(b);
+    SeedSupportTickets(b);
+    SeedSupportMessages(b);
+    SeedCalendarEvents(b);
+    SeedLeavePolicies(b);
+    SeedPayrollSettings(b);
 
+    // NEW
+    SeedPayrollRuns(b);
+    SeedEmployeePayrollSummaries(b);
 
-
-
-            // 2. SEED DATA
-SeedPayGrades(b);
-SeedJobPositions(b);
-SeedHolidays(b);
-SeedPayrollPeriods(b);
-SeedEmployees(b);
-SeedEmployeeContacts(b);
-SeedLeaveBalances(b);
-SeedSupportTickets(b);
-SeedSupportMessages(b);
-SeedCalendarEvents(b);
-SeedLeavePolicies(b);
-SeedPayrollSettings(b);
-
-// 🔹 NEW
-SeedPayrollRuns(b);
-SeedEmployeePayrollSummaries(b);
-
-
-        }
+    // NEW SEED BLOCKS WE’RE ADDING
+    SeedLeaveRequests(b);
+    SeedTimesheetEntries(b);
+}
 
         // ==========================================================
         //                    CONFIGURATION BLOCKS
         // ==========================================================
+
+private void SeedLeaveRequests(ModelBuilder b)
+{
+    b.Entity<LeaveRequest>().HasData(
+        // Pending annual leave – TEMP Emp
+        new LeaveRequest
+        {
+            LeaveRequestId       = 1,
+            EmployeeId           = 1002,
+            LeaveType            = "Annual",
+            StartDate            = new DateTime(2025, 11, 25),
+            EndDate              = new DateTime(2025, 11, 27),
+            Reason               = "Family event",
+            Status               = LeaveStatus.Pending,
+            RequestedAt          = new DateTime(2025, 11, 20, 10, 0, 0),
+            ApprovedByEmployeeId = null,
+            ApprovedAt           = null
+        },
+
+        // Approved sick leave – Sarah
+        new LeaveRequest
+        {
+            LeaveRequestId       = 2,
+            EmployeeId           = 1003,
+            LeaveType            = "Sick",
+            StartDate            = new DateTime(2025, 11, 18),
+            EndDate              = new DateTime(2025, 11, 19),
+            Reason               = "Flu",
+            Status               = LeaveStatus.Approved,
+            RequestedAt          = new DateTime(2025, 11, 17, 9, 30, 0),
+            ApprovedByEmployeeId = 1001,
+            ApprovedAt           = new DateTime(2025, 11, 17, 14, 0, 0)
+        },
+
+        // Rejected annual leave – Michael
+        new LeaveRequest
+        {
+            LeaveRequestId       = 3,
+            EmployeeId           = 1004,
+            LeaveType            = "Annual",
+            StartDate            = new DateTime(2025, 12, 2),
+            EndDate              = new DateTime(2025, 12, 4),
+            Reason               = "Overlaps with year-end close",
+            Status               = LeaveStatus.Rejected,
+            RequestedAt          = new DateTime(2025, 11, 22, 11, 15, 0),
+            ApprovedByEmployeeId = 1001,
+            ApprovedAt           = new DateTime(2025, 11, 23, 16, 0, 0)
+        },
+
+        // Pending sick – Olivia
+        new LeaveRequest
+        {
+            LeaveRequestId       = 4,
+            EmployeeId           = 1005,
+            LeaveType            = "Sick",
+            StartDate            = new DateTime(2025, 11, 22),
+            EndDate              = new DateTime(2025, 11, 22),
+            Reason               = "Migraine",
+            Status               = LeaveStatus.Pending,
+            RequestedAt          = new DateTime(2025, 11, 21, 15, 0, 0),
+            ApprovedByEmployeeId = null,
+            ApprovedAt           = null
+        },
+
+        // Approved annual – Daniel
+        new LeaveRequest
+        {
+            LeaveRequestId       = 5,
+            EmployeeId           = 1006,
+            LeaveType            = "Annual",
+            StartDate            = new DateTime(2025, 12, 10),
+            EndDate              = new DateTime(2025, 12, 11),
+            Reason               = "Short break",
+            Status               = LeaveStatus.Approved,
+            RequestedAt          = new DateTime(2025, 11, 19, 10, 0, 0),
+            ApprovedByEmployeeId = 1001,
+            ApprovedAt           = new DateTime(2025, 11, 19, 16, 0, 0)
+        }
+    );
+}
+
+
+private void SeedGrievances(ModelBuilder b)
+{
+    b.Entity<Grievance>().HasData(
+        // Open grievance from TEMP Emp
+        new Grievance
+        {
+            GrievanceId      = 1,
+            EmployeeId       = 1002, // TEMP Emp
+            Subject          = "Roster concerns",
+            SubmittedAt      = new DateTime(2025, 11, 19, 9, 0, 0),
+            EmployeeMessage  = "My roster has been changed without notice and clashes with study.",
+            AdminResponse    = null,
+            Status           = GrievanceStatus.Open
+        },
+
+        // In review grievance from Sarah
+        new Grievance
+        {
+            GrievanceId      = 2,
+            EmployeeId       = 1003, // Sarah
+            Subject          = "Equipment not working",
+            SubmittedAt      = new DateTime(2025, 11, 18, 15, 30, 0),
+            EmployeeMessage  = "My workstation keeps freezing and affects my productivity.",
+            AdminResponse    = "IT has been notified and will replace your workstation this week.",
+            Status           = GrievanceStatus.InReview
+        },
+
+        // Closed grievance from Michael
+        new Grievance
+        {
+            GrievanceId      = 3,
+            EmployeeId       = 1004, // Michael
+            Subject          = "Payroll discrepancy – October",
+            SubmittedAt      = new DateTime(2025, 11, 10, 14, 0, 0),
+            EmployeeMessage  = "I believe my overtime for October was underpaid.",
+            AdminResponse    = "We have recalculated and processed an adjustment in your next pay.",
+            Status           = GrievanceStatus.Closed
+        }
+    );
+}
+
+private void SeedTimesheetEntries(ModelBuilder b)
+{
+    b.Entity<TimesheetEntry>().HasData(
+        // Temp Admin – linked to run 1
+        new TimesheetEntry
+        {
+            TimesheetEntryId = 1,
+            EmployeeId       = 1001,
+            WorkDate         = new DateTime(2025, 11, 7),
+            StartTime        = new TimeSpan(9, 0, 0),
+            BreakStartTime   = new TimeSpan(12, 0, 0),
+            BreakEndTime     = new TimeSpan(12, 30, 0),
+            FinishTime       = new TimeSpan(17, 0, 0),
+            TotalHours       = 7.5m,
+            Status           = TimesheetStatus.Approved,
+            CreatedAt        = new DateTime(2025, 11, 7, 8, 30, 0),
+            SubmittedAt      = new DateTime(2025, 11, 7, 17, 5, 0),
+            ApprovedAt       = new DateTime(2025, 11, 8, 9, 0, 0),
+            PayrollRunId     = 1,
+            AdminNote        = "Approved – standard day."
+        },
+
+        // TEMP Emp – submitted
+        new TimesheetEntry
+        {
+            TimesheetEntryId = 2,
+            EmployeeId       = 1002,
+            WorkDate         = new DateTime(2025, 11, 11),
+            StartTime        = new TimeSpan(8, 30, 0),
+            BreakStartTime   = new TimeSpan(12, 30, 0),
+            BreakEndTime     = new TimeSpan(13, 0, 0),
+            FinishTime       = new TimeSpan(17, 0, 0),
+            TotalHours       = 8.0m,
+            Status           = TimesheetStatus.Submitted,
+            CreatedAt        = new DateTime(2025, 11, 11, 8, 0, 0),
+            SubmittedAt      = new DateTime(2025, 11, 11, 17, 10, 0),
+            ApprovedAt       = null,
+            PayrollRunId     = 1,
+            AdminNote        = null
+        },
+
+        // TEMP Emp – draft
+        new TimesheetEntry
+        {
+            TimesheetEntryId = 3,
+            EmployeeId       = 1002,
+            WorkDate         = new DateTime(2025, 11, 12),
+            StartTime        = new TimeSpan(9, 0, 0),
+            BreakStartTime   = new TimeSpan(12, 30, 0),
+            BreakEndTime     = new TimeSpan(13, 0, 0),
+            FinishTime       = new TimeSpan(18, 0, 0),
+            TotalHours       = 8.5m,
+            Status           = TimesheetStatus.Draft,
+            CreatedAt        = new DateTime(2025, 11, 12, 8, 45, 0),
+            SubmittedAt      = null,
+            ApprovedAt       = null,
+            PayrollRunId     = null,
+            AdminNote        = null
+        },
+
+        // Sarah – approved, run 1
+        new TimesheetEntry
+        {
+            TimesheetEntryId = 4,
+            EmployeeId       = 1003,
+            WorkDate         = new DateTime(2025, 11, 10),
+            StartTime        = new TimeSpan(9, 0, 0),
+            BreakStartTime   = new TimeSpan(13, 0, 0),
+            BreakEndTime     = new TimeSpan(13, 30, 0),
+            FinishTime       = new TimeSpan(18, 0, 0),
+            TotalHours       = 8.5m,
+            Status           = TimesheetStatus.Approved,
+            CreatedAt        = new DateTime(2025, 11, 10, 8, 40, 0),
+            SubmittedAt      = new DateTime(2025, 11, 10, 18, 5, 0),
+            ApprovedAt       = new DateTime(2025, 11, 11, 9, 30, 0),
+            PayrollRunId     = 1,
+            AdminNote        = "Approved – includes 0.5h overtime."
+        },
+
+        // Michael – rejected
+        new TimesheetEntry
+        {
+            TimesheetEntryId = 5,
+            EmployeeId       = 1004,
+            WorkDate         = new DateTime(2025, 11, 9),
+            StartTime        = new TimeSpan(10, 0, 0),
+            BreakStartTime   = new TimeSpan(14, 0, 0),
+            BreakEndTime     = new TimeSpan(14, 30, 0),
+            FinishTime       = new TimeSpan(19, 0, 0),
+            TotalHours       = 8.5m,
+            Status           = TimesheetStatus.Rejected,
+            CreatedAt        = new DateTime(2025, 11, 9, 9, 30, 0),
+            SubmittedAt      = new DateTime(2025, 11, 9, 19, 10, 0),
+            ApprovedAt       = new DateTime(2025, 11, 10, 10, 0, 0),
+            PayrollRunId     = null,
+            AdminNote        = "Incorrect break time; please resubmit."
+        },
+
+        // Olivia – approved, run 2
+        new TimesheetEntry
+        {
+            TimesheetEntryId = 6,
+            EmployeeId       = 1005,
+            WorkDate         = new DateTime(2025, 11, 14),
+            StartTime        = new TimeSpan(8, 30, 0),
+            BreakStartTime   = new TimeSpan(12, 30, 0),
+            BreakEndTime     = new TimeSpan(13, 0, 0),
+            FinishTime       = new TimeSpan(17, 0, 0),
+            TotalHours       = 8.0m,
+            Status           = TimesheetStatus.Approved,
+            CreatedAt        = new DateTime(2025, 11, 14, 8, 0, 0),
+            SubmittedAt      = new DateTime(2025, 11, 14, 17, 5, 0),
+            ApprovedAt       = new DateTime(2025, 11, 15, 9, 0, 0),
+            PayrollRunId     = 2,
+            AdminNote        = null
+        },
+
+        // Daniel – submitted
+        new TimesheetEntry
+        {
+            TimesheetEntryId = 7,
+            EmployeeId       = 1006,
+            WorkDate         = new DateTime(2025, 11, 15),
+            StartTime        = new TimeSpan(9, 0, 0),
+            BreakStartTime   = new TimeSpan(13, 0, 0),
+            BreakEndTime     = new TimeSpan(13, 30, 0),
+            FinishTime       = new TimeSpan(18, 0, 0),
+            TotalHours       = 8.5m,
+            Status           = TimesheetStatus.Submitted,
+            CreatedAt        = new DateTime(2025, 11, 15, 8, 45, 0),
+            SubmittedAt      = new DateTime(2025, 11, 15, 18, 10, 0),
+            ApprovedAt       = null,
+            PayrollRunId     = 2,
+            AdminNote        = null
+        },
+
+        // Emma – draft
+        new TimesheetEntry
+        {
+            TimesheetEntryId = 8,
+            EmployeeId       = 1007,
+            WorkDate         = new DateTime(2025, 11, 16),
+            StartTime        = new TimeSpan(9, 0, 0),
+            BreakStartTime   = new TimeSpan(12, 30, 0),
+            BreakEndTime     = new TimeSpan(13, 0, 0),
+            FinishTime       = new TimeSpan(17, 30, 0),
+            TotalHours       = 8.0m,
+            Status           = TimesheetStatus.Draft,
+            CreatedAt        = new DateTime(2025, 11, 16, 8, 40, 0),
+            SubmittedAt      = null,
+            ApprovedAt       = null,
+            PayrollRunId     = null,
+            AdminNote        = null
+        },
+
+        // Liam – approved, run 3
+        new TimesheetEntry
+        {
+            TimesheetEntryId = 9,
+            EmployeeId       = 1008,
+            WorkDate         = new DateTime(2025, 11, 21),
+            StartTime        = new TimeSpan(8, 0, 0),
+            BreakStartTime   = new TimeSpan(12, 0, 0),
+            BreakEndTime     = new TimeSpan(12, 30, 0),
+            FinishTime       = new TimeSpan(16, 30, 0),
+            TotalHours       = 8.0m,
+            Status           = TimesheetStatus.Approved,
+            CreatedAt        = new DateTime(2025, 11, 21, 7, 50, 0),
+            SubmittedAt      = new DateTime(2025, 11, 21, 16, 40, 0),
+            ApprovedAt       = new DateTime(2025, 11, 22, 9, 0, 0),
+            PayrollRunId     = 3,
+            AdminNote        = "Approved – training coverage."
+        }
+    );
+}
+
+
 private void ConfigurePayrollRun(ModelBuilder b)
 {
     b.Entity<PayrollRun>(e =>
@@ -116,13 +417,13 @@ private void ConfigurePayrollRun(ModelBuilder b)
 private void SeedEmployeePayrollSummaries(ModelBuilder b)
 {
     b.Entity<EmployeePayrollSummary>().HasData(
-        // Weekly run for Temp Admin (EmployeeId = 1001)
+        // Run 1 – past paid run
         new EmployeePayrollSummary
         {
             EmployeePayrollSummaryId = 1,
-            EmployeeId      = 1001,   // Temp Admin from SeedEmployees
-            PayrollPeriodId = 1,      // existing period (2025-M11)
-            PayrollRunId    = 1,      // weekly run above
+            EmployeeId      = 1001,   // Temp Admin
+            PayrollPeriodId = 1,      // 2025-M11
+            PayrollRunId    = 1,
 
             PayRate   = 50.00m,
             RateType  = RateType.Hourly,
@@ -134,36 +435,124 @@ private void SeedEmployeePayrollSummaries(ModelBuilder b)
             KiwiSaverEmployer = 45m,
             ACCLevy           = 15m,
             StudentLoan       = 0m,
-            Deductions        = 260m,     // 200 + 45 + 15
-
-            Status      = PayrollSummaryStatus.Paid,
-            GeneratedAt = new DateTime(2025, 11, 13),
-            NetPay = 1740m
+            Deductions        = 260m,
+            Status            = PayrollSummaryStatus.Paid,
+            GeneratedAt       = new DateTime(2025, 11, 13),
+            NetPay            = 1740m
         },
-
-        // Monthly run for another seeded employee (e.g. 1003)
         new EmployeePayrollSummary
         {
             EmployeePayrollSummaryId = 2,
-            EmployeeId      = 1001,   // Sarah / another seeded employee
-            PayrollPeriodId = 1,      // 2025-M11
-            PayrollRunId    = 2,      // monthly run above
+            EmployeeId      = 1002,   // TEMP Emp
+            PayrollPeriodId = 1,
+            PayrollRunId    = 1,
+
+            PayRate   = 35.00m,
+            RateType  = RateType.Hourly,
+            TotalHours= 38m,
+            GrossPay  = 1330m,
+
+            PAYE              = 150m,
+            KiwiSaverEmployee = 40m,
+            KiwiSaverEmployer = 40m,
+            ACCLevy           = 12m,
+            StudentLoan       = 0m,
+            Deductions        = 202m,
+            Status            = PayrollSummaryStatus.Paid,
+            GeneratedAt       = new DateTime(2025, 11, 13),
+            NetPay            = 1128m
+        },
+        new EmployeePayrollSummary
+        {
+            EmployeePayrollSummaryId = 3,
+            EmployeeId      = 1003,   // Sarah
+            PayrollPeriodId = 1,
+            PayrollRunId    = 1,
+
+            PayRate   = 45.00m,
+            RateType  = RateType.Hourly,
+            TotalHours= 42m,
+            GrossPay  = 1890m,
+
+            PAYE              = 190m,
+            KiwiSaverEmployee = 56m,
+            KiwiSaverEmployer = 56m,
+            ACCLevy           = 14m,
+            StudentLoan       = 0m,
+            Deductions        = 260m,
+            Status            = PayrollSummaryStatus.Paid,
+            GeneratedAt       = new DateTime(2025, 11, 13),
+            NetPay            = 1630m
+        },
+
+        // Run 2 – in finalising state
+        new EmployeePayrollSummary
+        {
+            EmployeePayrollSummaryId = 4,
+            EmployeeId      = 1001,
+            PayrollPeriodId = 1,
+            PayrollRunId    = 2,
 
             PayRate   = 50.00m,
             RateType  = RateType.Hourly,
             TotalHours= 40m,
             GrossPay  = 2000m,
 
-             PAYE              = 200m,
+            PAYE              = 200m,
             KiwiSaverEmployee = 45m,
             KiwiSaverEmployer = 45m,
             ACCLevy           = 15m,
             StudentLoan       = 0m,
-            Deductions        = 260m,     // 200 + 45 + 15
+            Deductions        = 260m,
+            Status            = PayrollSummaryStatus.Draft,
+            GeneratedAt       = new DateTime(2025, 11, 20),
+            NetPay            = 1740m
+        },
+        new EmployeePayrollSummary
+        {
+            EmployeePayrollSummaryId = 5,
+            EmployeeId      = 1004,   // Michael
+            PayrollPeriodId = 1,
+            PayrollRunId    = 2,
 
-            Status      = PayrollSummaryStatus.Paid,
-            GeneratedAt = new DateTime(2025, 11, 20),
-            NetPay = 1740m
+            PayRate   = 60.00m,
+            RateType  = RateType.Hourly,
+            TotalHours= 37m,
+            GrossPay  = 2220m,
+
+            PAYE              = 260m,
+            KiwiSaverEmployee = 67m,
+            KiwiSaverEmployer = 67m,
+            ACCLevy           = 17m,
+            StudentLoan       = 0m,
+            Deductions        = 344m,
+            Status            = PayrollSummaryStatus.Draft,
+            GeneratedAt       = new DateTime(2025, 11, 20),
+            NetPay            = 1876m
+        },
+
+        // Run 3 – open (preview)
+        new EmployeePayrollSummary
+        {
+            EmployeePayrollSummaryId = 6,
+            EmployeeId      = 1005,
+            PayrollPeriodId = 1,
+            PayrollRunId    = 3,
+
+            PayRate   = 28.00m,
+            RateType  = RateType.Hourly,
+            TotalHours= 30m,
+            GrossPay  = 840m,
+
+            PAYE              = 90m,
+            KiwiSaverEmployee = 25m,
+            KiwiSaverEmployer = 25m,
+            ACCLevy           = 7m,
+            StudentLoan       = 0m,
+            Deductions        = 122m,
+            Status            = PayrollSummaryStatus.Draft,
+            GeneratedAt       = new DateTime(2025, 11, 22),
+            NetPay            = 718m
         }
     );
 }
@@ -172,20 +561,20 @@ private void SeedEmployeePayrollSummaries(ModelBuilder b)
 private void SeedPayrollRuns(ModelBuilder b)
 {
     b.Entity<PayrollRun>().HasData(
-        // Example: a past weekly run
+        // Past weekly run (processed/paid)
         new PayrollRun
         {
             PayrollRunId = 1,
-            PeriodStart  = new DateTime(2025, 11, 6), // Thu
-            PeriodEnd    = new DateTime(2025, 11, 12), // Wed
+            PeriodStart  = new DateTime(2025, 11, 6),
+            PeriodEnd    = new DateTime(2025, 11, 12),
             PayFrequency = PayFrequency.Weekly,
             Status       = PayrollRunStatus.Paid,
-            CreatedAt    = new DateTime(2025, 11, 20),
-            ProcessedAt  = new DateTime(2025, 11, 20),
-            PaidAt       = new DateTime(2025, 11, 20)
+            CreatedAt    = new DateTime(2025, 11, 13),
+            ProcessedAt  = new DateTime(2025, 11, 13),
+            PaidAt       = new DateTime(2025, 11, 14)
         },
 
-        // Example: a monthly run
+        // Current weekly run – finalising
         new PayrollRun
         {
             PayrollRunId = 2,
@@ -193,12 +582,26 @@ private void SeedPayrollRuns(ModelBuilder b)
             PeriodEnd    = new DateTime(2025, 11, 19),
             PayFrequency = PayFrequency.Weekly,
             Status       = PayrollRunStatus.Finalizing,
-            CreatedAt    = new DateTime(2025, 11, 30),
+            CreatedAt    = new DateTime(2025, 11, 20),
+            ProcessedAt  = null,
+            PaidAt       = null
+        },
+
+        // Upcoming weekly run – open
+        new PayrollRun
+        {
+            PayrollRunId = 3,
+            PeriodStart  = new DateTime(2025, 11, 20),
+            PeriodEnd    = new DateTime(2025, 11, 26),
+            PayFrequency = PayFrequency.Weekly,
+            Status       = PayrollRunStatus.Open,
+            CreatedAt    = new DateTime(2025, 11, 21),
             ProcessedAt  = null,
             PaidAt       = null
         }
     );
 }
+
 
 
         private void ConfigureTimesheetEntry(ModelBuilder b)
@@ -227,7 +630,7 @@ private void SeedPayrollRuns(ModelBuilder b)
     });
 }
 
-        private void ConfigureEmployeePayrollSummary(ModelBuilder b)
+private void ConfigureEmployeePayrollSummary(ModelBuilder b)
 {
     b.Entity<EmployeePayrollSummary>(e =>
     {
@@ -236,16 +639,17 @@ private void SeedPayrollRuns(ModelBuilder b)
         e.HasKey(x => x.EmployeePayrollSummaryId);
 
         e.HasOne(x => x.Employee)
-            .WithMany(e => e.PayrollSummaries)
+            .WithMany(emp => emp.PayrollSummaries)
             .HasForeignKey(x => x.EmployeeId)
             .OnDelete(DeleteBehavior.Cascade);
 
+        // 🔹 FIX: hook to PayrollPeriod.PayrollSummaries
         e.HasOne(x => x.PayrollPeriod)
-            .WithMany()
+            .WithMany(p => p.PayrollSummaries)
             .HasForeignKey(x => x.PayrollPeriodId)
             .OnDelete(DeleteBehavior.Restrict);
 
-        // 🔹 NEW: link to payroll run
+        // Link to payroll run
         e.HasOne(x => x.PayrollRun)
             .WithMany(r => r.Payslips)
             .HasForeignKey(x => x.PayrollRunId)
@@ -259,14 +663,7 @@ private void SeedPayrollRuns(ModelBuilder b)
         e.Property(x => x.ACCLevy).HasPrecision(14, 2);
         e.Property(x => x.StudentLoan).HasPrecision(14, 2);
         e.Property(x => x.Deductions).HasPrecision(14, 2);
-        e.Property(x => x.NetPay).HasPrecision(14, 2)
-            .HasComputedColumnSql("`GrossPay` - `Deductions`");
-
-        e.Property(x => x.Status)
-            .HasDefaultValue(PayrollSummaryStatus.Draft);
-
-        e.Property(x => x.RateType)
-            .HasConversion<int>();
+        e.Property(x => x.NetPay).HasPrecision(14, 2);
     });
 }
 
@@ -637,85 +1034,167 @@ private void SeedPayrollRuns(ModelBuilder b)
         }
 
         private void SeedEmployees(ModelBuilder b)
-        {
-            b.Entity<Employee>().HasData(
+{
+    b.Entity<Employee>().HasData(
 
-                // ===== TEMP ADMIN ACCOUNT =====
-                new Employee
-                {
-                    EmployeeId = 1001,
-                    FirstName = "Temp",
-                    LastName = "Admin",
-                    Email = "admin@nzftc.local",
-                    Department = "HR",
-                    JobPositionId = 11,     // HR Manager
-                    PayGradeId = 8,
-                    EmployeeCode = "NZFTC1001",
-                    StartDate = new DateTime(2025, 11, 20),
-                    Birthday = new DateTime(1990, 1, 1),
-                    Gender = "Other",
-                    Address = "N/A",
-                    PasswordHash = new byte[0],  // You can replace with real hash
-                    PasswordSalt = new byte[0],
-                    PayFrequency = PayFrequency.Weekly
-                },
-                new Employee
-                {
-                    EmployeeId = 1003,
-                    FirstName = "Sarah",
-                    LastName = "Williams",
-                    Email = "sarah@nzftc.local",
-                    Department = "IT",
-                    JobPositionId = 22,  // Software Developer
-                    PayGradeId = 6,
-                    EmployeeCode = "NZFTC1003",
-                    StartDate = new DateTime(2025, 11, 10),
-                    Birthday = new DateTime(1997, 3, 12),
-                    Gender = "Female",
-                    Address = "42 Eden Terrace",
-                    PasswordHash = new byte[0],
-                    PasswordSalt = new byte[0],
-                    PayFrequency = PayFrequency.Weekly
-                },
-                new Employee
-                {
-                    EmployeeId = 1004,
-                    FirstName = "Michael",
-                    LastName = "Brown",
-                    Email = "michael@nzftc.local",
-                    Department = "Finance",
-                    JobPositionId = 3,   // Senior Accountant
-                    PayGradeId = 8,
-                    EmployeeCode = "NZFTC1004",
-                    StartDate = new DateTime(2025, 10, 5),
-                    Birthday = new DateTime(1988, 9, 14),
-                    Gender = "Male",
-                    Address = "19 Queen Street",
-                    PasswordHash = new byte[0],
-                    PasswordSalt = new byte[0],
-                    PayFrequency = PayFrequency.Weekly
-                },
-                // ===== SAMPLE EMPLOYEE #1 =====
-                new Employee
-                {
-                    EmployeeId = 1002,
-                    FirstName = "TEMP",
-                    LastName = "Emp",
-                    Email = "emp@nzftc.local",
-                    Department = "Finance",
-                    JobPositionId = 4,     // Accountant
-                    PayGradeId = 7,
-                    EmployeeCode = "NZFTC1002",
-                    StartDate = new DateTime(2025, 11, 20),
-                    Birthday = new DateTime(1995, 5, 15),
-                    Gender = "Male",
-                    Address = "123 Finance Street",
-                    PasswordHash = new byte[0],
-                    PasswordSalt = new byte[0],
-                    PayFrequency = PayFrequency.Weekly
-                }
-            );
+        // ===== TEMP ADMIN ACCOUNT =====
+        new Employee
+        {
+            EmployeeId   = 1001,
+            FirstName    = "Temp",
+            LastName     = "Admin",
+            Email        = "admin@nzftc.local",
+            Department   = "HR",
+            JobPositionId= 11,     // HR Manager
+            PayGradeId   = 8,
+            EmployeeCode = "NZFTC1001",
+            StartDate    = new DateTime(2025, 11, 20),
+            Birthday     = new DateTime(1990, 1, 1),
+            Gender       = "Other",
+            Address      = "N/A",
+            PasswordHash = new byte[0],
+            PasswordSalt = new byte[0],
+            PayFrequency = PayFrequency.Weekly
+        },
+
+        // ===== SAMPLE EMPLOYEE #1 =====
+        new Employee
+        {
+            EmployeeId   = 1002,
+            FirstName    = "TEMP",
+            LastName     = "Emp",
+            Email        = "emp@nzftc.local",
+            Department   = "Finance",
+            JobPositionId= 4,     // Accountant
+            PayGradeId   = 7,
+            EmployeeCode = "NZFTC1002",
+            StartDate    = new DateTime(2025, 11, 20),
+            Birthday     = new DateTime(1995, 5, 15),
+            Gender       = "Male",
+            Address      = "123 Finance Street",
+            PasswordHash = new byte[0],
+            PasswordSalt = new byte[0],
+            PayFrequency = PayFrequency.Weekly
+        },
+
+        new Employee
+        {
+            EmployeeId   = 1003,
+            FirstName    = "Sarah",
+            LastName     = "Williams",
+            Email        = "sarah@nzftc.local",
+            Department   = "IT",
+            JobPositionId= 22,    // Software Developer
+            PayGradeId   = 6,
+            EmployeeCode = "NZFTC1003",
+            StartDate    = new DateTime(2025, 11, 10),
+            Birthday     = new DateTime(1997, 3, 12),
+            Gender       = "Female",
+            Address      = "42 Eden Terrace",
+            PasswordHash = new byte[0],
+            PasswordSalt = new byte[0],
+            PayFrequency = PayFrequency.Weekly
+        },
+
+        new Employee
+        {
+            EmployeeId   = 1004,
+            FirstName    = "Michael",
+            LastName     = "Brown",
+            Email        = "michael@nzftc.local",
+            Department   = "Finance",
+            JobPositionId= 3,     // Senior Accountant
+            PayGradeId   = 8,
+            EmployeeCode = "NZFTC1004",
+            StartDate    = new DateTime(2025, 10, 5),
+            Birthday     = new DateTime(1988, 9, 14),
+            Gender       = "Male",
+            Address      = "19 Queen Street",
+            PasswordHash = new byte[0],
+            PasswordSalt = new byte[0],
+            PayFrequency = PayFrequency.Weekly
+        },
+
+        // ===== EXTRA EMPLOYEES =====
+
+        new Employee
+        {
+            EmployeeId   = 1005,
+            FirstName    = "Olivia",
+            LastName     = "Chen",
+            Email        = "olivia@nzftc.local",
+            Department   = "Operations",
+            JobPositionId= 32,    // Customer Service Representative
+            PayGradeId   = 2,
+            EmployeeCode = "NZFTC1005",
+            StartDate    = new DateTime(2025, 9, 1),
+            Birthday     = new DateTime(1999, 7, 22),
+            Gender       = "Female",
+            Address      = "8 Harbour View",
+            PasswordHash = new byte[0],
+            PasswordSalt = new byte[0],
+            PayFrequency = PayFrequency.Weekly
+        },
+
+        new Employee
+        {
+            EmployeeId   = 1006,
+            FirstName    = "Daniel",
+            LastName     = "Lee",
+            Email        = "daniel@nzftc.local",
+            Department   = "IT",
+            JobPositionId= 24,    // IT Support Technician
+            PayGradeId   = 2,
+            EmployeeCode = "NZFTC1006",
+            StartDate    = new DateTime(2025, 8, 15),
+            Birthday     = new DateTime(1996, 11, 3),
+            Gender       = "Male",
+            Address      = "55 Tech Lane",
+            PasswordHash = new byte[0],
+            PasswordSalt = new byte[0],
+            PayFrequency = PayFrequency.Weekly
+        },
+
+        new Employee
+        {
+            EmployeeId   = 1007,
+            FirstName    = "Emma",
+            LastName     = "Johnson",
+            Email        = "emma@nzftc.local",
+            Department   = "Finance",
+            JobPositionId= 8,     // Finance Administrator
+            PayGradeId   = 2,
+            EmployeeCode = "NZFTC1007",
+            StartDate    = new DateTime(2025, 7, 10),
+            Birthday     = new DateTime(1994, 4, 5),
+            Gender       = "Female",
+            Address      = "21 Ledger Street",
+            PasswordHash = new byte[0],
+            PasswordSalt = new byte[0],
+            PayFrequency = PayFrequency.Weekly
+        },
+
+        new Employee
+        {
+            EmployeeId   = 1008,
+            FirstName    = "Liam",
+            LastName     = "Davis",
+            Email        = "liam@nzftc.local",
+            Department   = "Operations",
+            JobPositionId= 28,    // Team Leader – Operations
+            PayGradeId   = 4,
+            EmployeeCode = "NZFTC1008",
+            StartDate    = new DateTime(2025, 6, 1),
+            Birthday     = new DateTime(1992, 2, 18),
+            Gender       = "Male",
+            Address      = "3 Riverbank Road",
+            PasswordHash = new byte[0],
+            PasswordSalt = new byte[0],
+            PayFrequency = PayFrequency.Weekly
         }
+    );
+}
+
 
         private void SeedEmployeeContacts(ModelBuilder b)
         {
@@ -741,95 +1220,209 @@ private void SeedPayrollRuns(ModelBuilder b)
             );
         }
 
-        private void SeedLeaveBalances(ModelBuilder b)
+       private void SeedLeaveBalances(ModelBuilder b)
+{
+    b.Entity<EmployeeLeaveBalance>().HasData(
+        new EmployeeLeaveBalance
         {
-            b.Entity<EmployeeLeaveBalance>().HasData(
-                new EmployeeLeaveBalance
-                {
-                    EmployeeLeaveBalanceId = 1,
-                    EmployeeId = 1001,
-                    AnnualAccrued = 0,
-                    AnnualUsed = 0,
-                    SickAccrued = 0,
-                    SickUsed = 0,
-                    UpdatedAt = new DateTime(2025, 1, 1)
-                },
-                new EmployeeLeaveBalance
-                {
-                    EmployeeLeaveBalanceId = 3,
-                    EmployeeId = 1003,
-                    AnnualAccrued = 5,
-                    AnnualUsed = 0,
-                    SickAccrued = 2,
-                    SickUsed = 0,
-                    UpdatedAt = new DateTime(2025, 1, 1)
-                }, new EmployeeLeaveBalance
-                {
-                    EmployeeLeaveBalanceId = 4,
-                    EmployeeId = 1004,
-                    AnnualAccrued = 10,
-                    AnnualUsed = 2,
-                    SickAccrued = 5,
-                    SickUsed = 1,
-                    UpdatedAt = new DateTime(2025, 1, 1)
-                },
-
-                new EmployeeLeaveBalance
-                {
-                    EmployeeLeaveBalanceId = 2,
-                    EmployeeId = 1002,
-                    AnnualAccrued = 0,
-                    AnnualUsed = 0,
-                    SickAccrued = 0,
-                    SickUsed = 0,
-                    UpdatedAt = new DateTime(2025, 1, 1)
-                }
-            );
-        }
-
-        private void SeedSupportTickets(ModelBuilder b)
+            EmployeeLeaveBalanceId = 1,
+            EmployeeId      = 1001,
+            AnnualAccrued   = 10,
+            AnnualUsed      = 2,
+            SickAccrued     = 5,
+            SickUsed        = 1,
+            CarryOverAnnual = 0,
+            UpdatedAt       = new DateTime(2025, 11, 1)
+        },
+        new EmployeeLeaveBalance
         {
-            b.Entity<SupportTicket>().HasData(
-                new SupportTicket
-                {
-                    Id = 1,
-                    Subject = "Welcome to Support",
-                    Message = "This is the initial seeded support ticket.",
-                    Status = 0,
-                    Priority = 0,
-                    EmployeeId = 1002,      // created by sample employee
-                    AssignedToId = 1001,    // assigned to admin
-                    CreatedAt = new DateTime(2025, 11, 20),
-                    UpdatedAt = null
-                }
-            );
+            EmployeeLeaveBalanceId = 2,
+            EmployeeId      = 1002,
+            AnnualAccrued   = 8,
+            AnnualUsed      = 1,
+            SickAccrued     = 4,
+            SickUsed        = 0,
+            CarryOverAnnual = 0,
+            UpdatedAt       = new DateTime(2025, 11, 1)
+        },
+        new EmployeeLeaveBalance
+        {
+            EmployeeLeaveBalanceId = 3,
+            EmployeeId      = 1003,
+            AnnualAccrued   = 5,
+            AnnualUsed      = 0,
+            SickAccrued     = 2,
+            SickUsed        = 0,
+            CarryOverAnnual = 0,
+            UpdatedAt       = new DateTime(2025, 11, 1)
+        },
+        new EmployeeLeaveBalance
+        {
+            EmployeeLeaveBalanceId = 4,
+            EmployeeId      = 1004,
+            AnnualAccrued   = 10,
+            AnnualUsed      = 2,
+            SickAccrued     = 5,
+            SickUsed        = 1,
+            CarryOverAnnual = 1,
+            UpdatedAt       = new DateTime(2025, 11, 1)
+        },
+        new EmployeeLeaveBalance
+        {
+            EmployeeLeaveBalanceId = 5,
+            EmployeeId      = 1005,
+            AnnualAccrued   = 6,
+            AnnualUsed      = 0,
+            SickAccrued     = 3,
+            SickUsed        = 0,
+            CarryOverAnnual = 0,
+            UpdatedAt       = new DateTime(2025, 11, 1)
+        },
+        new EmployeeLeaveBalance
+        {
+            EmployeeLeaveBalanceId = 6,
+            EmployeeId      = 1006,
+            AnnualAccrued   = 7,
+            AnnualUsed      = 1,
+            SickAccrued     = 4,
+            SickUsed        = 0,
+            CarryOverAnnual = 0,
+            UpdatedAt       = new DateTime(2025, 11, 1)
+        },
+        new EmployeeLeaveBalance
+        {
+            EmployeeLeaveBalanceId = 7,
+            EmployeeId      = 1007,
+            AnnualAccrued   = 9,
+            AnnualUsed      = 2,
+            SickAccrued     = 5,
+            SickUsed        = 1,
+            CarryOverAnnual = 0,
+            UpdatedAt       = new DateTime(2025, 11, 1)
+        },
+        new EmployeeLeaveBalance
+        {
+            EmployeeLeaveBalanceId = 8,
+            EmployeeId      = 1008,
+            AnnualAccrued   = 12,
+            AnnualUsed      = 3,
+            SickAccrued     = 6,
+            SickUsed        = 1,
+            CarryOverAnnual = 2,
+            UpdatedAt       = new DateTime(2025, 11, 1)
         }
+    );
+}
+
+
+private void SeedSupportTickets(ModelBuilder b)
+{
+    b.Entity<SupportTicket>().HasData(
+        new SupportTicket
+        {
+            Id           = 1,
+            Subject      = "Welcome to Support",
+            Message      = "This is the initial seeded support ticket.",
+            Status       = SupportStatus.Open,          // was 0
+            Priority     = SupportPriority.Low,      // was 0
+            EmployeeId   = 1002,                        // created by sample employee
+            AssignedToId = 1001,                        // assigned to admin
+            CreatedAt    = new DateTime(2025, 11, 20),
+            UpdatedAt    = null
+        },
+        new SupportTicket
+        {
+            Id           = 2,
+            Subject      = "Cannot submit timesheet",
+            Message      = "I get an error when submitting my timesheet for this week.",
+            Status       = SupportStatus.Open,
+            Priority     = SupportPriority.High,        // was 1
+            EmployeeId   = 1005,                        // Olivia
+            AssignedToId = 1006,                        // Daniel (IT)
+            CreatedAt    = new DateTime(2025, 11, 21, 9, 30, 0),
+            UpdatedAt    = new DateTime(2025, 11, 21, 10, 0, 0)
+        },
+        new SupportTicket
+        {
+            Id           = 3,
+            Subject      = "Payslip amount seems incorrect",
+            Message      = "My overtime for last week is missing.",
+            Status       = SupportStatus.InProgress,
+            Priority     = SupportPriority.High,
+            EmployeeId   = 1004,                        // Michael
+            AssignedToId = 1001,                        // Admin
+            CreatedAt    = new DateTime(2025, 11, 18, 14, 0, 0),
+            UpdatedAt    = new DateTime(2025, 11, 19, 9, 0, 0)
+        }
+    );
+}
+
 
         private void SeedSupportMessages(ModelBuilder b)
+{
+    b.Entity<SupportMessage>().HasData(
+
+        // Ticket 1
+        new SupportMessage
         {
-            b.Entity<SupportMessage>().HasData(
+            Id                = 1,
+            TicketId          = 1,
+            SenderEmployeeId  = 1002,
+            SenderIsAdmin     = false,
+            Body              = "Hi, I need help setting up my account.",
+            SentAt            = new DateTime(2025, 11, 20, 9, 0, 0)
+        },
+        new SupportMessage
+        {
+            Id                = 2,
+            TicketId          = 1,
+            SenderEmployeeId  = 1001,
+            SenderIsAdmin     = true,
+            Body              = "Admin here — your account is now active!",
+            SentAt            = new DateTime(2025, 11, 20, 9, 5, 0)
+        },
 
-                new SupportMessage
-                {
-                    Id = 1,
-                    TicketId = 1,
-                    SenderEmployeeId = 1002,
-                    SenderIsAdmin = false,
-                    Body = "Hi, I need help setting up my account.",
-                    SentAt = new DateTime(2025, 11, 20, 9, 0, 0)
-                },
+        // Ticket 2
+        new SupportMessage
+        {
+            Id                = 3,
+            TicketId          = 2,
+            SenderEmployeeId  = 1005,
+            SenderIsAdmin     = false,
+            Body              = "I get a red error banner when I click submit.",
+            SentAt            = new DateTime(2025, 11, 21, 9, 32, 0)
+        },
+        new SupportMessage
+        {
+            Id                = 4,
+            TicketId          = 2,
+            SenderEmployeeId  = 1006,
+            SenderIsAdmin     = true,
+            Body              = "Can you send me a screenshot of the error?",
+            SentAt            = new DateTime(2025, 11, 21, 9, 45, 0)
+        },
 
-                new SupportMessage
-                {
-                    Id = 2,
-                    TicketId = 1,
-                    SenderEmployeeId = 1001,
-                    SenderIsAdmin = true,
-                    Body = "Admin here — your account is now active!",
-                    SentAt = new DateTime(2025, 11, 20, 9, 5, 0)
-                }
-            );
+        // Ticket 3
+        new SupportMessage
+        {
+            Id                = 5,
+            TicketId          = 3,
+            SenderEmployeeId  = 1004,
+            SenderIsAdmin     = false,
+            Body              = "My timesheet shows 42 hours but payslip only paid 40.",
+            SentAt            = new DateTime(2025, 11, 18, 14, 5, 0)
+        },
+        new SupportMessage
+        {
+            Id                = 6,
+            TicketId          = 3,
+            SenderEmployeeId  = 1001,
+            SenderIsAdmin     = true,
+            Body              = "We’re checking your timesheet against the payroll run.",
+            SentAt            = new DateTime(2025, 11, 19, 9, 10, 0)
         }
+    );
+}
 
         private void SeedLeavePolicies(ModelBuilder b)
         {
@@ -869,20 +1462,74 @@ private void SeedPayrollRuns(ModelBuilder b)
             );
         } 
 
-        private void SeedCalendarEvents(ModelBuilder b)
+private void SeedCalendarEvents(ModelBuilder b)
+{
+    b.Entity<CalendarEvent>().HasData(
+        new CalendarEvent
         {
-            b.Entity<CalendarEvent>().HasData(
-                new CalendarEvent
-                {
-                    Id = 1,
-                    Title = "System Go-Live",
-                    Description = "NZFTC EMS officially launched!",
-                    Start = new DateTime(2025, 11, 20, 9, 0, 0),
-                    End = new DateTime(2025, 11, 20, 17, 0, 0),
-                    EventType = Data.Entities.CalendarEventType.Other,
-                    OwnerUsername = "System"
-                }
-            );
+            Id          = 1,
+            Title       = "System Go-Live",
+            Description = "NZFTC EMS officially launched!",
+            Start       = new DateTime(2025, 11, 20, 9, 0, 0),
+            End         = new DateTime(2025, 11, 20, 17, 0, 0),
+            EventType   = CalendarEventType.Other,
+            OwnerUsername = "System",
+            IsTodo      = false,
+            IsPublicHoliday = false
+        },
+        // Stand-up – IT
+        new CalendarEvent
+        {
+            Id          = 2,
+            Title       = "Daily Stand-up – IT",
+            Description = "15-minute catch-up for IT team.",
+            Start       = new DateTime(2025, 11, 21, 9, 0, 0),
+            End         = new DateTime(2025, 11, 21, 9, 15, 0),
+            EventType   = CalendarEventType.Meeting,
+            OwnerUsername = "sarah@nzftc.local",
+            IsTodo      = false,
+            IsPublicHoliday = false
+        },
+        // Payroll cut-off reminder
+        new CalendarEvent
+        {
+            Id          = 3,
+            Title       = "Payroll Cut-off",
+            Description = "Approve timesheets before 3 PM.",
+            Start       = new DateTime(2025, 11, 19, 15, 0, 0),
+            End         = new DateTime(2025, 11, 19, 15, 30, 0),
+            EventType   = CalendarEventType.Other,
+            OwnerUsername = "admin@nzftc.local",
+            IsTodo      = true,
+            IsPublicHoliday = false
+        },
+        // Approved sick leave – Sarah
+        new CalendarEvent
+        {
+            Id          = 4,
+            Title       = "Approved leave – Sarah Williams",
+            Description = "Sick leave",
+            Start       = new DateTime(2025, 11, 18, 0, 0, 0),
+            End         = new DateTime(2025, 11, 20, 0, 0, 0), // end exclusive
+            EventType   = CalendarEventType.Leave,
+            OwnerUsername = "sarah@nzftc.local",
+            IsTodo      = false,
+            IsPublicHoliday = false
+        },
+        // Approved annual – Daniel
+        new CalendarEvent
+        {
+            Id          = 5,
+            Title       = "Approved leave – Daniel Lee",
+            Description = "Annual leave",
+            Start       = new DateTime(2025, 12, 10, 0, 0, 0),
+            End         = new DateTime(2025, 12, 12, 0, 0, 0),
+            EventType   = CalendarEventType.Leave,
+            OwnerUsername = "daniel@nzftc.local",
+            IsTodo      = false,
+            IsPublicHoliday = false
         }
-    }
+    );
+}
+  }
 }

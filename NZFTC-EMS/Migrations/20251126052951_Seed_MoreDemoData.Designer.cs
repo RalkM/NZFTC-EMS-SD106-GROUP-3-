@@ -12,8 +12,8 @@ using NZFTC_EMS.Data;
 namespace NZFTC_EMS.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20251124063639_fix")]
-    partial class fix
+    [Migration("20251126052951_Seed_MoreDemoData")]
+    partial class Seed_MoreDemoData
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,35 @@ namespace NZFTC_EMS.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             MySqlModelBuilderExtensions.AutoIncrementColumns(modelBuilder);
+
+            modelBuilder.Entity("NZFTC_EMS.Data.Entities.Announcement", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Body")
+                        .IsRequired()
+                        .HasMaxLength(2000)
+                        .HasColumnType("varchar(2000)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("varchar(200)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Announcements");
+                });
 
             modelBuilder.Entity("NZFTC_EMS.Data.Entities.CalendarEvent", b =>
                 {
@@ -77,6 +106,54 @@ namespace NZFTC_EMS.Migrations
                             OwnerUsername = "System",
                             Start = new DateTime(2025, 11, 20, 9, 0, 0, 0, DateTimeKind.Unspecified),
                             Title = "System Go-Live"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Description = "15-minute catch-up for IT team.",
+                            End = new DateTime(2025, 11, 21, 9, 15, 0, 0, DateTimeKind.Unspecified),
+                            EventType = 1,
+                            IsPublicHoliday = false,
+                            IsTodo = false,
+                            OwnerUsername = "sarah@nzftc.local",
+                            Start = new DateTime(2025, 11, 21, 9, 0, 0, 0, DateTimeKind.Unspecified),
+                            Title = "Daily Stand-up – IT"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Description = "Approve timesheets before 3 PM.",
+                            End = new DateTime(2025, 11, 19, 15, 30, 0, 0, DateTimeKind.Unspecified),
+                            EventType = 3,
+                            IsPublicHoliday = false,
+                            IsTodo = true,
+                            OwnerUsername = "admin@nzftc.local",
+                            Start = new DateTime(2025, 11, 19, 15, 0, 0, 0, DateTimeKind.Unspecified),
+                            Title = "Payroll Cut-off"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Description = "Sick leave",
+                            End = new DateTime(2025, 11, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            EventType = 4,
+                            IsPublicHoliday = false,
+                            IsTodo = false,
+                            OwnerUsername = "sarah@nzftc.local",
+                            Start = new DateTime(2025, 11, 18, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Title = "Approved leave – Sarah Williams"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Description = "Annual leave",
+                            End = new DateTime(2025, 12, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            EventType = 4,
+                            IsPublicHoliday = false,
+                            IsTodo = false,
+                            OwnerUsername = "daniel@nzftc.local",
+                            Start = new DateTime(2025, 12, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Title = "Approved leave – Daniel Lee"
                         });
                 });
 
@@ -142,15 +219,21 @@ namespace NZFTC_EMS.Migrations
                         .HasColumnType("varchar(30)");
 
                     b.Property<DateTime>("StartDate")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("date");
 
                     b.HasKey("EmployeeId");
+
+                    b.HasIndex("Email")
+                        .IsUnique();
+
+                    b.HasIndex("EmployeeCode")
+                        .IsUnique();
 
                     b.HasIndex("JobPositionId");
 
                     b.HasIndex("PayGradeId");
 
-                    b.ToTable("Employees");
+                    b.ToTable("employees", (string)null);
 
                     b.HasData(
                         new
@@ -169,6 +252,24 @@ namespace NZFTC_EMS.Migrations
                             PasswordSalt = new byte[0],
                             PayFrequency = (byte)0,
                             PayGradeId = 8,
+                            StartDate = new DateTime(2025, 11, 20, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            EmployeeId = 1002,
+                            Address = "123 Finance Street",
+                            Birthday = new DateTime(1995, 5, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Department = "Finance",
+                            Email = "emp@nzftc.local",
+                            EmployeeCode = "NZFTC1002",
+                            FirstName = "TEMP",
+                            Gender = "Male",
+                            JobPositionId = 4,
+                            LastName = "Emp",
+                            PasswordHash = new byte[0],
+                            PasswordSalt = new byte[0],
+                            PayFrequency = (byte)0,
+                            PayGradeId = 7,
                             StartDate = new DateTime(2025, 11, 20, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
@@ -209,21 +310,75 @@ namespace NZFTC_EMS.Migrations
                         },
                         new
                         {
-                            EmployeeId = 1002,
-                            Address = "123 Finance Street",
-                            Birthday = new DateTime(1995, 5, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Department = "Finance",
-                            Email = "emp@nzftc.local",
-                            EmployeeCode = "NZFTC1002",
-                            FirstName = "TEMP",
-                            Gender = "Male",
-                            JobPositionId = 4,
-                            LastName = "Emp",
+                            EmployeeId = 1005,
+                            Address = "8 Harbour View",
+                            Birthday = new DateTime(1999, 7, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Department = "Operations",
+                            Email = "olivia@nzftc.local",
+                            EmployeeCode = "NZFTC1005",
+                            FirstName = "Olivia",
+                            Gender = "Female",
+                            JobPositionId = 32,
+                            LastName = "Chen",
                             PasswordHash = new byte[0],
                             PasswordSalt = new byte[0],
                             PayFrequency = (byte)0,
-                            PayGradeId = 7,
-                            StartDate = new DateTime(2025, 11, 20, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            PayGradeId = 2,
+                            StartDate = new DateTime(2025, 9, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            EmployeeId = 1006,
+                            Address = "55 Tech Lane",
+                            Birthday = new DateTime(1996, 11, 3, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Department = "IT",
+                            Email = "daniel@nzftc.local",
+                            EmployeeCode = "NZFTC1006",
+                            FirstName = "Daniel",
+                            Gender = "Male",
+                            JobPositionId = 24,
+                            LastName = "Lee",
+                            PasswordHash = new byte[0],
+                            PasswordSalt = new byte[0],
+                            PayFrequency = (byte)0,
+                            PayGradeId = 2,
+                            StartDate = new DateTime(2025, 8, 15, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            EmployeeId = 1007,
+                            Address = "21 Ledger Street",
+                            Birthday = new DateTime(1994, 4, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Department = "Finance",
+                            Email = "emma@nzftc.local",
+                            EmployeeCode = "NZFTC1007",
+                            FirstName = "Emma",
+                            Gender = "Female",
+                            JobPositionId = 8,
+                            LastName = "Johnson",
+                            PasswordHash = new byte[0],
+                            PasswordSalt = new byte[0],
+                            PayFrequency = (byte)0,
+                            PayGradeId = 2,
+                            StartDate = new DateTime(2025, 7, 10, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            EmployeeId = 1008,
+                            Address = "3 Riverbank Road",
+                            Birthday = new DateTime(1992, 2, 18, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Department = "Operations",
+                            Email = "liam@nzftc.local",
+                            EmployeeCode = "NZFTC1008",
+                            FirstName = "Liam",
+                            Gender = "Male",
+                            JobPositionId = 28,
+                            LastName = "Davis",
+                            PasswordHash = new byte[0],
+                            PasswordSalt = new byte[0],
+                            PayFrequency = (byte)0,
+                            PayGradeId = 4,
+                            StartDate = new DateTime(2025, 6, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         });
                 });
 
@@ -319,13 +474,24 @@ namespace NZFTC_EMS.Migrations
                         new
                         {
                             EmployeeLeaveBalanceId = 1,
-                            AnnualAccrued = 0m,
-                            AnnualUsed = 0m,
+                            AnnualAccrued = 10m,
+                            AnnualUsed = 2m,
                             CarryOverAnnual = 0m,
                             EmployeeId = 1001,
-                            SickAccrued = 0m,
+                            SickAccrued = 5m,
+                            SickUsed = 1m,
+                            UpdatedAt = new DateTime(2025, 11, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            EmployeeLeaveBalanceId = 2,
+                            AnnualAccrued = 8m,
+                            AnnualUsed = 1m,
+                            CarryOverAnnual = 0m,
+                            EmployeeId = 1002,
+                            SickAccrued = 4m,
                             SickUsed = 0m,
-                            UpdatedAt = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            UpdatedAt = new DateTime(2025, 11, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
@@ -336,29 +502,62 @@ namespace NZFTC_EMS.Migrations
                             EmployeeId = 1003,
                             SickAccrued = 2m,
                             SickUsed = 0m,
-                            UpdatedAt = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            UpdatedAt = new DateTime(2025, 11, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
                             EmployeeLeaveBalanceId = 4,
                             AnnualAccrued = 10m,
                             AnnualUsed = 2m,
-                            CarryOverAnnual = 0m,
+                            CarryOverAnnual = 1m,
                             EmployeeId = 1004,
                             SickAccrued = 5m,
                             SickUsed = 1m,
-                            UpdatedAt = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            UpdatedAt = new DateTime(2025, 11, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
-                            EmployeeLeaveBalanceId = 2,
-                            AnnualAccrued = 0m,
+                            EmployeeLeaveBalanceId = 5,
+                            AnnualAccrued = 6m,
                             AnnualUsed = 0m,
                             CarryOverAnnual = 0m,
-                            EmployeeId = 1002,
-                            SickAccrued = 0m,
+                            EmployeeId = 1005,
+                            SickAccrued = 3m,
                             SickUsed = 0m,
-                            UpdatedAt = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            UpdatedAt = new DateTime(2025, 11, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            EmployeeLeaveBalanceId = 6,
+                            AnnualAccrued = 7m,
+                            AnnualUsed = 1m,
+                            CarryOverAnnual = 0m,
+                            EmployeeId = 1006,
+                            SickAccrued = 4m,
+                            SickUsed = 0m,
+                            UpdatedAt = new DateTime(2025, 11, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            EmployeeLeaveBalanceId = 7,
+                            AnnualAccrued = 9m,
+                            AnnualUsed = 2m,
+                            CarryOverAnnual = 0m,
+                            EmployeeId = 1007,
+                            SickAccrued = 5m,
+                            SickUsed = 1m,
+                            UpdatedAt = new DateTime(2025, 11, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            EmployeeLeaveBalanceId = 8,
+                            AnnualAccrued = 12m,
+                            AnnualUsed = 3m,
+                            CarryOverAnnual = 2m,
+                            EmployeeId = 1008,
+                            SickAccrued = 6m,
+                            SickUsed = 1m,
+                            UpdatedAt = new DateTime(2025, 11, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         });
                 });
 
@@ -371,10 +570,12 @@ namespace NZFTC_EMS.Migrations
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("EmployeePayrollSummaryId"));
 
                     b.Property<decimal>("ACCLevy")
-                        .HasColumnType("decimal(65,30)");
+                        .HasPrecision(14, 2)
+                        .HasColumnType("decimal(14,2)");
 
                     b.Property<decimal>("Deductions")
-                        .HasColumnType("decimal(65,30)");
+                        .HasPrecision(14, 2)
+                        .HasColumnType("decimal(14,2)");
 
                     b.Property<int>("EmployeeId")
                         .HasColumnType("int");
@@ -383,25 +584,31 @@ namespace NZFTC_EMS.Migrations
                         .HasColumnType("datetime(6)");
 
                     b.Property<decimal>("GrossPay")
-                        .HasColumnType("decimal(65,30)");
+                        .HasPrecision(14, 2)
+                        .HasColumnType("decimal(14,2)");
 
                     b.Property<decimal>("KiwiSaverEmployee")
-                        .HasColumnType("decimal(65,30)");
+                        .HasPrecision(14, 2)
+                        .HasColumnType("decimal(14,2)");
 
                     b.Property<decimal>("KiwiSaverEmployer")
-                        .HasColumnType("decimal(65,30)");
+                        .HasPrecision(14, 2)
+                        .HasColumnType("decimal(14,2)");
 
                     b.Property<decimal>("NetPay")
-                        .HasColumnType("decimal(65,30)");
+                        .HasPrecision(14, 2)
+                        .HasColumnType("decimal(14,2)");
 
                     b.Property<decimal>("PAYE")
-                        .HasColumnType("decimal(65,30)");
+                        .HasPrecision(14, 2)
+                        .HasColumnType("decimal(14,2)");
 
                     b.Property<DateTime?>("PaidAt")
                         .HasColumnType("datetime(6)");
 
                     b.Property<decimal>("PayRate")
-                        .HasColumnType("decimal(65,30)");
+                        .HasPrecision(12, 2)
+                        .HasColumnType("decimal(12,2)");
 
                     b.Property<int?>("PayrollPeriodId")
                         .HasColumnType("int");
@@ -416,7 +623,8 @@ namespace NZFTC_EMS.Migrations
                         .HasColumnType("tinyint unsigned");
 
                     b.Property<decimal>("StudentLoan")
-                        .HasColumnType("decimal(65,30)");
+                        .HasPrecision(14, 2)
+                        .HasColumnType("decimal(14,2)");
 
                     b.Property<decimal>("TotalHours")
                         .HasColumnType("decimal(65,30)");
@@ -429,7 +637,165 @@ namespace NZFTC_EMS.Migrations
 
                     b.HasIndex("PayrollRunId");
 
-                    b.ToTable("EmployeePayrollSummaries");
+                    b.ToTable("employeepayrollsummaries", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            EmployeePayrollSummaryId = 1,
+                            ACCLevy = 15m,
+                            Deductions = 260m,
+                            EmployeeId = 1001,
+                            GeneratedAt = new DateTime(2025, 11, 13, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            GrossPay = 2000m,
+                            KiwiSaverEmployee = 45m,
+                            KiwiSaverEmployer = 45m,
+                            NetPay = 1740m,
+                            PAYE = 200m,
+                            PayRate = 50.00m,
+                            PayrollPeriodId = 1,
+                            PayrollRunId = 1,
+                            RateType = (byte)0,
+                            Status = (byte)2,
+                            StudentLoan = 0m,
+                            TotalHours = 40m
+                        },
+                        new
+                        {
+                            EmployeePayrollSummaryId = 2,
+                            ACCLevy = 12m,
+                            Deductions = 202m,
+                            EmployeeId = 1002,
+                            GeneratedAt = new DateTime(2025, 11, 13, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            GrossPay = 1330m,
+                            KiwiSaverEmployee = 40m,
+                            KiwiSaverEmployer = 40m,
+                            NetPay = 1128m,
+                            PAYE = 150m,
+                            PayRate = 35.00m,
+                            PayrollPeriodId = 1,
+                            PayrollRunId = 1,
+                            RateType = (byte)0,
+                            Status = (byte)2,
+                            StudentLoan = 0m,
+                            TotalHours = 38m
+                        },
+                        new
+                        {
+                            EmployeePayrollSummaryId = 3,
+                            ACCLevy = 14m,
+                            Deductions = 260m,
+                            EmployeeId = 1003,
+                            GeneratedAt = new DateTime(2025, 11, 13, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            GrossPay = 1890m,
+                            KiwiSaverEmployee = 56m,
+                            KiwiSaverEmployer = 56m,
+                            NetPay = 1630m,
+                            PAYE = 190m,
+                            PayRate = 45.00m,
+                            PayrollPeriodId = 1,
+                            PayrollRunId = 1,
+                            RateType = (byte)0,
+                            Status = (byte)2,
+                            StudentLoan = 0m,
+                            TotalHours = 42m
+                        },
+                        new
+                        {
+                            EmployeePayrollSummaryId = 4,
+                            ACCLevy = 15m,
+                            Deductions = 260m,
+                            EmployeeId = 1001,
+                            GeneratedAt = new DateTime(2025, 11, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            GrossPay = 2000m,
+                            KiwiSaverEmployee = 45m,
+                            KiwiSaverEmployer = 45m,
+                            NetPay = 1740m,
+                            PAYE = 200m,
+                            PayRate = 50.00m,
+                            PayrollPeriodId = 1,
+                            PayrollRunId = 2,
+                            RateType = (byte)0,
+                            Status = (byte)0,
+                            StudentLoan = 0m,
+                            TotalHours = 40m
+                        },
+                        new
+                        {
+                            EmployeePayrollSummaryId = 5,
+                            ACCLevy = 17m,
+                            Deductions = 344m,
+                            EmployeeId = 1004,
+                            GeneratedAt = new DateTime(2025, 11, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            GrossPay = 2220m,
+                            KiwiSaverEmployee = 67m,
+                            KiwiSaverEmployer = 67m,
+                            NetPay = 1876m,
+                            PAYE = 260m,
+                            PayRate = 60.00m,
+                            PayrollPeriodId = 1,
+                            PayrollRunId = 2,
+                            RateType = (byte)0,
+                            Status = (byte)0,
+                            StudentLoan = 0m,
+                            TotalHours = 37m
+                        },
+                        new
+                        {
+                            EmployeePayrollSummaryId = 6,
+                            ACCLevy = 7m,
+                            Deductions = 122m,
+                            EmployeeId = 1005,
+                            GeneratedAt = new DateTime(2025, 11, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            GrossPay = 840m,
+                            KiwiSaverEmployee = 25m,
+                            KiwiSaverEmployer = 25m,
+                            NetPay = 718m,
+                            PAYE = 90m,
+                            PayRate = 28.00m,
+                            PayrollPeriodId = 1,
+                            PayrollRunId = 3,
+                            RateType = (byte)0,
+                            Status = (byte)0,
+                            StudentLoan = 0m,
+                            TotalHours = 30m
+                        });
+                });
+
+            modelBuilder.Entity("NZFTC_EMS.Data.Entities.Grievance", b =>
+                {
+                    b.Property<int>("GrievanceId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("GrievanceId"));
+
+                    b.Property<string>("AdminResponse")
+                        .HasColumnType("longtext");
+
+                    b.Property<int>("EmployeeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("EmployeeMessage")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<byte>("Status")
+                        .HasColumnType("tinyint unsigned");
+
+                    b.Property<string>("Subject")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("varchar(200)");
+
+                    b.Property<DateTime>("SubmittedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.HasKey("GrievanceId");
+
+                    b.HasIndex("EmployeeId");
+
+                    b.ToTable("Grievances");
                 });
 
             modelBuilder.Entity("NZFTC_EMS.Data.Entities.Holiday", b =>
@@ -1000,6 +1366,69 @@ namespace NZFTC_EMS.Migrations
                     b.HasIndex("StartDate", "EndDate");
 
                     b.ToTable("leaverequests", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            LeaveRequestId = 1,
+                            EmployeeId = 1002,
+                            EndDate = new DateTime(2025, 11, 27, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LeaveType = "Annual",
+                            Reason = "Family event",
+                            RequestedAt = new DateTime(2025, 11, 20, 10, 0, 0, 0, DateTimeKind.Unspecified),
+                            StartDate = new DateTime(2025, 11, 25, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Status = "Pending"
+                        },
+                        new
+                        {
+                            LeaveRequestId = 2,
+                            ApprovedAt = new DateTime(2025, 11, 17, 14, 0, 0, 0, DateTimeKind.Unspecified),
+                            ApprovedByEmployeeId = 1001,
+                            EmployeeId = 1003,
+                            EndDate = new DateTime(2025, 11, 19, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LeaveType = "Sick",
+                            Reason = "Flu",
+                            RequestedAt = new DateTime(2025, 11, 17, 9, 30, 0, 0, DateTimeKind.Unspecified),
+                            StartDate = new DateTime(2025, 11, 18, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Status = "Approved"
+                        },
+                        new
+                        {
+                            LeaveRequestId = 3,
+                            ApprovedAt = new DateTime(2025, 11, 23, 16, 0, 0, 0, DateTimeKind.Unspecified),
+                            ApprovedByEmployeeId = 1001,
+                            EmployeeId = 1004,
+                            EndDate = new DateTime(2025, 12, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LeaveType = "Annual",
+                            Reason = "Overlaps with year-end close",
+                            RequestedAt = new DateTime(2025, 11, 22, 11, 15, 0, 0, DateTimeKind.Unspecified),
+                            StartDate = new DateTime(2025, 12, 2, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Status = "Rejected"
+                        },
+                        new
+                        {
+                            LeaveRequestId = 4,
+                            EmployeeId = 1005,
+                            EndDate = new DateTime(2025, 11, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LeaveType = "Sick",
+                            Reason = "Migraine",
+                            RequestedAt = new DateTime(2025, 11, 21, 15, 0, 0, 0, DateTimeKind.Unspecified),
+                            StartDate = new DateTime(2025, 11, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Status = "Pending"
+                        },
+                        new
+                        {
+                            LeaveRequestId = 5,
+                            ApprovedAt = new DateTime(2025, 11, 19, 16, 0, 0, 0, DateTimeKind.Unspecified),
+                            ApprovedByEmployeeId = 1001,
+                            EmployeeId = 1006,
+                            EndDate = new DateTime(2025, 12, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LeaveType = "Annual",
+                            Reason = "Short break",
+                            RequestedAt = new DateTime(2025, 11, 19, 10, 0, 0, 0, DateTimeKind.Unspecified),
+                            StartDate = new DateTime(2025, 12, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Status = "Approved"
+                        });
                 });
 
             modelBuilder.Entity("NZFTC_EMS.Data.Entities.PayGrade", b =>
@@ -1224,6 +1653,37 @@ namespace NZFTC_EMS.Migrations
                     b.HasKey("PayrollRunId");
 
                     b.ToTable("payrollruns", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            PayrollRunId = 1,
+                            CreatedAt = new DateTime(2025, 11, 13, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            PaidAt = new DateTime(2025, 11, 14, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            PayFrequency = 0,
+                            PeriodEnd = new DateTime(2025, 11, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            PeriodStart = new DateTime(2025, 11, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ProcessedAt = new DateTime(2025, 11, 13, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Status = 2
+                        },
+                        new
+                        {
+                            PayrollRunId = 2,
+                            CreatedAt = new DateTime(2025, 11, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            PayFrequency = 0,
+                            PeriodEnd = new DateTime(2025, 11, 19, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            PeriodStart = new DateTime(2025, 11, 13, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Status = 1
+                        },
+                        new
+                        {
+                            PayrollRunId = 3,
+                            CreatedAt = new DateTime(2025, 11, 21, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            PayFrequency = 0,
+                            PeriodEnd = new DateTime(2025, 11, 26, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            PeriodStart = new DateTime(2025, 11, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Status = 0
+                        });
                 });
 
             modelBuilder.Entity("NZFTC_EMS.Data.Entities.PayrollSettings", b =>
@@ -1332,6 +1792,42 @@ namespace NZFTC_EMS.Migrations
                             SenderIsAdmin = true,
                             SentAt = new DateTime(2025, 11, 20, 9, 5, 0, 0, DateTimeKind.Unspecified),
                             TicketId = 1
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Body = "I get a red error banner when I click submit.",
+                            SenderEmployeeId = 1005,
+                            SenderIsAdmin = false,
+                            SentAt = new DateTime(2025, 11, 21, 9, 32, 0, 0, DateTimeKind.Unspecified),
+                            TicketId = 2
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Body = "Can you send me a screenshot of the error?",
+                            SenderEmployeeId = 1006,
+                            SenderIsAdmin = true,
+                            SentAt = new DateTime(2025, 11, 21, 9, 45, 0, 0, DateTimeKind.Unspecified),
+                            TicketId = 2
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Body = "My timesheet shows 42 hours but payslip only paid 40.",
+                            SenderEmployeeId = 1004,
+                            SenderIsAdmin = false,
+                            SentAt = new DateTime(2025, 11, 18, 14, 5, 0, 0, DateTimeKind.Unspecified),
+                            TicketId = 3
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Body = "We’re checking your timesheet against the payroll run.",
+                            SenderEmployeeId = 1001,
+                            SenderIsAdmin = true,
+                            SentAt = new DateTime(2025, 11, 19, 9, 10, 0, 0, DateTimeKind.Unspecified),
+                            TicketId = 3
                         });
                 });
 
@@ -1388,6 +1884,30 @@ namespace NZFTC_EMS.Migrations
                             Priority = 0,
                             Status = 0,
                             Subject = "Welcome to Support"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            AssignedToId = 1006,
+                            CreatedAt = new DateTime(2025, 11, 21, 9, 30, 0, 0, DateTimeKind.Unspecified),
+                            EmployeeId = 1005,
+                            Message = "I get an error when submitting my timesheet for this week.",
+                            Priority = 2,
+                            Status = 0,
+                            Subject = "Cannot submit timesheet",
+                            UpdatedAt = new DateTime(2025, 11, 21, 10, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 3,
+                            AssignedToId = 1001,
+                            CreatedAt = new DateTime(2025, 11, 18, 14, 0, 0, 0, DateTimeKind.Unspecified),
+                            EmployeeId = 1004,
+                            Message = "My overtime for last week is missing.",
+                            Priority = 2,
+                            Status = 1,
+                            Subject = "Payslip amount seems incorrect",
+                            UpdatedAt = new DateTime(2025, 11, 19, 9, 0, 0, 0, DateTimeKind.Unspecified)
                         });
                 });
 
@@ -1447,17 +1967,160 @@ namespace NZFTC_EMS.Migrations
                     b.HasIndex("PayrollRunId");
 
                     b.ToTable("timesheetentries", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            TimesheetEntryId = 1,
+                            AdminNote = "Approved – standard day.",
+                            ApprovedAt = new DateTime(2025, 11, 8, 9, 0, 0, 0, DateTimeKind.Unspecified),
+                            BreakEndTime = new TimeSpan(0, 12, 30, 0, 0),
+                            BreakStartTime = new TimeSpan(0, 12, 0, 0, 0),
+                            CreatedAt = new DateTime(2025, 11, 7, 8, 30, 0, 0, DateTimeKind.Unspecified),
+                            EmployeeId = 1001,
+                            FinishTime = new TimeSpan(0, 17, 0, 0, 0),
+                            PayrollRunId = 1,
+                            StartTime = new TimeSpan(0, 9, 0, 0, 0),
+                            Status = 2,
+                            SubmittedAt = new DateTime(2025, 11, 7, 17, 5, 0, 0, DateTimeKind.Unspecified),
+                            TotalHours = 7.5m,
+                            WorkDate = new DateTime(2025, 11, 7, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            TimesheetEntryId = 2,
+                            BreakEndTime = new TimeSpan(0, 13, 0, 0, 0),
+                            BreakStartTime = new TimeSpan(0, 12, 30, 0, 0),
+                            CreatedAt = new DateTime(2025, 11, 11, 8, 0, 0, 0, DateTimeKind.Unspecified),
+                            EmployeeId = 1002,
+                            FinishTime = new TimeSpan(0, 17, 0, 0, 0),
+                            PayrollRunId = 1,
+                            StartTime = new TimeSpan(0, 8, 30, 0, 0),
+                            Status = 1,
+                            SubmittedAt = new DateTime(2025, 11, 11, 17, 10, 0, 0, DateTimeKind.Unspecified),
+                            TotalHours = 8.0m,
+                            WorkDate = new DateTime(2025, 11, 11, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            TimesheetEntryId = 3,
+                            BreakEndTime = new TimeSpan(0, 13, 0, 0, 0),
+                            BreakStartTime = new TimeSpan(0, 12, 30, 0, 0),
+                            CreatedAt = new DateTime(2025, 11, 12, 8, 45, 0, 0, DateTimeKind.Unspecified),
+                            EmployeeId = 1002,
+                            FinishTime = new TimeSpan(0, 18, 0, 0, 0),
+                            StartTime = new TimeSpan(0, 9, 0, 0, 0),
+                            Status = 0,
+                            TotalHours = 8.5m,
+                            WorkDate = new DateTime(2025, 11, 12, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            TimesheetEntryId = 4,
+                            AdminNote = "Approved – includes 0.5h overtime.",
+                            ApprovedAt = new DateTime(2025, 11, 11, 9, 30, 0, 0, DateTimeKind.Unspecified),
+                            BreakEndTime = new TimeSpan(0, 13, 30, 0, 0),
+                            BreakStartTime = new TimeSpan(0, 13, 0, 0, 0),
+                            CreatedAt = new DateTime(2025, 11, 10, 8, 40, 0, 0, DateTimeKind.Unspecified),
+                            EmployeeId = 1003,
+                            FinishTime = new TimeSpan(0, 18, 0, 0, 0),
+                            PayrollRunId = 1,
+                            StartTime = new TimeSpan(0, 9, 0, 0, 0),
+                            Status = 2,
+                            SubmittedAt = new DateTime(2025, 11, 10, 18, 5, 0, 0, DateTimeKind.Unspecified),
+                            TotalHours = 8.5m,
+                            WorkDate = new DateTime(2025, 11, 10, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            TimesheetEntryId = 5,
+                            AdminNote = "Incorrect break time; please resubmit.",
+                            ApprovedAt = new DateTime(2025, 11, 10, 10, 0, 0, 0, DateTimeKind.Unspecified),
+                            BreakEndTime = new TimeSpan(0, 14, 30, 0, 0),
+                            BreakStartTime = new TimeSpan(0, 14, 0, 0, 0),
+                            CreatedAt = new DateTime(2025, 11, 9, 9, 30, 0, 0, DateTimeKind.Unspecified),
+                            EmployeeId = 1004,
+                            FinishTime = new TimeSpan(0, 19, 0, 0, 0),
+                            StartTime = new TimeSpan(0, 10, 0, 0, 0),
+                            Status = 3,
+                            SubmittedAt = new DateTime(2025, 11, 9, 19, 10, 0, 0, DateTimeKind.Unspecified),
+                            TotalHours = 8.5m,
+                            WorkDate = new DateTime(2025, 11, 9, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            TimesheetEntryId = 6,
+                            ApprovedAt = new DateTime(2025, 11, 15, 9, 0, 0, 0, DateTimeKind.Unspecified),
+                            BreakEndTime = new TimeSpan(0, 13, 0, 0, 0),
+                            BreakStartTime = new TimeSpan(0, 12, 30, 0, 0),
+                            CreatedAt = new DateTime(2025, 11, 14, 8, 0, 0, 0, DateTimeKind.Unspecified),
+                            EmployeeId = 1005,
+                            FinishTime = new TimeSpan(0, 17, 0, 0, 0),
+                            PayrollRunId = 2,
+                            StartTime = new TimeSpan(0, 8, 30, 0, 0),
+                            Status = 2,
+                            SubmittedAt = new DateTime(2025, 11, 14, 17, 5, 0, 0, DateTimeKind.Unspecified),
+                            TotalHours = 8.0m,
+                            WorkDate = new DateTime(2025, 11, 14, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            TimesheetEntryId = 7,
+                            BreakEndTime = new TimeSpan(0, 13, 30, 0, 0),
+                            BreakStartTime = new TimeSpan(0, 13, 0, 0, 0),
+                            CreatedAt = new DateTime(2025, 11, 15, 8, 45, 0, 0, DateTimeKind.Unspecified),
+                            EmployeeId = 1006,
+                            FinishTime = new TimeSpan(0, 18, 0, 0, 0),
+                            PayrollRunId = 2,
+                            StartTime = new TimeSpan(0, 9, 0, 0, 0),
+                            Status = 1,
+                            SubmittedAt = new DateTime(2025, 11, 15, 18, 10, 0, 0, DateTimeKind.Unspecified),
+                            TotalHours = 8.5m,
+                            WorkDate = new DateTime(2025, 11, 15, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            TimesheetEntryId = 8,
+                            BreakEndTime = new TimeSpan(0, 13, 0, 0, 0),
+                            BreakStartTime = new TimeSpan(0, 12, 30, 0, 0),
+                            CreatedAt = new DateTime(2025, 11, 16, 8, 40, 0, 0, DateTimeKind.Unspecified),
+                            EmployeeId = 1007,
+                            FinishTime = new TimeSpan(0, 17, 30, 0, 0),
+                            StartTime = new TimeSpan(0, 9, 0, 0, 0),
+                            Status = 0,
+                            TotalHours = 8.0m,
+                            WorkDate = new DateTime(2025, 11, 16, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            TimesheetEntryId = 9,
+                            AdminNote = "Approved – training coverage.",
+                            ApprovedAt = new DateTime(2025, 11, 22, 9, 0, 0, 0, DateTimeKind.Unspecified),
+                            BreakEndTime = new TimeSpan(0, 12, 30, 0, 0),
+                            BreakStartTime = new TimeSpan(0, 12, 0, 0, 0),
+                            CreatedAt = new DateTime(2025, 11, 21, 7, 50, 0, 0, DateTimeKind.Unspecified),
+                            EmployeeId = 1008,
+                            FinishTime = new TimeSpan(0, 16, 30, 0, 0),
+                            PayrollRunId = 3,
+                            StartTime = new TimeSpan(0, 8, 0, 0, 0),
+                            Status = 2,
+                            SubmittedAt = new DateTime(2025, 11, 21, 16, 40, 0, 0, DateTimeKind.Unspecified),
+                            TotalHours = 8.0m,
+                            WorkDate = new DateTime(2025, 11, 21, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        });
                 });
 
             modelBuilder.Entity("NZFTC_EMS.Data.Entities.Employee", b =>
                 {
                     b.HasOne("NZFTC_EMS.Data.Entities.JobPosition", "JobPosition")
                         .WithMany()
-                        .HasForeignKey("JobPositionId");
+                        .HasForeignKey("JobPositionId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("NZFTC_EMS.Data.Entities.PayGrade", "PayGrade")
                         .WithMany()
-                        .HasForeignKey("PayGradeId");
+                        .HasForeignKey("PayGradeId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("JobPosition");
 
@@ -1496,17 +2159,30 @@ namespace NZFTC_EMS.Migrations
 
                     b.HasOne("NZFTC_EMS.Data.Entities.PayrollPeriod", "PayrollPeriod")
                         .WithMany("PayrollSummaries")
-                        .HasForeignKey("PayrollPeriodId");
+                        .HasForeignKey("PayrollPeriodId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("NZFTC_EMS.Data.Entities.PayrollRun", "PayrollRun")
                         .WithMany("Payslips")
-                        .HasForeignKey("PayrollRunId");
+                        .HasForeignKey("PayrollRunId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Employee");
 
                     b.Navigation("PayrollPeriod");
 
                     b.Navigation("PayrollRun");
+                });
+
+            modelBuilder.Entity("NZFTC_EMS.Data.Entities.Grievance", b =>
+                {
+                    b.HasOne("NZFTC_EMS.Data.Entities.Employee", "Employee")
+                        .WithMany()
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Employee");
                 });
 
             modelBuilder.Entity("NZFTC_EMS.Data.Entities.JobPosition", b =>

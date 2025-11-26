@@ -372,6 +372,46 @@ public async Task<IActionResult> Portal()
             return View("~/Views/Login/login.cshtml");
         }
 
+          // ============================================================
+        // Forgot Password
+        // ============================================================
+        // GET: /Website/ForgotPassword
+[HttpGet]
+public IActionResult ForgotPassword()
+{
+    return View("~/Views/Login/ForgotPassword.cshtml", new ForgotPasswordVm());
+}
+
+[HttpPost]
+[ValidateAntiForgeryToken]
+public async Task<IActionResult> ForgotPassword(ForgotPasswordVm model)
+{
+    if (!ModelState.IsValid)
+        return View("~/Views/Login/ForgotPassword.cshtml", model);
+
+        // find employee by email
+        var employee = await _context.Employees
+            .FirstOrDefaultAsync(e => e.Email == model.Email);
+
+        if (employee == null)
+        {
+            ModelState.AddModelError("Email", "No account found with that email.");
+            return View(model);
+        }
+
+        // IMPORTANT: use the SAME hashing method you already use for registration/login
+        byte[] hash;
+        byte[] salt;
+        CreatePasswordHash(model.NewPassword, out hash, out salt); // reuse your existing method
+
+        employee.PasswordHash = hash;
+        employee.PasswordSalt = salt;
+
+        await _context.SaveChangesAsync();
+
+        TempData["AuthMessage"] = "Password has been reset. You can now log in with your new password.";
+        return RedirectToAction("Authentication");
+    }
         // ============================================================
         // LOGIN (GET)
         // ============================================================
